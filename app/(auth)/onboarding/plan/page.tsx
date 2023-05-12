@@ -9,7 +9,7 @@ import stripe from "@/stripe/stripeServer";
 import { siteConfig } from "@/config/site";
 
 async function getPlans(): Promise<Product[]> {
-  const res = await fetch("${siteConfig.url}/api/plans");
+  const res = await fetch(`${siteConfig.url}/api/plans`);
   const { productsArray } = await res.json();
   return productsArray;
 }
