@@ -34,10 +34,6 @@ const AdminLayout = () => {
   useEffect(() => {
     async function getLastUpdate() {
       try {
-        // const records = await pb.collection("updateLogs").getFullList({
-        //   sort: "-created",
-        // });
-        // use firebase instead of pocketbase
         const records = await getDocs(
           query(collection(db, "updateLogs"), orderBy("created", "desc"))
         );
