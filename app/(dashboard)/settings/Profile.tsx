@@ -254,7 +254,7 @@ const AccountSettings = () => {
             </Button>
           </div>
           <div className="w-fit mx-auto items-center text-center flex  text-gray-500">
-            Can't remember your password?
+            Can&apos;t remember your password?
             <Button
               variant="link"
               onClick={handleResetPassword}

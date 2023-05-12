@@ -104,7 +104,10 @@ export const AppliedFilterDisplay = ({
           <div className="flex items center gap-4 flex-wrap mt-4">
             <>
               {appliedFilterList.map((filter: any, i: number) => (
-                <div className="bg-indigo-600 rounded-md p-2 flex items-center gap-2">
+                <div
+                  key={i}
+                  className="bg-indigo-600 rounded-md p-2 flex items-center gap-2"
+                >
                   <span className="text-white">
                     {filter.field + " " + filter.operator + " " + filter.value}
                   </span>
