@@ -8,14 +8,30 @@ import {
   limit,
   getDoc,
   where,
+  startAt,
 } from "firebase/firestore";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+  const startAfter = req.query.startAfterId as string;
+
   const collectionRef = collection(db, "tiktokAccounts");
-  const q = query(collectionRef, limit(8), where("topPosts", "!=", []));
+
+  let q;
+
+  const startAfterDoc = doc(db, "tiktokAccounts", startAfter);
+
+  const startAfterSnapshot = await getDoc(startAfterDoc);
+
+  q = query(
+    collectionRef,
+    where("topPosts", "!=", []),
+    limit(4),
+    startAt(startAfterSnapshot)
+  );
+
   const docs = await getDocs(q);
 
   const formattedData = docs.docs.map(async (_doc) => {

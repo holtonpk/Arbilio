@@ -253,26 +253,34 @@ const ProductDisplay = () => {
 
 const StoreDisplay = () => {
   const { data } = useContext(DataContext)!;
-  const url = getHomePageLink(data?.bioLink);
-  function getHomePageLink(url: string) {
-    // Create an anchor element to parse the URL
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    // Combine the protocol, host, and port (if present) to create the home page link
-    const homePageLink =
-      anchor.protocol +
-      "//" +
-      anchor.host +
-      (anchor.port ? ":" + anchor.port : "");
-    return homePageLink;
+  const url = getBaseUrl(data?.bioLink);
+
+  function getBaseUrl(url: string): string {
+    // If no protocol is provided, default to https://
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "https://" + url;
+    }
+
+    let urlObj;
+    try {
+      urlObj = new URL(url);
+    } catch (e) {
+      console.error("Invalid URL");
+      return "";
+    }
+
+    return urlObj.protocol + "//" + urlObj.hostname;
   }
 
   const [products, setProducts] = useState<any[] | undefined>(undefined);
+  console.log("url2", data?.bioLink, url);
 
   useEffect(() => {
     const getProducts = async () => {
+      console.log("url", url);
       const res = await fetch(url + "/products.json");
       const data = await res.json();
+      console.log("dd", data);
       setProducts(data.products);
     };
     getProducts();
@@ -286,49 +294,51 @@ const StoreDisplay = () => {
       <h1 className=" text-lg text-muted-foreground">
         The store linked in the accounts bio
       </h1>
-      <div className="flex-col items-center gap-4 p-3 border rounded-md">
-        {products && (
-          <>
-            <div className="flex p-2 gap-2 items-center  w-full">
-              <div className="h-12 aspect-square rounded-md bg-muted"></div>
-              <div className="flex flex-col">
-                <h1 className="font-bold text-lg text-primary">
-                  {products && products[0]?.vendor}
-                </h1>
-                <Link
-                  href={data?.bioLink}
-                  target="_blank"
-                  className="text-muted-foreground w-[280px] overflow-hidden whitespace-nowrap text-ellipsis"
-                >
-                  {url.replace(/^https?:\/\/(?:www\.)?/, "")}
-                </Link>
-              </div>
-              <MoreButton variant="outline" />
-            </div>
-            <h1 className=" text-sm text-muted-foreground">
-              {"Products in the store (" + products.length + ")"}
-            </h1>
-
-            <div className="divide-y divide-border rounded-md border grid max-h-[300px] overflow-scroll w-full ">
-              {products.map((product: any, i) => (
-                <Link
-                  key={i}
-                  target="_blank"
-                  href={url + "/products/" + product.handle}
-                  className="flex items-center gap-2 p-2 group  w-full "
-                >
-                  <div className="w-10 aspect-square bg-muted rounded-md relative overflow-hidden">
-                    <Image src={product?.images[0].src} alt="" fill />
-                  </div>
-                  <h1 className=" text-lg group-hover:text-muted-foreground w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
-                    {product.title}
+      {products && (
+        <div className="flex-col items-center gap-4 p-3 border rounded-md">
+          {products && (
+            <>
+              <div className="flex p-2 gap-2 items-center  w-full">
+                <div className="h-12 aspect-square rounded-md bg-muted"></div>
+                <div className="flex flex-col">
+                  <h1 className="font-bold text-lg text-primary">
+                    {products && products[0]?.vendor}
                   </h1>
-                </Link>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
+                  <Link
+                    href={data?.bioLink}
+                    target="_blank"
+                    className="text-muted-foreground w-[280px] overflow-hidden whitespace-nowrap text-ellipsis"
+                  >
+                    {url.replace(/^https?:\/\/(?:www\.)?/, "")}
+                  </Link>
+                </div>
+                <MoreButton variant="outline" />
+              </div>
+              <h1 className=" text-sm text-muted-foreground">
+                {"Products in the store (" + products.length + ")"}
+              </h1>
+
+              <div className="divide-y divide-border rounded-md border grid max-h-[300px] overflow-scroll w-full ">
+                {products.map((product: any, i) => (
+                  <Link
+                    key={i}
+                    target="_blank"
+                    href={url + "/products/" + product.handle}
+                    className="flex items-center gap-2 p-2 group  w-full "
+                  >
+                    <div className="w-10 aspect-square bg-muted rounded-md relative overflow-hidden">
+                      <Image src={product?.images[0].src} alt="" fill />
+                    </div>
+                    <h1 className=" text-lg group-hover:text-muted-foreground w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
+                      {product.title}
+                    </h1>
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };

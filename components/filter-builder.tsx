@@ -84,14 +84,14 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
     PresetFilter | undefined
   >(undefined);
 
-  useEffect(() => {
-    fetch(`${siteConfig.url}/api/filters`).then((res) => {
-      res.json().then((data) => {
-        setPresetFilters(data);
-        setSelectedPresetFilter(data[0]);
-      });
-    });
-  });
+  // useEffect(() => {
+  //   fetch(`${siteConfig.url}/api/filters`).then((res) => {
+  //     res.json().then((data) => {
+  //       setPresetFilters(data);
+  //       setSelectedPresetFilter(data[0]);
+  //     });
+  //   });
+  // });
 
   const selectPreset = (e: PresetFilter) => {
     setSelectedPresetFilter(e);

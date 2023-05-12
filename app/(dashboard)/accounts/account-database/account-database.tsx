@@ -12,8 +12,40 @@ import { Icons } from "@/components/icons";
 import { accountDatabaseConfig } from "@/config/dashboard";
 import EmptySearch from "@/components/empty-search";
 import useData from "@/hooks/use-data";
-const AccountDatabase = ({ data }: any) => {
-  console.log("data===>", data);
+import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
+
+const getData = async (startAfterId: string) => {
+  const url = `${siteConfig.url}/api/account-database/startAfter/${startAfterId}`;
+  const res = await fetch(url, {
+    cache: "no-cache",
+  });
+
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
+
+const AccountDatabase = ({ originalData }: any) => {
+  const [data, setData] = useState(originalData);
+  const [lastDocId, setLastDocId] = useState(
+    originalData[originalData.length - 1]?.recordId
+  );
+  const [loading, setLoading] = useState(false);
+
+  console.log("data", originalData[originalData.length - 1]);
+
+  const loadMore = async () => {
+    setLoading(true);
+    const newData = await getData(lastDocId);
+    console.log("new", newData);
+    setData((prevData: any) => [...prevData, ...newData]);
+    setLastDocId(newData[newData.length - 1]?.recordId); // assuming each data object has an 'id' field
+    setLoading(false);
+  };
 
   const {
     sortedData,
@@ -76,6 +108,10 @@ const AccountDatabase = ({ data }: any) => {
           </>
         )}
       </div>
+      <Button onClick={loadMore} className="mt-3">
+        {loading ? <Icons.spinner className="animate-spin" /> : null}
+        Load more
+      </Button>
     </>
   );
 };

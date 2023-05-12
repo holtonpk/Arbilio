@@ -27,6 +27,11 @@ const useData = ({ data }: UseDataProps): UseDataReturn => {
   const [sortParam, setSortParam] = useState<string>("");
 
   react.useEffect(() => {
+    setUnformattedData(data);
+    setActiveData(data);
+  }, [data]);
+
+  react.useEffect(() => {
     if (appliedFilterList && appliedFilterList.length > 0) {
       setActiveData(sortData(unformattedData, appliedFilterList));
     } else {
