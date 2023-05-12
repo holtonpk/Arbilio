@@ -9,6 +9,8 @@ import { Icons } from "@/components/icons";
 import { toast } from "@/components/ui/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
 import EnterPasswordModal from "@/components/enter-password";
+import { siteConfig } from "@/config/site";
+
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const stripe = require("stripe")(
@@ -18,7 +20,7 @@ const Profile = () => {
     setIsLoading(true);
     const session = await stripe.billingPortal.sessions.create({
       customer: "cus_Ns5BZPlhGnvG7w",
-      return_url: "http://localhost:3000/settings",
+      return_url: `${siteConfig.url}/settings`,
     });
 
     window.location.href = session.url;

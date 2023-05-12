@@ -27,6 +27,7 @@ import {
   where,
   updateDoc,
 } from "firebase/firestore";
+import { siteConfig } from "@/config/site";
 
 const AdminLayout = () => {
   const [data, setData] = useState<any>(undefined);
@@ -163,7 +164,7 @@ const UpdateData = ({ data }: any) => {
 
   const ScrapeAccountData = async (uniqueId: string) => {
     const data = await fetchJson(
-      `http://localhost:3000/api/scrape/account/${uniqueId}`
+      `${siteConfig.url}/api/scrape/account/${uniqueId}`
     );
     if (data && data.posts) {
       return data;
@@ -175,7 +176,7 @@ const UpdateData = ({ data }: any) => {
 
   const ScrapePostData = async (uniqueId: string, postId: string) => {
     const data = await fetchJson(
-      `http://localhost:3000/api/scrape/post/${uniqueId}/${postId}`
+      `${siteConfig.url}/api/scrape/post/${uniqueId}/${postId}`
     );
     if (data && data.video && data.video.cover) {
       return data;
@@ -262,9 +263,7 @@ const UpdateData = ({ data }: any) => {
 
   async function fetchAccountData(uniqueID: string) {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/user/${uniqueID}`
-      );
+      const response = await fetch(`${siteConfig.url}/api/user/${uniqueID}`);
       if (response.status === 200) {
         const data = await response.json();
         if (response.ok) {

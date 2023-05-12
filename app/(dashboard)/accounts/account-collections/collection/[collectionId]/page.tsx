@@ -1,12 +1,11 @@
 import CollectionData from "./collection-data";
 import Loading from "./loading";
+import { siteConfig } from "@/config/site";
+
 async function getData(collectionId: string) {
-  const res = await fetch(
-    `http://localhost:3000/api/collection/${collectionId}`,
-    {
-      cache: "no-cache",
-    }
-  );
+  const res = await fetch(`${siteConfig.url}/api/collection/${collectionId}`, {
+    cache: "no-cache",
+  });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary

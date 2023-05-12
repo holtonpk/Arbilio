@@ -7,6 +7,7 @@ import { Product } from "@/types";
 import { createCheckoutSession } from "@/stripe/createCheckoutSession";
 import { useAuth } from "@/context/Auth";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 
 interface PlansProps {
   plans: Product[];
@@ -102,8 +103,8 @@ const PricingCard = ({ plan, priceType, mostPopular }: PricingCardProps) => {
     await createCheckoutSession(
       currentUser?.uid,
       price?.id,
-      "http://localhost:3000/dashboard",
-      "http://localhost:3000/onboarding/register"
+      `${siteConfig.url}/dashboard`,
+      `${siteConfig.url}/onboarding/register`
     );
   };
 

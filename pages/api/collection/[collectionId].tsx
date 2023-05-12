@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { CollectionType } from "@/types";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { app } from "@/firebase";
+import { siteConfig } from "@/config/site";
 
 export default async function handler(
   req: NextApiRequest,
@@ -57,6 +58,6 @@ const getAccountCollectionById = async (
 };
 
 const getAccountDataById = async (id: string) => {
-  const accountData = await fetch(`http://localhost:3000/api/account/${id}`);
+  const accountData = await fetch(`${siteConfig.url}/api/account/${id}`);
   return accountData.json();
 };

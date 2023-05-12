@@ -9,6 +9,7 @@ import { Icons } from "./icons";
 import { Input } from "./ui/input";
 import { CustomListBox } from "@/components/list-box";
 import { toast } from "@/components/ui/use-toast";
+import { siteConfig } from "@/config/site";
 import {
   Dialog,
   DialogContent,
@@ -87,7 +88,7 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
   >(undefined);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/filters").then((res) => {
+    fetch(`${siteConfig.url}/api/filters`).then((res) => {
       res.json().then((data) => {
         setPresetFilters(data);
         setSelectedPresetFilter(data[0]);

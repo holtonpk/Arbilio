@@ -23,6 +23,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import Skeleton from "@/components/ui/custom-skeleton";
+import { siteConfig } from "@/config/site";
 
 const ExpandedAccountRank = ({ expandedAccountData }: any) => {
   const [graphData, setGraphData] = useState<any>(undefined);
@@ -30,7 +31,7 @@ const ExpandedAccountRank = ({ expandedAccountData }: any) => {
   useEffect(() => {
     if (expandedAccountData) {
       fetch(
-        `http://localhost:3000/api/account/${expandedAccountData.account.recordId}`
+        `${siteConfig.url}/api/account/${expandedAccountData.account.recordId}`
       )
         .then((res) => res.json())
         .then((res) => {
