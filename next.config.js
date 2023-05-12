@@ -1,6 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-}
+  images: {
+    domains: [
+      "p16-sign.tiktokcdn-us.com",
+      "p19-sign.tiktokcdn-us.com",
+      "p77-sign-va.tiktokcdn.com",
+      "p77-sign-va-lite.tiktokcdn.com",
+      "p16-sign-va.tiktokcdn.com",
+      "p16-sign-va-lite.tiktokcdn.com",
+      "p16-sign-sg.tiktokcdn.com",
+      "127.0.0.1",
+      "cdn.shopify.com",
+      "firebasestorage.googleapis.com",
+    ],
+  },
+  experimental: {
+    appDir: true,
+  },
+};
 
-module.exports = nextConfig
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
+module.exports = withBundleAnalyzer(nextConfig);
