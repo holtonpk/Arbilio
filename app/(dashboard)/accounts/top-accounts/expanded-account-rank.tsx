@@ -34,17 +34,16 @@ const ExpandedAccountRank = ({ expandedAccountData }: any) => {
       )
         .then((res) => res.json())
         .then((res) => {
-          //  sort res by dataCollectionTime
-
-          const orderedData = res.accountStats.sort((a: any, b: any) => {
+          const data = res.data.accountStats;
+          const orderedData = data.sort((a: any, b: any) => {
             return a.dataCollectionTime - b.dataCollectionTime;
           });
 
           const GraphData = {
             labels: orderedData.map((stat: any) => stat.dataCollectionTime),
-            followers: res.accountStats.map((stat: any) => stat.followerCount),
-            likes: res.accountStats.map((stat: any) => stat.heartCount),
-            posts: res.accountStats.map((stat: any) => stat.videoCount),
+            followers: data.map((stat: any) => stat.followerCount),
+            likes: data.map((stat: any) => stat.heartCount),
+            posts: data.map((stat: any) => stat.videoCount),
           };
           setGraphData(GraphData);
         });

@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 async function getData() {
   const rankType = "followers";
-  const res = await fetch(`${siteConfig.url}/api/top-accounts/`);
+  const res = await fetch(`${siteConfig.url}/api/top-accounts`);
   const rawData = await res.json();
   const formattedData = await formatData(rawData);
   const sortedData = formattedData

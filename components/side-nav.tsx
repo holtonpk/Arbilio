@@ -66,7 +66,7 @@ const Route = ({ item }: { item: SideNavRoute }) => {
           <button
             onClick={onClick}
             disabled={item?.disabled}
-            className={`group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground  ${
+            className={`group flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground  ${
               item?.disabled && "cursor-not-allowed opacity-40"
             }`}
           >
