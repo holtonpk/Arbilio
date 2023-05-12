@@ -215,48 +215,44 @@ const ProductDisplay = () => {
   const { data } = useContext(DataContext)!;
 
   return (
-    <div className="flex flex-col mt-3  ">
-      <h1 className=" text-2xl text-primary">Product</h1>
-      <h1 className=" text-lg text-muted-foreground">
-        This is the main product advertised by the account
-      </h1>
-      <div className="flex flex-col divide-y divide-border rounded-md border p-3 mt-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <div className="w-[100px] aspect-square bg-muted rounded-md relative overflow-hidden">
-              <Image
-                src={
-                  "http://127.0.0.1:8090/api/files/bum948pkcwleyzc/" +
-                  data.product?.id +
-                  "/" +
-                  data.product?.images[0]
-                }
-                alt=""
-                fill
-              />
-            </div>
+    <>
+      {data.product ? (
+        <div className="flex flex-col mt-3  ">
+          <h1 className=" text-2xl text-primary">Product</h1>
+          <h1 className=" text-lg text-muted-foreground">
+            This is the main product advertised by the account
+          </h1>
+          <div className="flex flex-col divide-y divide-border rounded-md border p-3 mt-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-8">
+                <div className="w-[100px] aspect-square bg-muted rounded-md relative overflow-hidden">
+                  <Image src={data.product.image} alt="" fill />
+                </div>
 
-            <div className="flex flex-col justify-between   ">
-              <h1 className=" text-lg whitespace-nowrap">
-                {data.product && data.product.title}
-              </h1>
-              <h1 className=" text-sm text-muted-foreground">Supplier</h1>
-              <Link
-                href={"/"}
-                className="text-primary  w-[200px] overflow-hidden whitespace-nowrap text-ellipsis"
-              >
-                {data.product &&
-                  data.product.supplierUrl.replace(
-                    /^https?:\/\/(?:www\.)?/,
-                    ""
-                  )}
-              </Link>
+                <div className="flex flex-col justify-between   ">
+                  <h1 className=" text-lg whitespace-nowrap">
+                    {data.product.title}
+                  </h1>
+                  <h1 className=" text-sm text-muted-foreground">Supplier</h1>
+                  <Link
+                    href={"/"}
+                    className="text-primary  w-[200px] overflow-hidden whitespace-nowrap text-ellipsis"
+                  >
+                    {data.product.supplierUrl.replace(
+                      /^https?:\/\/(?:www\.)?/,
+                      ""
+                    )}
+                  </Link>
+                </div>
+              </div>
+              <MoreButton variant="outline" />
             </div>
           </div>
-          <MoreButton variant="outline" />
         </div>
-      </div>
-    </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
@@ -358,7 +354,7 @@ const PostsDisplay = () => {
               className="w-[500px] aspect-[9/16] bg-primary rounded-md relative overflow-hidden"
             >
               <Image
-                src={`http://127.0.0.1:8090/api/files/${item?.collectionId}/${item?.id}/${item?.cover}`}
+                src={item?.cover}
                 alt="video cover"
                 fill
                 sizes="(max-width: 768px) 100vw,  

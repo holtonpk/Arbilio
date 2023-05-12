@@ -184,9 +184,7 @@ export const CollectionCard = ({ data }: any) => {
         <div className="flex items-center gap-2 w-[90%] pb-0  rounded-md  ">
           <div className="w-10 h-10 bg-muted rounded-md relative overflow-hidden ">
             <Image
-              src={`http://127.0.0.1:8090/api/files/${"vv8h7hq2vne8ab5"}/${
-                data?.recordId
-              }/${data?.avatar}`}
+              src={data?.avatar}
               alt="Picture of the author"
               fill
               sizes="(max-width: 768px) 100vw,
@@ -249,7 +247,7 @@ export const CollectionCard = ({ data }: any) => {
                   className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden"
                 >
                   <Image
-                    src={`http://127.0.0.1:8090/api/files/${item?.collectionId}/${item?.id}/${item?.cover}`}
+                    src={item?.cover}
                     alt="video cover"
                     fill
                     sizes="(max-width: 768px) 100vw,  

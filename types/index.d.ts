@@ -109,7 +109,7 @@ export interface ProductType {
   created: string;
   updated: string;
   title: string;
-  images: string[];
+  image: string;
   supplierUrl: string;
   accounts: string[];
 }

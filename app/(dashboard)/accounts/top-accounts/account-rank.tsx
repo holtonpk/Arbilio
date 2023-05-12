@@ -104,12 +104,7 @@ const RankRow = ({
         <div className="w-[40%]   flex  items-center">
           <div className="h-12 w-12 rounded-md aspect-square relative overflow-hidden">
             <Image
-              src={
-                "http://127.0.0.1:8090/api/files/vv8h7hq2vne8ab5/" +
-                account.recordId +
-                "/" +
-                account.avatar
-              }
+              src={account.avatar}
               alt="Picture of the author"
               fill
               sizes="(max-width: 768px) 100vw,

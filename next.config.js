@@ -10,7 +10,6 @@ const nextConfig = {
       "p16-sign-va.tiktokcdn.com",
       "p16-sign-va-lite.tiktokcdn.com",
       "p16-sign-sg.tiktokcdn.com",
-      "127.0.0.1",
       "cdn.shopify.com",
       "firebasestorage.googleapis.com",
     ],

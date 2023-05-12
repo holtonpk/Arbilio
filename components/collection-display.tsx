@@ -50,12 +50,7 @@ const Collection = ({ data, title }: any) => {
               className="aspect-square relative h-10 overflow-hidden rounded-full bg-muted border flex items-center justify-center"
             >
               <Image
-                src={
-                  "http://127.0.0.1:8090/api/files/vv8h7hq2vne8ab5/" +
-                  item?.recordId +
-                  "/" +
-                  item?.avatar
-                }
+                src={item?.avatar}
                 alt="Picture of the author"
                 fill
                 sizes="(max-width: 768px) 100vw,

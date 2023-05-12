@@ -67,12 +67,7 @@ const ExpandedAccountRank = ({ expandedAccountData }: any) => {
               >
                 <div className="h-12 w-12 aspect-square bg-muted rounded-md relative overflow-hidden">
                   <Image
-                    src={
-                      "http://127.0.0.1:8090/api/files/vv8h7hq2vne8ab5/" +
-                      expandedAccountData?.account.recordId +
-                      "/" +
-                      expandedAccountData?.account.avatar
-                    }
+                    src={expandedAccountData?.account.avatar}
                     alt="Picture of the author"
                     fill
                     sizes="(max-width: 768px) 100vw,
