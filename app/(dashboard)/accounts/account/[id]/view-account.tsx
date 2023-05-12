@@ -341,8 +341,9 @@ const StoreDisplay = () => {
             </h1>
 
             <div className="divide-y divide-border rounded-md border grid max-h-[300px] overflow-scroll w-full ">
-              {products.map((product: any) => (
+              {products.map((product: any, i) => (
                 <Link
+                  key={i}
                   target="_blank"
                   href={url + "/products/" + product.handle}
                   className="flex items-center gap-2 p-2 group  w-full "
@@ -373,8 +374,11 @@ const PostsDisplay = () => {
       <h1 className="font-bold text-3xl mb-3 text-primary">Top Posts</h1>
       <div className="grid grid-cols-5 gap-10">
         {data.topPosts &&
-          data.topPosts.map((item: any) => (
-            <div className="w-[500px] aspect-[9/16] bg-primary rounded-md relative overflow-hidden">
+          data.topPosts.map((item: any, i) => (
+            <div
+              key={i}
+              className="w-[500px] aspect-[9/16] bg-primary rounded-md relative overflow-hidden"
+            >
               <Image
                 src={`http://127.0.0.1:8090/api/files/${item?.collectionId}/${item?.id}/${item?.cover}`}
                 alt="video cover"
