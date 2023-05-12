@@ -89,17 +89,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function logInWithGoogle() {
-    const result = signInWithPopup(auth, new GoogleAuthProvider())
-      .then((result: any) => {
-        console.log("result$$$", result);
-        // createUserStorage(result.user);
-        return { success: result };
-      })
-      .catch((error) => {
-        console.log("error$$$$", error);
-        return { error };
-      });
-    return result;
+    const result = await signInWithPopup(auth, new GoogleAuthProvider());
+    if (result.user) {
+      createUserStorage(result.user);
+      return { success: result };
+    } else {
+      return { error: result };
+    }
   }
 
   const createUserStorage = async (user: any) => {
