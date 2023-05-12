@@ -19,6 +19,7 @@ import { CollectionOperations } from "@/components/collection-operations";
 
 const CollectionData = ({ data }: any) => {
   const [displayType, setDisplayType] = useState<"grid" | "columns">("columns");
+  console.log("data==>", data);
 
   const {
     sortedData,

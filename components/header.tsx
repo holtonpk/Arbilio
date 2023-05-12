@@ -1,7 +1,4 @@
 "use client";
-
-import { RiInformationFill } from "react-icons/ri";
-
 interface PageHeaderProps {
   heading: string;
   text?: string;

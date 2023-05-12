@@ -1,10 +1,9 @@
 import React, { use, useEffect, useState, ChangeEvent } from "react";
-import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
-import { MdOutlineCalendarToday, MdSwapHoriz } from "react-icons/md";
 import { utcToZonedTime } from "date-fns-tz";
 import { parseISO, format } from "date-fns";
 import { Button, buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { Icons } from "@/components/icons";
 type calendarProps = {
   handleApply: any;
   selectedDate1: any | undefined;
@@ -257,7 +256,7 @@ const Calendar = ({
           <div className="relative z-[90]   p-3 h-fit gap-3 w-fit items-start  flex flex-col">
             <div className="flex flex-row items-center w-fit gap-10 justify-between  ">
               <button onClick={monthBack}>
-                <MdKeyboardArrowLeft className="h-8 w-8 fill-white" />
+                <Icons.chevronLeft className="h-8 w-8 fill-white" />
               </button>
               <h1 className="text-white text-lg font-bold ">
                 {monthNames[currentMonth - 1] + " " + currentYear}
@@ -311,7 +310,7 @@ const Calendar = ({
                 {monthNames[currentMonth] + " " + currentYear}
               </h1>
               <button onClick={monthForward}>
-                <MdKeyboardArrowRight className="h-8 w-8 fill-white" />
+                <Icons.chevronRight className="h-8 w-8 fill-white" />
               </button>
             </div>
             <div className="grid grid-cols-7 gap-2 text-indigo-600 text-sm text-center">
@@ -453,11 +452,11 @@ export const DateRange = ({ setDate1, setDate2 }: any) => {
           variant="outline"
           size="lg"
         >
-          <MdOutlineCalendarToday className="w-4 h-4 " />
+          <Icons.calendar className="w-4 h-4 " />
           {selectedDate1 || selectedDate2 ? (
             <>
               {selectedDate1 && formatDate(selectedDate1.date)}
-              <MdSwapHoriz className="w-5 h-5 " />
+              <Icons.swap className="w-5 h-5 " />
               {selectedDate2 && formatDate(selectedDate2.date)}
             </>
           ) : null}

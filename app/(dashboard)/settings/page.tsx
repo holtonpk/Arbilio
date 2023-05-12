@@ -1,9 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { MdPersonOutline } from "react-icons/md";
-import { IoWalletOutline } from "react-icons/io5";
 import Profile from "./Profile";
-import Billing from "./Billing";
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 const SettingsPage = () => {
   const [tab, setTab] = useState<"billing" | "profile">("profile");
@@ -30,7 +28,7 @@ const SettingsNav = ({ tab, setTab }: any) => {
         onClick={() => setTab("profile")}
         className="gap-2 border"
       >
-        <MdPersonOutline className="h-6 w-6" />
+        <Icons.profile className="h-6 w-6" />
         My Profile
       </Button>
       <Button
@@ -38,7 +36,7 @@ const SettingsNav = ({ tab, setTab }: any) => {
         onClick={() => setTab("billing")}
         className="gap-2 border"
       >
-        <IoWalletOutline className="h-6 w-6" />
+        <Icons.wallet className="h-6 w-6" />
         Billing
       </Button>
     </div>

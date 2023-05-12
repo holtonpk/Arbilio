@@ -7,12 +7,9 @@ import React, {
   CSSProperties,
   useRef,
 } from "react";
-import { HiOutlineChevronUpDown } from "react-icons/hi2";
-import { IoMdRefresh } from "react-icons/io";
-import { BsFillCheckCircleFill, BsCheck } from "react-icons/bs";
 import { Transition, Listbox } from "@headlessui/react";
 import { timeSince, convertImageToFile } from "@/lib/utils";
-import { MdClose, MdCloudDownload } from "react-icons/md";
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { db } from "@/context/Auth";
 import {
@@ -367,7 +364,7 @@ const UpdateData = ({ data }: any) => {
   return (
     <>
       <div className="flex items-center gap-4 justify-end ml-auto text-primary/70 absolute right-4 top-4">
-        <IoMdRefresh className="h-5 w-5 text-primary" />
+        <Icons.spinner className="h-5 w-5 text-primary" />
         <span className="text-base ">{"Last updated " + lastUpdate}</span>
       </div>
 
@@ -377,7 +374,7 @@ const UpdateData = ({ data }: any) => {
             <Listbox.Button className="text-sm relative w-full cursor-default rounded-lg border text-primary  py-2 pl-3 pr-10 text-left shadow-md ">
               <span className="block truncate">{selectedUpdateType.label}</span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                <HiOutlineChevronUpDown
+                <Icons.chevronUp
                   className="h-5 w-5 text-primary"
                   aria-hidden="true"
                 />
@@ -413,7 +410,10 @@ const UpdateData = ({ data }: any) => {
                         </span>
                         {selected ? (
                           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-primary">
-                            <BsCheck className="h-5 w-5" aria-hidden="true" />
+                            <Icons.check
+                              className="h-5 w-5"
+                              aria-hidden="true"
+                            />
                           </span>
                         ) : null}
                       </>
@@ -431,7 +431,7 @@ const UpdateData = ({ data }: any) => {
           variant="default"
           size="lg"
         >
-          <MdCloudDownload className="h-5 w-5 inline-block" />
+          <Icons.download className="h-5 w-5 inline-block" />
           Start Sync
         </Button>
       </div>

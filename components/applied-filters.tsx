@@ -1,6 +1,4 @@
 import React from "react";
-
-import { HiX } from "react-icons/hi";
 import { Icons } from "@/components/icons";
 
 interface AppliedFiltersProps {

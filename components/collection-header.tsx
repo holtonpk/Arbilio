@@ -1,10 +1,9 @@
 // import ComboBox, { ComboBoxSkeleton } from "../ComboBox";
-import { BsGrid, BsListCheck } from "react-icons/bs";
 import Skeleton from "@/components/ui/custom-skeleton";
 import FilterBuilder from "@/components/filter-builder";
 import { FilterList } from "@/types";
 import { Button } from "@/components/ui/button";
-
+import { Icons } from "@/components/icons";
 import ComboBox, { ComboBoxSkeleton } from "./combo-box";
 
 interface CollectionHeaderProps {
@@ -120,7 +119,7 @@ export const AppliedFilterDisplay = ({
                       );
                     }}
                   >
-                    <HiX className="h-4 w-4 text-white" />
+                    <Icons.close className="h-4 w-4 text-white" />
                   </button>
                 </div>
               ))}
@@ -158,7 +157,7 @@ export const DisplaySelect = ({ displayType, setDisplayType }: any) => {
         variant={displayType == "grid" ? "outline" : "ghost"}
         size="sm"
       >
-        <BsGrid className="h-6 w-6" />
+        <Icons.grid className="h-6 w-6" />
       </Button>
       <Button
         onClick={displayColumns}
@@ -166,7 +165,7 @@ export const DisplaySelect = ({ displayType, setDisplayType }: any) => {
         variant={displayType == "columns" ? "outline" : "ghost"}
         size="sm"
       >
-        <BsListCheck className="h-6 w-6" />
+        <Icons.check className="h-6 w-6" />
       </Button>
     </div>
   );
@@ -182,9 +181,6 @@ const DisplaySelectSkeleton = () => {
 };
 
 import { useState } from "react";
-import { HiX } from "react-icons/hi";
-import { BiSearch } from "react-icons/bi";
-import { BiFilter } from "react-icons/bi";
 
 interface SearchInputProps {
   onSearch: (searchTerm: string) => void;
@@ -228,7 +224,7 @@ export const SearchInput = ({ onSearch, placeholder }: SearchInputProps) => {
           onClick={handleClearSearch}
           className="absolute top-1/2 -translate-y-1/2 right-0 px-3 py-2 text-primary"
         >
-          <HiX />
+          <Icons.close />
         </button>
       )}
     </div>

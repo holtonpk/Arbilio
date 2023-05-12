@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { Switch } from "@headlessui/react";
-import { MdCheck } from "react-icons/md";
 import { Icons } from "@/components/icons";
 import { Product } from "@/types";
 import { createCheckoutSession } from "@/stripe/createCheckoutSession";
@@ -152,7 +151,7 @@ const PricingCard = ({ plan, priceType, mostPopular }: PricingCardProps) => {
         <ul className="grid gap-3   text-md text-muted-foreground w-fit  ">
           {plan.features.map((feature, i) => (
             <li key={i} className="flex items-center">
-              <MdCheck className="mr-2 h-4 w-4" /> {feature}
+              <Icons.check className="mr-2 h-4 w-4" /> {feature}
             </li>
           ))}
         </ul>

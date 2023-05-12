@@ -1,14 +1,9 @@
 "use client";
 import Link from "next/link";
-
 import React, { useEffect, useState, useRef, RefObject } from "react";
-import { MdOutlinePerson, MdOutlineSettings } from "react-icons/md";
-import { BiLogOut } from "react-icons/bi";
-import { RiMoreFill } from "react-icons/ri";
 import { useAuth } from "@/context/Auth";
 import { Icons } from "@/components/icons";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export const useOnClickOutside = (
   ref: RefObject<HTMLElement>,
@@ -75,21 +70,21 @@ export const MoreButton = ({ variant, size, className }: MoreButtonProps) => {
                 href="/Settings"
                 className=" font-bold text-primary flex items-center hover:bg-accent w-full rounded-md py-1 px-2"
               >
-                <MdOutlineSettings className="h-4 w-4 mr-2" />
+                <Icons.settings className="h-4 w-4 mr-2" />
                 Settings
               </Link>
               <Link
                 href="/Settings"
                 className=" font-bold text-primary flex items-center hover:bg-accent w-full rounded-md py-1 px-2"
               >
-                <MdOutlinePerson className="h-4 w-4mr-2" />
+                <Icons.profile className="h-4 w-4mr-2" />
                 Manage Account
               </Link>
               <button
                 onClick={() => logoutUser()}
                 className=" font-bold text-primary flex items-center hover:bg-accent w-full rounded-md py-1 px-2"
               >
-                <BiLogOut className="h-4 w-4mr-2" />
+                <Icons.logout className="h-4 w-4mr-2" />
                 Logout
               </button>
             </div>

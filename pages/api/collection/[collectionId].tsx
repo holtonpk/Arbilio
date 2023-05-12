@@ -59,5 +59,6 @@ const getAccountCollectionById = async (
 
 const getAccountDataById = async (id: string) => {
   const accountData = await fetch(`${siteConfig.url}/api/account/${id}`);
-  return accountData.json();
+  const accountDataJson = await accountData.json();
+  return accountDataJson.data;
 };

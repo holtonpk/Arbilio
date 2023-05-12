@@ -1,15 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { HiDotsCircleHorizontal, HiDotsHorizontal } from "react-icons/hi";
-import {
-  MdAdd,
-  MdCheckCircle,
-  MdCheckCircleOutline,
-  MdEdit,
-  MdModeEditOutline,
-} from "react-icons/md";
-import { RiVisaLine } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/Auth";
 import usePremiumStatus from "@/stripe/usePremiumStatus";
@@ -103,19 +94,19 @@ const PaymentMethod = () => {
       <div className="flex items-center justify-between w-full  rounded-md border-2 border-border p-4">
         <div className="flex flex-row gap-2 items-center">
           <span className="bg-muted flex justify-center p-1 rounded-md items-center">
-            <RiVisaLine className="text-2xl text-primary" />
+            {/* <RiVisaLine className="text-2xl text-primary" /> */}
           </span>
           <h4 className="text-primary">Visa **** 1234</h4>
         </div>
         <div className="flex gap-2 items-center">
           <h4 className="text-primary/60">Expires 02/23</h4>
           <button className="flex items-center gap-1">
-            <HiDotsHorizontal className="text-primary/60 h-4 w-4" />
+            {/* <HiDotsHorizontal className="text-primary/60 h-4 w-4" /> */}
           </button>
         </div>
       </div>
       <button className="flex items-center gap-1 w-fit  mx-auto">
-        <MdAdd className="text-primary/60 h-4 w-4" />
+        {/* <MdAdd className="text-primary/60 h-4 w-4" /> */}
         <h4 className="text-primary/60">Add Payment Method</h4>
       </button>
     </div>
@@ -172,7 +163,7 @@ const BillingInfo = () => {
           variant={edit ? "default" : "outline"}
           size={edit ? "lg" : "sm"}
         >
-          {edit ? "Update" : <MdEdit className="h-6 w-6" />}
+          {/* {edit ? "Update" : <MdEdit className="h-6 w-6" />} */}
         </Button>
       </div>
     </div>
@@ -284,7 +275,7 @@ const PlanCard = ({
         <ul className="grid gap-2 text-sm text-muted-foreground w-fit ">
           {features.map((feature: any, i: number) => (
             <li key={i} className="flex items-center">
-              <MdCheckCircleOutline className="mr-2 h-4 w-4" /> {feature}
+              {/* <MdCheckCircleOutline className="mr-2 h-4 w-4" /> {feature} */}
             </li>
           ))}
         </ul>

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, CSSProperties } from "react";
-import { HiOutlineTrendingUp, HiOutlineTrendingDown } from "react-icons/hi";
-
+import { Icons } from "@/components/icons";
 import Image from "next/image";
 import { formatNumber } from "@/lib/utils";
 import Link from "next/link";
@@ -142,11 +141,7 @@ const StatDisplay = ({ data }: any) => {
         {formatNumber(data.increase)}
       </h2>
       <h1 className="text-lg text-primary font-bold flex items-center gap-1">
-        {data.percentChange > 0 ? (
-          <HiOutlineTrendingUp />
-        ) : (
-          <HiOutlineTrendingDown />
-        )}
+        {data.percentChange > 0 ? <Icons.trendingUp /> : <Icons.trendingDown />}
         {data.percentChange + "%"}
       </h1>
       <h2 className="text-sm text-muted-foreground">

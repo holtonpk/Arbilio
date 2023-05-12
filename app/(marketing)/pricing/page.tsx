@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Switch } from "@headlessui/react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { MdCheck } from "react-icons/md";
+import { Icons } from "@/components/icons";
 
 export default function PricingPage() {
   const [monthly, setMonthly] = useState(false);
@@ -70,23 +70,23 @@ const PricingCard = () => {
         </div>
         <ul className="grid gap-3 text-md text-muted-foreground w-fit  ">
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Unlimited Posts
+            <Icons.check className="mr-2 h-4 w-4" /> Unlimited Posts
           </li>
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Unlimited Users
+            <Icons.check className="mr-2 h-4 w-4" /> Unlimited Users
           </li>
 
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Custom domain
+            <Icons.check className="mr-2 h-4 w-4" /> Custom domain
           </li>
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Dashboard Analytics
+            <Icons.check className="mr-2 h-4 w-4" /> Dashboard Analytics
           </li>
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Access to Discord
+            <Icons.check className="mr-2 h-4 w-4" /> Access to Discord
           </li>
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Premium Support
+            <Icons.check className="mr-2 h-4 w-4" /> Premium Support
           </li>
         </ul>
       </div>
@@ -113,23 +113,23 @@ const PricingCard2 = () => {
         </div>
         <ul className="grid gap-3 text-md text-muted-foreground w-fit  ">
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Unlimited Posts
+            <Icons.check className="mr-2 h-4 w-4" /> Unlimited Posts
           </li>
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Unlimited Users
+            <Icons.check className="mr-2 h-4 w-4" /> Unlimited Users
           </li>
 
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Custom domain
+            <Icons.check className="mr-2 h-4 w-4" /> Custom domain
           </li>
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Dashboard Analytics
+            <Icons.check className="mr-2 h-4 w-4" /> Dashboard Analytics
           </li>
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Access to Discord
+            <Icons.check className="mr-2 h-4 w-4" /> Access to Discord
           </li>
           <li className="flex items-center">
-            <MdCheck className="mr-2 h-4 w-4" /> Premium Support
+            <Icons.check className="mr-2 h-4 w-4" /> Premium Support
           </li>
         </ul>
       </div>

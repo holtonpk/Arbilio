@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-import { CgSpinner } from "react-icons/cg";
-import { FcGoogle } from "react-icons/fc";
 import * as z from "zod";
 import { useAuth } from "@/context/Auth";
 import { PasswordInput } from "@/components/ui/password-input";
@@ -141,9 +139,9 @@ const LoginForm = () => {
         variant="outline"
       >
         {isGoogleLoading ? (
-          <CgSpinner className="mr-2 h-4 w-4 animate-spin" />
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <FcGoogle className=" h-6 w-6 mr-2" />
+          <Icons.google className=" h-6 w-6 mr-2" />
         )}
         Signing in with Google
       </Button>

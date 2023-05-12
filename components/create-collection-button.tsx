@@ -9,7 +9,6 @@ import {
   DialogFooter,
   DialogAction,
 } from "@/components/ui/dialog";
-import { MdAdd } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Icons } from "./icons";
 import { Input } from "@/components/ui/input";
@@ -80,7 +79,7 @@ const CreateCollectionButton = ({
         size="sm"
       >
         new collection
-        <MdAdd className="h-5 w-5 mr-2" />
+        <Icons.add className="h-5 w-5 mr-2" />
       </Button>
       <Dialog
         open={showCreateCollection}

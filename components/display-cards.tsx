@@ -3,13 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import Link from "next/link";
 import { formatNumber } from "@/lib/utils";
-import { IoHeart, IoPlay } from "react-icons/io5";
-import { MdPerson, MdInfo, MdShare } from "react-icons/md";
-import { HiOutlineFolderAdd } from "react-icons/hi";
-import { BsFillPlayFill } from "react-icons/bs";
 import Skeleton from "@/components/ui/custom-skeleton";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
@@ -114,7 +109,7 @@ export const AccountCard = ({ data }: any) => {
                   />
 
                   <div className="absolute top-2 right-2 z-30 flex items-center text-[12px] gap-1 text-white ">
-                    <BsFillPlayFill className="text-2xl  h-4 w-4" />
+                    <Icons.posts className="text-2xl  h-4 w-4" />
                     {formatNumber(item.postData.postInfo.playCount)}
                   </div>
                   <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>
@@ -147,9 +142,9 @@ export const CollectionCard = ({ data }: any) => {
     }
   }, []);
 
-  const top3Posts = data.posts.itemList
-    .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
-    .slice(0, 3);
+  // const top3Posts = data.posts.itemList
+  //   .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
+  //   .slice(0, 3);
 
   // const router = useRouter();
 
@@ -166,14 +161,14 @@ export const CollectionCard = ({ data }: any) => {
             variant="default"
             size="sm"
           >
-            <BsThreeDotsVertical className="h-6 w-6 " />
+            <Icons.ellipsis className="h-6 w-6 " />
           </Button>
           <Button
             className="flex items-center justify-center whitespace-nowrap"
             variant="default"
             size="sm"
           >
-            <HiOutlineFolderAdd className="h-6 w-6 " />
+            <Icons.addCollection className="h-6 w-6 " />
           </Button>
         </div>
       </div>
@@ -192,8 +187,8 @@ export const CollectionCard = ({ data }: any) => {
                     33vw"
             />
           </div>
-          <div className="flex flex-col gap- ">
-            <h1 className="text-base font-bold  text-primary ">
+          <div className="flex flex-col gap- max-w-[80%] ">
+            <h1 className="text-base font-bold  text-primary whitespace-nowrap overflow-hidden text-ellipsis">
               {data.nickname}
             </h1>
             <div className="text-[12px]  text-muted-foreground ">
@@ -240,29 +235,39 @@ export const CollectionCard = ({ data }: any) => {
         <div className="flex flex-col mt-2 w-[90%]">
           <h1 className="font-bold mb-2">Top Posts</h1>
           <div className="grid grid-cols-3 gap-2 w-full ">
-            {data?.topPosts.slice(0, 3).map((item: any, i: number) => {
-              return (
-                <div
-                  key={i}
-                  className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden"
-                >
-                  <Image
-                    src={item?.cover}
-                    alt="video cover"
-                    fill
-                    sizes="(max-width: 768px) 100vw,  
+            {data?.topPosts.length > 0 ? (
+              <>
+                {data?.topPosts.slice(0, 3).map((item: any, i: number) => {
+                  return (
+                    <div
+                      key={i}
+                      className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden"
+                    >
+                      <Image
+                        src={item?.cover}
+                        alt="video cover"
+                        fill
+                        sizes="(max-width: 768px) 100vw,  
                     (max-width: 1200px) 50vw,
                     33vw"
-                  />
+                      />
 
-                  <div className="absolute top-2 right-2 z-30 flex items-center text-[12px] gap-1 text-white ">
-                    <BsFillPlayFill className="text-2xl  h-4 w-4" />
-                    {formatNumber(item.postData.postInfo.playCount)}
-                  </div>
-                  <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>
-                </div>
-              );
-            })}
+                      <div className="absolute top-2 right-2 z-30 flex items-center text-[12px] gap-1 text-white ">
+                        <Icons.posts className="text-2xl  h-4 w-4" />
+                        {formatNumber(item.postData.postInfo.playCount)}
+                      </div>
+                      <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <>
+                <div className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden" />
+                <div className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden" />
+                <div className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden" />
+              </>
+            )}
           </div>
         </div>
       </Link>

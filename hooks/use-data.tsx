@@ -69,6 +69,7 @@ const useData = ({ data }: UseDataProps): UseDataReturn => {
       if (a.stats[sortParam] < b.stats[sortParam]) {
         return descending ? 1 : -1;
       }
+
       if (a.stats[sortParam] > b.stats[sortParam]) {
         return descending ? -1 : 1;
       }

@@ -1,9 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { MdAdd, MdClose } from "react-icons/md";
-import { BiFilter } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { FilterList } from "@/types";
 import { Icons } from "./icons";
 import { Input } from "./ui/input";
@@ -111,7 +108,7 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
         className="flex items-center justify-center gap-2"
         variant="outline"
       >
-        <BiFilter className="h-6 w-6" />
+        <Icons.filter className="h-6 w-6" />
         Filters
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -171,7 +168,7 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
               className="flex items-center justify-center gap-2 w-full"
               variant="outline"
             >
-              <MdAdd className="h-5 w-5 " />
+              <Icons.add className="h-5 w-5 " />
               Add new filter row
             </Button>
           </div>
@@ -258,7 +255,7 @@ const FilterRow = ({
         className="aspect-square  p-1  flex justify-center items-center rounded-md"
         variant="outline"
       >
-        <MdClose className="h-4 w-4" />
+        <Icons.close className="h-4 w-4" />
       </Button>
 
       <div className="h-16 p-2 items-center   justify-between rounded-md flex-grow flex gap-4 ">

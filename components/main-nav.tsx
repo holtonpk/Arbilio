@@ -1,17 +1,13 @@
 "use client";
-
 import * as React from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-
 import { MainNavItem } from "@/types";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-// import { Icons } from "@/components/icons"
 import { MobileNav } from "@/components/mobile-nav";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-
 import { Icons } from "@/components/icons";
+
 interface MainNavProps {
   items?: MainNavItem[];
   children?: React.ReactNode;

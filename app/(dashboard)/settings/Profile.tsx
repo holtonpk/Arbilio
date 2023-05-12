@@ -1,6 +1,4 @@
 "use client";
-
-import { MdCheck, MdEdit, MdModeEditOutline, MdPerson } from "react-icons/md";
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -327,7 +325,7 @@ const SettingSelector = ({
           selected ? "bg-primary" : "group-hover:bg-accent "
         } h-5 w-5 border-border border-2 mt-1 rounded-md  cursor-pointer flex justify-center items-center`}
       >
-        {selected && <MdCheck className="h-5 w-5 text-background " />}
+        {selected && <Icons.check className="h-5 w-5 text-background " />}
       </button>
       <div className="flex flex-col">
         <h1 className="font-bold text-lg">{placeholder}</h1>

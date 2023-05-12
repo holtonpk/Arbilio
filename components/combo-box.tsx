@@ -1,8 +1,5 @@
 "use client";
-
 import { useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
-import { FaCheck } from "react-icons/fa";
 import Skeleton from "@/components/ui/custom-skeleton";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -35,7 +32,7 @@ const ComboBox = ({ dropList, onSelect }: ComboBoxProps) => {
         variant="outline"
       >
         {dropList.title + ": " + selected.title}
-        <BiChevronDown
+        <Icons.chevronDown
           className={`${
             open ? "rotate-180" : "rotate-0"
           } ml-8 h-6 w-6 transition-all`}
@@ -77,7 +74,7 @@ const MenuItem = ({ item, handleSelect, selected }: any) => {
       {item.icon && <MenuItemIcon name={item.icon} />}
       <p>{item.title}</p>
       {item.title == selected.title && (
-        <FaCheck className="absolute right-4  h-2 w-2 text-primary group-hover:text-primary" />
+        <Icons.check className="absolute right-4  h-2 w-2 text-primary group-hover:text-primary" />
       )}
     </button>
   );

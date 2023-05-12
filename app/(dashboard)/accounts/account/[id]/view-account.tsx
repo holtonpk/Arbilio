@@ -9,11 +9,7 @@ import React, {
   useState,
 } from "react";
 import Link from "next/link";
-import { formatNumber, formatDate } from "@/lib/utils";
-import { IoHeart, IoPlay, IoTrendingUp } from "react-icons/io5";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { MdAdd, MdPerson } from "react-icons/md";
-import { FaShopify } from "react-icons/fa";
+import { formatNumber } from "@/lib/utils";
 import DateRange from "@/components/DateRange";
 import Image from "next/image";
 import {
@@ -30,12 +26,11 @@ import {
 import { UpdateCollectionButton } from "@/components/update-collection-button";
 import { MoreButton } from "@/components/profile-actions";
 import { Line } from "react-chartjs-2";
-import { BiError } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 import { formatDateShort } from "@/lib/utils";
-import { DataSearch } from "@/components/data-search";
 import { AccountDataType } from "@/types";
-import Skeleton from "@/components/ui/custom-skeleton";
+import { Icons } from "@/components/icons";
+
 interface DataContextData {
   data: AccountDataType;
 }
@@ -94,7 +89,7 @@ export const More = () => {
       variant="outline"
       size="lg"
     >
-      <HiDotsHorizontal className="h-8 w-8 " />
+      <Icons.ellipsis className="h-8 w-8 " />
     </Button>
   );
 };
@@ -110,21 +105,21 @@ const AnalyticsDisplay = () => {
         <DataGraph
           field="followerCount"
           title="Followers"
-          icon={<MdPerson className="h-8 w-8 text-primary" />}
+          icon={<Icons.followers className="h-8 w-8 text-primary" />}
         />
 
         <div className="grid grid-cols-2 gap-8 h-fit">
           <DataGraph
             field="heartCount"
             title="Likes"
-            icon={<IoHeart className="h-8 w-8 text-primary" />}
+            icon={<Icons.likes className="h-8 w-8 text-primary" />}
             width={250}
           />
 
           <DataGraph
             field="videoCount"
             title="Posts"
-            icon={<IoPlay className="h-8 w-8 text-primary" />}
+            icon={<Icons.posts className="h-8 w-8 text-primary" />}
             width={250}
           />
         </div>
@@ -202,7 +197,7 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
           <Graph labels={GraphData.labels} data={GraphData.data} />
         ) : (
           <div className="w-full flex flex-col justify-center items-center p-10">
-            <BiError className="h-8 w-8 text-gray-500" />
+            <Icons.error className="h-8 w-8 text-gray-500" />
             No data for given date range
           </div>
         )}
@@ -362,7 +357,7 @@ const PostsDisplay = () => {
                     33vw"
               />
               <div className="absolute top-2 right-2 flex items-center text-base gap-1 text-primary">
-                <IoPlay className="text-2xl  h-4 w-4" />
+                <Icons.posts className="text-2xl  h-4 w-4" />
                 {formatNumber(parseInt(item.postData.postInfo.playCount))}
               </div>
             </div>
@@ -406,7 +401,7 @@ const StatDisplay = () => {
     <div className="grid grid-cols-3 gap-6  h-fit items-center rounded-md mt-4">
       <div className="flex items-center gap-3">
         <div className="rounded-md bg-accent aspect-square p-2 relative flex justify-center items-center">
-          <IoHeart className="h-8 w-8 text-primary" />
+          <Icons.likes className="h-8 w-8 text-primary" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Likes</h2>
@@ -417,7 +412,7 @@ const StatDisplay = () => {
       </div>
       <div className="flex items-center gap-3">
         <div className="rounded-md bg-accent aspect-square p-2 relative flex justify-center items-center">
-          <MdPerson className="h-8 w-8 text-primary" />
+          <Icons.followers className="h-8 w-8 text-primary" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Followers</h2>
@@ -428,7 +423,7 @@ const StatDisplay = () => {
       </div>
       <div className="flex items-center gap-3">
         <div className="rounded-md bg-accent aspect-square p-2 relative flex justify-center items-center">
-          <IoPlay className="h-8 w-8 text-primary" />
+          <Icons.posts className="h-8 w-8 text-primary" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Posts</h2>

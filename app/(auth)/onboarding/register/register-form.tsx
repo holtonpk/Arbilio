@@ -7,11 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserSchema } from "@/lib/validations/auth";
 import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
-import { CgSpinner } from "react-icons/cg";
 import * as z from "zod";
 import { useAuth } from "@/context/Auth";
-import { FcGoogle } from "react-icons/fc";
 import { PasswordInput } from "@/components/ui/password-input";
+import { Icons } from "@/components/icons";
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -148,7 +147,9 @@ const RegisterForm = () => {
             </p>
           )}
           <Button className="w-full" disabled={isLoading || isGoogleLoading}>
-            {isLoading && <CgSpinner className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
             Create account
           </Button>
         </div>
@@ -171,9 +172,9 @@ const RegisterForm = () => {
         variant="outline"
       >
         {isGoogleLoading ? (
-          <CgSpinner className="mr-2 h-4 w-4 animate-spin" />
+          <Icons.google className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <FcGoogle className=" h-6 w-6 mr-2" />
+          <Icons.spinner className=" h-6 w-6 mr-2" />
         )}
         Sign up with Google
       </Button>

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "@/components/side-nav";
-import { RiInformationFill } from "react-icons/ri";
 import AccountRank from "./account-rank";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";

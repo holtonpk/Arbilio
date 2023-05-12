@@ -1,6 +1,5 @@
 import React, { useState, ReactNode, useRef, useContext } from "react";
 import Link from "next/link";
-import { BiChevronDown } from "react-icons/bi";
 import ScrollBar from "@/components/scroll-bar";
 import {
   ProductDisplay,
@@ -205,7 +204,7 @@ const SecondaryHeader = ({ item }: any) => {
       className="min-w-[150px] pr-10 flex items-center text-muted-foreground hover:text-primary"
     >
       {item.title}
-      <BiChevronDown
+      <Icons.chevronDown
         className={`${
           descend ? "rotate-0" : "rotate-180"
         } h-6 w-6 ml-2 transition-all`}

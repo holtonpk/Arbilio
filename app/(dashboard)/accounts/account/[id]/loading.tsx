@@ -23,7 +23,7 @@ const ProfileDisplaySkeleton = () => {
   return (
     <div className="flex items-center  p-4 gap-4 rounded-md w-full relative">
       <Skeleton height={160} width={160} />
-      <div className="flex flex-col w-[60%] b-b gap-2">
+      <div className="flex flex-col w-[60%] gap-2">
         <Skeleton height={40} width={200} />
         <Skeleton height={20} width={100} />
         <div className="grid grid-cols-3 items-center p-4 gap-4 rounded-md w-full justify-between relative">

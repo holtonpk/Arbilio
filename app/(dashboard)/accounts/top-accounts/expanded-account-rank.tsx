@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { HiOutlineTrendingUp } from "react-icons/hi";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,7 +23,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Skeleton from "@/components/ui/custom-skeleton";
 import { siteConfig } from "@/config/site";
-
+import { Icons } from "@/components/icons";
 const ExpandedAccountRank = ({ expandedAccountData }: any) => {
   const [graphData, setGraphData] = useState<any>(undefined);
 
@@ -155,7 +154,7 @@ const DataGraphContainer = ({ title, labels, data }: any) => {
           {formatNumber(data[data.length - 1])}
         </h1>
         <div className="flex flex-row items-center text-muted-foreground gap-1">
-          <HiOutlineTrendingUp />{" "}
+          <Icons.trendingUp />{" "}
           {configPercentChange(data[data.length - 1], data[0])}
         </div>
       </div>

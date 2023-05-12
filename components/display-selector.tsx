@@ -1,9 +1,7 @@
 "use client";
-
-import { BsGrid, BsListCheck } from "react-icons/bs";
 import Skeleton from "@/components/ui/custom-skeleton";
 import { Button } from "@/components/ui/button";
-
+import { Icons } from "@/components/icons";
 const DisplaySelector = ({ displayType, setDisplayType }: any) => {
   const displayGrid = () => {
     setDisplayType("grid");
@@ -21,7 +19,7 @@ const DisplaySelector = ({ displayType, setDisplayType }: any) => {
         variant={displayType == "grid" ? "outline" : "ghost"}
         size="sm"
       >
-        <BsGrid className="h-6 w-6" />
+        <Icons.grid className="h-6 w-6" />
       </Button>
       <Button
         onClick={displayColumns}
@@ -29,7 +27,7 @@ const DisplaySelector = ({ displayType, setDisplayType }: any) => {
         variant={displayType == "columns" ? "outline" : "ghost"}
         size="sm"
       >
-        <BsListCheck className="h-6 w-6" />
+        <Icons.check className="h-6 w-6" />
       </Button>
     </div>
   );
