@@ -15,8 +15,7 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   const collectionRef = collection(db, "tiktokAccounts");
-  const q = query(collectionRef);
-  // const q = query(collectionRef, limit(8), where("topPosts", "!=", []));
+  const q = query(collectionRef, limit(8), where("topPosts", "!=", []));
   const docs = await getDocs(q);
 
   const formattedData = docs.docs.map(async (_doc) => {
@@ -31,14 +30,15 @@ export default async function handler(
       productData = productInfo.data();
     }
 
-    if (record.topPosts) {
-      const topPosts = record.topPosts.map(async (post: any) => {
-        const postRef = doc(db, "tiktokPosts", post);
-        const postData = await getDoc(postRef);
-        return postData.data();
-      });
-      topPostsData = await Promise.all(topPosts);
-    }
+    // if (record.topPosts && record.topPosts.length) {
+    //   let topPosts = record.topPosts.map(async (post: any) => {
+    //     const postRef = doc(db, "tiktokPosts", post);
+    //     const postData = await getDoc(postRef);
+    //     return postData.data();
+    //   });
+    //   topPostsData = await Promise.all(topPosts);
+    // }
+
     return {
       recordId: record.id,
       id: record.userInfo.user?.id,
@@ -58,7 +58,7 @@ export default async function handler(
         : null,
       userInfo: record.userInfo,
       posts: record.posts,
-      topPosts: topPostsData,
+      topPosts: [],
       product: productData,
     };
   });
