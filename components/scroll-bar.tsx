@@ -34,7 +34,7 @@ const ScrollBar = ({
     const scrollBarLeft = scrollPercent * scrollTrackArea;
 
     scrollBarRef.current.style.left = `${scrollBarLeft}px`;
-  }, [tableRef.current]);
+  }, [tableRef]);
 
   const updateScrollBarVisibility = useCallback(() => {
     const tableElement = tableRef.current;
@@ -42,7 +42,7 @@ const ScrollBar = ({
 
     const scrollable = tableElement.scrollWidth > tableElement.clientWidth;
     setShowScrollbar(scrollable);
-  }, []);
+  }, [tableRef, setShowScrollbar]);
 
   const updateScrollBarWidth = useCallback(() => {
     const tableElement = tableRef.current;
@@ -54,7 +54,7 @@ const ScrollBar = ({
       (tableElement.clientWidth / tableElement.scrollWidth) * scrollTrackArea;
 
     scrollBarRef.current.style.width = `${scrollBarWidth}px`;
-  }, []);
+  }, [tableRef]);
 
   useEffect(() => {
     updateScrollBarWidth();
@@ -67,11 +67,11 @@ const ScrollBar = ({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [updateScrollBarWidth]);
+  }, [updateScrollBarWidth, updateScrollBarVisibility]);
 
   useEffect(() => {
     updateScrollBarVisibility();
-  }, [tableRef.current]);
+  }, [tableRef, updateScrollBarVisibility]);
 
   useEffect(() => {
     const tableElement = tableRef.current;
@@ -80,13 +80,13 @@ const ScrollBar = ({
     return () => {
       tableElement.removeEventListener("scroll", updateScrollBarPosition);
     };
-  }, [updateScrollBarPosition]);
+  }, [updateScrollBarPosition, tableRef]);
 
   useEffect(() => {
     if (scrollContainerRef.current && scrollTrackRef.current) {
       scrollTrackRef.current.style.top = `${scrollContainerRef.current.offsetTop}px`;
     }
-  }, [scrollContainerRef.current, scrollTrackRef.current, showScrollBar]);
+  }, [scrollContainerRef, scrollTrackRef, showScrollBar]);
 
   useEffect(() => {
     if (
@@ -107,10 +107,10 @@ const ScrollBar = ({
       }
     }
   }, [
-    headerHeightRef?.current,
-    heightRef?.current,
-    scrollContainerRef?.current,
-    buttonContainerRef?.current,
+    headerHeightRef,
+    heightRef,
+    scrollContainerRef,
+    buttonContainerRef,
     showScrollBar,
   ]);
 

@@ -68,8 +68,8 @@ const DataStats = (data: any) => {
   const [accountData, setAccountData] = useState<any>(undefined);
   const [productData, setProductData] = useState<any>(undefined);
 
-  let accountDataFetched = false;
-  let productDataFetched = false;
+  const accountDataFetched = useRef(false);
+  const productDataFetched = useRef(false);
 
   useEffect(() => {
     async function getAccountData() {
@@ -78,21 +78,21 @@ const DataStats = (data: any) => {
       const records = await getDocs(collection(db, "tiktokAccounts"));
 
       setAccountData(records.docs);
-      accountDataFetched = true;
+      accountDataFetched.current = true;
     }
-    if (!accountDataFetched) {
+    if (!accountDataFetched.current) {
       getAccountData();
     }
   }, []);
 
   useEffect(() => {
-    async function getAccountData() {
+    async function getProductData() {
       const records = await getDocs(collection(db, "tiktokProducts"));
       setProductData(records.docs);
-      productDataFetched = true;
+      productDataFetched.current = true;
     }
-    if (!productDataFetched) {
-      getAccountData();
+    if (!productDataFetched.current) {
+      getProductData();
     }
   }, []);
 

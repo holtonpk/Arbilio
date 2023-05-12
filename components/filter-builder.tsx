@@ -93,7 +93,7 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
         setSelectedPresetFilter(data[0]);
       });
     });
-  }, []);
+  });
 
   const selectPreset = (e: PresetFilter) => {
     setSelectedPresetFilter(e);
@@ -239,7 +239,14 @@ const FilterRow = ({
       return filterItem;
     });
     setFilterList(newFilterList);
-  }, [comparisonField, comparisonOperator, comparisonValue]);
+  }, [
+    comparisonField,
+    comparisonOperator,
+    comparisonValue,
+    filter.rowId,
+    filterList,
+    setFilterList,
+  ]);
 
   return (
     <div className="w-full flex relative items-center  ">

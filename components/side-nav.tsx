@@ -44,7 +44,7 @@ const Route = ({ item }: { item: SideNavRoute }) => {
         setShowSubPages(true);
       }
     }
-  }, [item.href]);
+  }, [item.href, item.subPages, segment]);
 
   const Icon = Icons[item.iconName];
 

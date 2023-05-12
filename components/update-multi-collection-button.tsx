@@ -172,7 +172,7 @@ const CollectionDisplay: React.FC<CollectionDisplayProps> = ({
   };
   React.useEffect(() => {
     setSelected(selectedCollections?.includes(collection.id));
-  }, [selectedCollections]);
+  }, [selectedCollections, collection.id]);
 
   return (
     <div

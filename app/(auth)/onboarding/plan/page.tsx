@@ -7,7 +7,7 @@ import Plans from "./Plans";
 import Stripe from "stripe";
 import stripe from "@/stripe/stripeServer";
 
-export async function getPlans(): Promise<Product[]> {
+async function getPlans(): Promise<Product[]> {
   const prices = await stripe.prices.list({
     active: true,
     limit: 10,

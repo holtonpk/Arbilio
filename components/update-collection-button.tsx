@@ -97,7 +97,7 @@ const UpdateDialog = ({
       setCurrentCollections(activeCollections.data);
     }
     fetchActiveCollections();
-  }, []);
+  }, [account.recordId, findCollectionsContainingId]);
 
   async function handleUpdateCollection() {
     setIsLoading(true);
@@ -200,7 +200,7 @@ const CollectionDisplay: React.FC<CollectionDisplayProps> = ({
   };
   React.useEffect(() => {
     setSelected(selectedCollections?.includes(collection.id));
-  }, [selectedCollections]);
+  }, [selectedCollections, collection.id]);
 
   return (
     <div

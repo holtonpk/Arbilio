@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useRef,
   createContext,
+  useCallback,
   ReactNode,
   useContext,
   useState,
@@ -98,30 +99,7 @@ export const More = () => {
   );
 };
 
-const AccountRank = () => {
-  return (
-    <div className="relative bg-accent font-bold text-4xl p-4 rounded-md text-primary">
-      #2
-    </div>
-  );
-};
-
 const AnalyticsDisplay = () => {
-  const { data } = useContext(DataContext)!;
-  const [date1, setDate1] = useState<Date | undefined>(undefined);
-  const [date2, setDate2] = useState<Date | undefined>(undefined);
-
-  const orderedData = data.accountStats.sort((a: any, b: any) => {
-    return a.dataCollectionTime - b.dataCollectionTime;
-  });
-
-  const GraphData = {
-    labels: orderedData.map((stat: any) => formatDate(stat.dataCollectionTime)),
-    followers: data.accountStats.map((stat: any) => stat.followerCount),
-    likes: data.accountStats.map((stat: any) => stat.heartCount),
-    posts: data.accountStats.map((stat: any) => stat.videoCount),
-  };
-
   return (
     <div className="flex flex-col w-full mt-3">
       <h1 className=" text-2xl text-primary">Analytics</h1>
@@ -199,7 +177,7 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
         data: orderedData.map((stat: any) => stat[field]),
       });
     }
-  }, [date1, date2]);
+  }, [date1, date2, field, orderedData]);
 
   return (
     <div className="w-full h-fit border rounded-md p-4 relative">
@@ -307,7 +285,7 @@ const StoreDisplay = () => {
       setProducts(data.products);
     };
     getProducts();
-  }, [DataSearch]);
+  }, [url]);
 
   console.log(products);
 
@@ -481,7 +459,7 @@ const Graph = ({ labels, data, width }: any) => {
   );
   var style = getComputedStyle(document.body);
 
-  const configGradient = () => {
+  const configGradient = useCallback(() => {
     if (chartRef.current) {
       const chartInstance = chartRef.current;
       const ctx = chartInstance.ctx;
@@ -504,11 +482,11 @@ const Graph = ({ labels, data, width }: any) => {
       chartInstance.data.datasets[0].backgroundColor = gradient;
       chartInstance.update();
     }
-  };
+  }, [style]);
 
   useEffect(() => {
     configGradient();
-  }, [chartRef.current]);
+  }, [configGradient]);
 
   const options = {
     responsive: true,

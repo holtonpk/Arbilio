@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { HiOutlineTrendingUp } from "react-icons/hi";
 import {
   Chart as ChartJS,
@@ -187,7 +187,7 @@ const Graph = ({ labels, data }: any) => {
   );
   var style = getComputedStyle(document.body);
 
-  const configGradient = () => {
+  const configGradient = useCallback(() => {
     if (chartRef.current) {
       const chartInstance = chartRef.current;
       const ctx = chartInstance.ctx;
@@ -199,22 +199,22 @@ const Graph = ({ labels, data }: any) => {
       gradient.addColorStop(
         0,
         `hsla(${h},${s},${l} 
-        , 0.7)`
+          , 0.1)`
       );
       gradient.addColorStop(
         1,
         `hsla(${h},${s},${l} 
-        , 0.05)`
+          , 0.01)`
       );
 
       chartInstance.data.datasets[0].backgroundColor = gradient;
       chartInstance.update();
     }
-  };
+  }, [style]);
 
   useEffect(() => {
     configGradient();
-  }, [chartRef.current]);
+  }, [configGradient]);
 
   const options = {
     responsive: true,

@@ -31,7 +31,7 @@ export const AccountCard = ({ data }: any) => {
     if (bioRef.current) {
       setIsExpandable(bioRef.current.clientHeight > 40);
     }
-  }, [bioRef.current]);
+  }, []);
 
   // const top3Posts = data.posts.itemList
   //   .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
@@ -145,7 +145,7 @@ export const CollectionCard = ({ data }: any) => {
     if (bioRef.current) {
       setIsExpandable(bioRef.current.clientHeight > 40);
     }
-  }, [bioRef.current]);
+  }, []);
 
   const top3Posts = data.posts.itemList
     .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
