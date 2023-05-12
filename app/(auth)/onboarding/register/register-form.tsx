@@ -34,7 +34,6 @@ const RegisterForm = () => {
       data.password
     );
     if (createAccountResult?.success) {
-      window.location.href = "/dashboard";
       return;
     }
     if (createAccountResult?.error === "auth/email-already-in-use") {
@@ -67,18 +66,27 @@ const RegisterForm = () => {
     setIsLoading(false);
   }
 
-  async function googleSingIn() {
-    setIsGoogleLoading(true);
-    const createAccountResult = await logInWithGoogle();
-    if (createAccountResult.success) {
-      window.location.href = "/dashboard";
-    } else if (createAccountResult.error) {
+  function handleLoginError(error: any): void {
+    console.log("error", error.message);
+    toast({
+      title: "Something went wrong.",
+      description: `Please try again later. Error: ${error.message || error}`,
+      variant: "destructive",
+    });
+  }
+
+  async function googleSingIn(): Promise<void> {
+    try {
+      setIsGoogleLoading(true);
+      const createAccountResult = await logInWithGoogle();
+
+      if (createAccountResult.error) {
+        handleLoginError(createAccountResult.error);
+      }
+    } catch (error: any) {
+      handleLoginError(error);
+    } finally {
       setIsGoogleLoading(false);
-      toast({
-        title: "Something went wrong.",
-        description: "Please please try again later.",
-        variant: "destructive",
-      });
     }
   }
 
@@ -172,9 +180,9 @@ const RegisterForm = () => {
         variant="outline"
       >
         {isGoogleLoading ? (
-          <Icons.google className="mr-2 h-4 w-4 animate-spin" />
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <Icons.spinner className=" h-6 w-6 mr-2" />
+          <Icons.google className=" h-6 w-6 mr-2" />
         )}
         Sign up with Google
       </Button>

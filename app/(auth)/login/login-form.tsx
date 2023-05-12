@@ -10,6 +10,8 @@ import * as z from "zod";
 import { useAuth } from "@/context/Auth";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Icons } from "@/components/icons";
+import { useRouter } from "next/navigation";
+
 const LoginForm = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
@@ -31,7 +33,7 @@ const LoginForm = () => {
     setIsLoading(false);
     console.log("ress", signInResult);
     if (signInResult?.success) {
-      window.location.href = "/dashboard";
+      return;
     }
     if (signInResult?.error === "auth/user-not-found") {
       setError("email", {
@@ -68,11 +70,8 @@ const LoginForm = () => {
     }
   }
 
-  function redirectToDashboard(): void {
-    window.location.href = "/dashboard";
-  }
-
   function handleLoginError(error: any): void {
+    console.log("error", error.message);
     toast({
       title: "Something went wrong.",
       description: `Please try again later. Error: ${error.message || error}`,
@@ -85,9 +84,7 @@ const LoginForm = () => {
       setIsGoogleLoading(true);
       const createAccountResult = await logInWithGoogle();
 
-      if (createAccountResult.success) {
-        redirectToDashboard();
-      } else {
+      if (createAccountResult.error) {
         handleLoginError(createAccountResult.error);
       }
     } catch (error: any) {
