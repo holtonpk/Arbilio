@@ -27,7 +27,7 @@ const DisplaySelector = ({ displayType, setDisplayType }: any) => {
         variant={displayType == "columns" ? "outline" : "ghost"}
         size="sm"
       >
-        <Icons.check className="h-6 w-6" />
+        <Icons.chart className="h-6 w-6" />
       </Button>
     </div>
   );

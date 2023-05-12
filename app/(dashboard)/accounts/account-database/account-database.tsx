@@ -24,7 +24,6 @@ const AccountDatabase = ({ data }: any) => {
     data: data,
   });
 
-  console.log("dd", data);
   const [displayType, setDisplayType] = useState<"grid" | "columns">("grid");
   const sortOptions = accountDatabaseConfig.sortOptions;
 

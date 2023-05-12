@@ -20,6 +20,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         <button
+          type="button"
           className="absolute right-0 top-0 h-10 w-10 flex justify-center items-center"
           onClick={() => setShowPassword(!showPassword)}
         >

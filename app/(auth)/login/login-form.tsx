@@ -68,18 +68,32 @@ const LoginForm = () => {
     }
   }
 
-  async function googleSingIn() {
-    setIsGoogleLoading(true);
-    const createAccountResult = await logInWithGoogle();
-    if (createAccountResult.success) {
-      window.location.href = "/dashboard";
-    } else if (createAccountResult.error) {
+  function redirectToDashboard(): void {
+    window.location.href = "/dashboard";
+  }
+
+  function handleLoginError(error: any): void {
+    toast({
+      title: "Something went wrong.",
+      description: `Please try again later. Error: ${error.message || error}`,
+      variant: "destructive",
+    });
+  }
+
+  async function googleSingIn(): Promise<void> {
+    try {
+      setIsGoogleLoading(true);
+      const createAccountResult = await logInWithGoogle();
+
+      if (createAccountResult.success) {
+        redirectToDashboard();
+      } else {
+        handleLoginError(createAccountResult.error);
+      }
+    } catch (error: any) {
+      handleLoginError(error);
+    } finally {
       setIsGoogleLoading(false);
-      toast({
-        title: "Something went wrong.",
-        description: "Please please try again later.",
-        variant: "destructive",
-      });
     }
   }
 
