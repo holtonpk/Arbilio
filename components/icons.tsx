@@ -119,6 +119,7 @@ export const Icons = {
       width="705.6"
       height="720"
       viewBox="0 0 186.69 190.5"
+      {...props}
     >
       <path
         fill="#4285f4"
