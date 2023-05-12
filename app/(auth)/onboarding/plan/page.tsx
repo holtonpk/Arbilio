@@ -8,7 +8,7 @@ import Stripe from "stripe";
 import stripe from "@/stripe/stripeServer";
 
 async function getPlans(): Promise<Product[]> {
-  const res = await fetch("http://localhost:3000/api/plans");
+  // const res = await fetch("http://localhost:3000/api/plans");
   // const { productsArray } = await res.json();
   const dummyData = [
     {
