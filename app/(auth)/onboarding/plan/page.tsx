@@ -8,55 +8,12 @@ import Stripe from "stripe";
 import stripe from "@/stripe/stripeServer";
 
 async function getPlans(): Promise<Product[]> {
-  const prices = await stripe.prices.list({
-    active: true,
-    limit: 10,
-    expand: ["data.product"],
-  });
-
-  const productsObject: Record<string, Product> = prices.data.reduce(
-    (accumulator: Record<string, Product>, price: Stripe.Price) => {
-      const product = price.product as Stripe.Product;
-      if (product.active) {
-        if (!accumulator[product.id]) {
-          accumulator[product.id] = {
-            id: product.id,
-            name: product.name || "",
-            description: product.description || "",
-            monthly_price: { id: "", unit_amount: 0 },
-            annual_price: { id: "", unit_amount: 0 },
-            features: [
-              "1 User",
-              "1 GB Storage",
-              "Email Support",
-              "Help Center Access",
-            ],
-          };
-        }
-        if (price.recurring && price.recurring.interval === "month") {
-          accumulator[product.id].monthly_price = {
-            id: price.id,
-            unit_amount: price.unit_amount || 0,
-          };
-        } else if (price.recurring && price.recurring.interval === "year") {
-          accumulator[product.id].annual_price = {
-            id: price.id,
-            unit_amount: price.unit_amount || 0,
-          };
-        }
-      }
-      return accumulator;
-    },
-    {} as Record<string, Product> // assert initialValue as Record<string, Product>
-  );
-
-  // Convert the products object back into an array
-  const productsArray: Product[] = Object.values(productsObject);
-
+  const res = await fetch("http://localhost:3000/api/plans");
+  const { productsArray } = await res.json();
   return productsArray;
 }
 
-export default async function PricingPage() {
+export default async function Plan() {
   const plan = await getPlans();
 
   return (
