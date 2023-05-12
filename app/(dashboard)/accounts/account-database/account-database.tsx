@@ -13,6 +13,8 @@ import { accountDatabaseConfig } from "@/config/dashboard";
 import EmptySearch from "@/components/empty-search";
 import useData from "@/hooks/use-data";
 const AccountDatabase = ({ data }: any) => {
+  console.log("data===>", data);
+
   const {
     sortedData,
     appliedFilterList,
