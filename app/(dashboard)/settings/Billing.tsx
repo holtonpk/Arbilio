@@ -12,7 +12,6 @@ import {
 import { RiVisaLine } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/Auth";
-import { createCheckoutSession } from "@/stripe/createCheckoutSession";
 import usePremiumStatus from "@/stripe/usePremiumStatus";
 import { formatDate } from "@/lib/utils";
 const stripe = require("stripe")(
@@ -26,18 +25,6 @@ const Billing = () => {
   return (
     <div className="h-full flex-grow p-8">
       <h2 className="font-bold text-2xl mb-4 text-primary">Billing</h2>
-
-      {!isPremium && currentUser?.uid ? (
-        <Button
-          onClick={() => {
-            createCheckoutSession(currentUser.uid);
-          }}
-        >
-          Upgrade to Premium
-        </Button>
-      ) : (
-        "user is premium"
-      )}
 
       <div className="flex flex-col gap-2">
         <Plans />
