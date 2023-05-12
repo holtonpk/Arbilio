@@ -27,6 +27,7 @@ const getData = async (startAfterId: string) => {
   }
 
   return res.json();
+  // return DummyData
 };
 
 const AccountDatabase = ({ originalData }: any) => {
