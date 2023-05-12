@@ -14,7 +14,7 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   const collectionRef = collection(db, "tiktokAccounts");
-  const q = query(collectionRef, limit(5));
+  const q = query(collectionRef);
   const docs = await getDocs(q);
 
   const formattedData = docs.docs.map(async (_doc) => {
