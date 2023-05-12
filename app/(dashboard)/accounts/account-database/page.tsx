@@ -11,7 +11,7 @@ async function getData() {
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error(`Failed to fetch data ${JSON.stringify(res)}`);
+    throw new Error(`Failed to fetch data ${siteConfig.url}`);
   }
   return res.json();
 }
