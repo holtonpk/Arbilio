@@ -11,10 +11,11 @@ async function getData() {
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    throw new Error(`Failed to fetch data ${res}`);
   }
   return res.json();
 }
+// add theis
 
 export default async function AccountDataBase() {
   const data = await getData();
