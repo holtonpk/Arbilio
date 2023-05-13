@@ -9,7 +9,7 @@ import { Icons } from "./icons";
 
 const Navbar = () => {
   return (
-    <nav className=" grid items-start gap-2">
+    <nav className=" grid items-start gap-2 ">
       {dashboardConfig.sideNav.map((route, indx) => (
         <Route key={indx} item={route} />
       ))}

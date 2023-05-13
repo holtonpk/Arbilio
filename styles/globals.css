@@ -134,3 +134,23 @@
   transition: max-height 0.3s ease;
   overflow: hidden;
 }
+
+.heroGradient {
+  animation: gradient 9s ease infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes gradient {
+  0% {
+    background: linear-gradient(60deg, #1abc9c, #16a085);
+  }
+  33% {
+    background: linear-gradient(60deg, red, pink);
+  }
+  66% {
+    background: linear-gradient(60deg, #3498db, purple);
+  }
+  100% {
+    background: linear-gradient(60deg, orange, yellow);
+  }
+}

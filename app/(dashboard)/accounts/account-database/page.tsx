@@ -27,7 +27,7 @@ export default async function AccountDataBase() {
           "Browse our collection of over 500 active sellers and 1000+ accounts."
         }
       />
-      <div className="w-full bg-background rounded-md   flex flex-col min-h-screen items-center  ">
+      <div className="w-full rounded-md   flex flex-col min-h-screen items-center  ">
         <AccountDatabase originalData={data} />
       </div>
     </>

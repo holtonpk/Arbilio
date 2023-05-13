@@ -6,12 +6,36 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import HeroText from "@/components/hero-text";
+import HeroHeader from "@/components/hero-header";
 export default async function IndexPage() {
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-10 ">
         <HeroText />
       </section>
+
+      <HeroHeader
+        gradient="bg-gradient-to-r from-purple-400 to-pink-600"
+        number="1"
+        title="Discover"
+        subtitle="Search our database of over 500 active sellers"
+        description="This project is an experiment to see how a modern app, with features like auth, subscriptions, API routes, and static pages would work in Next.js 13 app dir."
+      />
+      <HeroHeader
+        gradient="bg-gradient-to-r from-green-400 to-blue-500"
+        number="2"
+        title="Analyze"
+        subtitle="Analyze the data to find the best deals"
+        description="This project is an experiment to see how a modern app, with features like auth, subscriptions, API routes, and static pages would work in Next.js 13 app dir."
+      />
+      <HeroHeader
+        gradient="bg-gradient-to-r from-red-400 to-yellow-500"
+        number="3"
+        title="Profit"
+        subtitle="Profit from the best deals"
+        description="This project is an experiment to see how a modern app, with features like auth, subscriptions, API routes, and static pages would work in Next.js 13 app dir."
+      />
+
       <section
         id="features"
         className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"

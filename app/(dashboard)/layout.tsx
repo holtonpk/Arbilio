@@ -18,24 +18,27 @@ export default function Layout({ children }: { children: ReactElement }) {
         <UserCollectionProvider>
           <>
             <Toaster />
-            <div className="flex min-h-screen flex-col">
-              <header className="container z-40 bg-background border-b">
-                <div className="flex h-20 items-center justify-between py-6">
+            <div className="container min-h-screen grid grid-cols-[250px_1fr]  ">
+              <header className="fixed w-screen  z-40 blurBack border-b top-0 left-0  col-start-1 col-end-3">
+                <div className="container flex h-20 items-center justify-between py-6 w-full">
                   <MainNav items={marketingConfig.mainNav} />
                   <AccountInfo />
                 </div>
               </header>
-              <main className="flex-1 ">
-                <div className="md:container grid flex-1 md:gap-12 md:grid-cols-[200px_1fr]">
-                  <aside className="hidden w-[200px] flex-col md:flex pt-4 h-fit ">
-                    <Navbar />
-                  </aside>
-                  <main className="flex w-full flex-1 flex-col overflow-hidden min-h-[80vh] bg-slate-50 dark:bg-transparent p-4 ">
+              <span className="h-20" />
+              <aside className="w-full hidden container flex-col md:flex pt-4 h-fit sticky top-20  col-start-1 ">
+                <Navbar />
+              </aside>
+              <main className="flex-1  col-start-2 ">
+                <div className=" md:container grid flex-1 md:gap-12">
+                  <main className="flex w-full flex-1 flex-col overflow-hidden min-h-[80vh]  dark:bg-transparent p-4 ">
                     {children}
                   </main>
                 </div>
               </main>
-              <SiteFooter />
+              <div className="col-start-1 col-end-3 ">
+                <SiteFooter />
+              </div>
             </div>
           </>
         </UserCollectionProvider>
