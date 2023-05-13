@@ -53,6 +53,7 @@ import {
   Tag,
   Wallet,
   ArrowLeftRight,
+  Menu,
   type Icon as LucideIcon,
   LucideProps,
 } from "lucide-react";
@@ -91,6 +92,7 @@ export const Icons = {
   posts: Play,
   rank: FileBarChart,
   media: Image,
+  menu: Menu,
   likes: Heart,
   logout: LogOut,
   settings: Settings,

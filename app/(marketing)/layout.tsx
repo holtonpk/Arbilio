@@ -18,12 +18,12 @@ export default async function MarketingLayout({
       <header className="container z-40 bg-background">
         <div className="flex h-20 items-center justify-between py-6">
           <MainNav items={marketingConfig.mainNav} />
-          <nav>
+          <nav className="hidden md:flex gap-4 w-fit ">
             <Link
               href="/login"
               className={cn(
                 buttonVariants({ variant: "secondary", size: "sm" }),
-                "px-4 mr-2"
+                "px-4 mr-2 whitespace-nowrap"
               )}
             >
               Login
@@ -32,7 +32,7 @@ export default async function MarketingLayout({
               href="/onboarding/register"
               className={cn(
                 buttonVariants({ variant: "default", size: "sm" }),
-                "px-4"
+                "px-4 whitespace-nowrap"
               )}
             >
               Sign up

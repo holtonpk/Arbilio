@@ -18,12 +18,10 @@ export function MainNav({ items, children }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 
   return (
-    <div className="flex gap-6 md:gap-10 ">
-      <Link href="/" className="hidden items-center space-x-2 md:flex">
-        <Icons.logo className="h-4 w-4" />
-        {/* <AiOutlineShoppingCart className="h-4 w-4" /> */}
-
-        <span className="hidden font-bold sm:inline-block">
+    <div className="flex justify-between md:justify-start w-full items-center  md:gap-10 ">
+      <Link href="/" className=" items-center space-x-2 flex">
+        {/* <Icons.logo className="h-4 w-4" /> */}
+        <span className=" text-xl font-bold inline-block ">
           {siteConfig.name}
         </span>
       </Link>
@@ -46,12 +44,13 @@ export function MainNav({ items, children }: MainNavProps) {
           ))}
         </nav>
       ) : null}
+
       <button
         className="flex items-center space-x-2 md:hidden"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
-        {/* {showMobileMenu ? <Icons.close /> : <Icons.logo />} */}
-        <span className="font-bold">Menu</span>
+        {showMobileMenu ? <Icons.close /> : <Icons.menu />}
+        <span className="font-bold"></span>
       </button>
       {showMobileMenu && items && (
         <MobileNav items={items}>{children}</MobileNav>
