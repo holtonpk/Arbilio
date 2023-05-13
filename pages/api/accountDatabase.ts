@@ -58,7 +58,7 @@ export default async function handler(
         : null,
       userInfo: record.userInfo,
       posts: record.posts,
-      topPosts: topPostsData,
+      topPosts: [],
       product: productData,
     };
   });
