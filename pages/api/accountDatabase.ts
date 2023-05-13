@@ -30,14 +30,14 @@ export default async function handler(
       productData = productInfo.data();
     }
 
-    if (record.topPosts && record.topPosts.length) {
-      let topPosts = record.topPosts.map(async (post: any) => {
-        const postRef = doc(db, "tiktokPosts", post);
-        const postData = await getDoc(postRef);
-        return postData.data();
-      });
-      topPostsData = await Promise.all(topPosts);
-    }
+    // if (record.topPosts && record.topPosts.length) {
+    //   let topPosts = record.topPosts.map(async (post: any) => {
+    //     const postRef = doc(db, "tiktokPosts", post);
+    //     const postData = await getDoc(postRef);
+    //     return postData.data();
+    //   });
+    //   topPostsData = await Promise.all(topPosts);
+    // }
 
     return {
       recordId: record.id,

@@ -68,7 +68,6 @@ const DataStats = (data: any) => {
   useEffect(() => {
     async function getAccountData() {
       console.log("fetching account data");
-      // const records = await pb.collection("accounts").getFullList();
       const records = await getDocs(collection(db, "tiktokAccounts"));
 
       setAccountData(records.docs);
@@ -365,7 +364,7 @@ const UpdateData = ({ data }: any) => {
   return (
     <>
       <div className="flex items-center gap-4 justify-end ml-auto text-primary/70 absolute right-4 top-4">
-        <Icons.spinner className="h-5 w-5 text-primary" />
+        <Icons.refresh className="h-5 w-5 text-primary" />
         <span className="text-base ">{"Last updated " + lastUpdate}</span>
       </div>
 
