@@ -75,7 +75,7 @@ const AccountDatabase = ({ originalData }: any) => {
               appliedFilterList={appliedFilterList}
               setAppliedFilterList={setAppliedFilterList}
             />
-            <div className="w-[200px]">
+            <div className="md:w-[200px] ">
               <ComboBox dropList={sortOptions} onSelect={setSortParam} />
             </div>
           </div>

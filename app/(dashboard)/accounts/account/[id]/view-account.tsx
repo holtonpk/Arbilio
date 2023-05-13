@@ -56,13 +56,13 @@ const ViewAccount = ({ data }: ViewAccountProps) => {
   console.log("dd", data);
   return (
     <div className=" px-4">
-      <div className="w-full rounded-md flex flex-col items-center p-4 pt-0 relative">
+      <div className="w-full rounded-md flex flex-col items-center  pt-0 relative">
         {data ? (
           <DataProvider data={data}>
-            <div className="flex items center gap-4 absolute top-4 right-4">
+            <div className="flex items center gap-4 absolute md:top-4 md:right-4 top-0 right-0 ">
               <UpdateCollectionButton account={data} variant={"default"} />
             </div>
-            <div className="flex w-full">
+            <div className="flex flex-col w-fit md:w-full">
               <ProfileDisplay />
             </div>
             <div className="w-full justify-between grid grid-cols-1 gap-4 ">
@@ -108,7 +108,7 @@ const AnalyticsDisplay = () => {
           icon={<Icons.followers className="h-8 w-8 text-primary" />}
         />
 
-        <div className="grid grid-cols-2 gap-8 h-fit">
+        <div className="grid md:grid-cols-2 gap-8 h-fit">
           <DataGraph
             field="heartCount"
             title="Likes"
@@ -380,8 +380,8 @@ const PostsDisplay = () => {
 const ProfileDisplay = () => {
   const { data } = useContext(DataContext)!;
   return (
-    <div className="flex items-center  p-4 gap-4 rounded-md w-fit relative">
-      <div className="rounded-md bg-muted relative aspect-square h-40  overflow-hidden">
+    <div className="flex items-center flex-col md:flex-row   gap-4  rounded-md w-fit relative">
+      <div className="rounded-md bg-muted relative aspect-square h-20 md:h-40  overflow-hidden">
         <Image
           src={data?.avatar}
           alt="Picture of the author"
@@ -391,10 +391,11 @@ const ProfileDisplay = () => {
                     33vw"
         />
       </div>
+
       {/* <AccountRank /> */}
       {/* <AddToCollection /> */}
-      <div className="flex flex-col ">
-        <h1 className="text-3xl font-bold w-fit">{data?.nickname}</h1>
+      <div className="flex flex-col w-fit items-center md:items-start ">
+        <h1 className="text-3xl font-bold w-fit ">{data?.nickname}</h1>
         <h2 className="text-base text-muted-foreground w-fit ">
           {"@" + data?.uniqueId}
         </h2>
