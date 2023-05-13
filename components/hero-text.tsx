@@ -52,14 +52,14 @@ const HeroText: React.FC = () => {
                 header.gradientClass
               } ${
                 activeIndex === index ? "opacity-100" : "opacity-0"
-              } transition-opacity duration-1000`}
+              } transition-opacity duration-[2000ms]`}
             >
               {header.text}
             </h1>
             <h1
               className={`absolute top-0 font-heading text-6xl md:text-6xl  lg:text-8xl font-bold text-primary ${
                 activeIndex === index ? "opacity-0" : "opacity-100"
-              } transition-opacity duration-1000`}
+              } transition-opacity duration-[2000ms]`}
             >
               {header.text}
             </h1>
@@ -76,7 +76,7 @@ const HeroText: React.FC = () => {
         </Link>
 
         <div
-          className={`relative p-[2px] rounded-md before:absolute before:w-full before:h-full before:-z-10 before:bg-gradient-to-r before:left-0 before:top-0 before:blur-[5px] ${
+          className={`relative p-[2px] rounded-md before:absolute before:w-full before:h-full before:-z-10 before:bg-gradient-to-r before:left-0 before:top-0 before:blur-[5px] before:transition-all duration-1000 ${
             headers[activeIndex].gradientClass
           }  ${
             activeIndex === 0
