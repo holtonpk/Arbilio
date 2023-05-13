@@ -17,6 +17,11 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: (theme) => ({
+        "border-gradient-to-r":
+          "linear-gradient(to right, var(--tw-gradient-stops))",
+      }),
+
       fontFamily: {
         sans: ["Poppins", ...defaultTheme.fontFamily.sans],
       },
@@ -60,5 +65,22 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".border-t-2-gradient": {
+          borderTopWidth: "2px",
+          borderTopStyle: "solid",
+          borderTopColor: "transparent",
+          backgroundImage:
+            "linear-gradient(to right, var(--tw-gradient-stops))",
+          backgroundOrigin: "border-box",
+          backgroundClip: "content-box, border-box",
+          boxDecorationBreak: "clone",
+        },
+      };
+
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    },
+  ],
 };
