@@ -40,7 +40,10 @@ const HeroText: React.FC = () => {
 
   return (
     <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center ">
-      <div className="bg-background shadow-md  flex justify-between md:justify-center items-center text-sm font-medium w-full p-3 border rounded-md relative">
+      <Link
+        href={"/pricing"}
+        className="bg-background shadow-md cursor-pointer  flex justify-between md:justify-center items-center text-sm font-medium w-full p-3 border rounded-md relative"
+      >
         <span className="max-w-[60%] md:text-lg text-sm flex  gap-1 whitespace-nowrap items-start text-muted-foreground">
           Sign up today for a
           <p className="font-bold text-primary">7 day free trial!</p>
@@ -48,9 +51,9 @@ const HeroText: React.FC = () => {
         <div className="p-1 h-fit border rounded-md md:absolute right-0 md:h-full flex items-center justify-center md:px-6 md:rounded-none md:border-r-0 md:border-y-0  md:border-l">
           <Icons.ArrowUpRight className="h-5 w-5 md:h-6 md:w-6" />
         </div>
-      </div>
+      </Link>
 
-      <div className="flex flex-col lg:gap-0 lg:flex-row items-center py-16">
+      <div className="flex flex-col lg:gap-0 lg:flex-row items-center py-12">
         {headers.map((header, index) => (
           <div key={index} className="relative overflow-visible ">
             <h1
