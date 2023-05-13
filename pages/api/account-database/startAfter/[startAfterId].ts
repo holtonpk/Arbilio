@@ -28,7 +28,7 @@ export default async function handler(
   q = query(
     collectionRef,
     where("topPosts", "!=", []),
-    limit(4),
+    limit(12),
     startAt(startAfterSnapshot)
   );
 
