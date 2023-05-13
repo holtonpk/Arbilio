@@ -56,12 +56,14 @@ import {
   Menu,
   type Icon as LucideIcon,
   LucideProps,
+  ArrowUpRight,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
   accounts: Users2,
+  ArrowUpRight: ArrowUpRight,
   showPassword: Eye,
   hidePassword: EyeOff,
   addCollection: FolderPlus,

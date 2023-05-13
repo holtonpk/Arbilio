@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-
+import { Icons } from "@/components/icons";
 type HeaderProps = {
   text: string;
   gradientClass: string;
@@ -39,16 +39,22 @@ const HeroText: React.FC = () => {
   }, [headers.length]);
 
   return (
-    <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center md:py-10">
-      <div className="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium">
-        7 day free trial
+    <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center ">
+      <div className="bg-background shadow-md  flex justify-between md:justify-center items-center text-sm font-medium w-full p-3 border rounded-md relative">
+        <span className="max-w-[60%] md:text-lg text-sm flex  gap-1 whitespace-nowrap items-start text-muted-foreground">
+          Sign up today for a
+          <p className="font-bold text-primary">7 day free trial!</p>
+        </span>
+        <div className="p-1 h-fit border rounded-md md:absolute right-0 md:h-full flex items-center justify-center md:px-6 md:rounded-none md:border-r-0 md:border-y-0  md:border-l">
+          <Icons.ArrowUpRight className="h-5 w-5 md:h-6 md:w-6" />
+        </div>
       </div>
 
-      <div className="flex flex-col md:gap-0 md:flex-row items-center">
+      <div className="flex flex-col lg:gap-0 lg:flex-row items-center py-16">
         {headers.map((header, index) => (
           <div key={index} className="relative overflow-visible ">
             <h1
-              className={`relative font-heading text-7xl  font-bold text-transparent bg-clip-text pb-2 ${
+              className={`relative font-heading text-7xl md:text-8xl font-bold text-transparent bg-clip-text pb-2 ${
                 header.gradientClass
               } ${
                 activeIndex === index ? "opacity-100" : "opacity-0"
@@ -57,7 +63,7 @@ const HeroText: React.FC = () => {
               {header.text}
             </h1>
             <h1
-              className={`absolute top-0 font-heading text-7xl bg-clip-text bg-gradient-to-b from-primary/80 to-primary  font-bold text-transparent ${
+              className={`absolute top-0 font-heading text-7xl md:text-8xl bg-clip-text bg-gradient-to-b from-primary/80 to-primary  font-bold text-transparent ${
                 activeIndex === index ? "opacity-0" : "opacity-100"
               } transition-opacity duration-[2000ms]`}
             >

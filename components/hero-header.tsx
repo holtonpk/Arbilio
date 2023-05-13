@@ -21,7 +21,7 @@ const HeroHeader: React.FC<HeroHeaderProps> = ({
       <div className="flex items-center flex-col">
         <div className={`h-[200px] w-[1px] bg-gradient-to-t ${gradient}`} />
         <div
-          className={`p-2 h-fit w-fit text-xl flex justify-center items-center text-background rounded-full aspect-square ${gradient}`}
+          className={`p-2 h-10 w-10 text-xl flex justify-center items-center text-background rounded-full aspect-square ${gradient}`}
         >
           {number}
         </div>
