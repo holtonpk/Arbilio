@@ -25,18 +25,12 @@ export default function Layout({ children }: { children: ReactElement }) {
                   <AccountInfo />
                 </div>
               </header>
-              <main className="flex-1">
-                {/* <div className="flex flex-grow b-b">
-              <Navbar />
-              <div className="flex-grow  overflow-hidden w-full flex flex-col   min-h-screen bg-background">
-                {children}
-              </div>
-            </div> */}
-                <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
+              <main className="flex-1 ">
+                <div className="md:container grid flex-1 md:gap-12 md:grid-cols-[200px_1fr]">
                   <aside className="hidden w-[200px] flex-col md:flex pt-4 h-fit ">
                     <Navbar />
                   </aside>
-                  <main className="flex w-full flex-1 flex-col overflow-hidden min-h-[80vh] bg-slate-50 dark:bg-transparent p-4">
+                  <main className="flex w-full flex-1 flex-col overflow-hidden min-h-[80vh] bg-slate-50 dark:bg-transparent p-4 ">
                     {children}
                   </main>
                 </div>
