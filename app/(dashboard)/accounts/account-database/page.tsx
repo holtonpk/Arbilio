@@ -30,7 +30,7 @@ export default async function AccountDataBase() {
         }
       />
       <div className="w-full bg-background rounded-md   flex flex-col min-h-screen items-center  ">
-        <AccountDatabase originalData={data} />
+        {/* <AccountDatabase originalData={data} /> */}
       </div>
     </>
   );
