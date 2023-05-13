@@ -30,14 +30,15 @@ export default async function handler(
       productData = productInfo.data();
     }
 
-    // if (record.topPosts && record.topPosts.length) {
-    //   let topPosts = record.topPosts.map(async (post: any) => {
-    //     const postRef = doc(db, "tiktokPosts", post);
-    //     const postData = await getDoc(postRef);
-    //     return postData.data();
-    //   });
-    //   topPostsData = await Promise.all(topPosts);
-    // }
+    if (record.topPosts && record.topPosts.length) {
+      const topPosts = record.topPosts;
+      const q = query(
+        collection(db, "tiktokPosts"),
+        where("id", "in", topPosts)
+      );
+      const topPostsInfo = await getDocs(q);
+      topPostsData = topPostsInfo.docs.map((doc) => doc.data());
+    }
 
     return {
       recordId: record.id,
@@ -58,7 +59,7 @@ export default async function handler(
         : null,
       userInfo: record.userInfo,
       posts: record.posts,
-      topPosts: [],
+      topPosts: topPostsData,
       product: productData,
     };
   });
