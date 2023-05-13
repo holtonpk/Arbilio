@@ -70,32 +70,51 @@ const HeroText: React.FC = () => {
         The most powerful tool for Tiktok dropshipping. leverage th power of
         data to find winning products, create videos and earn money.
       </p>
-      <div className="flex gap-4 mt-4">
+      <div className="flex gap-4 mt-4 items-center">
         <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
           Get Started
         </Link>
 
         <div
-          className={`relative p-[2px] rounded-md before:absolute before:w-full before:h-full before:-z-10 before:bg-gradient-to-r before:left-0 before:top-0 before:blur-[5px] before:transition-all duration-1000 ${
-            headers[activeIndex].gradientClass
-          }  ${
-            activeIndex === 0
-              ? "before:from-purple-400 before:to-pink-600"
-              : activeIndex === 1
-              ? "before:from-green-400 before:to-blue-500"
-              : "before:from-red-400 before:to-yellow-500"
-          } `}
+          className={`relative p-[2px] border rounded-md  ${headers[activeIndex].gradientClass}`}
         >
+          <span
+            rel="noreferrer"
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "lg" }),
+              "bg-background z-10  "
+            )}
+          >
+            Dashboard
+          </span>
           <Link
             href={"/dashboard"}
             rel="noreferrer"
             className={cn(
               buttonVariants({ variant: "ghost", size: "lg" }),
-              "bg-background "
+              "bg-background z-10  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             )}
           >
             Dashboard
           </Link>
+
+          <div
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-purple-400 to-pink-600 rounded-md blur-[10px]  h-[110%] w-[110%]   transition-opacity duration-[3000ms] 
+              ${activeIndex === 0 ? "opacity-100" : "opacity-0"}
+              `}
+          />
+
+          <div
+            className={`absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-green-400 to-blue-500 rounded-md blur-[10px]  h-[110%] w-[110%]   transition-opacity duration-[3000ms]
+              ${activeIndex === 1 ? "opacity-100" : "opacity-0"}
+                `}
+          />
+
+          <div
+            className={`absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-red-400 to-yellow-500 rounded-md blur-[10px]  h-[110%] w-[110%]   transition-opacity duration-[3000ms]
+              ${activeIndex === 2 ? "opacity-100" : "opacity-0"}
+              `}
+          />
         </div>
       </div>
     </div>
