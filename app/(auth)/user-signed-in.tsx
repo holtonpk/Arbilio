@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 
 const UserSignedIn = ({ children }: { children: ReactElement }) => {
   const { currentUser } = useAuth()!;
-  // const router = useRouter();
+  const router = useRouter();
 
   if (currentUser) {
-    // router.push("/dashboard");
+    router.push("/dashboard");
   }
 
   return children;
