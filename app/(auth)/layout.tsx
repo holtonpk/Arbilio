@@ -7,9 +7,7 @@ interface AuthLayoutProps {
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <AuthProvider>
-      {/* <UserSignedIn> */}
-      {children}
-      {/* </UserSignedIn> */}
+      <UserSignedIn>{children}</UserSignedIn>
     </AuthProvider>
   );
 }
