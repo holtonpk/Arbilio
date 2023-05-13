@@ -31,7 +31,7 @@ const HeroText: React.FC = () => {
       setActiveIndex(
         (prevActiveIndex) => (prevActiveIndex + 1) % headers.length
       );
-    }, 2000); // Change gradient every 2 seconds
+    }, 3000); // Change gradient every 2 seconds
 
     return () => {
       clearInterval(timer);
@@ -39,16 +39,16 @@ const HeroText: React.FC = () => {
   }, [headers.length]);
 
   return (
-    <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center">
+    <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center md:py-10">
       <div className="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium">
         7 day free trial
       </div>
 
-      <div className="flex flex-col -gap-4 items-center">
+      <div className="flex flex-col -gap-4 md:gap-0 md:flex-row items-center">
         {headers.map((header, index) => (
           <div key={index} className="relative overflow-visible pb-2">
             <h1
-              className={`relative font-heading text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-bold text-transparent bg-clip-text pb-4 ${
+              className={`relative font-heading text-6xl md:text-6xl  lg:text-8xl font-bold text-transparent bg-clip-text pb-4 ${
                 header.gradientClass
               } ${
                 activeIndex === index ? "opacity-100" : "opacity-0"
@@ -57,7 +57,7 @@ const HeroText: React.FC = () => {
               {header.text}
             </h1>
             <h1
-              className={`absolute top-0 font-heading text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-primary ${
+              className={`absolute top-0 font-heading text-6xl md:text-6xl  lg:text-8xl font-bold text-primary ${
                 activeIndex === index ? "opacity-0" : "opacity-100"
               } transition-opacity duration-1000`}
             >
@@ -76,7 +76,7 @@ const HeroText: React.FC = () => {
         </Link>
 
         <div
-          className={`relative p-[1px] rounded-md before:absolute before:w-full before:h-full before:-z-10 before:bg-gradient-to-r before:left-0 before:top-0 before:blur-[5px] ${
+          className={`relative p-[2px] rounded-md before:absolute before:w-full before:h-full before:-z-10 before:bg-gradient-to-r before:left-0 before:top-0 before:blur-[5px] ${
             headers[activeIndex].gradientClass
           }  ${
             activeIndex === 0
@@ -90,8 +90,8 @@ const HeroText: React.FC = () => {
             href={"/dashboard"}
             rel="noreferrer"
             className={cn(
-              buttonVariants({ variant: "outline", size: "lg" }),
-              "bg-background"
+              buttonVariants({ variant: "ghost", size: "lg" }),
+              "bg-background "
             )}
           >
             Dashboard
