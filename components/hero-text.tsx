@@ -44,9 +44,9 @@ const HeroText: React.FC = () => {
         7 day free trial
       </div>
 
-      <div className="flex flex-col -gap-4 md:gap-0 md:flex-row items-center">
+      <div className="flex flex-col md:gap-0 md:flex-row items-center">
         {headers.map((header, index) => (
-          <div key={index} className="relative overflow-visible pb-2">
+          <div key={index} className="relative overflow-visible ">
             <h1
               className={`relative font-heading text-6xl md:text-6xl  lg:text-8xl font-bold text-transparent bg-clip-text pb-4 ${
                 header.gradientClass
