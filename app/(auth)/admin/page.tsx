@@ -260,7 +260,9 @@ const UpdateData = ({ data }: any) => {
 
   async function fetchAccountData(uniqueID: string) {
     try {
-      const response = await fetch(`${siteConfig.url}/api/user/${uniqueID}`);
+      const response = await fetch(
+        `${siteConfig.url}/api/scrape/user/${uniqueID}`
+      );
       if (response.status === 200) {
         const data = await response.json();
         if (response.ok) {
