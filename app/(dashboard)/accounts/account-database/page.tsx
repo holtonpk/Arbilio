@@ -4,33 +4,34 @@ import AccountDatabase from "./account-database";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 
-class FetchError extends Error {
-  status: number;
-  info: any;
-
-  constructor(message: any, status: number, info: any) {
-    super(message);
-    this.name = "FetchError";
-    this.status = status;
-    this.info = info;
-  }
-}
-
 async function getData() {
-  const res = await fetch(`${siteConfig.url}/api/accountDatabase`, {
-    cache: "no-cache",
-  });
+  const TIMEOUT = 7000; // Set your desired timeout in milliseconds
+  const url = `${siteConfig.url}/api/accountDatabase`;
 
-  if (!res.ok) {
-    const info = await res.json();
-    throw new FetchError(
-      `Failed to fetch data ${siteConfig.url}`,
-      res.status,
-      info
-    );
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), TIMEOUT);
+
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      cache: "no-cache",
+    });
+
+    clearTimeout(id);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data ${url}`);
+    }
+
+    return response.json();
+  } catch (error: any) {
+    if (error.name === "AbortError") {
+      throw new Error("The request timed out.");
+    }
+    throw error;
   }
-  return res.json();
 }
+
 // add theis
 
 export default async function AccountDataBase() {

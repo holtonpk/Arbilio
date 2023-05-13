@@ -65,7 +65,7 @@ export default async function handler(
 
   // const data = await Promise.all(formattedData);
 
-  res.status(200).json(DummyData);
+  res.status(200).json({data:DummyData});
 }
 
 const DummyData = [
