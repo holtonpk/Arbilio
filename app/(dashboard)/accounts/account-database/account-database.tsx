@@ -79,7 +79,7 @@ const AccountDatabase = ({ originalData }: any) => {
               <ComboBox dropList={sortOptions} onSelect={setSortParam} />
             </div>
           </div>
-          <div className="flex items-center gap-4 w-full lg:w-fit justify-between">
+          <div className="md:flex items-center gap-4 w-full lg:w-fit justify-between hidden ">
             <DisplaySelector
               displayType={displayType}
               setDisplayType={setDisplayType}

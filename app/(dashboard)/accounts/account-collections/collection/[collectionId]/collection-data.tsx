@@ -18,9 +18,7 @@ import useData from "@/hooks/use-data";
 import { CollectionOperations } from "@/components/collection-operations";
 
 const CollectionData = ({ data }: any) => {
-  const [displayType, setDisplayType] = useState<"grid" | "columns">("columns");
-  console.log("data==>", data);
-
+  const [displayType, setDisplayType] = useState<"grid" | "columns">("grid");
   const {
     sortedData,
     searchData,
@@ -72,22 +70,27 @@ const CollectionData = ({ data }: any) => {
           <>
             <div className="flex flex-col mb-2 gap-2">
               <div className="flex flex-row  justify-between ">
-                <div className="flex flex-row gap-2 w-fit">
-                  <div className="w-[300px]">
+                <div className="flex flex-col md:flex-row gap-2 w-full md:w-fit">
+                  <div className=" w-full md:w-[300px]">
                     <DataSearch
-                      placeholder="...Search"
+                      placeholder="Search"
                       searchFunction={searchData}
                     />
                   </div>
-                  <FilterBuilder
-                    appliedFilterList={appliedFilterList}
-                    setAppliedFilterList={setAppliedFilterList}
-                  />
-                  <div className="w-[200px] relative">
-                    <ComboBox dropList={sortOptions} onSelect={setSortParam} />
+                  <div className="flex justify-between  md:gap-2 w-full md:w-fit ">
+                    <FilterBuilder
+                      appliedFilterList={appliedFilterList}
+                      setAppliedFilterList={setAppliedFilterList}
+                    />
+                    <div className="w-fit md:w-[200px]  relative">
+                      <ComboBox
+                        dropList={sortOptions}
+                        onSelect={setSortParam}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 w-fit justify-between">
+                <div className="md:flex items-center gap-4 w-fit justify-between hidden">
                   <DisplaySelector
                     displayType={displayType}
                     setDisplayType={setDisplayType}
