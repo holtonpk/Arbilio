@@ -313,8 +313,7 @@ const UpdateData = ({ data }: any) => {
     const records = await getDocs(collection(db, "tiktokAccounts"));
     console.log("record1:", records);
 
-    // const totalRecords = records.docs.length;
-    const totalRecords = 1;
+    const totalRecords = records.docs.length;
     const slicedRecords = records.docs.slice(0, totalRecords);
 
     for (const record of slicedRecords) {
