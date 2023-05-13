@@ -40,19 +40,21 @@ const HeroText: React.FC = () => {
 
   return (
     <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center ">
-      <Link
-        href={"/pricing"}
-        className="bg-background shadow-md cursor-pointer  flex justify-between md:justify-center items-center text-sm font-medium w-full p-3 border rounded-md relative"
-      >
-        <span className="max-w-[60%] md:text-lg text-sm flex  gap-1 whitespace-nowrap items-start text-muted-foreground">
-          Sign up today for a
-          <p className="font-bold text-primary">7 day free trial!</p>
-        </span>
-        <div className="p-1 h-fit border rounded-md md:absolute right-0 md:h-full flex items-center justify-center md:px-6 md:rounded-none md:border-r-0 md:border-y-0  md:border-l">
-          <Icons.ArrowUpRight className="h-5 w-5 md:h-6 md:w-6" />
-        </div>
-      </Link>
-
+      <div className="relative w-full h-fit bg-accent p-[1px]  rounded-md">
+        <Link
+          href={"/pricing"}
+          className="bg-background shadow-md cursor-pointer z-20 flex justify-between md:justify-center items-center text-sm font-medium w-full p-3 border rounded-md relative"
+        >
+          <span className="max-w-[60%] md:text-lg text-sm flex  gap-1 whitespace-nowrap items-start text-muted-foreground">
+            Sign up today for a
+            <p className="font-bold text-primary">7 day free trial!</p>
+          </span>
+          <div className="p-1 h-fit border rounded-md md:absolute right-0 md:h-full flex items-center justify-center md:px-6 md:rounded-none md:border-r-0 md:border-y-0  md:border-l">
+            <Icons.ArrowUpRight className="h-5 w-5 md:h-6 md:w-6" />
+          </div>
+        </Link>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-full blur-[10px] bg-accent  "></div>
+      </div>
       <div className="flex flex-col lg:gap-0 lg:flex-row items-center py-12">
         {headers.map((header, index) => (
           <div key={index} className="relative overflow-visible ">
