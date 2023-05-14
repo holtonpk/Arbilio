@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/Auth";
-import usePremiumStatus from "@/stripe/usePremiumStatus";
 import { formatDate } from "@/lib/utils";
 const stripe = require("stripe")(
   "sk_test_51KsFpgEewcpAM4MfqUhXKeEnFfdHkN0Btxdxi4pLQzB45cOWyGtk1ujQsZWfT5RIOcijIZqyIrUpeVfJtGxHuMmz00rGEWP0qm"
@@ -11,7 +10,6 @@ const stripe = require("stripe")(
 
 const Billing = () => {
   const { currentUser } = useAuth()!;
-  const isPremium = usePremiumStatus(currentUser);
 
   return (
     <div className="h-full flex-grow p-8">
