@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AccountRank from "./account-rank";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
+import ProtectFeature from "@/components/protect-feature";
 async function getData() {
   const rankType = "followers";
   const res = await fetch(`${siteConfig.url}/api/top-accounts`);
@@ -19,17 +20,19 @@ async function getData() {
 export default async function TopAccounts() {
   const data = await getData();
   return (
-    <>
-      <PageHeader
-        heading={"Top Accounts"}
-        text={
-          "Discover the top sellers and anylize their performance over time."
-        }
-      />
-      <div className="flex flex-row mt-4 w-full  h-full  gap-8  rounded-md ">
-        <AccountRank data={data} />
-      </div>
-    </>
+    <ProtectFeature planLevel="standard">
+      <>
+        <PageHeader
+          heading={"Top Accounts"}
+          text={
+            "Discover the top sellers and anylize their performance over time."
+          }
+        />
+        <div className="flex flex-row mt-4 w-full  h-full  gap-8  rounded-md ">
+          <AccountRank data={data} />
+        </div>
+      </>
+    </ProtectFeature>
   );
 }
 

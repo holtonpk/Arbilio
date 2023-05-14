@@ -1,12 +1,8 @@
 "use client";
-
-import React, { useEffect, useState, use } from "react";
+import React, { useState } from "react";
 import Table from "./account-collection-table";
 import CardDisplay from "@/app/(dashboard)/accounts/account-collections/collection/[collectionId]/account-collection-cards";
 import { Icons } from "@/components/icons";
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import FilterBuilder from "@/components/filter-builder";
 import ComboBox from "@/components/combo-box";
 import DisplaySelector from "@/components/display-selector";
@@ -16,6 +12,7 @@ import { DataSearch } from "@/components/data-search";
 import EmptySearch from "@/components/empty-search";
 import useData from "@/hooks/use-data";
 import { CollectionOperations } from "@/components/collection-operations";
+import { LinkButton } from "@/components/ui/link";
 
 const CollectionData = ({ data }: any) => {
   const [displayType, setDisplayType] = useState<"grid" | "columns">("grid");
@@ -38,12 +35,13 @@ const CollectionData = ({ data }: any) => {
     <>
       <div className="flex w-full justify-between">
         <div className="flex flex-row items-center gap-2 mb-2">
-          <Link
+          <LinkButton
+            variant="ghost"
             href="/accounts/account-collections"
-            className={cn(buttonVariants({ variant: "ghost" }), "w-fit ")}
+            className="w-fit "
           >
             <Icons.chevronLeft className=" h-6 w-6" />
-          </Link>
+          </LinkButton>
           <h1 className="text-3xl h-fit  font-bold flex items-center text-primary  pb-0">
             <Icons.collection className="h-8 w-8 mr-2" />
             {data.collection.name}
@@ -58,12 +56,9 @@ const CollectionData = ({ data }: any) => {
             browse our account database to find accounts to add to this
             collection
           </p>
-          <Link
-            href="/accounts/account-database"
-            className={cn(buttonVariants({ variant: "default" }), "w-fit ")}
-          >
+          <LinkButton href="/accounts/account-database" className="w-fit ">
             Account Database
-          </Link>
+          </LinkButton>
         </div>
       ) : (
         <>

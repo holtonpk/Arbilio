@@ -21,6 +21,7 @@ import { CollectionType } from "@/types";
 import { doc, setDoc, getFirestore, getDoc } from "firebase/firestore";
 
 interface AuthContextType {
+  userPlan: "base" | "standard" | "premium" | undefined;
   currentUser: FirebaseUser | undefined;
   signIn: (email: string, password: string) => Promise<any>;
   createAccount: (
@@ -53,6 +54,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [rerender, setRerender] = useState(true);
   const [userCollections, setUserCollections] = useState<CollectionType[]>([]);
+  const [userPlan, setUserPlan] = useState<
+    "base" | "standard" | "premium" | undefined
+  >(undefined);
   // const router = useRouter();
 
   async function createAccount(email: string, name: string, password: string) {
@@ -209,6 +213,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       if (user) {
         setCurrentUser(user);
+        await auth.currentUser?.getIdToken(true);
+        const decodedToken = await auth.currentUser?.getIdTokenResult();
+        setUserPlan(decodedToken?.claims?.stripeRole);
       }
       setLoading(false);
     });
@@ -217,6 +224,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [rerender]);
 
   const value = {
+    userPlan,
     currentUser,
     signIn,
     createAccount,

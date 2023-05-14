@@ -1,12 +1,10 @@
 import * as React from "react";
-import Link from "next/link";
-
 import { MainNavItem } from "@/types";
 import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
+import { LinkButton } from "@/components/ui/link";
 import { useLockBody } from "@/hooks/use-lock-body";
 import { Icons } from "@/components/icons";
-import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
   items: MainNavItem[];
@@ -17,42 +15,37 @@ export function MobileNav({ items, children }: MobileNavProps) {
   useLockBody();
 
   return (
-    <div
-      className={cn(
-        "fixed inset-0  w-full top-16 z-50 h-[calc(100vh-4rem)]  auto-rows-max overflow-auto   shadow-md animate-in slide-in-from-bottom-80 md:hidden"
-      )}
-    >
+    <div className="fixed inset-0  w-full top-16 z-50 h-[calc(100vh-4rem)]  auto-rows-max overflow-auto   shadow-md animate-in slide-in-from-bottom-80 md:hidden">
       <div className="relative z-20 h-full  flex  flex-col gap-4 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
-        <Link
+        <LinkButton
           href="/login"
-          className={cn(
-            buttonVariants({ variant: "secondary", size: "sm" }),
-            "px-4 mr-2"
-          )}
+          variant="secondary"
+          size="sm"
+          className="px-4 mr-2"
         >
           Login
-        </Link>
-        <Link
+        </LinkButton>
+        <LinkButton
           href="/onboarding/register"
-          className={cn(
-            buttonVariants({ variant: "default", size: "sm" }),
-            "px-4"
-          )}
+          variant="default"
+          size="sm"
+          className="px-4"
         >
           Sign up
-        </Link>
+        </LinkButton>
         <nav className="grid grid-flow-row auto-rows-max text-sm divide-y divide-border  ">
           {items.map((item, index) => (
-            <Link
+            <LinkButton
               key={index}
               href={item.disabled ? "#" : item.href}
+              variant={"link"}
               className={cn(
                 "flex w-full items-center text-lg p-2  font-medium hover:underline",
                 item.disabled && "cursor-not-allowed opacity-60"
               )}
             >
               {item.title}
-            </Link>
+            </LinkButton>
           ))}
         </nav>
         {children}

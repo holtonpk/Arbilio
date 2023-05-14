@@ -159,4 +159,5 @@ export interface Product {
   monthly_price: Price;
   annual_price: Price;
   features: string[];
+  firebaseRole: string;
 }

@@ -1,13 +1,11 @@
 "use client";
-import React, { useState, useEffect, CSSProperties } from "react";
+import React, { useState, useEffect } from "react";
 import { Icons } from "@/components/icons";
 import Image from "next/image";
 import { formatNumber } from "@/lib/utils";
 import Link from "next/link";
 type SortType = "followers" | "likes" | "posts";
-import { Button } from "@/components/ui/button";
 
-import ExpandedAccountRank from "./expanded-account-rank";
 const AccountRank = ({ data }: any) => {
   const [expandedAccountData, setExpandedAccountData] = useState<any>({
     rank: 1,

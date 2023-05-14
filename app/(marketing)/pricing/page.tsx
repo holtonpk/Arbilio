@@ -1,9 +1,7 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
 import { Switch } from "@headlessui/react";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link";
 import { Icons } from "@/components/icons";
 
 export default function PricingPage() {
@@ -91,9 +89,9 @@ const PricingCard = () => {
         </ul>
       </div>
       <div className="flex flex-col gap-4 text-center">
-        <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
+        <LinkButton href="/login" size="lg">
           Get Started
-        </Link>
+        </LinkButton>
       </div>
     </div>
   );
@@ -134,9 +132,9 @@ const PricingCard2 = () => {
         </ul>
       </div>
       <div className="flex flex-col gap-4 text-center">
-        <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
+        <LinkButton href="/login" size="lg">
           Get Started
-        </Link>
+        </LinkButton>
       </div>
     </div>
   );

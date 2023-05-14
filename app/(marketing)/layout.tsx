@@ -1,8 +1,5 @@
-import Link from "next/link";
-
 import { marketingConfig } from "@/config/marketing";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link";
 import { MainNav } from "@/components/main-nav";
 import { SiteFooter } from "@/components/site-footer";
 
@@ -19,24 +16,22 @@ export default async function MarketingLayout({
         <div className="flex h-20 items-center justify-between py-6">
           <MainNav items={marketingConfig.mainNav} />
           <nav className="hidden md:flex gap-4 w-fit ">
-            <Link
+            <LinkButton
               href="/login"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "sm" }),
-                "px-4 mr-2 whitespace-nowrap"
-              )}
+              variant="secondary"
+              size="sm"
+              className="px-4 mr-2 whitespace-nowrap"
             >
               Login
-            </Link>
-            <Link
+            </LinkButton>
+            <LinkButton
               href="/onboarding/register"
-              className={cn(
-                buttonVariants({ variant: "default", size: "sm" }),
-                "px-4 whitespace-nowrap"
-              )}
+              variant="default"
+              size="sm"
+              className="px-4 whitespace-nowrap"
             >
               Sign up
-            </Link>
+            </LinkButton>
           </nav>
         </div>
       </header>

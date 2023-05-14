@@ -1,5 +1,5 @@
 import React, { useState, ReactNode, useRef, useContext } from "react";
-import Link from "next/link";
+
 import ScrollBar from "@/components/scroll-bar";
 import Skeleton from "@/components/ui/custom-skeleton";
 import { Button } from "@/components/ui/button";
@@ -8,13 +8,14 @@ import {
   StatDisplay,
   AccountDisplay,
 } from "@/components/table-components";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+
 import { accountDatabaseConfig } from "@/config/dashboard";
 import { UpdateCollectionButton } from "@/components/update-collection-button";
 import { Icons } from "@/components/icons";
 import { UpdateMultiCollectionButton } from "@/components/update-multi-collection-button";
 import CreateCollectionButton from "@/components/create-collection-button";
+import { LinkButton } from "@/components/ui/link";
+
 const PrimaryHeaders = accountDatabaseConfig.tableHeaders.primaryHeaders;
 const SecondaryHeaders = accountDatabaseConfig.tableHeaders.secondaryHeaders;
 
@@ -195,13 +196,14 @@ const PrimaryRow = ({ data }: any) => {
       <Selector item={data} />
       <AccountDisplay data={data} />
       <ProductDisplay data={data} />
-      <Link
+      <LinkButton
         target="_blank"
+        variant="link"
         href={data.bioLink || "/"}
         className="text-sm underline whitespace-nowrap text-ellipsis overflow-hidden"
       >
         {data.bioLink}
-      </Link>
+      </LinkButton>
     </>
   );
 };
@@ -232,18 +234,14 @@ const RowButtons = ({ data }: any) => {
         className="w-full justify-center  flex  h-full items-center rounded-none bg-transparent"
       />
 
-      <Link
+      <LinkButton
+        variant="secondary"
+        size="xsm"
+        className="w-full justify-center  flex  h-full items-center rounded-none bg-transparent"
         href={`/accounts/account/${data.recordId}`}
-        className={cn(
-          buttonVariants({
-            variant: "secondary",
-            size: "xsm",
-          }),
-          "w-full justify-center  flex  h-full items-center rounded-none bg-transparent"
-        )}
       >
         <Icons.analytics className="h-5 w-5" />
-      </Link>
+      </LinkButton>
     </>
   );
 };

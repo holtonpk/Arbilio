@@ -24,6 +24,7 @@ export default async function handler(
             description: product.description || "",
             monthly_price: { id: "", unit_amount: 0 },
             annual_price: { id: "", unit_amount: 0 },
+            firebaseRole: product.metadata.firebaseRole,
             features: [
               "1 User",
               "1 GB Storage",

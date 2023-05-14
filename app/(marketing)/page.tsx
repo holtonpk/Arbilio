@@ -1,12 +1,7 @@
 "use client";
-import Link from "next/link";
-
-// import { env } from "@/env.mjs"
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import HeroText from "@/components/hero-text";
 import HeroHeader from "@/components/hero-header";
+
 export default async function IndexPage() {
   return (
     <>

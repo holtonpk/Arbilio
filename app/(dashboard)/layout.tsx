@@ -3,14 +3,12 @@ import Navbar from "@/components/side-nav";
 import { AuthProvider } from "@/context/Auth";
 import ProtectedRoutes from "./protect-routes";
 import { marketingConfig } from "@/config/marketing";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { DashboardNav } from "@/components/dashboard-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { AccountInfo } from "@/components/account-preview";
 import { Toaster } from "@/components/ui/toaster";
 import { UserCollectionProvider } from "@/context/user-collections";
+
 export default function Layout({ children }: { children: ReactElement }) {
   return (
     <AuthProvider>
@@ -31,7 +29,7 @@ export default function Layout({ children }: { children: ReactElement }) {
               <aside className="w-full hidden container flex-col md:flex pt-4 h-fit sticky top-20  col-start-1 ">
                 <Navbar />
               </aside>
-              <main className=" flex-1 col-start-1 col-end-3   md:col-start-2 ">
+              <main className=" flex-1 col-start-1 col-end-3 relative  md:col-start-2 ">
                 <div className="md:container grid flex-1 md:gap-12">
                   <main className="flex w-full flex-1 flex-col overflow-hidden min-h-[80vh]  dark:bg-transparent pt-4">
                     {children}

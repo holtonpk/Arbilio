@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link";
 import { Icons } from "@/components/icons";
 type HeaderProps = {
   text: string;
   gradientClass: string;
 };
-import { Button } from "./ui/button";
 
 const HeroText: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -41,8 +38,9 @@ const HeroText: React.FC = () => {
   return (
     <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center ">
       <div className="relative w-full h-fit bg-accent p-[1px]  rounded-md">
-        <Link
+        <LinkButton
           href={"/pricing"}
+          variant="link"
           className="bg-background shadow-md cursor-pointer z-20 flex justify-between md:justify-center items-center text-sm font-medium w-full p-3 border rounded-md relative"
         >
           <span className="max-w-[60%] md:text-lg text-sm flex  gap-1 whitespace-nowrap items-start text-muted-foreground">
@@ -52,7 +50,7 @@ const HeroText: React.FC = () => {
           <div className="p-1 h-fit border rounded-md md:absolute right-0 md:h-full flex items-center justify-center md:px-6 md:rounded-none md:border-r-0 md:border-y-0  md:border-l">
             <Icons.ArrowUpRight className="h-5 w-5 md:h-6 md:w-6" />
           </div>
-        </Link>
+        </LinkButton>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-full blur-[10px] bg-accent  "></div>
       </div>
       <div className="flex flex-col lg:gap-0 lg:flex-row items-center py-12">
@@ -82,24 +80,24 @@ const HeroText: React.FC = () => {
         data to find winning products, create videos and earn money.
       </p>
       <div className=" flex gap-4 mt-4 flex-col w-full md:w-fit md:flex-row items-center">
-        <Link
+        <LinkButton
+          size="lg"
+          variant={"default"}
           href="/pricing"
-          className={cn(buttonVariants({ size: "lg" }), "w-full md:w-fit")}
+          className="w-full md:w-fit"
         >
           View Pricing
-        </Link>
+        </LinkButton>
 
         <div className={`relative p-[1px]  rounded-md w-full md:w-fit`}>
-          <Link
+          <LinkButton
             href={"/dashboard"}
-            rel="noreferrer"
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "lg" }),
-              "bg-background   hover:bg-transparent  z-10 w-full  md:w-fit relative "
-            )}
+            variant="ghost"
+            size={"lg"}
+            className="bg-background   hover:bg-transparent  z-10 w-full  md:w-fit relative "
           >
             Get Started
-          </Link>
+          </LinkButton>
 
           <div
             className={`w-full absolute h-full bg-gradient-to-r from-purple-400 to-pink-600 top-0 left-0 rounded-md transition-opacity duration-[3000ms]

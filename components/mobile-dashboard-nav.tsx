@@ -1,14 +1,14 @@
 import * as React from "react";
-import Link from "next/link";
+import { LinkButton } from "@/components/ui/link";
 import Navbar from "@/components/side-nav";
 import { useSelectedLayoutSegment, usePathname } from "next/navigation";
 
 import { MainNavItem } from "@/types";
 import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
+
 import { useLockBody } from "@/hooks/use-lock-body";
 import { Icons } from "@/components/icons";
-import { buttonVariants } from "@/components/ui/button";
+
 import { AccountInfoMobile } from "./account-preview-mobile";
 import { dashboardConfig } from "@/config/dashboard";
 import { SideNavRoute } from "@/types";
@@ -17,11 +17,7 @@ export function MobileDashboardNav() {
   useLockBody();
 
   return (
-    <div
-      className={cn(
-        "fixed inset-0  w-full top-16 z-50 h-[calc(100vh-4rem)]  auto-rows-max overflow-auto   shadow-md animate-in slide-in-from-bottom-80 md:hidden"
-      )}
-    >
+    <div className="fixed inset-0  w-full top-16 z-50 h-[calc(100vh-4rem)]  auto-rows-max overflow-auto   shadow-md animate-in slide-in-from-bottom-80 md:hidden">
       <div className="relative z-20 h-full  flex  flex-col gap-4 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
         <nav className="grid grid-flow-row  auto-rows-max text-sm divide-y divide-border ">
           {dashboardConfig.sideNav.map((route, indx) => (
@@ -56,8 +52,9 @@ const Route = ({ item }: { item: SideNavRoute }) => {
   return (
     <span className="flex flex-col gap-2 pr-2 py-4 relative h-fit">
       {!item?.subPages ? (
-        <Link
+        <LinkButton
           href={item?.href}
+          variant="link"
           className={`group flex items-center text-primary rounded-md px-3 py-2 text-xl font-medium hover:underline  disabled:no-underline ${
             item?.disabled && "cursor-not-allowed opacity-80"
           }`}
@@ -65,7 +62,7 @@ const Route = ({ item }: { item: SideNavRoute }) => {
           <Icon className="h-5 w-5 mr-2" />
           <div className="text-xl ">{item.title}</div>
           {item?.disabled && "Coming soon"}
-        </Link>
+        </LinkButton>
       ) : (
         <>
           <button
@@ -134,13 +131,14 @@ const SubPages = ({ subPages, showSubPages }: SubPagesProps) => {
 const SubRoute = ({ title, href }: { title: string; href: string }) => {
   const pathname = usePathname();
   return (
-    <Link
+    <LinkButton
       href={href}
+      variant="link"
       className={` ${
         href == pathname ? "underline" : ""
       } group flex items-center ml-4 whitespace-nowrap rounded-md px-3 py-2 text-[12px] font-medium hover:underline `}
     >
       {title}
-    </Link>
+    </LinkButton>
   );
 };

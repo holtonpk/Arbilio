@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import isUserPremium from "./isUserPremium";
+import isUserPremium from "./useUserStatus";
 import { User } from "firebase/auth";
 
 export default function usePremiumStatus(user: User | undefined) {
