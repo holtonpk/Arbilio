@@ -1,6 +1,5 @@
 "use client";
 import { ReactElement } from "react";
-import useUserStatus from "@/stripe/useUserStatus";
 import { LinkButton } from "@/components/ui/link";
 import { useAuth } from "@/context/Auth";
 type UserStatus = "base" | "standard" | "premium";
