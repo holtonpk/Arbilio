@@ -83,10 +83,10 @@ const HeroText: React.FC = () => {
       </p>
       <div className=" flex gap-4 mt-4 flex-col w-full md:w-fit md:flex-row items-center">
         <Link
-          href="/login"
+          href="/pricing"
           className={cn(buttonVariants({ size: "lg" }), "w-full md:w-fit")}
         >
-          Get Started
+          View Pricing
         </Link>
 
         <div className={`relative p-[1px]  rounded-md w-full md:w-fit`}>
@@ -98,7 +98,7 @@ const HeroText: React.FC = () => {
               "bg-background   hover:bg-transparent  z-10 w-full  md:w-fit relative "
             )}
           >
-            Dashboard
+            Get Started
           </Link>
 
           <div

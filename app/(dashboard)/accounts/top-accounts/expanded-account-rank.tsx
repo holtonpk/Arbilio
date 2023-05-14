@@ -54,7 +54,7 @@ const ExpandedAccountRank = ({ expandedAccountData }: any) => {
     <>
       {expandedAccountData ? (
         <>
-          <div className="w-[30%]  border-2 border-border   rounded-md h-[80%] min-h-[95vh]  p-4 flex flex-col">
+          <div className="w-full  border-2 border-border   rounded-md h-[80%] min-h-[95vh]  p-4 flex flex-col">
             <div className="flex items-center gap-4 ">
               <div className="h-16 w-16 bg-accent rounded-md aspect-square flex items-center justify-center text-2xl font-bold text-primary">
                 {"#" + expandedAccountData?.rank}

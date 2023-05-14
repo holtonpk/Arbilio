@@ -26,7 +26,7 @@ export function DataSearch({
       <Input
         type="search"
         placeholder={placeholder}
-        className=" w-full  sm:pr-12"
+        className=" w-full sm:pr-12"
         ref={inputRef}
         onChange={onSubmit}
       />
