@@ -1,28 +1,11 @@
 "use client";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useAuth } from "@/context/Auth";
-import useUserStatus from "@/stripe/useUserStatus";
-import { useRouter } from "next/navigation";
 import { LinkButton } from "@/components/ui/link";
-
-type UserStatus = "base" | "standard" | "premium";
 
 const ProtectedRoutes = ({ children }: { children: ReactElement }) => {
   const { currentUser } = useAuth()!;
-  const [userPlan, setUserPlan] = useState<UserStatus>();
-  const router = useRouter();
 
-  useEffect(() => {
-    async function checkUserStatus() {
-      const status = await useUserStatus();
-      setUserPlan(status);
-    }
-    checkUserStatus();
-  }, []);
-
-  // if (currentUser && !userPlan) {
-  //   // router.push("/onboarding/plan");
-  // } else
   if (currentUser) {
     return children;
   }
