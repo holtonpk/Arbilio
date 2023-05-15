@@ -20,9 +20,7 @@ export function MainNav({ items, children }: MainNavProps) {
   return (
     <div className="flex justify-between md:justify-start w-full items-center  md:gap-10 ">
       <Link href="/" className=" items-center space-x-2 flex">
-        <span className=" text-xl font-bold inline-block ">
-          {siteConfig.name}
-        </span>
+        <span className=" text-xl font-bold inline-block ">TikDrop.io</span>
       </Link>
       {items?.length ? (
         <nav className="hidden gap-6 md:flex">

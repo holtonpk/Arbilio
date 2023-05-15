@@ -20,8 +20,11 @@ export function DashboardNav({ items, children }: MainNavProps) {
   return (
     <div className="flex justify-between md:justify-start w-full items-center  md:gap-10 ">
       <Link href="/" className=" items-center space-x-2 flex">
-        <span className=" text-xl font-bold inline-block ">
-          {siteConfig.name}
+        <span className="text-lg text-primary font-bold inline-block ">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+            TikDrop
+          </span>
+          .io
         </span>
       </Link>
       {items?.length ? (

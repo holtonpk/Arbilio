@@ -28,7 +28,7 @@ export default async function TopAccounts() {
             "Discover the top sellers and anylize their performance over time."
           }
         />
-        <div className="flex flex-row mt-4 w-full  h-full  gap-8  rounded-md ">
+        <div className="flex flex-row  w-full  h-full  gap-8  rounded-md ">
           <AccountRank data={data} />
         </div>
       </>
@@ -48,12 +48,9 @@ const configData = (account: any, field: string) => {
     const mostRecentData = orderedData[orderedData.length - 1];
     const oldestData = orderedData[0];
 
-    const percentChange =
-      Math.round(
-        ((mostRecentData[field] - oldestData[field]) / oldestData[field]) *
-          100 *
-          100
-      ) / 100;
+    const percentChange = Math.round(
+      ((mostRecentData[field] - oldestData[field]) / oldestData[field]) * 100
+    );
 
     if (Number.isNaN(percentChange)) {
       return defaultReturnObject;
