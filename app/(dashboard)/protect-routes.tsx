@@ -21,7 +21,7 @@ const ProtectedRoutes = ({ children }: { children: ReactElement }) => {
         <LinkButton variant="outline" href="/login" className="w-full">
           Login
         </LinkButton>
-        <LinkButton href="/register" className="w-full">
+        <LinkButton href="/onboarding/register" className="w-full">
           Register
         </LinkButton>
       </div>
