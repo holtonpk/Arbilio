@@ -1,7 +1,6 @@
 "use client";
 import React, { EventHandler, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { validateEmail } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserSchema } from "@/lib/validations/auth";

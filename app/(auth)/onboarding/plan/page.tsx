@@ -1,8 +1,8 @@
-import { Icons } from "@/components/icons";
 import { Product } from "@/types";
 import Plans from "./Plans";
 import { siteConfig } from "@/config/site";
-import { LinkButton } from "@/components/ui/link";
+import LogoutButton from "@/components/logout-button";
+import { Icons } from "@/components/icons";
 async function getPlans(): Promise<Product[]> {
   const res = await fetch(`${siteConfig.url}/api/plans`);
   const { productsArray } = await res.json();
@@ -14,16 +14,11 @@ export default async function Plan() {
 
   return (
     <div className="container flex flex-col items-center  gap-6 py-8 min-h-screen bg-background border border-background ">
-      <LinkButton
-        href="/"
-        variant="ghost"
-        className="absolute left-4 top-4 md:left-8 md:top-8"
-      >
-        <>
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          Back
-        </>
-      </LinkButton>
+      <LogoutButton variant="outline" className="absolute top-4 right-4">
+        <Icons.logout className="mr-2 h-4 w-4" />
+        Logout
+      </LogoutButton>
+
       <div className="mx-auto flex w-fit items-center flex-col gap-4 md:max-w-[58rem]">
         <h2 className="font-heading text-2xl leading-[1.1] sm:text-3xl md:text-6xl">
           Choose your plan

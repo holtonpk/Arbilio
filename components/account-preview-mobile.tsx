@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/Auth";
 import { Icons } from "@/components/icons";
 import { MoreButton } from "./profile-actions";
+import LogoutButton from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
 import useClickOutside from "@/hooks/use-click-outside";
 export const AccountInfoMobile = () => {
@@ -62,15 +63,15 @@ export const AccountInfoMobile = () => {
           >
             Help
           </Link>
-          <Button
-            onClick={handleLogout}
+
+          <LogoutButton
             className="w-full flex gap-2 items-center p-2 "
             variant="default"
             size="sm"
           >
-            {<Icons.logout className="h-4 w-4 " />}
+            <Icons.logout className="h-4 w-4 " />
             Logout
-          </Button>
+          </LogoutButton>
         </div>
       )}
     </div>

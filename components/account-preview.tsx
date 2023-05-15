@@ -3,19 +3,16 @@ import React from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/Auth";
 import { Icons } from "@/components/icons";
-import { MoreButton } from "./profile-actions";
+
+import LogoutButton from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
 import useClickOutside from "@/hooks/use-click-outside";
 export const AccountInfo = () => {
   // const { data: session, status } = useSession();
 
   const [showMenu, setShowMenu] = React.useState(false);
-  const { currentUser, logOut } = useAuth()!;
+  const { currentUser } = useAuth()!;
   const menuRef = React.useRef<HTMLDivElement>(null);
-
-  const handleLogout = () => {
-    logOut();
-  };
 
   const handleToggleMenu = () => {
     setShowMenu((prev) => !prev);
@@ -66,15 +63,15 @@ export const AccountInfo = () => {
           >
             Help
           </Link>
-          <Button
-            onClick={handleLogout}
+
+          <LogoutButton
             className="w-full flex gap-2 items-center p-2 "
             variant="default"
             size="sm"
           >
-            {<Icons.logout className="h-4 w-4 " />}
+            <Icons.logout className="h-4 w-4 " />
             Logout
-          </Button>
+          </LogoutButton>
         </div>
       )}
     </div>
