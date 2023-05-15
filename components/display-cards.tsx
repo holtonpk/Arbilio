@@ -64,7 +64,7 @@ export const AccountCard = ({ data }: any) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-6 bg-secondary items-center rounded-md p-2 mt-4 w-[95%]">
+        <div className="grid grid-cols-3 gap-6 bg-muted items-center rounded-md p-2 mt-4 w-[95%]">
           <div className="flex  flex-col items-center gap-1 justify-center">
             <div className="flex flex-col items-center">
               <h2 className="text-[12px] text-muted-foreground ">Likes</h2>
