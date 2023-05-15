@@ -11,12 +11,15 @@ import * as z from "zod";
 import { useAuth } from "@/context/Auth";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Icons } from "@/components/icons";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
   const { createAccount, logInWithGoogle } = useAuth()!;
   type FormData = z.infer<typeof createUserSchema>;
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -34,7 +37,7 @@ const RegisterForm = () => {
       data.password
     );
     if (createAccountResult?.success) {
-      return;
+      router.push("/onboarding/plan");
     }
     if (createAccountResult?.error === "auth/email-already-in-use") {
       setError("email", {
