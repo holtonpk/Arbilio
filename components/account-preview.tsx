@@ -8,8 +8,6 @@ import LogoutButton from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
 import useClickOutside from "@/hooks/use-click-outside";
 export const AccountInfo = () => {
-  // const { data: session, status } = useSession();
-
   const [showMenu, setShowMenu] = React.useState(false);
   const { currentUser } = useAuth()!;
   const menuRef = React.useRef<HTMLDivElement>(null);

@@ -9,6 +9,7 @@ const ProtectedRoutes = ({ children }: { children: ReactElement }) => {
   if (currentUser) {
     return children;
   }
+
   return (
     <div className="h-screen w-screen bg-background flex justify-center items-center flex-col">
       <h1 className="text-2xl font-semibold tracking-tight">

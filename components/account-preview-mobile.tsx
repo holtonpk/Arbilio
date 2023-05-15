@@ -11,12 +11,8 @@ export const AccountInfoMobile = () => {
   // const { data: session, status } = useSession();
 
   const [showMenu, setShowMenu] = React.useState(false);
-  const { currentUser, logOut } = useAuth()!;
+  const { currentUser } = useAuth()!;
   const menuRef = React.useRef<HTMLDivElement>(null);
-
-  const handleLogout = () => {
-    logOut();
-  };
 
   const handleToggleMenu = () => {
     setShowMenu((prev) => !prev);

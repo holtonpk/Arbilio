@@ -2,8 +2,7 @@
 import React from "react";
 import { useAuth } from "@/context/Auth";
 import { useRouter } from "next/navigation";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
+import { buttonVariants } from "@/components/ui/button";
 import { VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -31,5 +30,6 @@ const LogoutButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
+LogoutButton.displayName = "LogoutButton";
 
 export default LogoutButton;
