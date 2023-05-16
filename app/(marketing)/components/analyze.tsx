@@ -29,6 +29,16 @@ const Analyze = () => {
           <span className="h-4 w-4 border rounded-full border-accent" />
           <span className="w-[1px] h-[150px] bg-accent border-accent " />
         </div>
+        <div className="absolute md:hidden flex items-center flex-col h-full  md:gap-[1px]  top-0 left-1/2 -translate-x-1/2">
+          <span className="w-[1px] h-[120px] bg-gradient-to-t  from-accent "></span>
+          <span className="h-4 w-4 border rounded-full border-accent " />
+          <span className="w-[1px] h-[276px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+          <span className="w-[1px] h-[276px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+
+          <span className="w-[1px] h-[250px] bg-accent border-accent " />
+        </div>
         <div className=" grid w-full  md:w-[80%]   gap-4 md:gap-0   md:ml-auto">
           {features.slice(3, 6).map((feature, indx) => (
             <FeatureCardFlip key={indx} data={feature} />
@@ -58,13 +68,15 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const Icon = Icons[data.icon];
 
   return (
-    <div className="relative overflow-hidden rounded-lg  h-[250px] md:p-2 md:h-[180px] ">
+    <div className="relative overflow-hidden rounded-lg  h-[250px] md:p-2 md:h-[180px] bg-background">
       <div className="flex h-fit flex-col items-center md:items-start justify-between rounded-md ">
         <div className="bg-muted p-3 flex items-center justify-center w-fit h-fit mb-2 rounded-md border-accent border ">
           <Icon className="text-muted-foreground" />
         </div>
 
-        <h3 className="font-bold text-center md:text-left">{data.name}</h3>
+        <h3 className="font-bold text-center text-xl md:text-left">
+          {data.name}
+        </h3>
         <p className="text-sm text-muted-foreground text-center  w-full md:text-left">
           {data.description}
         </p>
@@ -83,7 +95,9 @@ export const FeatureCardFlip = ({ data }: FeatureCardProps) => {
           <Icon className="text-muted-foreground" />
         </div>
 
-        <h3 className="font-bold text-center md:text-right">{data.name}</h3>
+        <h3 className="font-bold text-center text-xl md:text-right">
+          {data.name}
+        </h3>
         <p className="text-sm text-muted-foreground text-center w-[90%] md:w-full md:text-right">
           {data.description}
         </p>

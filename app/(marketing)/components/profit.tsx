@@ -6,7 +6,7 @@ const Profit = () => {
     <section id="profit">
       <HeroHeader
         gradient="bg-gradient-to-r from-red-400 to-yellow-500"
-        lineColor="bg-gradient-to-t md:to-accent md:from-red-400 from-red-400"
+        lineColor="bg-gradient-to-t to-accent from-red-400 "
         number="3"
         title="Profit"
         subtitle="Profit from the best deals"

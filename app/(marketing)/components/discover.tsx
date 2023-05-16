@@ -29,7 +29,7 @@ const Discover = () => {
       />
       <div className="lg:grid lg:grid-cols-2 gap-10 items-center grid lg:w-[90%] mt-16">
         <div className="absolute lg:flex  flex-col items-center h-[580px] lg:h-[600px] hidden gap-[1px]  md:h-[600px] left-1/2 -translate-x-1/2">
-          <span className="w-[1px] h-[50px] bg-gradient-to-t  from-accent "></span>
+          <span className="w-[1px] h-[50px] bg-gradient-to-t  from-accent " />
           <span className="h-4 w-4 border rounded-full border-accent " />
           <span className="w-[1px] h-[180px] border border-dashed border-accent " />
           <span className="h-4 w-4 border rounded-full border-accent" />
@@ -129,7 +129,7 @@ const Discover = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col  p-6 justify-between h-full lg:h-[600px] ">
+        <div className="flex flex-col  p-6 justify-between h-full lg:h-[600px] relative">
           {features.map((feature, i) => (
             <FeatureCard key={i} data={feature} />
           ))}
