@@ -57,7 +57,7 @@ const HeroText: React.FC = () => {
         {headers.map((header, index) => (
           <div key={index} className="relative overflow-visible ">
             <h1
-              className={`relative font-heading text-7xl md:text-8xl font-bold text-transparent bg-clip-text pb-2 ${
+              className={`relative font-heading text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-bold text-transparent bg-clip-text pb-2 ${
                 header.gradientClass
               } ${
                 activeIndex === index ? "opacity-100" : "opacity-0"
@@ -66,7 +66,7 @@ const HeroText: React.FC = () => {
               {header.text}
             </h1>
             <h1
-              className={`absolute top-0 font-heading text-7xl md:text-8xl bg-clip-text bg-gradient-to-b from-primary/80 to-primary  font-bold text-transparent ${
+              className={`absolute top-0 font-heading text-7xl md:text-8xl  lg:text-7xl xl:text-8xl bg-clip-text bg-gradient-to-b from-primary/80 to-primary  font-bold text-transparent ${
                 activeIndex === index ? "opacity-0" : "opacity-100"
               } transition-opacity duration-[2000ms]`}
             >
