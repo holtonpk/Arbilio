@@ -76,8 +76,9 @@ const HeroText: React.FC = () => {
         ))}
       </div>
       <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-        The most powerful tool for Tiktok dropshipping. leverage th power of
-        data to find winning products, create videos and earn money.
+        Experience the ultimate tool for TikTok dropshipping. Use data to find
+        top products, craft engaging videos, and boost your earnings. Simplify
+        and succeed with us.
       </p>
       <div className=" flex gap-4 mt-4 flex-col w-full md:w-fit md:flex-row items-center">
         <LinkButton

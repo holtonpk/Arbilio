@@ -11,13 +11,35 @@ const Analyze = () => {
         number="2"
         title="Analyze"
         subtitle="Leverage the power of our tools"
-        description="This project is an experiment to see how a modern app, with features like auth, subscriptions, API routes, and static pages would work in Next.js 13 app dir."
+        description="Unleash the potential of TikDrop.io's robust tools designed to empower your dropshipping business. They offer streamlined solutions for product discovery, video creation, and revenue enhancement, making your path to success both efficient and profitable."
       />
+      <div className="grid grid-cols-2 w-[80%] gap-20 pt-[90px] relative ">
+        <div className="absolute md:flex items-center flex-col h-full hidden gap-[1px]  top-0 left-1/2 -translate-x-1/2">
+          <span className="w-[1px] h-6 bg-gradient-to-t  from-accent "></span>
+          <span className="h-4 w-4 border rounded-full border-accent " />
+          <span className="w-[1px] h-[74px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+          <span className="w-[1px] h-[74px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+          <span className="w-[1px] h-[74px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+          <span className="w-[1px] h-[74px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+          <span className="w-[1px] h-[74px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+          <span className="w-[1px] h-[150px] bg-accent border-accent " />
+        </div>
+        <div className=" grid    w-[80%]     ml-auto">
+          {features.slice(3, 6).map((feature, indx) => (
+            <FeatureCardFlip key={indx} data={feature} />
+          ))}
+        </div>
 
-      <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3 mt-4">
-        {features.map((feature, indx) => (
-          <FeatureCard key={indx} data={feature} />
-        ))}
+        <div className=" grid justify-center  w-[80%]  -translate-y-[90px] ">
+          {features.slice(0, 3).map((feature, indx) => (
+            <FeatureCard key={indx} data={feature} />
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -36,15 +58,35 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const Icon = Icons[data.icon];
 
   return (
-    <div className="relative overflow-hidden rounded-lg  p-2">
-      <div className="flex h-fit flex-col justify-between rounded-md ">
+    <div className="relative overflow-hidden rounded-lg  p-2 h-[180px] ">
+      <div className="flex h-fit flex-col items-center md:items-start justify-between rounded-md ">
         <div className="bg-muted p-3 flex items-center justify-center w-fit h-fit mb-2 rounded-md border-accent border ">
           <Icon className="text-muted-foreground" />
         </div>
-        <div className="space-y-1">
-          <h3 className="font-bold">{data.name}</h3>
-          <p className="text-sm text-muted-foreground">{data.description}</p>
+
+        <h3 className="font-bold text-center md:text-left">{data.name}</h3>
+        <p className="text-sm text-muted-foreground text-center w-[90%] md:w-full md:text-left">
+          {data.description}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export const FeatureCardFlip = ({ data }: FeatureCardProps) => {
+  const Icon = Icons[data.icon];
+
+  return (
+    <div className="relative overflow-hidden rounded-lg  p-2">
+      <div className="flex h-fit flex-col items-center md:items-end  justify-between rounded-md ">
+        <div className="bg-muted p-3 flex items-center justify-center w-fit h-fit mb-2 rounded-md border-accent border ">
+          <Icon className="text-muted-foreground" />
         </div>
+
+        <h3 className="font-bold text-center md:text-right">{data.name}</h3>
+        <p className="text-sm text-muted-foreground text-center w-[90%] md:w-full md:text-right">
+          {data.description}
+        </p>
       </div>
     </div>
   );

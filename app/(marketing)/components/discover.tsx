@@ -25,25 +25,17 @@ const Discover = () => {
         number="1"
         title="Discover"
         subtitle="Explore 500+ active sellers"
-        description="This project is an experiment to see how a modern app, with features like auth, subscriptions, API routes, and static pages would work in Next.js 13 app dir."
+        description="Immerse yourself in TikDrop.io's vast network of over 500 active sellers. It's an exciting marketplace teeming with unique products and a dynamic community of entrepreneurs, poised to drive your business growth in dropshipping."
       />
       <div className="lg:grid lg:grid-cols-2 gap-10 items-center grid lg:w-[90%] mt-16">
-        <div className="absolute lg:grid grid-rows-3 h-[580px] lg:h-[600px] hidden gap-[1px]  md:h-[600px] left-1/2 -translate-x-1/2">
-          <div className="flex flex-col h-full items-center gap-1">
-            <span className="w-[1px] h-1/2 bg-gradient-to-t  from-accent "></span>
-            <span className="h-4 w-4 border rounded-full border-accent "></span>
-            <span className="w-[1px] h-1/2 border border-accent "></span>
-          </div>
-          <div className="flex flex-col h-full items-center gap-1">
-            <span className="w-[1px] h-1/2 border border-accent border-dashed "></span>
-            <span className="h-4 w-4 border rounded-full border-accent"></span>
-            <span className="w-[1px] h-1/2 border border-dashed border-accent "></span>
-          </div>
-          <div className="flex flex-col h-full items-center gap-1">
-            <span className="w-[1px] h-1/2 border border-dashed border-accent "></span>
-            <span className="h-4 w-4 border rounded-full border-accent "></span>
-            <span className="w-[1px] h-1/2 bg-accent "></span>
-          </div>
+        <div className="absolute lg:flex  flex-col items-center h-[580px] lg:h-[600px] hidden gap-[1px]  md:h-[600px] left-1/2 -translate-x-1/2">
+          <span className="w-[1px] h-[50px] bg-gradient-to-t  from-accent "></span>
+          <span className="h-4 w-4 border rounded-full border-accent " />
+          <span className="w-[1px] h-[180px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+          <span className="w-[1px] h-[180px] border border-dashed border-accent " />
+          <span className="h-4 w-4 border rounded-full border-accent" />
+          <span className="w-[1px] h-[180px] bg-accent border-accent " />
         </div>
         <div className=" lg:w-full w-[80%] mx-auto lg:mx-0 h-[580px] lg:h-[600px]  md:h-[600px] relative">
           <div className="lg:w-[80%] w-[95%]  max-h-[400px] relative aspect-[1.2/1] md:aspect-[1.4/1] rounded  ">
@@ -157,16 +149,16 @@ const features = [
     icon: "analytics" as keyof typeof Icons,
   },
   {
-    name: "Comprehend Top-Performing Content",
+    name: "Understand High-Performing Content",
     description:
       "Gain valuable insights into the dynamics of the most successful content in your niche, allowing you to adapt your strategies and improve your content quality.",
-    icon: "analytics" as keyof typeof Icons,
+    icon: "media" as keyof typeof Icons,
   },
   {
     name: "Brand Analysis",
     description:
       "Utilize our advanced tools to conduct a detailed analysis of your branding strategies, empowering you to understand and optimize your brand's positioning in the market.",
-    icon: "analytics" as keyof typeof Icons,
+    icon: "search" as keyof typeof Icons,
   },
 ];
 

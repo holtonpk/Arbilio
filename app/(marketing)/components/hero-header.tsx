@@ -37,14 +37,14 @@ const HeroHeader: React.FC<HeroHeaderProps> = ({
         </div>
       </div>
       <h1
-        className={`bg-clip-text max-w-[60%] text-transparent font-bold text-5xl ${gradient}`}
+        className={`bg-clip-text md:max-w-[60%] text-transparent font-bold text-5xl ${gradient}`}
       >
         {title}
       </h1>
-      <h2 className="font-heading text-3xl max-w-[50%] leading-[1.1] sm:text-3xl md:text-6xl font-bold text-center">
+      <h2 className="font-heading text-3xl md:max-w-[50%] leading-[1.1] sm:text-3xl md:text-6xl font-bold text-center">
         {subtitle}
       </h2>
-      <p className="max-w-[65%] leading-normal text-muted-foreground sm:text-lg sm:leading-7 text-center">
+      <p className="md:max-w-[65%] leading-normal text-muted-foreground sm:text-lg sm:leading-7 text-center">
         {description}
       </p>
     </section>

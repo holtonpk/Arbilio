@@ -7,7 +7,7 @@ const Testimonials = () => {
       <p className="text-muted-foreground  text-md w-fit mx-auto uppercase font-bold mb-3 mt-10">
         Proudly Supporting sellers on
       </p>
-      <div className=" w-full max-w-[900px] gap-8 mx-auto items-center relative my-16">
+      <div className=" w-full max-w-[1100px] gap-8 mx-auto items-center relative my-16">
         <div className="h-full w-[20%] bg-gradient-to-r from-background  absolute left-0 z-10"></div>
         <Carousel svgs={svgs} />
         <div className="h-full w-[20%] bg-gradient-to-l from-background  absolute right-0 top-0 z-10"></div>

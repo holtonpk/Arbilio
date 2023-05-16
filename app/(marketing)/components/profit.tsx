@@ -6,11 +6,11 @@ const Profit = () => {
     <section id="profit">
       <HeroHeader
         gradient="bg-gradient-to-r from-red-400 to-yellow-500"
-        lineColor="from-red-400"
+        lineColor="bg-gradient-to-t md:to-accent md:from-red-400 from-red-400"
         number="3"
         title="Profit"
         subtitle="Profit from the best deals"
-        description="This project is an experiment to see how a modern app, with features like auth, subscriptions, API routes, and static pages would work in Next.js 13 app dir."
+        description="With TikDrop.io, reap the benefits of the finest deals and engage in profitable arbitrage. Our platform opens up access to top-quality products at competitive prices, creating lucrative opportunities for optimal margins."
       />
     </section>
   );
