@@ -54,7 +54,7 @@ export function DashboardNav({ items, children }: MainNavProps) {
         {showMobileMenu ? <Icons.close /> : <Icons.menu />}
         <span className="font-bold"></span>
       </button>
-      {showMobileMenu && <MobileDashboardNav />}
+      {showMobileMenu && <MobileDashboardNav setShowMenu={setShowMobileMenu} />}
     </div>
   );
 }

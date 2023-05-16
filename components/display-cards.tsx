@@ -43,7 +43,7 @@ export const AccountCard = ({ data }: any) => {
         href={`/accounts/account/${data.recordId}`}
         className="w-full  bg-card rounded-md h-fit border border-border pt-4  shadow-lg  pb-2 items-center relative flex flex-col  cursor-pointer "
       >
-        <div className="flex items-center gap-2 w-[90%] pb-0  rounded-md ">
+        <div className="grid grid-cols-[40px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-[90%] pb-0  rounded-md ">
           <div className="aspect-square w-10 h-10 bg-muted rounded-md relative overflow-hidden">
             <Image
               src={data?.avatar}
@@ -54,11 +54,12 @@ export const AccountCard = ({ data }: any) => {
                     33vw"
             />
           </div>
-          <div className="flex flex-col max-w-[80%] ">
+
+          <div className="flex flex-col max-w-full overflow-hidden">
             <h1 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis  text-primary">
               {data.nickname}
             </h1>
-            <div className="text-[12px] text-gray-500  text-muted-foreground">
+            <div className="text-[12px] text-gray-500  text-muted-foreground overflow-hidden text-ellipsis">
               {"@" + data.uniqueId}
             </div>
           </div>
@@ -68,7 +69,7 @@ export const AccountCard = ({ data }: any) => {
           <div className="flex  flex-col items-center gap-1 justify-center">
             <div className="flex flex-col items-center">
               <h2 className="text-[12px] text-muted-foreground ">Likes</h2>
-              <h3 className="text-base font-bold text-primary">
+              <h3 className="text-[12px] sm:text-base font-bold text-primary">
                 {formatNumber(parseInt(data.stats.likes))}
               </h3>
             </div>
@@ -76,7 +77,7 @@ export const AccountCard = ({ data }: any) => {
           <div className="flex flex-col items-center gap-1  justify-center">
             <div className="flex flex-col items-center">
               <h2 className="text-[12px] text-muted-foreground">Followers</h2>
-              <h3 className="text-base font-bold text-primary">
+              <h3 className="text-[12px] sm:text-base font-bold text-primary">
                 {formatNumber(parseInt(data.stats.followers))}
               </h3>
             </div>
@@ -84,7 +85,7 @@ export const AccountCard = ({ data }: any) => {
           <div className="flex  flex-col items-center gap-1  justify-center">
             <div className="flex flex-col items-center">
               <h2 className="text-[12px] text-muted-foreground">Posts</h2>
-              <h3 className="text-base font-bold text-primary">
+              <h3 className="text-[12px] sm:text-base font-bold text-primary">
                 {formatNumber(parseInt(data.stats.posts))}
               </h3>
             </div>
@@ -108,8 +109,8 @@ export const AccountCard = ({ data }: any) => {
                     33vw"
                   />
 
-                  <div className="absolute top-2 right-2 z-30 flex items-center text-[12px] gap-1 text-white ">
-                    <Icons.posts className="text-2xl  h-4 w-4" />
+                  <div className="absolute top-1 md:top-2 right-1 md:right-2 z-30 flex items-center text-[8px] md:text-[12px] gap-[2px] md:gap-1 text-white ">
+                    <Icons.posts className="text-2xl h-2 w-2  md:h-4 md:w-4" />
                     {formatNumber(item.postData.postInfo.playCount)}
                   </div>
                   <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>
@@ -176,7 +177,7 @@ export const CollectionCard = ({ data }: any) => {
         href={`/accounts/account/${data.recordId}`}
         className="w-full bg-card rounded-md h-fit border border-border pt-4  shadow-lg  pb-2 items-center relative flex flex-col  cursor-pointer "
       >
-        <div className="flex items-center gap-2 w-[90%] pb-0  rounded-md  ">
+        <div className="grid grid-cols-[40px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-[90%] pb-0  rounded-md ">
           <div className="w-10 h-10 bg-muted rounded-md relative overflow-hidden ">
             <Image
               src={data?.avatar}
@@ -187,11 +188,11 @@ export const CollectionCard = ({ data }: any) => {
                     33vw"
             />
           </div>
-          <div className="flex flex-col gap- max-w-[80%] ">
+          <div className="flex flex-col max-w-full overflow-hidden">
             <h1 className="text-base font-bold  text-primary whitespace-nowrap overflow-hidden text-ellipsis">
               {data.nickname}
             </h1>
-            <div className="text-[12px]  text-muted-foreground ">
+            <div className="text-[12px] text-gray-500  text-muted-foreground overflow-hidden text-ellipsis">
               {"@" + data.uniqueId}
             </div>
           </div>
