@@ -33,7 +33,7 @@ const AdminLayout = () => {
     async function getLastUpdate() {
       try {
         const records = await getDocs(
-          query(collection(db, "updateLogs"), orderBy("created", "desc"))
+          query(collection(db, "updateLogs"), orderBy("time", "desc"))
         );
         setData(records.docs);
       } catch (error) {}
@@ -113,29 +113,54 @@ const UpdateTable = ({ updates }: any) => {
       </div>
       <div className="flex flex-col divide-y divide-border rounded-md border  mt-2 max-h-[50vh] overflow-scroll">
         {updates &&
-          updates.map((update: any, indx: number) => (
-            <div
-              key={indx}
-              className="  p-2 h-20 w-full flex items-center justify-between"
-            >
-              <div className="w-[30%] text-primary">{update.data().data}</div>
-              <div className="w-[30%] text-primary">{update.data().time}</div>
-              <div className="w-[30%] text-primary">
-                {timeSince(new Date(update.data().time).getTime() / 1000)}
+          updates.map((update: any, indx: number) => {
+            const timestamp = update.data().time;
+            const date = new Date(
+              timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
+            );
+
+            // convert the date to Mountain Standard Time
+            const options: Intl.DateTimeFormatOptions = {
+              timeZone: "America/Denver",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+            };
+            let mstDate = new Intl.DateTimeFormat("en-US", options).format(
+              date
+            );
+
+            // remove leading zeroes and replace ',' with '@'
+            mstDate = mstDate.replace(/\b0+/g, "").replace(",", "@");
+
+            return (
+              <div
+                key={indx}
+                className="  p-2 h-20 w-full flex items-center justify-between"
+              >
+                <div className="w-[30%] text-primary">{update.data().data}</div>
+                <div className="w-[30%] text-primary">{mstDate}</div>
+                <div className="w-[30%] text-primary">
+                  {timeSince(date.getTime() / 1000)}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     </div>
   );
 };
 
 const UpdateData = ({ data }: any) => {
-  console.log("rr", data);
   const updateTypes = [
     { label: "Account Data", value: "accountData" },
     { label: "Account & Post Data", value: "accountsPosts" },
   ];
+  const timestamp = data[0].data().time;
+  const date = new Date(
+    timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
+  );
 
   const updateStepsRef = useRef<HTMLDivElement>(null);
   const [updating, setUpdating] = useState(false);
@@ -143,7 +168,7 @@ const UpdateData = ({ data }: any) => {
   const [failList, setFailList] = useState<string[]>([]);
   const [syncComplete, setSyncComplete] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<string | undefined>(
-    timeSince(new Date(data[0].data().time).getTime() / 1000)
+    (data.length > 0 && timeSince(date.getTime() / 1000)) || undefined
   );
   const [isShowing, setIsShowing] = useState(false);
   const [selectedUpdateType, setSelectedUpdateType] = useState<any>(
@@ -342,7 +367,7 @@ const UpdateData = ({ data }: any) => {
     }
     await addDoc(collection(db, "updateLogs"), {
       data: selectedUpdateType.value,
-      time: new Date().toISOString(),
+      time: new Date(),
     });
     setSyncComplete(true);
   };
