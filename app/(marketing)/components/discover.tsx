@@ -27,7 +27,7 @@ const Discover = () => {
         subtitle="Explore 500+ active sellers"
         description="Immerse yourself in TikDrop.io's vast network of over 500 active sellers. It's an exciting marketplace teeming with unique products and a dynamic community of entrepreneurs, poised to drive your business growth in dropshipping."
       />
-      <div className="lg:grid lg:grid-cols-2 gap-10 items-center grid lg:w-[90%] mt-16">
+      <div className="lg:grid lg:grid-cols-2 gap-10 items-center grid lg:w-[90%] mt-16 ">
         <div className="absolute lg:flex  flex-col items-center h-[580px] lg:h-[600px] hidden gap-[1px]  md:h-[600px] left-1/2 -translate-x-1/2">
           <span className="w-[1px] h-[50px] bg-gradient-to-t  from-accent " />
           <span className="h-4 w-4 border rounded-full border-accent " />
@@ -37,7 +37,7 @@ const Discover = () => {
           <span className="h-4 w-4 border rounded-full border-accent" />
           <span className="w-[1px] h-[180px] bg-accent border-accent " />
         </div>
-        <div className=" lg:w-full w-[80%] mx-auto lg:mx-0 h-[580px] lg:h-[600px]  md:h-[600px] relative">
+        <div className=" lg:w-full w-[80%] mx-auto lg:mx-0 h-[500px] sm:h-[600px]   lg:h-[600px]  md:h-[600px] relative">
           <div className="lg:w-[80%] w-[95%]  max-h-[400px] relative aspect-[1.2/1] md:aspect-[1.4/1] rounded  ">
             <div className="absolute w-full h-full blur-[20px] opacity-10 bg-primary"></div>
             <div className="relative z-10 w-full h-full rounded-md overflow-hidden bg-background">
@@ -62,21 +62,18 @@ const Discover = () => {
                   <div className="w-10 h-6 rounded-md bg-muted"></div>
                 </div>
                 <div className="gap-4 grid grid-cols-4 md:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5  w-full mx-auto pt-4   ">
-                  <span className="bg-accent h-[100px] w-20 rounded-md relative">
+                  <span className="bg-accent h-[100px] w-full rounded-md relative">
                     <Icons.mousePointer className="h-6 w-6 absolute fill-black top-[30%] left-[55%] -translate-x-1/2 -translate-y-1/2" />
                   </span>
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
-                  <span className="bg-muted h-[100px] w-20 rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
+                  <span className="bg-muted h-[100px] w-full rounded-md" />
                 </div>
               </div>
             </div>
@@ -107,17 +104,17 @@ const Discover = () => {
                     <div className="w-10 h-6 rounded-md bg-muted"></div>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4 mt-4 relative ">
-                  <span className="h-40 w-full border rounded-md  relative overflow-hidden">
-                    <div className="absolute  w-[105%] -bottom-1  left-1/2 -translate-x-1/2  mt-auto">
+                <div className="grid grid-cols-2 gap-4 mt-4 relative">
+                  <span className="sm:h-40 w-full border rounded-md  h-[100px] relative overflow-hidden">
+                    <div className="absolute  w-[105%] -bottom-1 h-full  left-1/2 -translate-x-1/2  mt-auto">
                       <Graph
                         labels={[1, 2, 3, 4, 5, 6, 7]}
                         data={[5, 8, 15, 12, 13, 28, 35]}
                       />
                     </div>
                   </span>
-                  <span className="h-40 w-full border rounded-md  relative overflow-hidden">
-                    <div className="absolute  w-[105%] -bottom-1  left-1/2 -translate-x-1/2  mt-auto">
+                  <span className="md:h-40 w-full border rounded-md h-[100px] relative overflow-hidden">
+                    <div className="absolute  w-[105%] -bottom-1 h-full  left-1/2 -translate-x-1/2  mt-auto">
                       <Graph
                         labels={[1, 2, 3, 4, 5, 6, 7]}
                         data={[17, 17, 15, 17, 26, 20, 22]}
