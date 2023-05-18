@@ -14,7 +14,7 @@ async function getData() {
 }
 
 export default async function ProductDatabase() {
-  // const data = await getData();
+  const data = await getData();
 
   return (
     <>
@@ -25,7 +25,7 @@ export default async function ProductDatabase() {
         }
       />
       <div className="w-full rounded-md flex flex-col min-h-screen items-center ">
-        {/* <ProductDataBase data={data} /> */}
+        <ProductDataBase data={data} />
       </div>
     </>
   );

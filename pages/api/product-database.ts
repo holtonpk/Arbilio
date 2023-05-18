@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/context/Auth";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, limit, query } from "firebase/firestore";
 
 interface ResponseData {
   data: any[];
@@ -11,7 +11,7 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   const collectionRef = collection(db, "tiktokProducts");
-  const q = query(collectionRef);
+  const q = query(collectionRef, limit(12));
   const docs = await getDocs(q);
   const formattedData = docs.docs.map(async (doc) => {
     return doc.data();
