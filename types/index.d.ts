@@ -161,3 +161,100 @@ export interface Product {
   features: string[];
   firebaseRole: string;
 }
+
+export type ProductType = {
+  accounts: string[];
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  expand: any;
+  id: string;
+  image: string;
+  supplierUrl: string;
+  title: string;
+  updated: string;
+};
+
+export interface ProductType {
+  accounts: string[];
+  expand: Record<string, unknown>; // An empty object that can have any string as key and any value
+  collectionId: string;
+  image: string;
+  created: string;
+  collectionName: string;
+  updated: string;
+  supplierUrl: string;
+  id: string;
+  title: string;
+  productInfo: ProductInfo;
+  accountsData: AccountDataType[];
+}
+
+export interface ProductInfo {
+  title: string;
+  categoryId: number;
+  productId: number;
+  totalAvailableQuantity: number;
+  description: string;
+  storeInfo: {
+    name: string;
+    companyId: number;
+    storeNumber: number;
+    followers: number;
+    ratingCount: number;
+    rating: string;
+  };
+  ratings: {
+    totalStar: number;
+    averageStar: string;
+    totalStartCount: number;
+    fiveStarCount: number;
+    fourStarCount: number;
+    threeStarCount: number;
+    twoStarCount: number;
+    oneStarCount: number;
+  };
+  images: string[];
+  feedback: {
+    name: string;
+    displayName: string;
+    country: string;
+    rating: number;
+    info: Record<string, string>;
+    date: string;
+    content: string;
+    photos: string[];
+  }[];
+  variants: {
+    options: {
+      id: number;
+      name: string;
+      values: {
+        id: number;
+        name: string;
+        displayName: string;
+        image?: string;
+      }[];
+    }[];
+    prices: {
+      skuId: number;
+      optionValueIds: string;
+      availableQuantity: number;
+      originalPrice: number;
+      salePrice: number;
+    }[];
+  };
+  specs: {
+    attrName: string;
+    attrValue: string;
+  }[];
+  currency: string;
+  originalPrice: {
+    min: number;
+    max: number;
+  };
+  salePrice: {
+    min: number;
+    max: number;
+  };
+}

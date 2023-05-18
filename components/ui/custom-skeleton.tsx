@@ -1,7 +1,18 @@
-const Skeleton = ({ height, width }: any) => {
+import { cn } from "@/lib/utils";
+
+interface SkeletonProps {
+  height?: string | number;
+  width?: string | number;
+  className?: string;
+}
+
+const Skeleton = ({ height, width, className }: SkeletonProps) => {
   return (
     <div
-      className="w-ful h-full bg-accent rounded-md   loading-skeleton"
+      className={cn(
+        "w-full h-full bg-accent rounded-md loading-skeleton ",
+        className
+      )}
       style={{ height: height, width: width }}
     ></div>
   );

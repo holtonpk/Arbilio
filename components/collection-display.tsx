@@ -3,7 +3,7 @@ import React from "react";
 import { Icons } from "@/components/icons";
 import { array } from "zod";
 import Image from "next/image";
-import { CollectionOperations } from "./collection-operations";
+import { CollectionOperations } from "./buttons/collection-operations";
 const CollectionDisplay = () => {
   const [collections, setCollections] = React.useState([]);
 

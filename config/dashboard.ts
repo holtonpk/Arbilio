@@ -46,7 +46,7 @@ export const dashboardConfig: DashboardConfig = {
           href: "/products/top-products",
         },
       ],
-      disabled: true,
+      disabled: false,
     },
     {
       title: "Your Stores",
@@ -198,6 +198,64 @@ export const accountCollectionsConfig: AccountCollectionConfig = {
       {
         title: "Posts",
         value: "posts",
+      },
+    ],
+  },
+};
+
+interface ProductDatabaseConfig {
+  tableHeaders: {
+    primaryHeaders: {
+      title: string;
+    }[];
+    secondaryHeaders: {
+      title: string;
+      value: string;
+    }[];
+  };
+  sortOptions: {
+    title: string;
+    items: {
+      title: string;
+      value: string;
+      icon: string;
+    }[];
+  };
+}
+
+export const productDatabaseConfig: ProductDatabaseConfig = {
+  tableHeaders: {
+    primaryHeaders: [
+      {
+        title: "Product",
+      },
+      {
+        title: "Supplier",
+      },
+    ],
+    secondaryHeaders: [
+      {
+        title: "Accounts",
+        value: "accounts",
+      },
+      {
+        title: "revenue",
+        value: "revenue",
+      },
+    ],
+  },
+  sortOptions: {
+    title: "Sort by",
+    items: [
+      {
+        title: "Popularity",
+        value: "likes",
+        icon: "trendingUp",
+      },
+      {
+        title: "Followers",
+        value: "followers",
+        icon: "followers",
       },
     ],
   },

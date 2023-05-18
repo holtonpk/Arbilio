@@ -121,10 +121,10 @@ const ScrollBar = ({
           ref={scrollTrackRef}
           className="w-full  absolute bg-background h-[16px] items-center flex z-30 top-0 overflow-hidden px-2"
         >
-          <span className="w-full bg-transparent dark:bg-secondary rounded-md h-2 overflow-hidden relative">
+          <span className="w-full bg-transparent dark:bg-accent rounded-md h-2 overflow-hidden relative">
             <span
               ref={scrollBarRef}
-              className="w-[40%] left-0 absolute rounded-md top-1/2 -translate-y-1/2 bg-accent  h-2"
+              className="w-[40%] left-0 absolute rounded-md top-1/2 -translate-y-1/2 bg-secondary  h-2"
             />
           </span>
         </div>

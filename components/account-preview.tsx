@@ -26,8 +26,9 @@ export const AccountInfo = () => {
         variant="ghost"
         size="lg"
       >
-        <div className="aspect-square p-1 mr-2 rounded-full  bg-accent  flex justify-center items-center">
-          <Icons.profile className="h-6 w-6 text-primary   " />
+        <div className="aspect-square p-1 mr-2 rounded-full  h-10 w-10  flex justify-center items-center bg-gradient-to-tl from-green-300 to-orange-400">
+          {/* <Icons.profile className="h-6 w-6 text-primary   " />
+           */}
         </div>
         <div className="flex flex-col items-start">
           <div className="text-sm capitalize font-bold">

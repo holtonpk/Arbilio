@@ -11,7 +11,7 @@ import AppliedFilters from "@/components/applied-filters";
 import { Icons } from "@/components/icons";
 import { accountDatabaseConfig } from "@/config/dashboard";
 import EmptySearch from "@/components/empty-search";
-import useData from "@/hooks/use-data";
+import useData from "@/hooks/use-account-data";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
@@ -64,7 +64,7 @@ const AccountDatabase = ({ originalData }: any) => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 w-full ">
+      <div className="grid gap-2 w-full ">
         <DataSearch
           placeholder="Search for an account"
           searchFunction={searchData}
@@ -91,7 +91,7 @@ const AccountDatabase = ({ originalData }: any) => {
         appliedFilterList={appliedFilterList}
         setAppliedFilterList={setAppliedFilterList}
       />
-      <div className="w-full mt-2">
+      <div className="max-w-full mt-2 ">
         {sortedData?.length === 0 ? (
           <EmptySearch />
         ) : (

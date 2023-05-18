@@ -10,10 +10,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { accountCollectionsConfig } from "@/config/dashboard";
 import { Icons } from "@/components/icons";
-import { RemoveCollectionButton } from "@/components/remove-collection-button";
+import { RemoveCollectionButton } from "@/components/buttons/remove-collection-button";
 import { CollectionType } from "@/types";
-import { RemoveMultiAccountCollectionButton } from "@/components/remove-multi-collection-button";
-import CreateCollectionButton from "@/components/create-collection-button";
+import { RemoveMultiAccountCollectionButton } from "@/components/buttons/remove-multi-collection-button";
+import CreateCollectionButton from "@/components/buttons/create-collection-button";
 const PrimaryHeaders = accountCollectionsConfig.tableHeaders.primaryHeaders;
 const SecondaryHeaders = accountCollectionsConfig.tableHeaders.secondaryHeaders;
 

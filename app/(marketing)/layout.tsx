@@ -1,6 +1,6 @@
 import { marketingConfig } from "@/config/marketing";
 import { LinkButton } from "@/components/ui/link";
-import { MainNav } from "@/components/main-nav";
+import { MainNav } from "@/components/nav/main-nav";
 import { SiteFooter } from "@/components/site-footer";
 
 interface MarketingLayoutProps {

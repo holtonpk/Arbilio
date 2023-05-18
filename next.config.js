@@ -12,6 +12,7 @@ const nextConfig = {
       "p16-sign-sg.tiktokcdn.com",
       "cdn.shopify.com",
       "firebasestorage.googleapis.com",
+      "ae01.alicdn.com",
     ],
   },
   experimental: {

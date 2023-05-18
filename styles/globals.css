@@ -176,3 +176,8 @@
     transform: translate3d(-50%, 0, 0);
   }
 }
+
+.glow {
+  box-shadow: 0 0 30px
+    hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.1) !important;
+}

@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import Link from "next/link";
 import { formatNumber } from "@/lib/utils";
-import DateRange from "@/components/DateRange";
+import DateRange from "@/components/date-range";
 import Image from "next/image";
 import {
   Chart as ChartJS,
@@ -23,7 +23,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { UpdateCollectionButton } from "@/components/update-collection-button";
+import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { MoreButton } from "@/components/profile-actions";
 import { Line } from "react-chartjs-2";
 import { Button } from "@/components/ui/button";
@@ -399,6 +399,7 @@ const ProfileDisplay = () => {
         <h2 className="text-base text-muted-foreground w-fit ">
           {"@" + data?.uniqueId}
         </h2>
+        <h2 className="text-base text-muted-foreground w-fit ">{data?.id}</h2>
         <StatDisplay />
       </div>
     </div>

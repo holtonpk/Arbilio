@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "@/components/side-nav";
+import Navbar from "@/components/nav/side-nav";
 import AccountDatabase from "./account-database";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";

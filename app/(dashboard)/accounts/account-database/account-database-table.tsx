@@ -10,10 +10,10 @@ import {
 } from "@/components/table-components";
 
 import { accountDatabaseConfig } from "@/config/dashboard";
-import { UpdateCollectionButton } from "@/components/update-collection-button";
+import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { Icons } from "@/components/icons";
-import { UpdateMultiCollectionButton } from "@/components/update-multi-collection-button";
-import CreateCollectionButton from "@/components/create-collection-button";
+import { UpdateMultiCollectionButton } from "@/components/buttons/update-multi-collection-button";
+import CreateCollectionButton from "@/components/buttons/create-collection-button";
 import { LinkButton } from "@/components/ui/link";
 
 const PrimaryHeaders = accountDatabaseConfig.tableHeaders.primaryHeaders;
