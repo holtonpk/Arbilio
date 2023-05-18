@@ -12,7 +12,7 @@ async function getData() {
   return data.data;
 }
 
-export default async function ProductDatabasePage() {
+export default async function ProductDatabase() {
   const data = await getData();
   return (
     <>

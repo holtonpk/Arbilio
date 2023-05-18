@@ -1,14 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/context/Auth";
-import {
-  doc,
-  collection,
-  getDocs,
-  query,
-  limit,
-  getDoc,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 
 interface ResponseData {
   data: any[];

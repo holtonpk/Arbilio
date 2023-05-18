@@ -13,8 +13,3 @@ export default async function handler(
 
   res.status(200).json(record);
 }
-
-function getAliIdFromUrl(url: string): string {
-  const match = url.match(/\/item\/(\d+)\.html/);
-  return match ? match[1] : "";
-}
