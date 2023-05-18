@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
-import { dummyData } from "./data";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
