@@ -21,9 +21,10 @@ export default async function handler(
   const collectionRef = collection(db, "tiktokProducts");
   const q = query(collectionRef);
   const docs = await getDocs(q);
-  const data = docs.docs.map((doc) => {
+  const formattedData = docs.docs.map(async (doc) => {
     return doc.data();
   });
+
   // const formattedData = docs.docs.map(async (doc) => {
   //   const docData = doc.data();
 
@@ -42,7 +43,7 @@ export default async function handler(
   //   };
   // });
 
-  // const data = await Promise.all(formattedData);
+  const data = await Promise.all(formattedData);
 
   res.status(200).json({ data });
 }

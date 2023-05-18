@@ -1,7 +1,7 @@
 import { AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
 import { ProductType } from "@/types";
-import ViewProduct from "../view-product";
+import ViewProduct from "./view-product";
 import Loading from "./loading";
 const getData = async (recordId: string): Promise<ProductType> => {
   const res = await fetch(`${siteConfig.url}/api/view-product/${recordId}`, {
