@@ -8,6 +8,7 @@ async function getData() {
   const response = await fetch(url, {
     cache: "no-cache",
   });
+  console.log("res===>", response);
   const data = await response.json();
   return data.data;
 }
