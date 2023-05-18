@@ -18,7 +18,7 @@ export default async function MarketingLayout({
           <nav className="hidden md:flex gap-4 w-fit ">
             <LinkButton
               href="/login"
-              variant="secondary"
+              variant="outline"
               size="sm"
               className="px-4 mr-2 whitespace-nowrap"
             >

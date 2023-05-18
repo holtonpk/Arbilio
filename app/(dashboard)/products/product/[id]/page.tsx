@@ -10,10 +10,7 @@ const getData = async (recordId: string): Promise<ProductType> => {
   const record = await res.json();
   const productInfoId = getAliIdFromUrl(record?.supplierUrl);
   const productInfo = await fetch(
-    `${siteConfig.url}/api/scrape/aliexpress/${productInfoId}`,
-    {
-      cache: "no-cache",
-    }
+    `${siteConfig.url}/api/scrape/aliexpress/${productInfoId}`
   );
 
   const accountData: AccountDataType[] = [];
