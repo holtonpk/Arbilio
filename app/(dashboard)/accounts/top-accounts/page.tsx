@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
 import AccountRank from "./account-rank";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 import ProtectFeature from "@/components/protect-feature";
+
 async function getData() {
   const rankType = "followers";
   const res = await fetch(`${siteConfig.url}/api/top-accounts`);
