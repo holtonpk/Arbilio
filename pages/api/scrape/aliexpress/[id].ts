@@ -1,4 +1,4 @@
-// const scrape = require("aliexpress-product-scraper");
+const scrape = require("aliexpress-product-scraper");
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type ResponseData = {
@@ -10,9 +10,9 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   const { id } = req.query;
-  // const product = scrape(id);
+  const product = scrape(id);
 
-  // const data = await product;
+  const data = await product;
 
-  res.status(200).json({ data: "data" });
+  res.status(200).json(data);
 }
