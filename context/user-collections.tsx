@@ -71,7 +71,6 @@ export const UserCollectionProvider = ({
     };
 
     if (currentUser) {
-      console.log("currentUser", currentUser);
       const userCollectionsRef = collection(
         db,
         `users/${currentUser.uid}/accountCollections`

@@ -97,7 +97,7 @@ const UpdateDialog = ({
       setCurrentCollections(activeCollections.data);
     }
     fetchActiveCollections();
-  }, [account.recordId, findCollectionsContainingId]);
+  }, [account, findCollectionsContainingId]);
 
   async function handleUpdateCollection() {
     setIsLoading(true);
@@ -189,22 +189,19 @@ const CollectionDisplay: React.FC<CollectionDisplayProps> = ({
 
   const toggleSelected = () => {
     if (selected) {
-      console.log("removing");
       setSelectedCollections(
         selectedCollections.filter((id) => id !== collection.id)
       );
       setSelected(false);
     } else {
-      console.log("adding");
       setSelectedCollections([...selectedCollections, collection.id]);
       setSelected(true);
     }
   };
 
-  // React.useEffect(() => {
-  //   console.log("selectedCollections", selectedCollections);
-  //   setSelected(selectedCollections?.includes(collection.id));
-  // }, [selectedCollections]);
+  React.useEffect(() => {
+    setSelected(selectedCollections?.includes(collection.id));
+  }, [selectedCollections, collection.id]);
 
   return (
     <div

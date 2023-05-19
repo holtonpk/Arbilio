@@ -14,6 +14,7 @@ import {
   arrayUnion,
   arrayRemove,
   QuerySnapshot,
+  DocumentData,
 } from "firebase/firestore";
 import { auth, app } from "@/firebase";
 import { useAuth } from "@/context/Auth";
@@ -32,11 +33,9 @@ const useCollection = () => {
       if (docSnapshot.exists()) {
         return docSnapshot.data() as CollectionType;
       } else {
-        console.log("No such document!");
         return null;
       }
     } catch (error) {
-      console.error("Error getting document:", error);
       return null;
     }
   };
@@ -202,21 +201,25 @@ const useCollection = () => {
         `users/${currentUser.uid}/accountCollections`
       );
       const querySnapshot: QuerySnapshot = await getDocs(userCollectionsRef);
-      const collectionIds: string[] = [];
       const promises = querySnapshot.docs.map(async (doc) => {
         const accountCollectionRef = doc.get("ref");
-        const accountCollectionSnapshot = await getDoc(accountCollectionRef);
-        const ids = accountCollectionSnapshot.get("ids") || [];
-        if (ids.includes(searchId)) {
-          collectionIds.push(doc.id);
+        try {
+          const docs = await getDoc(accountCollectionRef);
+          const record = docs.data() as DocumentData;
+          if (record.ids.includes(searchId)) {
+            return doc.id;
+          }
+          return []; // Return an empty array instead of null
+        } catch (error) {
+          return [];
         }
       });
 
-      await Promise.all(promises);
-
-      return { data: collectionIds };
+      const results = await Promise.all(promises);
+      const data = results.flat();
+      return { data, error: null }; // Consistent return type
     } catch (error) {
-      return { error: error, data: [] };
+      return { data: [], error };
     }
   };
 

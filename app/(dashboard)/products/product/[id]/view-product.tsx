@@ -17,7 +17,7 @@ const ViewProduct = ({ data }: ViewProductProps) => {
     <div className="grid md:grid-cols-[30%_1fr] gap-4 p-4">
       <h1 className="md:hidden text-2xl font-bold capitalize">{data.title}</h1>
 
-      <ProductImage images={data.productInfo.images} />
+      <ProductImage images={data.supplierInfo.supplierImages} />
       <section className=" rounded-md">
         <h1 className="text-2xl font-bold capitalize md:block hidden p-4">
           {data.title}
@@ -43,7 +43,7 @@ const ViewProduct = ({ data }: ViewProductProps) => {
               Supplier Price
             </h1>
             <h1 className="text-[12px] sm:text-lg  text-primary font-bold ">
-              {"$" + data.productInfo.salePrice.min + "/ unit"}
+              {"$" + data.supplierInfo.supplierPrice.min + "/ unit"}
             </h1>
           </div>
         </div>
