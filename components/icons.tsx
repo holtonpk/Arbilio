@@ -63,6 +63,7 @@ import {
   MousePointer,
   MousePointerClick,
   Crosshair,
+  Copy,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -82,6 +83,7 @@ export const Icons = {
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   chevronDown: ChevronDown,
+  copy: Copy,
   mousePointer: MousePointer,
   mousePointerClick: MousePointerClick,
   chevronUp: ChevronUp,

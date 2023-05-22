@@ -13,6 +13,12 @@ import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { db } from "@/context/Auth";
 import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import {
   doc,
   collection,
   getDocs,
@@ -27,6 +33,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { siteConfig } from "@/config/site";
+import { AccountStatsResponse } from "@/types";
 
 export default function DataScrape() {
   const [data, setData] = useState<any>(undefined);
@@ -108,8 +115,9 @@ const UpdateTable = ({ updates }: any) => {
 
 const UpdateData = ({ data }: any) => {
   const updateTypes = [
-    { label: "Account Data", value: "accountData" },
-    { label: "Account & Post Data", value: "accountsPosts" },
+    { label: "Account Stats", value: "accountsStats" },
+    { label: "Account Info", value: "accountInfo" },
+    { label: "Account Posts", value: "accountsPosts" },
   ];
   const timestamp = data[0].data().time;
   const date = new Date(
@@ -124,206 +132,242 @@ const UpdateData = ({ data }: any) => {
   const [lastUpdate, setLastUpdate] = useState<string | undefined>(
     (data.length > 0 && timeSince(date.getTime() / 1000)) || undefined
   );
-  const [isShowing, setIsShowing] = useState(false);
   const [selectedUpdateType, setSelectedUpdateType] = useState<any>(
     updateTypes[0]
   );
   const [updateSteps, setUpdateSteps] = useState<string[]>([]);
-  // const [forceStop, setForceStop] = useState(false);
   const forceStopRef = useRef(false);
-
-  const fetchJson = async (url: string) => {
-    const res = await fetch(url);
-    return res.json();
-  };
-
-  // Function to fetch and validate the JSON data
-  const fetchAndValidate = async (url: string, expectedData: string[]) => {
-    const data = await fetchJson(url);
-    // Check if the expected data exists
-    if (expectedData.every((key) => data.hasOwnProperty(key))) {
-      return data;
-    } else {
-      console.error("Unexpected data format:", data);
-      throw new Error("Unexpected data format");
-    }
-  };
-
-  // Function to scrape account data
-  const ScrapeAccountData = (uniqueId: string) =>
-    fetchAndValidate(`${siteConfig.url}/api/scrape/account/${uniqueId}`, [
-      "posts",
-    ]);
-
-  // Function to scrape post data
-  const ScrapePostData = (uniqueId: string, postId: string) =>
-    fetchAndValidate(
-      `${siteConfig.url}/api/scrape/post/${uniqueId}/${postId}`,
-      ["video", "cover"]
-    );
-
-  // Function to create a new post
-  const CreateNewPost = async (
-    postId: string,
-    coverImageUrl: string,
-    newPostData: any
-  ) => {
-    const response = await fetch(coverImageUrl);
-    const blob = await response.blob();
-    const formData = new FormData();
-    formData.append("cover", blob);
-    formData.append("postId", postId);
-    formData.append("postData", JSON.stringify(newPostData));
-    const record = await addDoc(collection(db, "posts"), formData);
-    return record.id;
-  };
-
-  // Function to update account data
-  const UpdateAccountData = (recordId: string, data: any) =>
-    updateDoc(doc(db, "tiktokAccounts", recordId), data);
-
-  // Function to fetch account data and handle possible errors
-  async function fetchAccountData(uniqueID: string) {
-    try {
-      const response = await fetch(
-        `${siteConfig.url}/api/scrape/user/${uniqueID}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        return { success: data };
-      }
-      throw new Error(`Error fetching data: ${response.status}`);
-    } catch (error) {
-      return { error };
-    }
-  }
 
   // Function to update the message
   const updateMessage = (text: string) =>
     setUpdateSteps((prevSteps) => [...prevSteps, text]);
 
-  // Function to update account data and handle possible errors
-  const updateAccountData = async (record: any) => {
-    const { uniqueId, id } = record.data();
-    updateMessage(`fetching data for ${uniqueId}`);
-    const res = await fetchAccountData(uniqueId);
-    if (res.success) {
-      const data = res.success;
-      const dataCollectionTime = new Date().getTime();
-      const accountStats = [
-        { dataCollectionTime, ...data.json.userInfo.stats },
-        ...(record.data()?.accountStats || []),
-      ];
-      await UpdateAccountData(id, {
-        userInfo: data.json.userInfo,
-        accountStats,
-      });
-      updateMessage(`✅ successfully updated data for ${uniqueId}`);
-    } else if (res.error) {
-      const addBadDoc = doc(db, "tiktokBadAccounts", id);
-      await setDoc(addBadDoc, record.data());
-      updateMessage(`🚫 failed to update data for ${uniqueId}`);
-      console.error("Error updating data:", res.error);
-      updateMessage(`error ==> ${res.error}`);
+  //=========> Function to update account info and handle possible errors <=========================
+  const UpdateAccountInfo = async () => {
+    try {
+      updateMessage("Fetching data...");
+
+      const res = await getDocs(collection(db, "tiktok-accounts"));
+      const records = res.docs;
+      const totalRecords = records.length;
+
+      updateMessage("Updating account info...");
+      for (let i = 0; i < totalRecords; i++) {
+        if (forceStopRef.current) break;
+        const record = records[i];
+        const { uniqueId, id, userInfo } = record.data();
+
+        // set Criteria for updating account info
+        if (!userInfo) {
+          try {
+            updateMessage(`Fetching info for ${uniqueId}`);
+
+            const response = await fetch(
+              `${siteConfig.url}/api/scrape/user/${uniqueId}`
+            );
+            const data = await response.json();
+
+            await updateDoc(doc(db, "tiktok-accounts", id), {
+              userInfo: data.json.userInfo,
+            });
+
+            updateMessage(`✅ Successfully updated data for ${uniqueId}`);
+          } catch (error) {
+            console.error(`Error updating info for ${uniqueId}:`, error);
+            updateMessage(`🚫 Failed to update info for ${uniqueId}`);
+            updateMessage(`Error ==> ${error}`);
+            const addBadDoc = doc(db, "tiktokBadAccounts", id);
+            await setDoc(addBadDoc, { id: record.data().id });
+          }
+        }
+
+        setProgress((prevProgress) => prevProgress + (1 / totalRecords) * 100);
+      }
+
+      updateMessage("Account info update completed!");
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      updateMessage("Error fetching data!");
     }
   };
 
-  const GetNewTopPosts = async (posts: any[]) => {
-    return posts.sort((a, b) => b.playCount - a.playCount).slice(0, 5);
-  };
+  //=========> Function to update account stats and handle possible errors <=========================
+  const UpdateAccountStats = async () => {
+    try {
+      updateMessage("Fetching data...");
 
-  const ConfigAccountsPosts = async (
-    uniqueId: string,
-    recordId: string,
-    newPostData: any
-  ) => {
-    const newTopPosts = await GetNewTopPosts(newPostData);
+      const response = await fetch(`${siteConfig.url}/api/scrape/following`);
+      const res = await response.json();
+      const records = res.data as AccountStatsResponse[];
+      const totalRecords = records.length;
 
-    const top5PostsRelationPromises = newTopPosts.map(async (post: any) => {
-      try {
-        // const postExists = await pb
-        //   .collection("posts")
-        //   .getFirstListItem(`postId="${post.id}"`);
-        const postExists = await getDocs(
-          query(collection(db, "tiktokPosts"), where("postId", "==", post.id))
-        );
-        return postExists.docs[0]?.id;
-      } catch (e) {
-        // const postId = post.id;
-        // const postData = await ScrapePostData(uniqueId, postId);
-        // const newPost = await CreateNewPost(
-        //   postId,
-        //   postData.video.cover,
-        //   postData
-        // );
-        // return newPost;
+      updateMessage("Updating account data...");
+
+      for (let i = 0; i < totalRecords; i++) {
         try {
-          // ...
-          const postId = post.id;
-          const newPostData = await ScrapePostData(uniqueId, postId);
-          const newPost = await CreateNewPost(
-            postId,
-            newPostData.video.cover,
-            newPostData
-          );
-          return await newPost;
-        } catch (error) {
-          console.error(`Error creating new post ${post.id}:`, error);
-          setUpdateSteps((prevSteps) => [
-            ...prevSteps,
-            `Error creating new post ${post.id}:${error}`,
-          ]);
-        }
-      }
-    });
+          const account = records[i];
 
-    const top5PostsRelation = await Promise.all(top5PostsRelationPromises);
-    await UpdateAccountData(recordId, { topPosts: top5PostsRelation });
+          const collectionRef = collection(db, "tiktok-accounts");
+          const q = query(
+            collectionRef,
+            where("secUid", "==", account.user.secUid)
+          );
+          const querySnapshot = await getDocs(q);
+          const record = querySnapshot.docs[0];
+
+          if (!record) {
+            updateMessage(
+              `No existing record found for account ${account.user.uniqueId}, creating a new one.`
+            );
+            await addNewAccountToDb(account);
+          } else {
+            updateMessage(`Updating ${account.user.uniqueId}`);
+
+            const dataCollectionTime = new Date().getTime();
+            const accountStats = [
+              { dataCollectionTime, ...account.stats },
+              ...(record.data()?.accountStats || []),
+            ];
+            await updateDoc(doc(collectionRef, record.id), { accountStats });
+          }
+          updateMessage(
+            `✅ successfully updated data for ${records[i].user.uniqueId}`
+          );
+        } catch (error) {
+          const addBadDoc = doc(db, "tiktokBadAccounts", records[i].user.id);
+          await setDoc(addBadDoc, { id: records[i].user.id });
+          console.error(
+            `🚫 Error updating account ${records[i].user.uniqueId}:`,
+            error
+          );
+        }
+        setProgress((prevProgress) => prevProgress + (1 / totalRecords) * 100);
+      }
+
+      updateMessage("✅ Account data update completed!✅ ");
+    } catch (error) {
+      console.error("🚫Error fetching data: ", error);
+      updateMessage("Error fetching data!");
+    }
   };
 
-  // Main update function
+  //=========> Function to update account posts and handle possible errors <=========================
+
+  const UpdateAccountPosts = async () => {
+    updateMessage("🔄 Fetching data...");
+
+    try {
+      const res = await getDocs(collection(db, "tiktok-accounts"));
+      const records = res.docs;
+      const totalRecords = records.length;
+
+      updateMessage("🔄 Updating account posts...");
+
+      const recordPromises = records.map(async (record, i) => {
+        if (forceStopRef.current) return;
+
+        try {
+          const { secUid, id } = record.data();
+
+          ("MS4wLjABAAAATyuh04Alh2vy5G2Be9Ovp9lS2qWXK-BO6uXLqXiTgaoC_Ey-QzdlgUm0O_Iceg47");
+          updateMessage(
+            `🔄 Fetching posts for account ${i + 1} of ${totalRecords}`
+          );
+          const response = await fetch(
+            `${siteConfig.url}/api/scrape/posts/${secUid}`
+          );
+          const posts = await response.json();
+
+          const top5Posts: any = posts
+            .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
+            .slice(0, 5);
+
+          // Create a set of post ids
+          const postIds = new Set(top5Posts.map((post: any) => post.id));
+
+          // Query all existing posts in one go
+          updateMessage(
+            `🔄 Checking if posts already exist in database for account ${
+              i + 1
+            }`
+          );
+          const postExists = await getDocs(
+            query(
+              collection(db, "tiktokPosts"),
+              where("postId", "in", Array.from(postIds))
+            )
+          );
+
+          // Convert the results into a Map for easy lookup
+          const existingPosts = new Map(
+            postExists.docs.map((doc) => [doc.data().postId, doc.id])
+          );
+
+          // Now create or get post id
+          const top5PostsIDsPromises = top5Posts.map(async (post: any) => {
+            const existingPostId = existingPosts.get(post.id);
+
+            if (existingPostId) {
+              return existingPostId;
+            } else {
+              // add post to db
+              updateMessage(
+                `🔄 Creating new post in database for account ${i + 1}`
+              );
+
+              const image = await downloadImageAndUploadToFirebase(
+                "posts",
+                post.video.cover,
+                post.id
+              );
+              const record = await addDoc(collection(db, "tiktokPosts"), {
+                postId: post.id,
+                postData: post.stats,
+                cover: image,
+              });
+              return record.id;
+            }
+          });
+
+          const postsArray = await Promise.all(top5PostsIDsPromises);
+          updateMessage(`🔄 Updating top 5 posts for account ${i + 1}`);
+          await updateDoc(doc(db, "tiktok-accounts", id), {
+            topPosts: postsArray,
+          });
+        } catch (error: any) {
+          updateMessage(
+            `❌ Error updating posts for record ${i + 1}: ${error.message}`
+          );
+        } finally {
+          setProgress(
+            (prevProgress) => prevProgress + (1 / totalRecords) * 100
+          );
+          updateMessage(`✅ Finished processing record ${i + 1}`);
+        }
+      });
+
+      await Promise.all(recordPromises);
+      updateMessage("✅ All records processed successfully");
+    } catch (error: any) {
+      updateMessage(`❌ Error fetching data: ${error.message}`);
+    }
+  };
+
+  //=========> Main update function <=========================
   const Update = async () => {
     setUpdating(true);
-    updateMessage("Fetching data...");
-
-    const records = await getDocs(collection(db, "tiktokAccounts"));
-    const totalRecords = records.docs.length;
-
-    // If slicing is necessary, uncomment the following line.
-    // const slicedRecords = records.docs.slice(0, totalRecords);
-    const updateTasks = records.docs.map(async (record) => {
-      if (forceStopRef.current) return;
-
-      const { uniqueId, id } = record.data();
-      try {
-        if (selectedUpdateType.value === "accountsPosts") {
-          const newData = await ScrapeAccountData(uniqueId);
-          await ConfigAccountsPosts(uniqueId, id, newData.posts);
-        } else if (selectedUpdateType.value === "accountData") {
-          await updateAccountData(record);
-        }
-
-        updateMessage(
-          `✅ Successfully updated ${selectedUpdateType.value} for ${uniqueId}`
-        );
-      } catch (error) {
-        const addBadDoc = doc(db, "tiktokBadAccounts", id);
-        await setDoc(addBadDoc, record);
-
-        updateMessage(
-          `🚫 Failed to update ${selectedUpdateType.value} for ${uniqueId}`
-        );
-        console.error(`Error updating data for ${uniqueId}:`, error);
-        updateMessage(`Error ==> ${JSON.stringify(error)}`);
+    try {
+      if (selectedUpdateType.value === "accountsPosts") {
+        await UpdateAccountPosts();
+      } else if (selectedUpdateType.value === "accountInfo") {
+        await UpdateAccountInfo();
+      } else if (selectedUpdateType.value === "accountsStats") {
+        await UpdateAccountStats();
       }
-    });
-
-    await Promise.all(updateTasks);
-
-    // Calculate progress only once after all updates are done.
-    setProgress(
-      (prevProgress) => prevProgress + (updateTasks.length / totalRecords) * 100
-    );
+    } catch (error) {
+      updateMessage(`🚫 Failed to update`);
+      updateMessage(`Error ==> ${error}`);
+    }
 
     await addDoc(collection(db, "updateLogs"), {
       data: selectedUpdateType.value,
@@ -498,3 +542,70 @@ const StatusBar: React.FC<StatusBarProps> = ({ percentComplete }) => {
     </>
   );
 };
+
+const addNewAccountToDb = async (account: AccountStatsResponse) => {
+  const dataCollectionTime = new Date().getTime();
+
+  // const docRef = doc(db, "tiktokAccounts", account.user.id);
+  const docRef = doc(db, "tiktok-accounts", account.user.id);
+
+  const avatar = await downloadImageAndUploadToFirebase(
+    "tiktok-avatars",
+    account.user.avatarLarger,
+    account.user.id
+  );
+
+  const data = {
+    avatar,
+    id: account.user.id,
+    secUid: account.user.secUid,
+    uniqueId: account.user.uniqueId,
+    storeUrl: "",
+    product: "",
+    accountStats: [
+      {
+        dataCollectionTime,
+        ...account.stats,
+      },
+    ],
+  };
+  await setDoc(docRef, data);
+};
+
+export async function downloadImageAndUploadToFirebase(
+  storagePath: string,
+  imageUrl: string,
+  imageName: string
+) {
+  const storage = getStorage();
+  const response = await fetch(imageUrl);
+  const buffer = await response.arrayBuffer();
+
+  const storageRef = ref(storage, `${storagePath}s/${imageName}`);
+
+  // Create a upload task
+  const uploadTask = uploadBytesResumable(storageRef, buffer, {
+    contentType: "image/jpeg", // Manually set the MIME type
+  });
+
+  // Create a promise to handle the upload task
+  return new Promise<string>((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // You may want to use these to provide feedback to the user
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        console.error("Upload failed", error);
+        reject(error);
+      },
+      async () => {
+        // Handle successful uploads on complete
+        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+        resolve(downloadUrl);
+      }
+    );
+  });
+}

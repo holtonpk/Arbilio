@@ -195,3 +195,36 @@ export interface SupplierInfo {
     max: number;
   };
 }
+
+export interface AccountStatsResponse {
+  stats: {
+    diggCount: number;
+    followerCount: number;
+    followingCount: number;
+    heart: number;
+    heartCount: number;
+    videoCount: number;
+  };
+  user: {
+    avatarLarger: string;
+    avatarMedium: string;
+    avatarThumb: string;
+    commentSetting: number;
+    downloadSetting: number;
+    duetSetting: number;
+    ftc: boolean;
+    id: string;
+    isADVirtual: boolean;
+    nickname: string;
+    openFavorite: boolean;
+    privateAccount: boolean;
+    relation: number;
+    secUid: string;
+    secret: boolean;
+    signature: string;
+    stitchSetting: number;
+    ttSeller: boolean;
+    uniqueId: string;
+    verified: boolean;
+  };
+}
