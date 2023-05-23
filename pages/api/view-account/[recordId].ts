@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   const recordId = req.query.recordId as string;
 
-  const document = await getDoc(doc(db, "tiktokAccounts", recordId));
+  const document = await getDoc(doc(db, "tiktok-accounts", recordId));
   const record = document.data();
 
   let productData = undefined;
@@ -22,33 +22,22 @@ export default async function handler(
 
   if (record?.topPosts) {
     const topPosts = record?.topPosts.map(async (post: any) => {
-      const postRef = doc(db, "tiktokPosts", post);
+      const postRef = doc(db, "tiktok-posts", post);
       const postData = await getDoc(postRef);
       return postData.data();
     });
     topPostsData = await Promise.all(topPosts);
   }
   const data = {
-    recordId: record?.id,
-    id: record?.userInfo.user?.id,
-    uniqueId: record?.uniqueId,
-    nickname: record?.userInfo.user?.nickname,
     accountStats: record?.accountStats,
-    stats: {
-      heartCount: record?.userInfo.stats.heartCount,
-      followerCount: record?.userInfo.stats.followerCount,
-      followingCount: record?.userInfo.stats.followingCount,
-      videoCount: record?.userInfo.stats.videoCount,
-    },
     avatar: record?.avatar,
-    secUid: record?.userInfo.user.secUid,
-    bio: record?.userInfo.user.signature,
-    bioLink: record?.userInfo.user.bioLink?.link
-      ? record?.userInfo.user.bioLink.link
-      : null,
-    posts: record?.posts,
-    topPosts: topPostsData,
+    id: record?.id,
     product: productData,
+    secUid: record?.userInfo.user.secUid,
+    storeUrl: record?.storeUrl,
+    topPosts: topPostsData,
+    uniqueId: record?.uniqueId,
+    userInfo: record?.userInfo,
   };
 
   res.status(200).json(data);

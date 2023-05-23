@@ -229,24 +229,25 @@ const AccountManage = () => {
           const docSnap = await getDoc(docRef);
           const docData = docSnap.data();
           if (!docData) return;
-          if (!docData.storeUrl) {
-            // console.log("no store link", docData.id);
+          if (docData?.topPosts) {
             try {
-              const storeLink = docData.userInfo.user.bioLink.link || "";
-              console.log(storeLink, docData.id);
-              updateDoc(docRef, {
-                storeUrl: storeLink,
+              const NewPostIDs = docData.topPosts.map(async (post: any) => {
+                const postRef = doc(db, "tiktokPosts", post);
+                const postSnap = await getDoc(postRef);
+                const postData = postSnap.data();
+                return postData?.postId;
               });
-              // updateDoc(docRef, {
-              //   product: "",
-              // });
+              const NewPosts = await Promise.all(NewPostIDs);
+              console.log(docData.id, NewPosts);
+              await updateDoc(docRef, {
+                ...docData,
+                topPosts: NewPosts,
+              });
             } catch (error) {
-              console.log("noLInk", docData.id);
-              updateDoc(docRef, {
-                storeUrl: "",
-              });
+              console.log("error:", docData);
             }
-            // console.error(`Error processing product with ID ${error}`);
+          } else {
+            console.log("no Posts");
           }
         })
       );

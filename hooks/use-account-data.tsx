@@ -2,9 +2,10 @@
 import react, { useState, useCallback } from "react";
 import { sortData } from "@/lib/utils";
 import { FilterList } from "@/types";
+import { AccountDataType, AccountStatsType } from "@/types";
 
 interface UseDataProps {
-  data: any;
+  data: AccountDataType[];
 }
 
 interface UseDataReturn {
@@ -14,7 +15,7 @@ interface UseDataReturn {
   sortedData: any[];
   appliedFilterList: FilterList[];
   setAppliedFilterList: (filterList: FilterList[]) => void;
-  setSortParam: (param: string) => void;
+  setSortParam: (param: keyof AccountStatsType) => void;
   setDescending: (descending: boolean) => void;
   descending: boolean;
 }
@@ -22,9 +23,11 @@ interface UseDataReturn {
 const useData = ({ data }: UseDataProps): UseDataReturn => {
   const [unformattedData, setUnformattedData] = useState(data);
   const [appliedFilterList, setAppliedFilterList] = useState<FilterList[]>([]);
-  const [activeData, setActiveData] = useState<any[]>(data);
+  const [activeData, setActiveData] = useState<AccountDataType[]>(data);
   const [descending, setDescending] = useState<boolean>(true);
-  const [sortParam, setSortParam] = useState<string>("");
+
+  const [sortParam, setSortParam] =
+    useState<keyof AccountStatsType>("followerCount");
 
   react.useEffect(() => {
     setUnformattedData(data);
@@ -67,15 +70,16 @@ const useData = ({ data }: UseDataProps): UseDataReturn => {
     setActiveData(filteredData);
     setUnformattedData(filteredData);
   };
+  console.log("activeData", activeData);
 
   const sortedData =
     activeData &&
-    activeData.sort((a: any, b: any) => {
-      if (a.stats[sortParam] < b.stats[sortParam]) {
+    activeData.sort((a: AccountDataType, b: AccountDataType) => {
+      if (a.accountStats[0][sortParam] < b.accountStats[0][sortParam]) {
         return descending ? 1 : -1;
       }
 
-      if (a.stats[sortParam] > b.stats[sortParam]) {
+      if (a.accountStats[0][sortParam] > b.accountStats[0][sortParam]) {
         return descending ? -1 : 1;
       }
       return 0;

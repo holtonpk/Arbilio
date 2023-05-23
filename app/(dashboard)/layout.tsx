@@ -27,7 +27,7 @@ export default function Layout({ children }: { children: ReactElement }) {
                     </div>
                   </div>
                 </header>
-                <aside className="w-full hidden container flex-col md:flex h-fit sticky pt-24  col-start-1 ">
+                <aside className=" fixed hidden container w-[250px] flex-col md:flex h-fit pt-24  top-0  col-start-1 ">
                   <Navbar />
                 </aside>
                 <main className=" col-start-1 col-end-2 relative max-w-full md:col-start-2  pt-24 md:container overflow-auto  min-h-[80vh] ">

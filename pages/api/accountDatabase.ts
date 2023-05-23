@@ -9,12 +9,13 @@ import {
   getDoc,
   where,
 } from "firebase/firestore";
+import { AccountDataType } from "@/types";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<AccountDataType[]>
 ) {
-  const collectionRef = collection(db, "tiktokAccounts");
+  const collectionRef = collection(db, "tiktok-accounts");
   const q = query(collectionRef, limit(12), where("topPosts", "!=", []));
   const docs = await getDocs(q);
 
@@ -31,40 +32,28 @@ export default async function handler(
     }
 
     if (record.topPosts && record.topPosts.length) {
-      const topPosts = record.topPosts;
-      const q = query(
-        collection(db, "tiktokPosts"),
-        where("id", "in", topPosts)
-      );
-      const topPostsInfo = await getDocs(q);
-      topPostsData = topPostsInfo.docs.map((doc) => doc.data());
+      const topPosts = record?.topPosts.map(async (post: any) => {
+        const postRef = doc(db, "tiktok-posts", post);
+        const postData = await getDoc(postRef);
+        return postData.data();
+      });
+      topPostsData = await Promise.all(topPosts);
     }
 
     return {
-      recordId: record.id,
-      id: record.userInfo.user?.id,
-      uniqueId: record.uniqueId,
-      nickname: record.userInfo.user?.nickname,
-      stats: {
-        likes: record.userInfo.stats.heartCount,
-        followers: record.userInfo.stats.followerCount,
-        following: record.userInfo.stats.followingCount,
-        posts: record.userInfo.stats.videoCount,
-      },
+      accountStats: record.accountStats,
       avatar: record.avatar,
-      secUid: record.userInfo.user.secUid,
-      bio: record.userInfo.user.signature,
-      bioLink: record.userInfo.user.bioLink?.link
-        ? record.userInfo.user.bioLink.link
-        : null,
-      userInfo: record.userInfo,
-      posts: record.posts,
-      topPosts: topPostsData,
+      id: record.id,
       product: productData,
+      secUid: record.userInfo.user.secUid,
+      storeUrl: record.storeUrl,
+      topPosts: topPostsData,
+      uniqueId: record.uniqueId,
+      userInfo: record.userInfo,
     };
   });
 
-  const data = await Promise.all(formattedData);
+  const data = (await Promise.all(formattedData)) as AccountDataType[];
 
   res.status(200).json(data);
 }

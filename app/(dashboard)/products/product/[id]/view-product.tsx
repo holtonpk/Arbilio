@@ -19,7 +19,7 @@ const ViewProduct = ({ data }: ViewProductProps) => {
 
       <ProductImage images={data.supplierInfo.supplierImages} />
       <section className=" rounded-md">
-        <h1 className="text-2xl font-bold capitalize md:block hidden p-4">
+        <h1 className="text-2xl font-bold capitalize md:block hidden ">
           {data.title}
         </h1>
         <div className="grid grid-cols-3 border rounded-md p-2 mt-4">
@@ -96,54 +96,61 @@ interface AccountInfoProps {
 }
 
 const AccountInfo = ({ accounts }: AccountInfoProps) => {
-  const topPosts = accounts.flatMap((account) =>
-    account?.topPosts?.slice(0, 3)
-  );
+  console.log("accounts", accounts);
+  const topPosts = accounts.flatMap((account) => account.topPosts || []);
+
+  console.log("topPosts", topPosts);
   topPosts.sort(
+    (a: any, b: any) => b.postData.playCount - a.postData.playCount
+  );
+
+  const sortedAccounts = accounts.sort(
     (a: any, b: any) =>
-      b.postData.postInfo.playCount - a.postData.postInfo.playCount
+      b.accountStats[0].followerCount - a.accountStats[0].followerCount
   );
 
   return (
     <div className="grid  gap-4">
       <div className="flex flex-col ">
-        <h1 className="text-xl mt-4">Active Sellers</h1>
-        <div className="grid divide-y divide-border border rounded-md h-fit  ">
-          {accounts.map((account, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between p-2 cursor-pointer group hover:bg-muted"
-            >
-              <Link
-                href={`accounts/account/${account.recordId}`}
-                className="w-[80%] grid grid-cols-[40px_1fr] gap-2"
+        <h1 className="text-xl mt-4">{`Active Sellers (${accounts.length})`}</h1>
+        <div className="h-[300px] overflow-scroll border rounded-md">
+          <div className="grid divide-y divide-border  h-fit   ">
+            {sortedAccounts.map((account, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between p-2 cursor-pointer group hover:bg-muted"
               >
-                <div className="aspect-square w-10 h-10 bg-muted rounded-md relative overflow-hidden">
-                  <Image src={account.avatar} alt="product image" fill />
-                </div>
-                <div className="flex flex-col max-w-full overflow-hidden">
-                  <h1 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis  text-primary">
-                    {account.nickname}
-                  </h1>
-                  <div className="text-[12px] text-gray-500  text-muted-foreground overflow-hidden text-ellipsis">
-                    {"@" + account.uniqueId}
+                <Link
+                  href={`accounts/account/${account.id}`}
+                  className="w-[80%] grid grid-cols-[40px_1fr] gap-2"
+                >
+                  <div className="aspect-square w-10 h-10 bg-muted rounded-md relative overflow-hidden">
+                    <Image src={account.avatar} alt="product image" fill />
                   </div>
-                </div>
-              </Link>
-              <UpdateCollectionButton
-                account={account}
-                variant="outline"
-                size="sm"
-              />
-            </div>
-          ))}
+                  <div className="flex flex-col max-w-full overflow-hidden">
+                    <h1 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis  text-primary">
+                      {account.nickname}
+                    </h1>
+                    <div className="text-[12px] text-gray-500  text-muted-foreground overflow-hidden text-ellipsis">
+                      {"@" + account.uniqueId}
+                    </div>
+                  </div>
+                </Link>
+                <UpdateCollectionButton
+                  account={account}
+                  variant="outline"
+                  size="sm"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div className="flex flex-col">
-        <h1 className="text-xl">Top Post</h1>
+        <h1 className="text-xl">Top Videos</h1>
         <div className="grid md:grid-cols-6 grid-cols-3 gap-4 w-full">
           {accounts &&
-            topPosts.map((item: any, i: number) => {
+            topPosts.slice(0, 6).map((item: any, i: number) => {
               return (
                 <div
                   key={i}
@@ -160,7 +167,7 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
 
                   <div className="absolute top-1 md:top-2 right-1 md:right-2 z-30 flex items-center text-[12px] sm:text-base md:text-[12px] gap-[2px] md:gap-1 text-white ">
                     <Icons.posts className="text-2xl h-2 w-2 sm:h-5 sm:w-5  md:h-4 md:w-4" />
-                    {formatNumber(item.postData.postInfo.playCount)}
+                    {formatNumber(item.postData.playCount || 0)}
                   </div>
                   <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>
                 </div>

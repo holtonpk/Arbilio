@@ -20,18 +20,10 @@ export default async function handler(
   // const formattedData = docs.docs.map(async (doc) => {
   //   const docData = doc.data();
 
-  //   const q = query(
-  //     collection(db, "tiktokAccounts"),
-  //     where("product", "==", docData.id)
-  //   );
-  //   const sellers = await getDocs(q);
-  //   const sellersData = sellers.docs.map((seller) => {
-  //     return seller.data().id;
-  //   });
-
   //   return {
-  //     ...docData,
-  //     sellers: sellersData,
+  //     id: doc.id,
+  //     title1: docData.title,
+  //     title2: docData?.supplierInfo?.supplierTitle,
   //   };
   // });
 

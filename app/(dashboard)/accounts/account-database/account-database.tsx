@@ -33,18 +33,16 @@ const getData = async (startAfterId: string) => {
 const AccountDatabase = ({ originalData }: any) => {
   const [data, setData] = useState(originalData);
   const [lastDocId, setLastDocId] = useState(
-    originalData[originalData.length - 1]?.recordId
+    originalData[originalData.length - 1]?.id
   );
   const [loading, setLoading] = useState(false);
-
-  console.log("data", originalData[originalData.length - 1]);
 
   const loadMore = async () => {
     setLoading(true);
     const newData = await getData(lastDocId);
     console.log("new", newData);
     setData((prevData: any) => [...prevData, ...newData]);
-    setLastDocId(newData[newData.length - 1]?.recordId); // assuming each data object has an 'id' field
+    setLastDocId(newData[newData.length - 1]?.id); // assuming each data object has an 'id' field
     setLoading(false);
   };
 
@@ -66,7 +64,7 @@ const AccountDatabase = ({ originalData }: any) => {
     <>
       <div className="grid gap-2 w-full ">
         <DataSearch
-          placeholder="Search for an account"
+          placeholder="Search an user name. ex: @username"
           searchFunction={searchData}
         />
         <div className="flex justify-between w-[100%] flex-col gap-2 items-center lg:flex-row ">

@@ -53,7 +53,7 @@ interface ViewAccountProps {
 }
 
 const ViewAccount = ({ data }: ViewAccountProps) => {
-  console.log("dd", data);
+  console.log("dd==>", data);
   return (
     <div className=" px-4">
       <div className="w-full rounded-md flex flex-col items-center  pt-0 relative">
@@ -67,7 +67,7 @@ const ViewAccount = ({ data }: ViewAccountProps) => {
             </div>
             <div className="w-full justify-between grid grid-cols-1 gap-4 ">
               {data?.product && <ProductDisplay />}
-              {data?.bioLink && <StoreDisplay />}
+              {data?.storeUrl && <StoreDisplay />}
             </div>
             {/* {data.topPosts && <PostsDisplay />} */}
             <AnalyticsDisplay />
@@ -184,7 +184,7 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
           <div className="flex flex-col">
             <h2 className="text-md ">{title}</h2>
             <h3 className="text-2xl font-bold">
-              {formatNumber(data.stats[field])}
+              {formatNumber(data.accountStats[0][field])}
             </h3>
           </div>
         </div>
@@ -253,7 +253,7 @@ const ProductDisplay = () => {
 
 const StoreDisplay = () => {
   const { data } = useContext(DataContext)!;
-  const url = getBaseUrl(data?.bioLink);
+  const url = getBaseUrl(data?.storeUrl);
 
   function getBaseUrl(url: string): string {
     // If no protocol is provided, default to https://
@@ -368,7 +368,7 @@ const PostsDisplay = () => {
               />
               <div className="absolute top-2 right-2 flex items-center text-base gap-1 text-primary">
                 <Icons.posts className="text-2xl  h-4 w-4" />
-                {formatNumber(parseInt(item.postData.postInfo.playCount))}
+                {formatNumber(item.postData.playCount)}
               </div>
             </div>
           ))}
@@ -395,11 +395,12 @@ const ProfileDisplay = () => {
       {/* <AccountRank /> */}
       {/* <AddToCollection /> */}
       <div className="flex flex-col w-fit items-center md:items-start ">
-        <h1 className="text-3xl font-bold w-fit ">{data?.nickname}</h1>
+        <h1 className="text-3xl font-bold w-fit ">
+          {data.userInfo?.user?.nickname}
+        </h1>
         <h2 className="text-base text-muted-foreground w-fit ">
           {"@" + data?.uniqueId}
         </h2>
-        <h2 className="text-base text-muted-foreground w-fit ">{data?.id}</h2>
         <StatDisplay />
       </div>
     </div>
@@ -408,6 +409,8 @@ const ProfileDisplay = () => {
 
 const StatDisplay = () => {
   const { data } = useContext(DataContext)!;
+
+  console.log("dd", data);
 
   return (
     <div className="grid grid-cols-3 gap-6  h-fit items-center rounded-md mt-4">
@@ -418,7 +421,7 @@ const StatDisplay = () => {
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Likes</h2>
           <h3 className="text-2xl font-bold text-primary">
-            {formatNumber(data.stats.heartCount)}
+            {formatNumber(data.accountStats[0].heartCount)}
           </h3>
         </div>
       </div>
@@ -429,7 +432,7 @@ const StatDisplay = () => {
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Followers</h2>
           <h3 className="text-2xl font-bold  text-primary">
-            {formatNumber(data.stats.followerCount)}
+            {formatNumber(data.accountStats[0].followerCount)}
           </h3>
         </div>
       </div>
@@ -440,7 +443,7 @@ const StatDisplay = () => {
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Posts</h2>
           <h3 className="text-2xl font-bold  text-primary">
-            {formatNumber(data.stats.videoCount)}
+            {formatNumber(data.accountStats[0].videoCount)}
           </h3>
         </div>
       </div>

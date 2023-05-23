@@ -147,6 +147,18 @@ export interface AccountDataType {
   product: ProductType | undefined;
 }
 
+interface Post {
+  postId: string;
+  cover: string;
+  postData: {
+    collectCount: number;
+    commentCount: number;
+    diggCount: number;
+    playCount: number;
+    shareCount: number;
+  };
+}
+
 interface Price {
   id: string;
   unit_amount: number;
@@ -227,4 +239,16 @@ export interface AccountStatsResponse {
     uniqueId: string;
     verified: boolean;
   };
+}
+
+interface AccountDataType {
+  accountStats: AccountStatsType[];
+  avatar: string;
+  id: string;
+  product: ProductType;
+  secUid: string;
+  storeUrl: string;
+  topPosts: Post[];
+  uniqueId: string;
+  userInfo: any;
 }

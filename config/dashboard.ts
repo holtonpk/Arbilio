@@ -108,22 +108,22 @@ export const accountDatabaseConfig: AccountDatabaseConfig = {
     items: [
       {
         title: "Popularity",
-        value: "likes",
+        value: "likeCount",
         icon: "trendingUp",
       },
       {
         title: "Followers",
-        value: "followers",
+        value: "followerCount",
         icon: "followers",
       },
       {
         title: "Likes",
-        value: "likes",
+        value: "heartCount",
         icon: "likes",
       },
       {
         title: "Posts",
-        value: "posts",
+        value: "videoCount",
         icon: "posts",
       },
     ],

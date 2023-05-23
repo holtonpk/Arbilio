@@ -3,7 +3,9 @@ import { AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
 
 const getData = async (recordId: string): Promise<AccountDataType> => {
-  const res = await fetch(`${siteConfig.url}/api/view-account/${recordId}`);
+  const res = await fetch(`${siteConfig.url}/api/view-account/${recordId}`, {
+    cache: "no-cache",
+  });
   console.log("res", res);
   const data = await res.json();
   return data;

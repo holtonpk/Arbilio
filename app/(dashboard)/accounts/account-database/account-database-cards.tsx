@@ -7,14 +7,19 @@ import Skeleton from "@/components/ui/custom-skeleton";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
+import { AccountDataType } from "@/types";
 
-const CardDisplay = ({ accountDataBaseData }: any) => {
+const CardDisplay = ({
+  accountDataBaseData,
+}: {
+  accountDataBaseData: AccountDataType[];
+}) => {
   return (
-    <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 h-full  ">
+    <div className="grid  lg:grid-cols-3  grid-cols-2 gap-8 h-full  ">
       {accountDataBaseData ? (
         <>
           {accountDataBaseData.map((account: any, i: number) => (
-            <AccountCard key={i} data={account} />
+            <AccountCard key={i} item={account} />
           ))}
         </>
       ) : (
@@ -32,22 +37,27 @@ const CardDisplay = ({ accountDataBaseData }: any) => {
 
 export default CardDisplay;
 
-export const AccountCard = ({ data }: any) => {
+export const AccountCard = ({ item }: { item: AccountDataType }) => {
   return (
     <div className="h-full relative group ">
-      <div className="absolute h-1/2 pointer-events-none bottom-0 w-full bg-gradient-to-t dark:from-black/60 from-white/60 to-black/0  rounded-md z-30 hidden group-hover:block fade-in">
+      {/* <div className="absolute h-1/2 pointer-events-none bottom-0 w-full bg-gradient-to-t dark:from-black/60 from-white/60 to-black/0  rounded-md z-40 hidden group-hover:block fade-in">
         <div className="flex absolute gap-2 w-fit  bottom-2 pointer-events-auto right-2">
-          <UpdateCollectionButton account={data} />
+          <UpdateCollectionButton account={item} size="sm" variant="default" />
         </div>
-      </div>
-      <Link
-        href={`/accounts/account/${data.recordId}`}
-        className="w-full  bg-card rounded-md h-fit border border-border pt-4  shadow-lg  pb-2 items-center relative flex flex-col  cursor-pointer "
-      >
-        <div className="grid grid-cols-[40px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-[90%] pb-0  rounded-md ">
-          <div className="aspect-square w-10 h-10 bg-muted rounded-md relative overflow-hidden">
+      </div> */}
+
+      <div className="w-full  bg-card rounded-md h-fit border border-border pt-4  shadow-lg  pb-2 p-2 relative flex flex-col">
+        {/* <div className="flex absolute gap-2 w-fit top-2 right-2 ">
+          <UpdateCollectionButton account={item} variant="outline" />
+        </div> */}
+
+        <Link
+          href={`/accounts/account/${item.id}`}
+          className="grid grid-cols-[70px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-full pb-0  rounded-md hover:opacity-70"
+        >
+          <div className="aspect-square w-[70px] h-[70px] bg-muted rounded-md relative overflow-hidden border ">
             <Image
-              src={data?.avatar}
+              src={item?.avatar}
               alt="Picture of the author"
               fill
               sizes="(max-width: 768px) 100vw,
@@ -56,71 +66,119 @@ export const AccountCard = ({ data }: any) => {
             />
           </div>
 
-          <div className="flex flex-col max-w-full overflow-hidden">
+          <div className="flex flex-col max-w-full gap-1 overflow-hidden ">
             <h1 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis  text-primary">
-              {data.nickname}
+              {item.userInfo?.user?.nickname}
             </h1>
             <div className="text-[12px] text-gray-500  text-muted-foreground overflow-hidden text-ellipsis">
-              {"@" + data.uniqueId}
+              {"@" + item.uniqueId}
             </div>
-          </div>
-        </div>
+            <div className="flex gap-3 items-center  w-fit ">
+              <div className="flex flex-row gap-2 items-center">
+                {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground ">
+                Likes
+              </h2> */}
+                <Icons.likes className="w-4 h-4 text-primary bg-muted" />
+                <h3 className="text-[12px]  font-bold text-primary">
+                  {formatNumber(item.accountStats[0].heartCount)}
+                </h3>
+              </div>
 
-        <div className="grid grid-cols-3 gap-6 bg-muted items-center rounded-md p-2 mt-4 w-[95%]">
-          <div className="flex  flex-col items-center gap-1 justify-center">
-            <div className="flex flex-col items-center">
-              <h2 className="text-[12px] text-muted-foreground ">Likes</h2>
-              <h3 className="text-[12px] sm:text-base font-bold text-primary">
-                {formatNumber(parseInt(data.stats.likes))}
-              </h3>
+              <div className="flex flex-row gap-2 items-center">
+                {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground">
+                Followers
+              </h2> */}
+                <Icons.followers className="w-4 h-4 text-primary fill-muted" />
+                <h3 className="text-[12px]  font-bold text-primary">
+                  {formatNumber(item.accountStats[0].followerCount)}
+                </h3>
+              </div>
+
+              <div className="flex flex-row gap-2 items-center">
+                {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground">
+                Posts
+              </h2> */}
+                <Icons.posts className="w-4 h-4 text-primary fill-muted" />
+                <h3 className="text-[12px]  font-bold text-primary">
+                  {formatNumber(item.accountStats[0].videoCount)}
+                </h3>
+              </div>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-1  justify-center">
-            <div className="flex flex-col items-center">
-              <h2 className="text-[12px] text-muted-foreground">Followers</h2>
-              <h3 className="text-[12px] sm:text-base font-bold text-primary">
-                {formatNumber(parseInt(data.stats.followers))}
-              </h3>
-            </div>
-          </div>
-          <div className="flex  flex-col items-center gap-1  justify-center">
-            <div className="flex flex-col items-center">
-              <h2 className="text-[12px] text-muted-foreground">Posts</h2>
-              <h3 className="text-[12px] sm:text-base font-bold text-primary">
-                {formatNumber(parseInt(data.stats.posts))}
-              </h3>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col mt-2 w-[90%]">
-          <h1 className="font-bold mb-2">Top Posts</h1>
-          <div className="grid grid-cols-3 gap-2 w-full ">
-            {data?.topPosts.slice(0, 3).map((item: any, i: number) => {
-              return (
-                <div
-                  key={i}
-                  className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden"
-                >
-                  <Image
-                    src={item?.cover}
-                    alt="video cover"
-                    fill
-                    sizes="(max-width: 768px) 100vw,  
+        </Link>
+
+        <div className="flex flex-col mt-2 w-full ">
+          <h1 className="text-sm ">Product</h1>
+          <div className="grid grid-cols-[36px_1fr] relative gap-2 items-center rounded-md p-1 ">
+            <Link
+              href={`/products/product/${item.product?.id}`}
+              className="w-full h-full z-10 rounded-md absolute hover:bg-muted"
+            ></Link>
+            <div className="h-9 w-9 relative overflow-hidden rounded-md z-20 pointer-events-none">
+              <Image
+                src={item?.product?.image || ""}
+                alt="img"
+                fill
+                sizes="(max-width: 768px) 100vw,
                     (max-width: 1200px) 50vw,
                     33vw"
-                  />
-
-                  <div className="absolute top-1 md:top-2 right-1 md:right-2 z-30 flex items-center text-[8px] md:text-[12px] gap-[2px] md:gap-1 text-white ">
-                    <Icons.posts className="text-2xl h-2 w-2  md:h-4 md:w-4" />
-                    {formatNumber(item.postData.postInfo.playCount)}
-                  </div>
-                  <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>
-                </div>
-              );
-            })}
+              />
+            </div>
+            <div className="grid">
+              <p className="whitespace-nowrap overflow-hidden text-ellipsis relative z-20 pointer-events-none">
+                {item.product?.title}
+              </p>
+              <p className="whitespace-nowrap text-muted-foreground text-[12px] overflow-hidden text-ellipsis relative z-20 pointer-events-none">
+                {item.product?.title}
+              </p>
+            </div>
+            {/* <Button
+              variant={"outline"}
+              className="w-fit relative z-20 bg-background"
+              size="xsm"
+            >
+              <Icons.ellipsis className="text-primary h-3 w-3" />
+            </Button> */}
           </div>
         </div>
-      </Link>
+        <div className="flex flex-col mt-2 w-full">
+          <h1 className="text-sm mb-2">Top Posts</h1>
+          <div className="grid grid-cols-3 gap-4 w-full ">
+            {Array(3)
+              .fill(0)
+              .map((_, i: number) => {
+                return (
+                  <div
+                    key={i}
+                    className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden "
+                  >
+                    {item.topPosts && item.topPosts.length > i && (
+                      <>
+                        <Image
+                          src={item.topPosts[i]?.cover}
+                          alt="video cover"
+                          className="z-20"
+                          fill
+                          sizes="(max-width: 768px) 100vw,  
+                    (max-width: 1200px) 50vw,
+                    33vw"
+                        />
+                        {/* <div className="absolute z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border border-white bg-black rounded-full flex justify-center items-center p-2">
+                          <Icons.posts className="text-white h-3 w-3 md:h-3 md:w-3 pl-[1px]" />
+                        </div> */}
+                        <div className="bg-black/70 rounded-sm absolute bottom-1 p-1 md:bottom-1 left-1 md:left-1 z-30 flex items-center text-[8px] md:text-[12px] gap-[2px] md:gap-1 text-white ">
+                          <Icons.showPassword className="text-2xl h-2 w-2  md:h-4 md:w-4" />
+                          {formatNumber(item.topPosts[i]?.postData.playCount)}
+                        </div>
+                      </>
+                    )}
+                    <Icons.media className="text-primary h-8 w-8 md:h-8 md:w-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" />
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

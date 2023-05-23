@@ -15,6 +15,7 @@ import { Icons } from "@/components/icons";
 import { UpdateMultiCollectionButton } from "@/components/buttons/update-multi-collection-button";
 import CreateCollectionButton from "@/components/buttons/create-collection-button";
 import { LinkButton } from "@/components/ui/link";
+import { AccountDataType, AccountStatsType } from "@/types";
 
 const PrimaryHeaders = accountDatabaseConfig.tableHeaders.primaryHeaders;
 const SecondaryHeaders = accountDatabaseConfig.tableHeaders.secondaryHeaders;
@@ -33,7 +34,7 @@ const TableContext = React.createContext<TableContextData | undefined>(
 // Create a provider component
 interface TableProviderProps {
   children: ReactNode;
-  data: any;
+  data: AccountDataType[];
 }
 
 const TableProvider: React.FC<TableProviderProps> = ({ children, data }) => {
@@ -53,9 +54,9 @@ const TableProvider: React.FC<TableProviderProps> = ({ children, data }) => {
 };
 
 interface TableProps {
-  data: any;
+  data: AccountDataType[];
   setDescending: (value: boolean) => void;
-  setSortParam: (value: string) => void;
+  setSortParam: (param: keyof AccountStatsType) => void;
 }
 
 const Table = ({ data, setDescending, setSortParam }: TableProps) => {
@@ -190,7 +191,7 @@ const SecondaryHeader = ({ item, setDescending, setSortParam }: any) => {
   );
 };
 
-const PrimaryRow = ({ data }: any) => {
+const PrimaryRow = ({ data }: { data: AccountDataType }) => {
   return (
     <>
       <Selector item={data} />
@@ -208,23 +209,23 @@ const PrimaryRow = ({ data }: any) => {
   );
 };
 
-const SecondaryRow = ({ data }: any) => {
+const SecondaryRow = ({ data }: { data: AccountDataType }) => {
   return (
     <>
       <span className="min-w-[150px] pr-10 flex items-center">
-        <StatDisplay displayValue={data.stats.followers} />
+        <StatDisplay displayValue={data.accountStats[0].followerCount} />
       </span>
       <span className="min-w-[150px]  pr-10 flex items-center">
-        <StatDisplay displayValue={data.stats.likes} />
+        <StatDisplay displayValue={data.accountStats[0].heartCount} />
       </span>
       <span className="min-w-[150px] pr-10 flex items-center">
-        <StatDisplay displayValue={data.stats.posts} />
+        <StatDisplay displayValue={data.accountStats[0].videoCount} />
       </span>
     </>
   );
 };
 
-const RowButtons = ({ data }: any) => {
+const RowButtons = ({ data }: { data: AccountDataType }) => {
   return (
     <>
       <UpdateCollectionButton

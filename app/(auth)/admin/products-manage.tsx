@@ -15,6 +15,7 @@ import {
   deleteDoc,
   getDocs,
   onSnapshot,
+  setDoc,
   query,
 } from "firebase/firestore";
 import { siteConfig } from "@/config/site";
@@ -62,7 +63,7 @@ const ProductManage = () => {
 
   const BATCH_SIZE = 10; // Adjust batch size based on your rate limits and performance considerations
 
-  const Update = async () => {
+  const AddSupplierInfo = async () => {
     setUpdateIsLoading(true);
     const collectionRef = collection(db, "tiktokProducts");
 
@@ -74,32 +75,82 @@ const ProductManage = () => {
           const docRef = doc(collectionRef, product.id);
           const docSnap = await getDoc(docRef);
           const docData = docSnap.data();
-          if (!docData || docData.supplierInfo || !docData?.supplierId) return;
-          const supplierId = docData.supplierId;
-          try {
-            const productInfoRes = await fetch(
-              `${siteConfig.url}/api/scrape/aliexpress/${supplierId}`
-            );
-            if (!productInfoRes.ok) {
-              console.log(
-                `Failed to fetch info for product with ID ${supplierId}`
+          // if (!docData || docData.supplierInfo || !docData) return;
+          const supplierId = docData?.supplierId;
+          if (!supplierId) {
+            const sId = new URL(docData?.supplierUrl).pathname
+              .split("/")[2]
+              .split(".")[0];
+            try {
+              const productInfoRes = await fetch(
+                `${siteConfig.url}/api/scrape/aliexpress/${sId}`
               );
-              return;
+              if (!productInfoRes.ok) {
+                console.log(`Failed to fetch info for product with ID ${sId}`);
+                return;
+              }
+              const productInfo = await productInfoRes.json();
+              const productInfoData = {
+                supplierImages: productInfo.images,
+                supplierTitle: productInfo.title,
+                supplierPrice: productInfo.salePrice,
+                supplierDescription: productInfo.description,
+              };
+              await updateDoc(docRef, {
+                supplierId: sId,
+                supplierInfo: productInfoData,
+              });
+            } catch (error) {
+              console.error(
+                `Error processing product with ID ${supplierId}: ${error}`
+              );
             }
-            const productInfo = await productInfoRes.json();
-            const productInfoData = {
-              supplierImages: productInfo.images,
-              supplierTitle: productInfo.title,
-              supplierPrice: productInfo.salePrice,
-              supplierDescription: productInfo.description,
+          }
+        })
+      );
+    }
+    setUpdateIsLoading(false);
+  };
+
+  const Update = async () => {
+    setUpdateIsLoading(true);
+    const collectionRef = collection(db, "tiktokPosts");
+
+    const productsRes = await getDocs(collectionRef);
+    const products = productsRes.docs;
+
+    for (let i = 0; i < products.length; i += BATCH_SIZE) {
+      const batch = products.slice(i, i + BATCH_SIZE);
+      await Promise.all(
+        batch.map(async (product, index) => {
+          console.log(i + index, "/", products.length);
+          const docRef = doc(collectionRef, product.id);
+          const docSnap = await getDoc(docRef);
+          const docData = docSnap.data();
+          console.log(docData?.id);
+          // if (!docData || docData.supplierInfo || !docData) return;
+          try {
+            const data = {
+              postId: docData?.postId,
+              postData: docData?.postData.collectCount
+                ? docData?.postData
+                : {
+                    collectCount: 0,
+                    commentCount:
+                      docData?.postData?.postInfo?.commentCount || 0,
+                    diggCount: docData?.postData?.postInfo?.accountLikes || 0,
+                    playCount: docData?.postData?.postInfo?.playCount || 0,
+                    shareCount: docData?.postData?.postInfo?.shareCount || 0,
+                  },
+              cover: docData?.cover,
             };
-            await updateDoc(docRef, {
-              supplierInfo: productInfoData,
-            });
-          } catch (error) {
-            console.error(
-              `Error processing product with ID ${supplierId}: ${error}`
+            const newDocRef = doc(
+              collection(db, "tiktok-posts"),
+              docData?.postId
             );
+            await setDoc(newDocRef, data);
+          } catch (error) {
+            console.error(`Error processing ${error}`);
           }
         })
       );
