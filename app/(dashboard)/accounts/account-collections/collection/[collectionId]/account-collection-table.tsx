@@ -14,6 +14,8 @@ import { RemoveCollectionButton } from "@/components/buttons/remove-collection-b
 import { CollectionType } from "@/types";
 import { RemoveMultiAccountCollectionButton } from "@/components/buttons/remove-multi-collection-button";
 import CreateCollectionButton from "@/components/buttons/create-collection-button";
+import { AccountDataType, AccountStatsType } from "@/types";
+
 const PrimaryHeaders = accountCollectionsConfig.tableHeaders.primaryHeaders;
 const SecondaryHeaders = accountCollectionsConfig.tableHeaders.secondaryHeaders;
 
@@ -24,7 +26,7 @@ interface TableContextData {
   hideItems: (recordIdArray: string[]) => void;
   collection: CollectionType;
   setDescending: (param: boolean) => void;
-  setSortParam: (param: string) => void;
+  setSortParam: (param: keyof AccountStatsType) => void;
 }
 
 // Create the context
@@ -39,7 +41,7 @@ interface TableProviderProps {
   hideItems: (recordIdArray: string[]) => void;
   collection: CollectionType;
   setDescending: (param: boolean) => void;
-  setSortParam: (param: string) => void;
+  setSortParam: (param: keyof AccountStatsType) => void;
 }
 
 const TableProvider: React.FC<TableProviderProps> = ({
@@ -72,7 +74,8 @@ const TableProvider: React.FC<TableProviderProps> = ({
 interface TableProps {
   data: any;
   collection: CollectionType;
-  setSortParam: (param: string) => void;
+  setSortParam: (param: keyof AccountStatsType) => void;
+
   setDescending: (param: boolean) => void;
   hideItems: (recordIdArray: string[]) => void;
 }
