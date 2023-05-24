@@ -27,6 +27,7 @@ import { UpdateCollectionButton } from "@/components/buttons/update-collection-b
 import { MoreButton } from "@/components/profile-actions";
 import { Line } from "react-chartjs-2";
 import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link";
 import { formatDateShort } from "@/lib/utils";
 import { AccountDataType } from "@/types";
 import { Icons } from "@/components/icons";
@@ -55,19 +56,27 @@ interface ViewAccountProps {
 const ViewAccount = ({ data }: ViewAccountProps) => {
   console.log("dd==>", data);
   return (
-    <div className=" px-4">
+    <div className="md:container">
       <div className="w-full rounded-md flex flex-col items-center  pt-0 relative">
         {data ? (
           <DataProvider data={data}>
             <div className="flex items center gap-4 absolute md:top-4 md:right-4 top-0 right-0 ">
-              <UpdateCollectionButton account={data} variant={"default"} />
+              <UpdateCollectionButton account={data} variant={"outline"} />
             </div>
-            <div className="flex flex-col w-fit md:w-full">
+            <LinkButton
+              variant="outline"
+              href="/accounts/account-database"
+              className="w-fit absolute md:top-4 md:left-4 top-0 left-0 "
+            >
+              <Icons.chevronLeft className=" h-6 w-6" />
+              Back
+            </LinkButton>
+            <div className="flex flex-col w-fit ">
               <ProfileDisplay />
             </div>
-            <div className="w-full justify-between grid grid-cols-1 gap-4 ">
-              {data?.product && <ProductDisplay />}
+            <div className="w-full justify-between grid grid-cols-2 gap-4 ">
               {data?.storeUrl && <StoreDisplay />}
+              {data?.product && <ProductDisplay />}
             </div>
             {/* {data.topPosts && <PostsDisplay />} */}
             <AnalyticsDisplay />
@@ -105,21 +114,21 @@ const AnalyticsDisplay = () => {
         <DataGraph
           field="followerCount"
           title="Followers"
-          icon={<Icons.followers className="h-8 w-8 text-primary" />}
+          icon={<Icons.followers className="h-8 w-8 text-muted-foreground" />}
         />
 
         <div className="grid md:grid-cols-2 gap-8 h-fit">
           <DataGraph
             field="heartCount"
             title="Likes"
-            icon={<Icons.likes className="h-8 w-8 text-primary" />}
+            icon={<Icons.likes className="h-8 w-8 text-muted-foreground" />}
             width={250}
           />
 
           <DataGraph
             field="videoCount"
             title="Posts"
-            icon={<Icons.posts className="h-8 w-8 text-primary" />}
+            icon={<Icons.posts className="h-8 w-8 text-muted-foreground" />}
             width={250}
           />
         </div>
@@ -178,7 +187,7 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
     <div className="w-full h-fit border rounded-md p-4 relative">
       <div className="h-fit w-full flex">
         <div className="flex items-center gap-3">
-          <div className="rounded-md bg-accent aspect-square p-2 relative flex justify-center items-center">
+          <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
             {icon}
           </div>
           <div className="flex flex-col">
@@ -289,7 +298,7 @@ const StoreDisplay = () => {
   console.log(products);
 
   return (
-    <div className="flex flex-col w-full mt-3">
+    <div className="flex flex-col w-full mt-3 ">
       <h1 className=" text-2xl text-primary">Store</h1>
       <h1 className=" text-lg text-muted-foreground">
         The store linked in the accounts bio
@@ -299,16 +308,21 @@ const StoreDisplay = () => {
           {products && (
             <>
               <div className="flex p-2 gap-2 items-center  w-full">
-                <div className="h-12 aspect-square rounded-md bg-muted"></div>
+                {/* <div className="h-12 aspect-square rounded-md bg-muted relative overflow-hidden border">
+                  <Image src={data.avatar} alt="" fill />
+                </div> */}
                 <div className="flex flex-col">
                   <h1 className="font-bold text-lg text-primary">
                     {products && products[0]?.vendor}
                   </h1>
+
                   <Link
-                    href={data?.bioLink}
+                    href={data?.storeUrl}
                     target="_blank"
-                    className="text-muted-foreground w-[280px] overflow-hidden whitespace-nowrap text-ellipsis"
+                    className=" flex gap-1 items-center text-muted-foreground text-sm w-[280px] overflow-hidden whitespace-nowrap text-ellipsis hover:opacity-60"
                   >
+                    <Icons.link className="h-4 w-4 text-muted-foreground" />
+
                     {url.replace(/^https?:\/\/(?:www\.)?/, "")}
                   </Link>
                 </div>
@@ -381,7 +395,7 @@ const ProfileDisplay = () => {
   const { data } = useContext(DataContext)!;
   return (
     <div className="flex items-center flex-col md:flex-row gap-4  rounded-md w-fit relative">
-      <div className="rounded-md bg-muted relative aspect-square h-20 md:h-40  overflow-hidden">
+      <div className="rounded-md bg-muted relative aspect-square shadow-lg dark:border h-20 md:h-40  overflow-hidden">
         <Image
           src={data?.avatar}
           alt="Picture of the author"
@@ -415,8 +429,8 @@ const StatDisplay = () => {
   return (
     <div className="grid grid-cols-3 gap-6  h-fit items-center rounded-md mt-4">
       <div className="flex items-center gap-3">
-        <div className="rounded-md bg-accent aspect-square p-2 relative flex justify-center items-center">
-          <Icons.likes className="h-8 w-8 text-primary" />
+        <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
+          <Icons.likes className="h-8 w-8 text-muted-foreground" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Likes</h2>
@@ -426,8 +440,8 @@ const StatDisplay = () => {
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <div className="rounded-md bg-accent aspect-square p-2 relative flex justify-center items-center">
-          <Icons.followers className="h-8 w-8 text-primary" />
+        <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
+          <Icons.followers className="h-8 w-8 text-muted-foreground" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Followers</h2>
@@ -437,8 +451,8 @@ const StatDisplay = () => {
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <div className="rounded-md bg-accent aspect-square p-2 relative flex justify-center items-center">
-          <Icons.posts className="h-8 w-8 text-primary" />
+        <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
+          <Icons.posts className="h-8 w-8 text-muted-foreground" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Posts</h2>

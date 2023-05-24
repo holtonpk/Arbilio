@@ -24,9 +24,11 @@ export default async function CollectionPage({
   console.log("data", data);
 
   return (
-    <div className="flex flex-col gap-4 w-full ">
-      <div className="w-full z-20   rounded-md  flex flex-col    ">
-        <CollectionData data={data} />
+    <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
+      <div className="flex flex-col gap-4 w-full ">
+        <div className="w-full z-20   rounded-md  flex flex-col    ">
+          <CollectionData data={data} />
+        </div>
       </div>
     </div>
   );

@@ -113,13 +113,13 @@ const TopRank = ({
       onClick={handleClick}
       className={`${
         rank == expandedAccountData.rank ? "" : ""
-      } w-full bg-muted rounded-md shadow-lg flex gap-6 flex-col items-center relative  cursor-pointer border `}
+      } w-full bg-background  rounded-md shadow-lg flex gap-6 flex-col items-center relative  cursor-pointer border `}
     >
       <h1 className="font-bold text-2xl absolute top-2 left-2  h-fit flex justify-center items-center  rounded-md p-1 aspect-square">
         {"#" + rank}
       </h1>
       <div className=" flex-col flex  p-6 items-center">
-        <div className="h-20 w-20 rounded-md aspect-square relative overflow-hidden">
+        <div className="h-20 w-20 border rounded-md aspect-square relative overflow-hidden">
           <Image
             src={account.avatar}
             alt="Picture of the author"
@@ -160,7 +160,7 @@ const RankRow = ({ account, rank }: any) => {
       <h1 className="font-bold text-[12px]  sm:hidden">
         {rank + (rank === 1 ? "st" : "th")}
       </h1>
-      <div className="border-rounded-md bg-muted shadow-lg rounded-md flex flex-row items-center  w-full border relative pl-2 sm:pl-4">
+      <div className=" bg-background shadow-lg rounded-md flex flex-row items-center  w-full border relative pl-2 sm:pl-4">
         <h1 className="font-bold text-[12px] hidden  sm:block sm:top-0 sm:left-0 sm:text-sm mr-4 ">
           {rank + (rank === 1 ? "st" : "th")}
         </h1>

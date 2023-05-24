@@ -25,11 +25,11 @@ export function DataSearch({
 
   return (
     <form className={cn("relative w-full h-fit ", className)} {...props}>
-      <Icons.search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+      <Icons.search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
       <Input
         type="search"
         placeholder={placeholder}
-        className=" w-full sm:pr-12 pl-12 bg-muted py-6"
+        className=" w-full sm:pr-12 pl-10  text-primary"
         ref={inputRef}
         onChange={onSubmit}
       />

@@ -19,15 +19,24 @@ export const dashboardConfig: DashboardConfig = {
       subPages: [
         {
           title: "Account Database",
+          description:
+            "Browse our collection of over 500 active sellers and 1000+ accounts.",
           href: "/accounts/account-database",
+          icon: "database",
         },
         {
           title: "Top Accounts",
+          description:
+            "Discover the top sellers and analyze their performance over time.",
           href: "/accounts/top-accounts",
+          icon: "rank",
         },
         {
           title: "Account Collections",
           href: "/accounts/account-collections",
+          description:
+            "Leverage the power of collections to organize your accounts and products.",
+          icon: "collection",
         },
       ],
       disabled: false,
@@ -40,10 +49,16 @@ export const dashboardConfig: DashboardConfig = {
         {
           title: "Product Database",
           href: "/products/product-database",
+          description:
+            "Browse our collection of over 200 high converting products.",
+          icon: "database",
         },
         {
           title: "Top Products",
           href: "/products/top-products",
+          description:
+            "Discover the top selling products and analyze their performance over time.",
+          icon: "rank",
         },
       ],
       disabled: false,
@@ -64,12 +79,12 @@ export const dashboardConfig: DashboardConfig = {
       ],
       disabled: true,
     },
-    {
-      title: "Settings",
-      iconName: "settings",
-      href: "/settings",
-      disabled: false,
-    },
+    // {
+    //   title: "Settings",
+    //   iconName: "settings",
+    //   href: "/settings",
+    //   disabled: false,
+    // },
   ],
 };
 

@@ -37,11 +37,11 @@ const HeroText: React.FC = () => {
 
   return (
     <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center ">
-      <div className="relative w-full h-fit bg-accent p-[1px]  rounded-md">
+      <div className="relative w-full h-fit bg-accent p-[1px] glow  rounded-md">
         <LinkButton
           href={"/pricing"}
           variant="link"
-          className="bg-background shadow-md cursor-pointer z-20 flex justify-between md:justify-center items-center text-sm font-medium w-full p-3 border rounded-md relative"
+          className="bg-background border-none  cursor-pointer z-20 flex justify-between md:justify-center items-center text-sm font-medium w-full p-3  rounded-md relative"
         >
           <span className="max-w-[60%] md:text-lg text-sm flex  gap-1 whitespace-nowrap items-start text-muted-foreground">
             Sign up today for a
@@ -51,7 +51,7 @@ const HeroText: React.FC = () => {
             <Icons.ArrowUpRight className="h-5 w-5 md:h-6 md:w-6" />
           </div>
         </LinkButton>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-full blur-[10px] bg-accent  "></div>
+        {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-full blur-[10px] bg-accent  "></div> */}
       </div>
       <div className="flex flex-col lg:gap-0 lg:flex-row items-center py-12">
         {headers.map((header, index) => (

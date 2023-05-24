@@ -268,72 +268,73 @@ const UpdateData = ({ data }: any) => {
 
         try {
           const { secUid, id } = record.data();
+          if (!record.data().topPosts) {
+            ("MS4wLjABAAAATyuh04Alh2vy5G2Be9Ovp9lS2qWXK-BO6uXLqXiTgaoC_Ey-QzdlgUm0O_Iceg47");
+            updateMessage(
+              `🔄 Fetching posts for account ${i + 1} of ${totalRecords}`
+            );
+            const response = await fetch(
+              `${siteConfig.url}/api/scrape/posts/${secUid}`
+            );
+            const posts = await response.json();
 
-          ("MS4wLjABAAAATyuh04Alh2vy5G2Be9Ovp9lS2qWXK-BO6uXLqXiTgaoC_Ey-QzdlgUm0O_Iceg47");
-          updateMessage(
-            `🔄 Fetching posts for account ${i + 1} of ${totalRecords}`
-          );
-          const response = await fetch(
-            `${siteConfig.url}/api/scrape/posts/${secUid}`
-          );
-          const posts = await response.json();
+            const top5Posts: any = posts
+              .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
+              .slice(0, 5);
 
-          const top5Posts: any = posts
-            .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
-            .slice(0, 5);
+            // Create a set of post ids
+            const postIds = new Set(top5Posts.map((post: any) => post.id));
 
-          // Create a set of post ids
-          const postIds = new Set(top5Posts.map((post: any) => post.id));
+            // Query all existing posts in one go
+            updateMessage(
+              `🔄 Checking if posts already exist in database for account ${
+                i + 1
+              }`
+            );
+            const postExists = await getDocs(
+              query(
+                collection(db, "tiktokPosts"),
+                where("postId", "in", Array.from(postIds))
+              )
+            );
 
-          // Query all existing posts in one go
-          updateMessage(
-            `🔄 Checking if posts already exist in database for account ${
-              i + 1
-            }`
-          );
-          const postExists = await getDocs(
-            query(
-              collection(db, "tiktokPosts"),
-              where("postId", "in", Array.from(postIds))
-            )
-          );
+            // Convert the results into a Map for easy lookup
+            const existingPosts = new Map(
+              postExists.docs.map((doc) => [doc.data().postId, doc.id])
+            );
 
-          // Convert the results into a Map for easy lookup
-          const existingPosts = new Map(
-            postExists.docs.map((doc) => [doc.data().postId, doc.id])
-          );
+            // Now create or get post id
+            const top5PostsIDsPromises = top5Posts.map(async (post: any) => {
+              const existingPostId = existingPosts.get(post.id);
 
-          // Now create or get post id
-          const top5PostsIDsPromises = top5Posts.map(async (post: any) => {
-            const existingPostId = existingPosts.get(post.id);
+              if (existingPostId) {
+                return existingPostId;
+              } else {
+                // add post to db
+                updateMessage(
+                  `🔄 Creating new post in database for account ${i + 1}`
+                );
 
-            if (existingPostId) {
-              return existingPostId;
-            } else {
-              // add post to db
-              updateMessage(
-                `🔄 Creating new post in database for account ${i + 1}`
-              );
+                const image = await downloadImageAndUploadToFirebase(
+                  "posts",
+                  post.video.cover,
+                  post.id
+                );
+                const record = await addDoc(collection(db, "tiktokPosts"), {
+                  postId: post.id,
+                  postData: post.stats,
+                  cover: image,
+                });
+                return record.id;
+              }
+            });
 
-              const image = await downloadImageAndUploadToFirebase(
-                "posts",
-                post.video.cover,
-                post.id
-              );
-              const record = await addDoc(collection(db, "tiktokPosts"), {
-                postId: post.id,
-                postData: post.stats,
-                cover: image,
-              });
-              return record.id;
-            }
-          });
-
-          const postsArray = await Promise.all(top5PostsIDsPromises);
-          updateMessage(`🔄 Updating top 5 posts for account ${i + 1}`);
-          await updateDoc(doc(db, "tiktok-accounts", id), {
-            topPosts: postsArray,
-          });
+            const postsArray = await Promise.all(top5PostsIDsPromises);
+            updateMessage(`🔄 Updating top 5 posts for account ${i + 1}`);
+            await updateDoc(doc(db, "tiktok-accounts", id), {
+              topPosts: postsArray,
+            });
+          }
         } catch (error: any) {
           updateMessage(
             `❌ Error updating posts for record ${i + 1}: ${error.message}`

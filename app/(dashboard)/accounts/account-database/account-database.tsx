@@ -62,18 +62,18 @@ const AccountDatabase = ({ originalData }: any) => {
 
   return (
     <>
-      <div className="grid gap-2 w-full ">
+      <div className="flex gap-2 w-full ">
         <DataSearch
           placeholder="Search an user name. ex: @username"
           searchFunction={searchData}
         />
-        <div className="flex justify-between w-[100%] flex-col gap-2 items-center lg:flex-row ">
+        <div className="flex  w-[100%] flex-col gap-2 items-center lg:flex-row ">
           <div className="flex items-center gap-4 w-full lg:w-fit justify-between">
             <FilterBuilder
               appliedFilterList={appliedFilterList}
               setAppliedFilterList={setAppliedFilterList}
             />
-            <div className="md:w-[200px] ">
+            <div className=" ">
               <ComboBox dropList={sortOptions} onSelect={setSortParam} />
             </div>
           </div>
@@ -89,7 +89,7 @@ const AccountDatabase = ({ originalData }: any) => {
         appliedFilterList={appliedFilterList}
         setAppliedFilterList={setAppliedFilterList}
       />
-      <div className="max-w-full mt-2 ">
+      <div className="w-full mt-2  ">
         {sortedData?.length === 0 ? (
           <EmptySearch />
         ) : (

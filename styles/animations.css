@@ -25,6 +25,11 @@
   animation: fade-in 0.3s ease-in-out;
 }
 
+.fade-in2 {
+  animation-delay: 500ms;
+  animation: fade-in 0.5s ease-in-out;
+}
+
 .height-animation {
   height: 0;
   overflow: hidden;

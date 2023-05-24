@@ -33,8 +33,8 @@ const CollectionData = ({ data }: any) => {
 
   return (
     <>
-      <div className="flex w-full justify-between">
-        <div className="flex flex-row items-center gap-2 mb-2">
+      <div className="flex gap-4 items-center mb-2">
+        <div className="flex flex-row items-center gap-2">
           <LinkButton
             variant="ghost"
             href="/accounts/account-collections"
@@ -62,60 +62,55 @@ const CollectionData = ({ data }: any) => {
         </div>
       ) : (
         <>
-          <>
-            <div className="flex flex-col mb-2 gap-2">
-              <div className="flex flex-row  justify-between ">
-                <div className="flex flex-col md:flex-row gap-2 w-full md:w-fit">
-                  <div className=" w-full md:w-[300px]">
-                    <DataSearch
-                      placeholder="Search"
-                      searchFunction={searchData}
-                    />
-                  </div>
-                  <div className="flex justify-between  md:gap-2 w-full md:w-fit ">
-                    <FilterBuilder
-                      appliedFilterList={appliedFilterList}
-                      setAppliedFilterList={setAppliedFilterList}
-                    />
-                    <div className="w-fit md:w-[200px]  relative">
-                      <ComboBox
-                        dropList={sortOptions}
-                        onSelect={setSortParam}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="md:flex items-center gap-4 w-fit justify-between hidden">
-                  <DisplaySelector
-                    displayType={displayType}
-                    setDisplayType={setDisplayType}
+          <div className="flex flex-col w-full mb-2 gap-2">
+            <div className="flex flex-row gap-2 ">
+              <div className="flex flex-col md:flex-row gap-2 w-full md:w-fit">
+                <div className=" w-fit ">
+                  <DataSearch
+                    placeholder="Search"
+                    searchFunction={searchData}
                   />
                 </div>
+                <div className="flex justify-between  md:gap-2 w-full md:w-fit ">
+                  <FilterBuilder
+                    appliedFilterList={appliedFilterList}
+                    setAppliedFilterList={setAppliedFilterList}
+                  />
+                  <div className="w-fit  relative">
+                    <ComboBox dropList={sortOptions} onSelect={setSortParam} />
+                  </div>
+                </div>
               </div>
-              <AppliedFilters
-                appliedFilterList={appliedFilterList}
-                setAppliedFilterList={setAppliedFilterList}
-              />
-            </div>
-            {displayType === "grid" && (
-              <CardDisplay
-                accountDataBaseData={sortedData}
-                collection={data.collection}
-              />
-            )}
-            {displayType === "columns" && (
-              <div className=" relative">
-                <Table
-                  data={sortedData}
-                  collection={data.collection}
-                  setSortParam={setSortParam}
-                  setDescending={setDescending}
-                  hideItems={hideItems}
+              <div className="md:flex items-center gap-4 w-fit justify-between hidden">
+                <DisplaySelector
+                  displayType={displayType}
+                  setDisplayType={setDisplayType}
                 />
               </div>
-            )}
-            {sortedData?.length === 0 && <EmptySearch />}
-          </>
+            </div>
+            <AppliedFilters
+              appliedFilterList={appliedFilterList}
+              setAppliedFilterList={setAppliedFilterList}
+            />
+          </div>
+          {displayType === "grid" && (
+            <CardDisplay
+              accountDataBaseData={sortedData}
+              collection={data.collection}
+            />
+          )}
+          {displayType === "columns" && (
+            <div className=" relative">
+              <Table
+                data={sortedData}
+                collection={data.collection}
+                setSortParam={setSortParam}
+                setDescending={setDescending}
+                hideItems={hideItems}
+              />
+            </div>
+          )}
+          {sortedData?.length === 0 && <EmptySearch />}
         </>
       )}
     </>

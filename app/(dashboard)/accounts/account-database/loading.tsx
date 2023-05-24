@@ -1,28 +1,36 @@
 import Skeleton from "@/components/ui/custom-skeleton";
+import { PageHeader } from "@/components/header";
 
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
   return (
     <div className="flex flex-col gap-2">
-      <Skeleton height={60} width={"40%"} />
-      <Skeleton height={40} width={"50%"} />
-      <Skeleton height={60} width={"100%"} />
-      <div className="flex justify-between w-full">
-        <div className="flex w-[40%] gap-2 ">
-          <Skeleton height={40} width={"30%"} />
-          <Skeleton height={40} width={"70%"} />
+      <PageHeader
+        heading="Account Database"
+        // text={
+        //   "Browse our collection of over 500 active sellers and 1000+ accounts."
+        // }
+      />
+      <div className="w-full border-t">
+        <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
+          <div className="flex gap-2 w-full">
+            <Skeleton height={40} width={"50%"} />
+            <Skeleton height={40} width={"10%"} />
+            <Skeleton height={40} width={"20%"} />
+
+            <div className="flex w-fit gap-2 ">
+              <Skeleton height={40} width={40} />
+              <Skeleton height={40} width={40} />
+            </div>
+          </div>
+          <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 h-full w-full mt-4  ">
+            {Array(8)
+              .fill(0)
+              .map((_, i) => (
+                <AccountCardSkeleton key={i} />
+              ))}
+          </div>
         </div>
-        <div className="flex w-fit gap-2 ">
-          <Skeleton height={40} width={40} />
-          <Skeleton height={40} width={40} />
-        </div>
-      </div>
-      <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 h-full  ">
-        {Array(8)
-          .fill(0)
-          .map((_, i) => (
-            <AccountCardSkeleton key={i} />
-          ))}
       </div>
     </div>
   );

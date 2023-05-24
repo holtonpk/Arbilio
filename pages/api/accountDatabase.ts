@@ -45,7 +45,7 @@ export default async function handler(
       avatar: record.avatar,
       id: record.id,
       product: productData,
-      secUid: record.userInfo.user.secUid,
+      secUid: record.secUid,
       storeUrl: record.storeUrl,
       topPosts: topPostsData,
       uniqueId: record.uniqueId,

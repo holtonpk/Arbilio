@@ -9,7 +9,7 @@ import { Icons } from "../icons";
 
 const Navbar = () => {
   return (
-    <nav className=" grid items-start gap-2 ">
+    <nav className=" grid grid-flow-col items-start gap-2 ">
       {dashboardConfig.sideNav.map((route, indx) => (
         <Route key={indx} item={route} />
       ))}
@@ -18,17 +18,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-const Logo = () => {
-  return (
-    <div className="h-fit w-full flex flex-col p-6 justify-center items-center gap-2">
-      <Icons.logo className="h-6 w-6" />
-      <span className="hidden font-bold sm:inline-block">
-        {siteConfig.name}
-      </span>
-    </div>
-  );
-};
 
 const Route = ({ item }: { item: SideNavRoute }) => {
   const [showSubPages, setShowSubPages] = useState(false);
@@ -49,7 +38,7 @@ const Route = ({ item }: { item: SideNavRoute }) => {
   const Icon = Icons[item.iconName];
 
   return (
-    <span className="flex flex-col gap-2 pr-2 relative h-fit">
+    <span className="flex gap-2 pr-2 relative h-fit">
       {!item?.subPages ? (
         <Link
           href={item?.href}

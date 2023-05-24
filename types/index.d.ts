@@ -31,14 +31,18 @@ export type MarketingConfig = {
 
 import { Icons } from "@/components/icons";
 
+export interface SubRoute {
+  title: string;
+  description: string;
+  href: string;
+  icon: keyof typeof Icons;
+}
+
 export interface SideNavRoute {
   title: string;
   iconName: keyof typeof Icons;
   href: string;
-  subPages?: {
-    title: string;
-    href: string;
-  }[];
+  subPages?: SubRoute[];
   disabled: boolean;
 }
 

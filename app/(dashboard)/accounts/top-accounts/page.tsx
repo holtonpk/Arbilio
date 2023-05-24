@@ -2,7 +2,7 @@ import AccountRank from "./account-rank";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 import ProtectFeature from "@/components/protect-feature";
-
+import Loading from "./loading";
 async function getData() {
   const rankType = "followers";
   const res = await fetch(`${siteConfig.url}/api/top-accounts`);
@@ -28,8 +28,12 @@ export default async function TopAccounts() {
             "Discover the top sellers and anylize their performance over time."
           }
         />
-        <div className="flex flex-row  w-full  h-full  gap-8  rounded-md ">
-          <AccountRank data={data} />
+        <div className="w-full border-t">
+          <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
+            <div className="flex flex-row  w-full  h-full  gap-8  rounded-md ">
+              <AccountRank data={data} />
+            </div>
+          </div>
         </div>
       </>
     </ProtectFeature>

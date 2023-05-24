@@ -15,7 +15,7 @@ const CardDisplay = ({
   accountDataBaseData: AccountDataType[];
 }) => {
   return (
-    <div className="grid  lg:grid-cols-3  grid-cols-2 gap-8 h-full  ">
+    <div className="grid  lg:grid-cols-4  grid-cols-2 gap-8 h-full  ">
       {accountDataBaseData ? (
         <>
           {accountDataBaseData.map((account: any, i: number) => (
@@ -70,6 +70,7 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
             <h1 className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis  text-primary">
               {item.userInfo?.user?.nickname}
             </h1>
+
             <div className="text-[12px] text-gray-500  text-muted-foreground overflow-hidden text-ellipsis">
               {"@" + item.uniqueId}
             </div>
@@ -78,7 +79,7 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                 {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground ">
                 Likes
               </h2> */}
-                <Icons.likes className="w-4 h-4 text-primary bg-muted" />
+                <Icons.likes className="w-4 h-4 text-primary fill-primary " />
                 <h3 className="text-[12px]  font-bold text-primary">
                   {formatNumber(item.accountStats[0].heartCount)}
                 </h3>
@@ -88,7 +89,7 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                 {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground">
                 Followers
               </h2> */}
-                <Icons.followers className="w-4 h-4 text-primary fill-muted" />
+                <Icons.followers className="w-4 h-4 text-primary fill-primary" />
                 <h3 className="text-[12px]  font-bold text-primary">
                   {formatNumber(item.accountStats[0].followerCount)}
                 </h3>
@@ -98,7 +99,7 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                 {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground">
                 Posts
               </h2> */}
-                <Icons.posts className="w-4 h-4 text-primary fill-muted" />
+                <Icons.posts className="w-4 h-4 text-primary fill-primary" />
                 <h3 className="text-[12px]  font-bold text-primary">
                   {formatNumber(item.accountStats[0].videoCount)}
                 </h3>

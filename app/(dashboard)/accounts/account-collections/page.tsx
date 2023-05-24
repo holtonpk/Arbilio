@@ -16,18 +16,18 @@ const AccountCollections = () => {
 
   return (
     <>
-      {userCollections && !loading ? (
-        <>
-          <PageHeader
-            heading="Account Collections"
-            text={
-              "Leverage the power of collections to organize your accounts and products."
-            }
-          >
-            <CreateCollectionButton variant="default" />
-          </PageHeader>
-          {userCollections?.length > 0 ? (
-            <div className="divide-y divide-border rounded-md border">
+      <PageHeader
+        heading="Account Collections"
+        text={
+          "Leverage the power of collections to organize your accounts and products."
+        }
+      >
+        <CreateCollectionButton variant="default" />
+      </PageHeader>
+      <div className="w-full border-t">
+        <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
+          {userCollections && userCollections?.length > 0 ? (
+            <div className="divide-y divide-border rounded-md border w-full">
               {userCollections.map((collection: any, i: number) => (
                 <CollectionDisplay key={i} collection={collection} />
               ))}
@@ -44,10 +44,8 @@ const AccountCollections = () => {
               <CreateCollectionButton variant="outline" />
             </EmptyPlaceholder>
           )}
-        </>
-      ) : (
-        <Loading />
-      )}
+        </div>
+      </div>
     </>
   );
 };

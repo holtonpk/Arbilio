@@ -22,7 +22,7 @@ export const AccountInfo = () => {
     <div className="relative w-fit h-fit">
       <Button
         onClick={handleToggleMenu}
-        className="w-fit h-git  flex pb-4  items-center p-2 "
+        className="w-fit h-git  flex pb-4  items-center p-2 hover:text-primary "
         variant="ghost"
         size="lg"
       >

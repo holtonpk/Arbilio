@@ -12,7 +12,7 @@ const DisplaySelector = ({ displayType, setDisplayType }: any) => {
   const variant = "outline";
 
   return (
-    <div className="flex gap-2 w-fit ">
+    <div className="flex gap-2 w-fit   ">
       <Button
         onClick={displayGrid}
         className="flex items-center justify-center whitespace-nowrap"

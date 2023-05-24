@@ -64,6 +64,8 @@ import {
   MousePointerClick,
   Crosshair,
   Copy,
+  Triangle,
+  Link2,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -110,6 +112,7 @@ export const Icons = {
   media: Image,
   menu: Menu,
   likes: Heart,
+  link: Link2,
   logout: LogOut,
   settings: Settings,
   grid: LayoutGrid,
@@ -120,6 +123,7 @@ export const Icons = {
   warning: AlertTriangle,
   user: User,
   arrowRight: ArrowRight,
+  triangle: Triangle,
   search: Search,
   store: Store,
   help: HelpCircle,

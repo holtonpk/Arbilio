@@ -69,7 +69,7 @@ const MenuItem = ({ item, handleSelect, selected }: any) => {
   return (
     <button
       onClick={() => handleSelect(item)}
-      className="text-primary text-sm cursor-pointer flex items-center gap-2 w-full h-10 px-2 py-2 hover:bg-accent group rounded-md hover:text-white"
+      className="text-primary text-sm cursor-pointer flex items-center gap-2 w-full h-10 px-2 py-2 hover:bg-accent group rounded-md "
     >
       {item.icon && <MenuItemIcon name={item.icon} />}
       <p>{item.title}</p>
