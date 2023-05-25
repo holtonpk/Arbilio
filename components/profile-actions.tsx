@@ -53,11 +53,11 @@ export const MoreButton = ({ variant, size, className }: MoreButtonProps) => {
   };
 
   return (
-    <div ref={moreButtonRef} className="relative ml-auto  ">
+    <div ref={moreButtonRef} className="relative ml-auto z-40 ">
       <Button
         onClick={toggleShowMore}
         className={cn(
-          "flex items-center justify-center whitespace-nowrap",
+          "flex items-center justify-center whitespace-nowrap ",
           className
         )}
         variant={variant}
@@ -68,7 +68,7 @@ export const MoreButton = ({ variant, size, className }: MoreButtonProps) => {
 
       {showMore && (
         <React.Fragment>
-          <div className="absolute top-0   right-1/2 translate-x-full -translate-y-full   w-fit h-fit bg-background border-2 border-border rounded-md shadow-lg  fade-in">
+          <div className="absolute top-0 z-40  right-1/2 translate-x-full -translate-y-full   w-fit h-fit bg-background border-2 border-border rounded-md shadow-lg  fade-in">
             <div className="flex flex-col items-start gap-2 p-2 w-fit whitespace-nowrap text-base">
               <Link
                 href="/Settings"

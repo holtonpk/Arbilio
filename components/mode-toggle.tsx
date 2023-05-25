@@ -41,3 +41,56 @@ export function ModeToggle() {
     </DropdownMenu>
   );
 }
+
+export function ModeToggle2() {
+  const { setTheme, theme } = useTheme();
+
+  console.log("theme", theme);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="border hover:border-primary p-1 gap-1 bg-muted/40 hover:bg-muted/40"
+        >
+          {theme === "dark" && (
+            <>
+              <Icons.moon className="h-5 w-5" />
+              Dark
+            </>
+          )}
+          {theme === "light" && (
+            <>
+              <Icons.sun className="h-5 w-5" />
+              Light
+            </>
+          )}
+          {theme === "system" && (
+            <>
+              <Icons.laptop className="h-5 w-5" />
+              System
+            </>
+          )}
+          <Icons.chevronUpDown className="h-4 w-4 ml-4" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          <Icons.sun className="mr-2 h-4 w-4" />
+          <span>Light</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          <Icons.moon className="mr-2 h-4 w-4" />
+          <span>Dark</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          <Icons.laptop className="mr-2 h-4 w-4" />
+          <span>System</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}

@@ -15,7 +15,7 @@ interface CardDisplayProps {
 
 const CardDisplay = ({ data }: CardDisplayProps) => {
   return (
-    <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 h-full w-full ">
+    <div className="grid lg:grid-cols-5 grid-cols-2 gap-4 h-full w-full ">
       {data ? (
         <>
           {data.map((item: any, i: number) => (
@@ -44,30 +44,30 @@ interface CardProps {
 export const Card = ({ item }: CardProps) => {
   return (
     <div className="h-full relative group ">
-      <div className="absolute h-1/2 pointer-events-none bottom-0 w-full bg-gradient-to-t from-black/50 to-black/0  rounded-md z-30 hidden group-hover:block fade-in">
-        <div className="flex absolute gap-4 w-fit  bottom-2 pointer-events-auto right-2">
-          <Button
-            className="flex items-center justify-center whitespace-nowrap"
-            variant="default"
-            size="sm"
-          >
-            <Icons.ellipsis className="h-6 w-6 " />
-          </Button>
-          <Button
-            className="flex items-center justify-center whitespace-nowrap"
-            variant="default"
-            size="sm"
-          >
-            <Icons.crosshair className="h-6 w-6 " />
-          </Button>
-        </div>
-      </div>
       <Link
         href={`/products/product/${item.id}`}
-        className="w-full h-[200px]  bg-card rounded-md border pt- justify-center p-4 shadow-lg  pb-2 items-center relative flex flex-col  cursor-pointer "
+        className="w-full   bg-card rounded-md   p-4   pb-2 items-center relative flex flex-col  cursor-pointer "
       >
-        <div className="flex items-center flex-col   gap-[2px] sm:gap-2   pb-0  rounded-md ">
-          <div className="aspect-square w-32 h-32 bg-muted rounded-md relative overflow-hidden">
+        <div className="flex  flex-col  w-full  gap-[2px] sm:gap-2   pb-0  rounded-md ">
+          <div className="aspect-square w-full bg-muted rounded-md relative overflow-hidden">
+            <div className="absolute h-1/2 pointer-events-none bottom-0 w-full bg-gradient-to-t from-black/50 to-black/0  rounded-md z-30 hidden group-hover:block fade-in">
+              <div className="flex absolute gap-4 w-fit  bottom-2 pointer-events-auto right-2">
+                <Button
+                  className="flex items-center justify-center whitespace-nowrap"
+                  variant="default"
+                  size="sm"
+                >
+                  <Icons.ellipsis className="h-6 w-6 " />
+                </Button>
+                <Button
+                  className="flex items-center justify-center whitespace-nowrap"
+                  variant="default"
+                  size="sm"
+                >
+                  <Icons.crosshair className="h-6 w-6 " />
+                </Button>
+              </div>
+            </div>
             <Image
               src={item.image}
               alt="Picture of the author"
@@ -77,10 +77,17 @@ export const Card = ({ item }: CardProps) => {
                     33vw"
             />
           </div>
-
-          <h1 className="text-base font-bold text-ellipsis w-fit text-center  text-primary">
-            {item.title}
-          </h1>
+          <div className="grid ">
+            <h1 className="text-sm capitalize text-ellipsis  text-left w-fit text-primary">
+              {item.title}
+            </h1>
+            <div className="w-[100px] flex items-center h-fit gap-2 text-muted-foreground">
+              <Icons.likes className="h-5 w-5 fill-muted-foreground " />
+              234
+              <Icons.profile className="h-5 w-5 fill-muted-foreground " />
+              16
+            </div>
+          </div>
         </div>
       </Link>
     </div>

@@ -24,8 +24,10 @@ export default async function ProductDatabase() {
           "Browse our collection of over 500 active sellers and 1000+ accounts."
         }
       />
-      <div className="w-full rounded-md flex flex-col min-h-screen items-center ">
-        <ProductDataBase data={data} />
+      <div className="w-full border-t">
+        <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
+          <ProductDataBase data={data} />
+        </div>
       </div>
     </>
   );

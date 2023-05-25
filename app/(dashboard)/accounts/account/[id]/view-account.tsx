@@ -159,6 +159,7 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
   });
 
   useEffect(() => {
+    console.log("data==>", date1, date2);
     orderedData.map((stat: any) => formatDateShort(stat.dataCollectionTime));
     if (date1 && date2) {
       const filteredData = orderedData.filter((stat: any) => {
@@ -182,6 +183,7 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
       });
     }
   }, [date1, date2, field, orderedData]);
+  console.log("data out==>", date1, date2);
 
   return (
     <div className="w-full h-fit border rounded-md p-4 relative">
@@ -203,7 +205,11 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
       </div>
       <div className="relative h-[250px]  w-full aspect-square  mt-3  rounded-md">
         {GraphData && GraphData.labels.length > 0 ? (
-          <Graph labels={GraphData.labels} data={GraphData.data} />
+          <Graph
+            labels={GraphData.labels}
+            data={GraphData.data}
+            dataTitle={title}
+          />
         ) : (
           <div className="w-full flex flex-col justify-center items-center p-10">
             <Icons.error className="h-8 w-8 text-gray-500" />
@@ -340,8 +346,11 @@ const StoreDisplay = () => {
                     href={url + "/products/" + product.handle}
                     className="flex items-center gap-2 p-2 group  w-full "
                   >
-                    <div className="w-10 aspect-square bg-muted rounded-md relative overflow-hidden">
-                      <Image src={product?.images[0].src} alt="" fill />
+                    <div className="w-10 aspect-square bg-muted rounded-md flex justify-center items-center relative overflow-hidden">
+                      {product?.images[0] && (
+                        <Image src={product?.images[0].src} alt="" fill />
+                      )}
+                      <Icons.media className="h-6 w-6 text-gray-500" />
                     </div>
                     <h1 className=" text-lg group-hover:text-muted-foreground w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
                       {product.title}
@@ -424,8 +433,6 @@ const ProfileDisplay = () => {
 const StatDisplay = () => {
   const { data } = useContext(DataContext)!;
 
-  console.log("dd", data);
-
   return (
     <div className="grid grid-cols-3 gap-6  h-fit items-center rounded-md mt-4">
       <div className="flex items-center gap-3">
@@ -465,7 +472,7 @@ const StatDisplay = () => {
   );
 };
 
-const Graph = ({ labels, data, width }: any) => {
+const Graph = ({ labels, data, dataTitle }: any) => {
   const chartRef = useRef<any>();
   ChartJS.register(
     CategoryScale,
@@ -478,6 +485,13 @@ const Graph = ({ labels, data, width }: any) => {
     Filler
   );
   var style = getComputedStyle(document.body);
+
+  const [hoverValue, setHoverValue] = useState<{ x: string; y: number } | null>(
+    null
+  );
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(
+    null
+  );
 
   const configGradient = useCallback(() => {
     if (chartRef.current) {
@@ -509,6 +523,29 @@ const Graph = ({ labels, data, width }: any) => {
   }, [configGradient]);
 
   const options = {
+    onHover: (event: any, chartElement: any) => {
+      if (chartElement.length > 0) {
+        const index = chartElement[0].index;
+        const datasetIndex = chartElement[0].datasetIndex;
+        const x = dataObject.labels[index];
+        const y = dataObject.datasets[datasetIndex].data[index];
+        if (hoverValue?.x !== x || hoverValue?.y !== y) {
+          setHoverValue({ x, y });
+        }
+        if (
+          position?.x !== chartElement[0].element.x ||
+          position?.y !== chartElement[0].element.y
+        ) {
+          setPosition({
+            x: chartElement[0].element.x,
+            y: chartElement[0].element.y,
+          });
+        }
+      } else {
+        setPosition(null);
+        setHoverValue(null);
+      }
+    },
     responsive: true,
     maintainAspectRatio: false,
 
@@ -531,31 +568,21 @@ const Graph = ({ labels, data, width }: any) => {
           display: true,
           labelString: "1k = 1000",
         },
-        // display: false,
-        // ticks: {
-        //   display: false,
-        // },
-        // grid: {
-        //   drawBorder: false,
-        //   display: false,
-        // },
       },
       x: {
-        // display: false,
-        // ticks: {
-        //   display: false,
-        // },
         grid: {
           drawBorder: false,
           display: false,
         },
       },
     },
-    layout: {},
+
     elements: {
       point: {
         radius: 0,
         borderWidth: 0,
+        hitRadius: 50,
+        hoverBorderWidth: 10,
       },
     },
   };
@@ -573,5 +600,75 @@ const Graph = ({ labels, data, width }: any) => {
     ],
   };
 
-  return <Line ref={chartRef} options={options} data={dataObject} />;
+  type DateObject = {
+    month: string;
+    day: number;
+  };
+  function convertDateString(dateStr: string): DateObject {
+    const dateParts = dateStr.split("-");
+    if (dateParts.length !== 2) {
+      throw new Error("Invalid date string. Expected format: m-d");
+    }
+    const monthIndex = parseInt(dateParts[0], 10) - 1; // months are 0-based in JavaScript Date
+    const day = parseInt(dateParts[1], 10);
+    if (isNaN(monthIndex) || isNaN(day)) {
+      throw new Error(
+        "Invalid date string. Expected numeric month and day values."
+      );
+    }
+
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const month = monthNames[monthIndex];
+
+    if (!month) {
+      throw new Error("Invalid month. Expected a value between 1 and 12.");
+    }
+
+    return { month, day };
+  }
+
+  return (
+    <>
+      {position && (
+        <div
+          style={{ top: position.y - 30, left: position.x }}
+          className="pointer-events-none absolute bg-muted rounded-md fade-in p-2 flex  gap-2 shadow-lg items-center justify-center -translate-y-full -translate-x-1/2"
+        >
+          <div className="flex flex-col items-center  rounded-full h-12 w-12  p-1  bg-foreground aspect-square">
+            <h1 className="text-sm leading-[16px] font-bold text-background">
+              {hoverValue ? convertDateString(hoverValue.x).day : ""}
+            </h1>
+            <h1 className="text-base text-background">
+              {hoverValue ? convertDateString(hoverValue?.x).month : ""}
+            </h1>
+          </div>
+          <div className="grid">
+            <h1 className="font-bold">{hoverValue?.y.toLocaleString()}</h1>
+            <h1 className="font-bold">{dataTitle}</h1>
+          </div>
+          <Icons.triangle className="h-4 w-4 text-muted fill-muted rotate-180 absolute bottom-1 left-1/2 -translate-x-1/2 translate-y-full" />
+        </div>
+      )}
+      <Line
+        onMouseLeave={() => setPosition(null)}
+        onBlur={() => setPosition(null)}
+        ref={chartRef}
+        options={options}
+        data={dataObject}
+      />
+    </>
+  );
 };

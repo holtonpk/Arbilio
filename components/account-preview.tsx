@@ -3,76 +3,90 @@ import React from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/Auth";
 import { Icons } from "@/components/icons";
-
-import LogoutButton from "@/components/logout-button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import useClickOutside from "@/hooks/use-click-outside";
+import { LinkButton } from "@/components/ui/link";
+import { useRouter } from "next/navigation";
+import { ModeToggle2 } from "@/components/mode-toggle";
+
 export const AccountInfo = () => {
-  const [showMenu, setShowMenu] = React.useState(false);
   const { currentUser } = useAuth()!;
-  const menuRef = React.useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const { logOut } = useAuth()!;
 
-  const handleToggleMenu = () => {
-    setShowMenu((prev) => !prev);
+  const handleLogout = () => {
+    logOut();
+    router.push("/");
   };
-
-  useClickOutside(menuRef, () => setShowMenu(false));
 
   return (
     <div className="relative w-fit h-fit">
-      <Button
-        onClick={handleToggleMenu}
-        className="w-fit h-git  flex pb-4  items-center p-2 hover:text-primary "
-        variant="ghost"
-        size="lg"
-      >
-        <div className="aspect-square p-1 mr-2 rounded-full  h-10 w-10  flex justify-center items-center bg-gradient-to-tl from-green-300 to-orange-400">
-          {/* <Icons.profile className="h-6 w-6 text-primary   " />
-           */}
-        </div>
-        <div className="flex flex-col items-start">
-          <div className="text-sm capitalize font-bold">
-            {currentUser && currentUser.displayName}
-          </div>
-          <div className="text-[12px] font-muted-foreground">
-            {currentUser && currentUser.email}
-          </div>
-        </div>
-      </Button>
-      {showMenu && (
-        <div
-          ref={menuRef}
-          className="absolute fade-in top-full translate-y-2  w-full h-fit gap-1 bg-background p-2 rounded-md border flex flex-col"
-        >
-          <Link
-            href={"/settings"}
-            className="hover:bg-accent p-1 rounded-md w-full text-primary test-sm pl-4"
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Button
+            className="w-fit h-git  flex pb-4  items-center p-2 hover:text-primary hover:bg-background hover:opacity-60 "
+            variant="ghost"
+            size="lg"
           >
-            Settings
-          </Link>
-          <Link
-            href={"/settings"}
-            className="hover:bg-accent p-1 rounded-md w-full text-primary pl-4"
-          >
-            Account
-          </Link>
-          <Link
-            href={"/settings"}
-            className="hover:bg-accent p-1 rounded-md w-full text-primary pl-4"
-          >
-            Help
-          </Link>
+            <div className="aspect-square p-1 mr-2 rounded-full  h-10 w-10  flex justify-center items-center bg-gradient-to-tl from-green-300 to-orange-400"></div>
+            <div className="flex flex-col items-start">
+              <div className="text-sm capitalize font-bold">
+                {currentUser && currentUser.displayName}
+              </div>
+              <div className="text-[12px] font-muted-foreground">
+                {currentUser && currentUser.email}
+              </div>
+            </div>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[300px]">
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard">Dashboard</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/settings">Account</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/settings">Settings</Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
 
-          <LogoutButton
-            className="w-full flex gap-2 items-center p-2 "
-            variant="default"
-            size="sm"
-          >
-            <Icons.logout className="h-4 w-4 " />
-            Logout
-          </LogoutButton>
-        </div>
-      )}
+          <div className="flex justify-between items-center w-full px-2  text-sm">
+            Theme <ModeToggle2 />
+          </div>
+
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <button onClick={handleLogout} className="w-full">
+              Logout
+            </button>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/#" className="flex justify-between">
+              Homepage
+              <Icons.ArrowUpRight className="h-4 w-4 ml-2" />
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+          <div className="p-3">
+            <DropdownMenuItem className=" focus:bg-background" asChild>
+              <LinkButton
+                href="/settings/upgrade"
+                className="w-full focus:bg-primary/90 rounded-md focus:text-primary-foreground"
+              >
+                Upgrade to pro
+              </LinkButton>
+            </DropdownMenuItem>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

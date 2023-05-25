@@ -18,7 +18,11 @@ const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
       <Link
         {...props}
         target={target}
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(
+          buttonVariants({ variant, size }),
+          className,
+          "cursor-pointer"
+        )}
         ref={ref}
       >
         {children}

@@ -26,7 +26,6 @@ const DashboardNav = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -35,23 +34,12 @@ const DashboardNav = () => {
   const hideHoverBar = () => {
     const hoverBar = document.getElementById("hoverBar");
     hoverBar!.style.display = "none";
+    hoverBar!.style.transition = "none";
   };
-
-  useEffect(() => {
-    const routeContainer = document.getElementById("routeContainer");
-
-    routeContainer!.addEventListener("mouseleave", hideHoverBar);
-
-    return () => {
-      routeContainer!.removeEventListener("mouseleave", hideHoverBar);
-    };
-  }, []);
-
-  // when the page top is greater than 79px set the collapseNav to true
 
   return (
     <header>
-      <div className="w-screen h-20 flex justify-between px-6">
+      <div className="w-screen h-20 flex justify-between px-6 z-40 relative">
         <Link href="/" className=" items-center space-x-2 flex w-fit">
           <span className="text-2xl p-2 text-primary font-bold inline-block ">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
@@ -60,7 +48,7 @@ const DashboardNav = () => {
             .io
           </span>
         </Link>
-        <div className="w-fit flex gap-4 items-center">
+        <div className="w-fit flex gap-4 items-center relative">
           <Link
             href={"/help"}
             className={cn(
@@ -99,14 +87,18 @@ const DashboardNav = () => {
       />
 
       <nav
-        className={` px-4  w-screen h-12 z-40 bg-background border-b pb-[6px]  left-0 
-      ${collapseNav ? "fixed top-0" : "relative"}
+        className={` px-4  w-screen z-[35]  h-12 bg-background  pb-[6px]  left-0 
+      ${
+        collapseNav
+          ? "fixed top-0  z-[45] shadow-sm dark:border-b"
+          : "relative border-b"
+      }
       `}
       >
         <div
           id="row"
           className={` flex items-center gap-2 transition-all justify-end duration-[500ms] 
-          ${collapseNav ? "w-[705px]" : "w-[585px]"}
+          ${collapseNav ? "w-[680px]" : "w-[560px]"}
           `}
         >
           {collapseNav ? (
@@ -119,12 +111,13 @@ const DashboardNav = () => {
               </span>
             </Link>
           ) : null}
-          <div id="routeContainer" className="flex gap">
+          <div onMouseLeave={hideHoverBar} className="flex gap">
             {dashboardConfig.sideNav.map((route, indx) => (
               <Route key={indx} item={route} />
             ))}
             <span
-              className="absolute z-10 rounded-md bg-muted transition-all duration-200"
+              // className="absolute z-10 rounded-md bg-muted transition-all duration-200"
+              className="absolute z-10 rounded-md bg-muted "
               id="hoverBar"
             />
           </div>
@@ -143,34 +136,28 @@ const Route = ({ item }: { item: SideNavRoute }) => {
   const onHover = () => {
     if (elementRef.current) {
       const hoverBar = document.getElementById("hoverBar");
-      hoverBar!.style.display = "block";
-      hoverBar!.style.height = `${elementRef.current.offsetHeight}px`;
-      hoverBar!.style.width = `${elementRef.current.offsetWidth}px`;
-      hoverBar!.style.left = `${elementRef.current.offsetLeft}px`;
-      console.log(
-        "hovering",
-        elementRef.current.offsetLeft,
-        elementRef.current.offsetWidth,
-        elementRef.current.offsetHeight
-      );
+      if (hoverBar) {
+        hoverBar.style.display = "block";
+        // set position before transition
+        hoverBar.style.height = `${elementRef.current.offsetHeight}px`;
+        hoverBar.style.width = `${elementRef.current.offsetWidth}px`;
+        hoverBar.style.left = `${elementRef.current.offsetLeft}px`;
+        // Add a short delay to ensure the transition doesn't start until the position is set
+        setTimeout(() => {
+          hoverBar.style.transition = "all 0.2s ease-in-out";
+        }, 0);
+      }
     }
   };
 
-  useEffect(() => {
-    // element ref hover listener
-    if (elementRef.current) {
-      const element = elementRef.current;
-      element.addEventListener("mouseover", onHover, {
-        passive: true,
-      });
-      return () => {
-        element.removeEventListener("mouseover", onHover);
-      };
-    }
-  }, [elementRef]); // Added dependency
-
   return (
-    <span ref={elementRef} className="flex gap-2 pr-2 relative h-fit">
+    <span
+      ref={elementRef}
+      onMouseOver={onHover}
+      className={`"flex gap-2 pr-2 relative h-fit items-center
+      ${item?.disabled && "pointer-events-none"}
+      `}
+    >
       {!item?.subPages ? (
         <RouteLink item={item} />
       ) : (
@@ -191,18 +178,23 @@ const RouteLink = ({ item }: { item: SideNavRoute }) => {
       href={item?.href}
       className={`group flex items-center  whitespace-nowrap px-2 py-2 text-sm font-medium  hover:text-primary text-muted-foreground relative z-20 ${
         item?.href.startsWith(`/${segment}`) && "text-primary "
-      }`}
+      }
+      ${item?.disabled && "cursor-not-allowed opacity-50 pointer-events-none"}
+      `}
     >
       <Icon className="h-5 w-5 mr-2" />
       <div className="text-sm ">{item.title}</div>
-      {item?.disabled && "Coming soon"}
+      {item?.disabled && (
+        <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-[#026FF3] border-[#026FF3]">
+          Coming soon
+        </div>
+      )}
     </Link>
   );
 };
 
 const RouteButton = ({ item }: { item: SideNavRoute }) => {
   const [showSubPages, setShowSubPages] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
   const segment = useSelectedLayoutSegment();
   const Icon = Icons[item.iconName];
   const onClick = () => {
@@ -216,51 +208,32 @@ const RouteButton = ({ item }: { item: SideNavRoute }) => {
     setShowSubPages(true);
   };
 
-  useEffect(() => {
-    // element ref hover listener
-    if (elementRef.current) {
-      const element = elementRef.current;
-      element.addEventListener("mouseover", onHover, {
-        passive: true,
-      });
-      return () => {
-        element.removeEventListener("mouseover", onHover);
-      };
-    }
-  }, [elementRef]); // Added dependency
-
-  useEffect(() => {
-    if (elementRef.current && showSubPages) {
-      const element = elementRef.current;
-      element.addEventListener("mouseleave", handleMouseOff, {
-        passive: true,
-      });
-      return () => {
-        element.removeEventListener("mouseleave", handleMouseOff);
-      };
-    }
-  }, [elementRef, showSubPages]);
-
   return (
-    <div ref={elementRef}>
+    <div
+      onMouseOver={onHover}
+      onMouseLeave={handleMouseOff}
+      onBlur={handleMouseOff}
+    >
       <button
         onClick={onClick}
         disabled={item?.disabled}
-        className={`group flex items-center justify-between   whitespace-nowrap px-2 py-2 text-sm font-medium hover:text-primary text-muted-foreground  relative z-20  ${
+        className={`group flex items-center justify-between  whitespace-nowrap px-2 py-2 text-sm font-medium hover:text-primary text-muted-foreground  relative z-20  ${
           item?.href.startsWith(`/${segment}`) && "text-primary "
-        }`}
+        }
+        ${item?.disabled && "cursor-not-allowed opacity-50 pointer-events-none"}
+        
+        
+        `}
       >
         <div className="flex items-center gap-2">
           <Icon className="h-5 w-5" />
           <div className="text-sm ">{item.title}</div>
         </div>
-        {item?.subPages && (
-          <Icons.chevronDown
-            className={`${
-              showSubPages ? "rotate-180" : "0"
-            } h-4 w-4 transition-all ml-4`}
-          />
-        )}
+        {item?.disabled ? (
+          <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-[#026FF3] border-[#026FF3]">
+            Coming soon
+          </div>
+        ) : null}
       </button>
 
       {showSubPages && item.subPages && (

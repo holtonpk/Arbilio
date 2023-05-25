@@ -113,7 +113,7 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
     <div className="grid  gap-4">
       <div className="flex flex-col ">
         <h1 className="text-xl mt-4">{`Active Sellers (${accounts.length})`}</h1>
-        <div className="h-[300px] overflow-scroll border rounded-md">
+        <div className="h-fit max-h-[300px] overflow-scroll border rounded-md">
           <div className="grid divide-y divide-border  h-fit   ">
             {sortedAccounts.map((account, i) => (
               <div
@@ -165,8 +165,8 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
                     33vw"
                   />
 
-                  <div className="absolute top-1 md:top-2 right-1 md:right-2 z-30 flex items-center text-[12px] sm:text-base md:text-[12px] gap-[2px] md:gap-1 text-white ">
-                    <Icons.posts className="text-2xl h-2 w-2 sm:h-5 sm:w-5  md:h-4 md:w-4" />
+                  <div className="bg-black/70 rounded-sm absolute bottom-1 p-1 md:bottom-1 left-1 md:left-1 z-30 flex items-center text-[8px] md:text-[12px] gap-[2px] md:gap-1 text-white ">
+                    <Icons.showPassword className="text-2xl h-2 w-2  md:h-4 md:w-4" />
                     {formatNumber(item.postData.playCount || 0)}
                   </div>
                   <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>

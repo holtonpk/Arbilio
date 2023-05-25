@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState, ChangeEvent } from "react";
 import { utcToZonedTime } from "date-fns-tz";
 import { parseISO, format } from "date-fns";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 type calendarProps = {
@@ -229,40 +229,40 @@ const Calendar = ({
 
   return (
     <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[90] flex flex-col items-center gap-10">
-      <div className="h-fit w-fit bg-white/2 blurBack border border-white rounded-md p-4 flex gap-10">
+      <div className="h-fit w-fit bg-background border  rounded-md p-4 flex gap-10">
         <div className="flex flex-col">
-          <h1 className="font-bold text-white">Start Date</h1>
+          <h1 className="font-bold text-primary">Start Date</h1>
           <input
             onChange={handleInput1}
             placeholder="Select Start Date"
             type="text"
-            className="bg-transparent border-2 border-indigo-500 rounded-md py-1 px-2 font-bold text-white"
+            className="bg-transparent border-2 border-border rounded-md py-1 px-2 font-bold text-primary"
             value={inputDate1 || ""}
           />
         </div>
         <div className="flex flex-col">
-          <h1 className="font-bold text-white">End Date</h1>
+          <h1 className="font-bold text-primary">End Date</h1>
           <input
             onChange={handleInput2}
             placeholder="Select End Date"
             type="text"
-            className="bg-transparent border-2 border-indigo-500 rounded-md py-1 px-2 font-bold text-white"
+            className="bg-transparent border-2 border-border rounded-md py-1 px-2 font-bold text-primary"
             value={inputDate2 || ""}
           />
         </div>
       </div>
-      <div className="flex flex-col bg-white/2 rounded-md border border-white blurBack p-4">
+      <div className="flex flex-col bg-background rounded-md border p-4">
         <div className="flex gap-10">
           <div className="relative z-[90]   p-3 h-fit gap-3 w-fit items-start  flex flex-col">
             <div className="flex flex-row items-center w-fit gap-10 justify-between  ">
               <button onClick={monthBack}>
-                <Icons.chevronLeft className="h-8 w-8 fill-white" />
+                <Icons.chevronLeft className="h-8 w-8 text-primary" />
               </button>
-              <h1 className="text-white text-lg font-bold ">
+              <h1 className="text-primary text-lg font-bold ">
                 {monthNames[currentMonth - 1] + " " + currentYear}
               </h1>
             </div>
-            <div className="grid grid-cols-7 gap-2 text-indigo-600 text-sm text-center">
+            <div className="grid grid-cols-7 gap-2 text-primary text-sm text-center">
               {dayNames.map((name, i) => (
                 <h1 key={i}>{name}</h1>
               ))}
@@ -277,7 +277,7 @@ const Calendar = ({
                     className={`${
                       (selectedDate1 && selectedDate1.id == day.id) ||
                       (selectedDate2 && selectedDate2.id == day.id)
-                        ? "bg-indigo-600 text-white"
+                        ? "bg-primary text-white dark:text-black "
                         : (selectedDate1 &&
                             selectedDate2 &&
                             day.date > selectedDate1.date &&
@@ -286,17 +286,17 @@ const Calendar = ({
                             selectedDate2 &&
                             day.date > selectedDate2.date &&
                             day.date < selectedDate1.date)
-                        ? "bg-indigo-500/30"
+                        ? "bg-muted"
                         : "bg-transparent"
                     } ${
                       day.date.getDate() === today.getDate() &&
                       day.date.getMonth() === today.getMonth() &&
                       day.date.getFullYear() === today.getFullYear()
-                        ? "text-indigo-500"
+                        ? "font-bold"
                         : day.date.getMonth() == currentMonth - 1
-                        ? "text-white"
-                        : "text-white/30"
-                    }  hover:bg-indigo-500 hover:text-white  h-full w-full aspect-square rounded-md `}
+                        ? "text-primary"
+                        : "text-primary/30"
+                    }  hover:bg-primary hover:text-background   h-full w-full aspect-square rounded-md `}
                   >
                     {day.dateLabel}
                   </button>
@@ -306,14 +306,14 @@ const Calendar = ({
           </div>
           <div className="relative z-[90]  p-3 h-fit gap-3 w-fit    flex flex-col items-end">
             <div className="flex flex-row  items center justify-between gap-10 w-fit items-center ">
-              <h1 className="text-white text-lg font-bold ">
+              <h1 className="text-primary text-lg font-bold ">
                 {monthNames[currentMonth] + " " + currentYear}
               </h1>
               <button onClick={monthForward}>
-                <Icons.chevronRight className="h-8 w-8 fill-white" />
+                <Icons.chevronRight className="h-8 w-8 text-primary" />
               </button>
             </div>
-            <div className="grid grid-cols-7 gap-2 text-indigo-600 text-sm text-center">
+            <div className="grid grid-cols-7 gap-2 text-primary text-sm text-center">
               {dayNames.map((name, i) => (
                 <h1 key={i}>{name}</h1>
               ))}
@@ -329,7 +329,7 @@ const Calendar = ({
                     className={`${
                       (selectedDate1 && selectedDate1.id == day.id) ||
                       (selectedDate2 && selectedDate2.id == day.id)
-                        ? "bg-indigo-600 text-white "
+                        ? "bg-primary text-white dark:text-black "
                         : (selectedDate1 &&
                             selectedDate2 &&
                             day.date > selectedDate1.date &&
@@ -338,17 +338,17 @@ const Calendar = ({
                             selectedDate2 &&
                             day.date > selectedDate2.date &&
                             day.date < selectedDate1.date)
-                        ? "bg-indigo-500/30"
+                        ? "bg-muted"
                         : "bg-transparent"
                     } ${
                       day.date.getDate() === today.getDate() &&
                       day.date.getMonth() === today.getMonth() &&
                       day.date.getFullYear() === today.getFullYear()
-                        ? "text-indigo-500"
+                        ? "font-bold"
                         : day.date.getMonth() == currentMonth
-                        ? "text-white"
-                        : "text-white/30"
-                    }  hover:bg-indigo-500 hover:text-white  h-full w-full aspect-square rounded-md disabled:opacity-5 disabled:cursor-not-allowed disabled:bg-transparent disabled:text-white/30  `}
+                        ? "text-primary"
+                        : "text-muted-foreground"
+                    }  hover:bg-primary hover:text-background  h-full w-full aspect-square rounded-md  disabled:cursor-not-allowed disabled:bg-transparent disabled:text-muted-foreground  `}
                   >
                     {day.dateLabel}
                   </button>
@@ -358,19 +358,13 @@ const Calendar = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 w-full justify-end p-4 border-t-[1px] border-white/50">
-          <button
-            onClick={handleReset}
-            className="px-3 py-1 text-xl  rounded-md w-fit  text-indigo-600 font-bold"
-          >
+        <div className="flex items-center gap-2 w-full justify-end p-4 border-t-[1px] border-t-border">
+          <Button onClick={handleReset} variant={"destructive"}>
             reset
-          </button>
-          <button
-            onClick={handleApplyLoc}
-            className="px-6 py-1 text-xl  rounded-md w-fit bg-indigo-600 text-white font-bold"
-          >
+          </Button>
+          <Button variant={"default"} onClick={handleApplyLoc}>
             Apply
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -396,12 +390,13 @@ export const DateRange = ({ setDate1, setDate2 }: any) => {
     }
   };
 
-  // useEffect(() => {
-  //   setDate1(selectedDate1?.date || undefined);
-  // }, [selectedDate1]);
-  // useEffect(() => {
-  //   setDate2(selectedDate2?.date || undefined);
-  // }, [selectedDate2]);
+  useEffect(() => {
+    setDate1(selectedDate1?.date || undefined);
+  }, [selectedDate1, setDate1]);
+
+  useEffect(() => {
+    setDate2(selectedDate2?.date || undefined);
+  }, [selectedDate2, setDate2]);
 
   const handleApply = () => {
     setDate1(selectedDate1?.date || undefined);
