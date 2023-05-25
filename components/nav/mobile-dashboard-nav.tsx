@@ -1,29 +1,51 @@
+"use client";
+
 import * as React from "react";
-import { LinkButton } from "@/components/ui/link";
-import Navbar from "@/components/nav/side-nav";
 import { useSelectedLayoutSegment, usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useLockBody } from "@/hooks/use-lock-body";
 import { Icons } from "@/components/icons";
-
+import Link from "next/link";
 import { AccountInfoMobile } from "../account-preview-mobile";
 import { dashboardConfig } from "@/config/dashboard";
 import { SideNavRoute } from "@/types";
 import { Button } from "../ui/button";
 
-export function MobileDashboardNav({
-  setShowMenu,
-}: {
-  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  useLockBody();
+export function MobileDashboardNav() {
+  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 
   return (
-    <div className="fixed inset-0  w-full top-16 z-50 h-[calc(100vh-4rem)]  auto-rows-max overflow-auto   shadow-md animate-in slide-in-from-bottom-80 md:hidden">
+    <div className="flex h-20 fixed items-center justify-between py-6 w-screen z-40 blurBack border-b top-0 left-0 md:hidden">
+      <div className="flex container justify-between w-full items-center ">
+        <Link href="/" className=" items-center space-x-2 flex">
+          <span className="text-lg text-primary font-bold inline-block ">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+              TikDrop
+            </span>
+            .io
+          </span>
+        </Link>
+        <button
+          className="flex items-center space-x-2 "
+          onClick={() => setShowMobileMenu(!showMobileMenu)}
+        >
+          {showMobileMenu ? <Icons.close /> : <Icons.menu />}
+          <span className="font-bold"></span>
+        </button>
+        {showMobileMenu && <NavMenu setShowMobileMenu={setShowMobileMenu} />}
+      </div>
+    </div>
+  );
+}
+
+const NavMenu = ({ setShowMobileMenu }: { setShowMobileMenu: any }) => {
+  useLockBody();
+  return (
+    <div className="fixed inset-0  w-full top-16 z-50 h-[calc(100vh-4rem)]  auto-rows-max overflow-auto   shadow-md animate-in slide-in-from-bottom-80 ">
       <div className="relative z-20 h-full  flex  flex-col gap-4 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
         <nav className="grid grid-flow-row  auto-rows-max text-sm divide-y divide-border ">
           {dashboardConfig.sideNav.map((route, indx) => (
-            <Route key={indx} item={route} setShowMenu={setShowMenu} />
+            <Route key={indx} item={route} setShowMenu={setShowMobileMenu} />
           ))}
         </nav>
 
@@ -31,7 +53,7 @@ export function MobileDashboardNav({
       </div>
     </div>
   );
-}
+};
 
 const Route = ({
   item,

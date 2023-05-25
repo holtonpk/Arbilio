@@ -27,7 +27,7 @@ export default async function AccountDataBase() {
         // }
       />
       <div className="w-full border-t">
-        <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
+        <div className="w-full container  pt-6  flex flex-col min-h-screen items-center  ">
           <AccountDatabase originalData={data} />
         </div>
       </div>

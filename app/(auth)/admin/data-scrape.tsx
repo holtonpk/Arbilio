@@ -24,6 +24,7 @@ import {
   getDocs,
   query,
   limit,
+  startAt,
   getDoc,
   setDoc,
   deleteDoc,
@@ -34,6 +35,7 @@ import {
 } from "firebase/firestore";
 import { siteConfig } from "@/config/site";
 import { AccountStatsResponse } from "@/types";
+import { record } from "zod";
 
 export default function DataScrape() {
   const [data, setData] = useState<any>(undefined);
@@ -142,15 +144,40 @@ const UpdateData = ({ data }: any) => {
   const updateMessage = (text: string) =>
     setUpdateSteps((prevSteps) => [...prevSteps, text]);
 
+  const fetchAvailableCredits = async () => {
+    const res = await fetch(`${siteConfig.url}/api/scrape/tiktok-api`);
+    const data = await res.json();
+    return data as number;
+  };
+
+  const fetchStartAfter = async (data: string) => {
+    const q = query(
+      collection(db, "updateLogs"),
+      where("data", "==", data),
+      orderBy("time", "desc")
+    );
+    const doc = await getDocs(q);
+    const lastDoc = doc.docs[0].data();
+    return lastDoc.startAfter;
+  };
+
   //=========> Function to update account info and handle possible errors <=========================
   const UpdateAccountInfo = async () => {
+    updateMessage("Fetching data...");
     try {
-      updateMessage("Fetching data...");
-
-      const res = await getDocs(collection(db, "tiktok-accounts"));
+      const startAfter = await fetchStartAfter("accountInfo");
+      const startAfterSnapshot = await getDoc(
+        doc(db, "tiktok-accounts", startAfter)
+      );
+      const availableCredits = await fetchAvailableCredits();
+      const q = query(
+        collection(db, "tiktok-accounts"),
+        limit(availableCredits),
+        startAt(startAfterSnapshot)
+      );
+      const res = await getDocs(q);
       const records = res.docs;
       const totalRecords = records.length;
-
       updateMessage("Updating account info...");
       for (let i = 0; i < totalRecords; i++) {
         if (forceStopRef.current) break;
@@ -185,9 +212,11 @@ const UpdateData = ({ data }: any) => {
       }
 
       updateMessage("Account info update completed!");
+      return records[records.length - 1].id;
     } catch (error) {
       console.error("Error fetching data: ", error);
       updateMessage("Error fetching data!");
+      return "";
     }
   };
 
@@ -257,111 +286,124 @@ const UpdateData = ({ data }: any) => {
     updateMessage("🔄 Fetching data...");
 
     try {
-      const res = await getDocs(collection(db, "tiktok-accounts"));
+      const startAfter = await fetchStartAfter("accountsPosts");
+      const startAfterSnapshot = await getDoc(
+        doc(db, "tiktok-accounts", startAfter)
+      );
+      const availableCredits = await fetchAvailableCredits();
+      updateMessage(
+        `fetching ${availableCredits} records starting at ${startAfter}`
+      );
+
+      const q = query(
+        collection(db, "tiktok-accounts"),
+        limit(availableCredits),
+        startAt(startAfterSnapshot)
+      );
+      const res = await getDocs(q);
       const records = res.docs;
       const totalRecords = records.length;
 
-      updateMessage("🔄 Updating account posts...");
+      // updateMessage("🔄 Updating account posts...");
 
-      const recordPromises = records.map(async (record, i) => {
-        if (forceStopRef.current) return;
+      // const recordPromises = records.map(async (record, i) => {
+      //   if (forceStopRef.current) return;
+      //   try {
+      //     const { secUid, id } = record.data();
+      //     updateMessage(
+      //       `🔄 Fetching posts for account ${i + 1} of ${totalRecords}`
+      //     );
+      //     const response = await fetch(
+      //       `${siteConfig.url}/api/scrape/posts/${secUid}`
+      //     );
+      //     const posts = await response.json();
 
-        try {
-          const { secUid, id } = record.data();
-          if (!record.data().topPosts) {
-            ("MS4wLjABAAAATyuh04Alh2vy5G2Be9Ovp9lS2qWXK-BO6uXLqXiTgaoC_Ey-QzdlgUm0O_Iceg47");
-            updateMessage(
-              `🔄 Fetching posts for account ${i + 1} of ${totalRecords}`
-            );
-            const response = await fetch(
-              `${siteConfig.url}/api/scrape/posts/${secUid}`
-            );
-            const posts = await response.json();
+      //     const top5Posts: any = posts
+      //       .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
+      //       .slice(0, 5);
 
-            const top5Posts: any = posts
-              .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
-              .slice(0, 5);
+      //     // Create a set of post ids
+      //     const postIds = new Set(top5Posts.map((post: any) => post.id));
 
-            // Create a set of post ids
-            const postIds = new Set(top5Posts.map((post: any) => post.id));
+      //     // Query all existing posts in one go
+      //     updateMessage(
+      //       `🔄 Checking if posts already exist in database for account ${
+      //         i + 1
+      //       }`
+      //     );
+      //     const postExists = await getDocs(
+      //       query(
+      //         collection(db, "tiktokPosts"),
+      //         where("postId", "in", Array.from(postIds))
+      //       )
+      //     );
 
-            // Query all existing posts in one go
-            updateMessage(
-              `🔄 Checking if posts already exist in database for account ${
-                i + 1
-              }`
-            );
-            const postExists = await getDocs(
-              query(
-                collection(db, "tiktokPosts"),
-                where("postId", "in", Array.from(postIds))
-              )
-            );
+      //     // Convert the results into a Map for easy lookup
+      //     const existingPosts = new Map(
+      //       postExists.docs.map((doc) => [doc.data().postId, doc.id])
+      //     );
 
-            // Convert the results into a Map for easy lookup
-            const existingPosts = new Map(
-              postExists.docs.map((doc) => [doc.data().postId, doc.id])
-            );
+      //     // Now create or get post id
+      //     const top5PostsIDsPromises = top5Posts.map(async (post: any) => {
+      //       const existingPostId = existingPosts.get(post.id);
 
-            // Now create or get post id
-            const top5PostsIDsPromises = top5Posts.map(async (post: any) => {
-              const existingPostId = existingPosts.get(post.id);
+      //       if (existingPostId) {
+      //         return existingPostId;
+      //       } else {
+      //         // add post to db
+      //         updateMessage(
+      //           `🔄 Creating new post in database for account ${i + 1}`
+      //         );
 
-              if (existingPostId) {
-                return existingPostId;
-              } else {
-                // add post to db
-                updateMessage(
-                  `🔄 Creating new post in database for account ${i + 1}`
-                );
+      //         const image = await downloadImageAndUploadToFirebase(
+      //           "posts",
+      //           post.video.cover,
+      //           post.id
+      //         );
+      //         const record = await addDoc(collection(db, "tiktokPosts"), {
+      //           postId: post.id,
+      //           postData: post.stats,
+      //           cover: image,
+      //         });
+      //         return record.id;
+      //       }
+      //     });
 
-                const image = await downloadImageAndUploadToFirebase(
-                  "posts",
-                  post.video.cover,
-                  post.id
-                );
-                const record = await addDoc(collection(db, "tiktokPosts"), {
-                  postId: post.id,
-                  postData: post.stats,
-                  cover: image,
-                });
-                return record.id;
-              }
-            });
+      //     const postsArray = await Promise.all(top5PostsIDsPromises);
+      //     updateMessage(`🔄 Updating top 5 posts for account ${i + 1}`);
+      //     await updateDoc(doc(db, "tiktok-accounts", id), {
+      //       topPosts: postsArray,
+      //     });
+      //   } catch (error: any) {
+      //     updateMessage(
+      //       `❌ Error updating posts for record ${i + 1}: ${error.message}`
+      //     );
+      //   } finally {
+      //     setProgress(
+      //       (prevProgress) => prevProgress + (1 / totalRecords) * 100
+      //     );
+      //     updateMessage(`✅ Finished processing record ${i + 1}`);
+      //   }
+      // });
 
-            const postsArray = await Promise.all(top5PostsIDsPromises);
-            updateMessage(`🔄 Updating top 5 posts for account ${i + 1}`);
-            await updateDoc(doc(db, "tiktok-accounts", id), {
-              topPosts: postsArray,
-            });
-          }
-        } catch (error: any) {
-          updateMessage(
-            `❌ Error updating posts for record ${i + 1}: ${error.message}`
-          );
-        } finally {
-          setProgress(
-            (prevProgress) => prevProgress + (1 / totalRecords) * 100
-          );
-          updateMessage(`✅ Finished processing record ${i + 1}`);
-        }
-      });
-
-      await Promise.all(recordPromises);
+      // await Promise.all(recordPromises);
       updateMessage("✅ All records processed successfully");
+      return records[records.length - 1].id;
     } catch (error: any) {
       updateMessage(`❌ Error fetching data: ${error.message}`);
+      return "";
     }
   };
 
   //=========> Main update function <=========================
   const Update = async () => {
     setUpdating(true);
+    let startAfter = "";
     try {
       if (selectedUpdateType.value === "accountsPosts") {
-        await UpdateAccountPosts();
+        startAfter = await UpdateAccountPosts();
       } else if (selectedUpdateType.value === "accountInfo") {
-        await UpdateAccountInfo();
+        startAfter = await UpdateAccountInfo();
       } else if (selectedUpdateType.value === "accountsStats") {
         await UpdateAccountStats();
       }
@@ -373,6 +415,7 @@ const UpdateData = ({ data }: any) => {
     await addDoc(collection(db, "updateLogs"), {
       data: selectedUpdateType.value,
       time: new Date(),
+      startAfter: startAfter,
     });
 
     setSyncComplete(true);

@@ -15,7 +15,7 @@ interface CardDisplayProps {
 
 const CardDisplay = ({ data }: CardDisplayProps) => {
   return (
-    <div className="grid lg:grid-cols-5 grid-cols-2 gap-4 h-full w-full ">
+    <div className="grid lg:grid-cols-5 grid-cols-2 gap-4 h-full w-full">
       {data ? (
         <>
           {data.map((item: any, i: number) => (
@@ -46,7 +46,7 @@ export const Card = ({ item }: CardProps) => {
     <div className="h-full relative group ">
       <Link
         href={`/products/product/${item.id}`}
-        className="w-full   bg-card rounded-md   p-4   pb-2 items-center relative flex flex-col  cursor-pointer "
+        className="w-full   bg-card rounded-md   p-4    pb-2 items-center relative flex flex-col  cursor-pointer "
       >
         <div className="flex  flex-col  w-full  gap-[2px] sm:gap-2   pb-0  rounded-md ">
           <div className="aspect-square w-full bg-muted rounded-md relative overflow-hidden">

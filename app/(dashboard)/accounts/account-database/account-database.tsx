@@ -62,13 +62,13 @@ const AccountDatabase = ({ originalData }: any) => {
 
   return (
     <>
-      <div className="flex gap-2 w-full ">
+      <div className="flex md:flex-row flex-col gap-2 w-full ">
         <DataSearch
           placeholder="Search an user name. ex: @username"
           searchFunction={searchData}
         />
         <div className="flex  w-[100%] flex-col gap-2 items-center lg:flex-row ">
-          <div className="flex items-center gap-4 w-full lg:w-fit justify-between">
+          <div className="flex items-center gap-4 w-full lg:w-fit md:justify-between">
             <FilterBuilder
               appliedFilterList={appliedFilterList}
               setAppliedFilterList={setAppliedFilterList}

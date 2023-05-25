@@ -7,7 +7,7 @@ import { formatNumber } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import Skeleton from "@/components/ui/custom-skeleton";
-
+import PostView from "@/components/post-view";
 const CardDisplay = ({ accountDataBaseData }: any) => {
   return (
     <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 ">
@@ -111,25 +111,11 @@ export const CollectionCard = ({ data }: any) => {
               <>
                 {data?.topPosts.slice(0, 3).map((item: any, i: number) => {
                   return (
-                    <div
+                    <PostView
                       key={i}
-                      className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden"
-                    >
-                      <Image
-                        src={item?.cover}
-                        alt="video cover"
-                        fill
-                        sizes="(max-width: 768px) 100vw,  
-                    (max-width: 1200px) 50vw,
-                    33vw"
-                      />
-
-                      <div className="absolute top-2 right-2 z-30 flex items-center text-[12px] gap-1 text-white ">
-                        <Icons.posts className="text-2xl  h-4 w-4" />
-                        {formatNumber(item.postData.postInfo.playCount)}
-                      </div>
-                      <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>
-                    </div>
+                      cover={item?.cover}
+                      playCount={item.postData.postInfo.playCount}
+                    />
                   );
                 })}
               </>

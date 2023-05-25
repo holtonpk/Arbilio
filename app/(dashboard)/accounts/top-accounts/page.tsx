@@ -29,7 +29,7 @@ export default async function TopAccounts() {
           }
         />
         <div className="w-full border-t">
-          <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
+          <div className="w-full container  md:pt-6  flex flex-col min-h-screen items-center  ">
             <div className="flex flex-row  w-full  h-full  gap-8  rounded-md ">
               <AccountRank data={data} />
             </div>

@@ -1,20 +1,18 @@
 "use client";
 import Link from "next/link";
-import { formatNumber } from "@/lib/utils";
-import React, { use, useEffect } from "react";
+import React from "react";
 import { ProductType, AccountDataType } from "@/types";
 import Image from "next/image";
 import { Icons } from "@/components/icons";
-import { siteConfig } from "@/config/site";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
-
+import PostView from "@/components/post-view";
 interface ViewProductProps {
   data: ProductType;
 }
 
 const ViewProduct = ({ data }: ViewProductProps) => {
   return (
-    <div className="grid md:grid-cols-[30%_1fr] gap-4 p-4">
+    <div className="grid md:grid-cols-[30%_1fr] gap-4 p-4 container">
       <h1 className="md:hidden text-2xl font-bold capitalize">{data.title}</h1>
 
       <ProductImage images={data.supplierInfo.supplierImages} />
@@ -152,25 +150,11 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
           {accounts &&
             topPosts.slice(0, 6).map((item: any, i: number) => {
               return (
-                <div
+                <PostView
                   key={i}
-                  className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden border shadow-lg "
-                >
-                  <Image
-                    src={item?.cover}
-                    alt="video cover"
-                    fill
-                    sizes="(max-width: 768px) 100vw,  
-                    (max-width: 1200px) 50vw,
-                    33vw"
-                  />
-
-                  <div className="bg-black/70 rounded-sm absolute bottom-1 p-1 md:bottom-1 left-1 md:left-1 z-30 flex items-center text-[8px] md:text-[12px] gap-[2px] md:gap-1 text-white ">
-                    <Icons.showPassword className="text-2xl h-2 w-2  md:h-4 md:w-4" />
-                    {formatNumber(item.postData.playCount || 0)}
-                  </div>
-                  <span className="h-[50px] absolute -top-1 z-20 right-0      bg-gradient-to-b   from-black/80 to-black/0 w-full"></span>
-                </div>
+                  cover={item?.cover}
+                  playCount={item.postData.playCount}
+                />
               );
             })}
         </div>

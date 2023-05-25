@@ -31,6 +31,8 @@ import { LinkButton } from "@/components/ui/link";
 import { formatDateShort } from "@/lib/utils";
 import { AccountDataType } from "@/types";
 import { Icons } from "@/components/icons";
+import { useRouter } from "next/navigation";
+import PostView from "@/components/post-view";
 
 interface DataContextData {
   data: AccountDataType;
@@ -54,32 +56,36 @@ interface ViewAccountProps {
 }
 
 const ViewAccount = ({ data }: ViewAccountProps) => {
-  console.log("dd==>", data);
+  const router = useRouter();
   return (
-    <div className="md:container">
+    <div className="container">
       <div className="w-full rounded-md flex flex-col items-center  pt-0 relative">
         {data ? (
           <DataProvider data={data}>
-            <div className="flex items center gap-4 absolute md:top-4 md:right-4 top-0 right-0 ">
+            <div className="flex items center gap-4 absolute  md:right-4 top-0 right-0 ">
               <UpdateCollectionButton account={data} variant={"outline"} />
             </div>
-            <LinkButton
+            <Button
+              onClick={() => router.back()}
               variant="outline"
-              href="/accounts/account-database"
-              className="w-fit absolute md:top-4 md:left-4 top-0 left-0 "
+              className="w-fit absolute md:left-4 top-0 left-0 "
             >
               <Icons.chevronLeft className=" h-6 w-6" />
               Back
-            </LinkButton>
+            </Button>
             <div className="flex flex-col w-fit ">
               <ProfileDisplay />
             </div>
-            <div className="w-full justify-between grid grid-cols-2 gap-4 ">
-              {data?.storeUrl && <StoreDisplay />}
-              {data?.product && <ProductDisplay />}
+            <div className="grid md:grid-cols-2 w-full gap-4">
+              <div className="md:order-1 order-3">
+                <AnalyticsDisplay />
+              </div>
+              <div className="w-full  flex flex-col  gap-4 order-2">
+                {data?.product && <ProductDisplay />}
+                {data?.storeUrl && <StoreDisplay />}
+                {data.topPosts && <PostsDisplay />}
+              </div>
             </div>
-            {/* {data.topPosts && <PostsDisplay />} */}
-            <AnalyticsDisplay />
           </DataProvider>
         ) : (
           <>loading .. </>
@@ -110,28 +116,26 @@ const AnalyticsDisplay = () => {
       <h1 className=" text-lg text-muted-foreground">
         Account growth over time
       </h1>
-      <div className="grid gap-8 border rounded-md p-3 ">
+      <div className="grid gap-8  mt-3">
         <DataGraph
           field="followerCount"
           title="Followers"
           icon={<Icons.followers className="h-8 w-8 text-muted-foreground" />}
         />
 
-        <div className="grid md:grid-cols-2 gap-8 h-fit">
-          <DataGraph
-            field="heartCount"
-            title="Likes"
-            icon={<Icons.likes className="h-8 w-8 text-muted-foreground" />}
-            width={250}
-          />
+        <DataGraph
+          field="heartCount"
+          title="Likes"
+          icon={<Icons.likes className="h-8 w-8 text-muted-foreground" />}
+          width={250}
+        />
 
-          <DataGraph
-            field="videoCount"
-            title="Posts"
-            icon={<Icons.posts className="h-8 w-8 text-muted-foreground" />}
-            width={250}
-          />
-        </div>
+        <DataGraph
+          field="videoCount"
+          title="Posts"
+          icon={<Icons.posts className="h-8 w-8 text-muted-foreground" />}
+          width={250}
+        />
       </div>
     </div>
   );
@@ -159,7 +163,6 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
   });
 
   useEffect(() => {
-    console.log("data==>", date1, date2);
     orderedData.map((stat: any) => formatDateShort(stat.dataCollectionTime));
     if (date1 && date2) {
       const filteredData = orderedData.filter((stat: any) => {
@@ -183,7 +186,6 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
       });
     }
   }, [date1, date2, field, orderedData]);
-  console.log("data out==>", date1, date2);
 
   return (
     <div className="w-full h-fit border rounded-md p-4 relative">
@@ -223,16 +225,15 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
 
 const ProductDisplay = () => {
   const { data } = useContext(DataContext)!;
-
   return (
     <>
       {data.product ? (
-        <div className="flex flex-col mt-3  ">
+        <div className="flex flex-col mt-3  w-full ">
           <h1 className=" text-2xl text-primary">Product</h1>
           <h1 className=" text-lg text-muted-foreground">
             This is the main product advertised by the account
           </h1>
-          <div className="flex flex-col divide-y divide-border rounded-md border p-3 mt-3">
+          <div className="flex flex-col divide-y w-full divide-border rounded-md border p-3 mt-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-8">
                 <div className="w-[100px] aspect-square bg-muted rounded-md relative overflow-hidden">
@@ -288,14 +289,10 @@ const StoreDisplay = () => {
   }
 
   const [products, setProducts] = useState<any[] | undefined>(undefined);
-  console.log("url2", data?.bioLink, url);
-
   useEffect(() => {
     const getProducts = async () => {
-      console.log("url", url);
       const res = await fetch(url + "/products.json");
       const data = await res.json();
-      console.log("dd", data);
       setProducts(data.products);
     };
     getProducts();
@@ -304,13 +301,13 @@ const StoreDisplay = () => {
   console.log(products);
 
   return (
-    <div className="flex flex-col w-full mt-3 ">
+    <div className="flex flex-col w-full ">
       <h1 className=" text-2xl text-primary">Store</h1>
       <h1 className=" text-lg text-muted-foreground">
         The store linked in the accounts bio
       </h1>
       {products && (
-        <div className="flex-col items-center gap-4 p-3 border rounded-md">
+        <div className="flex-col items-center min-w-full gap-4 p-3 border rounded-md">
           {products && (
             <>
               <div className="flex p-2 gap-2 items-center  w-full">
@@ -340,22 +337,26 @@ const StoreDisplay = () => {
 
               <div className="divide-y divide-border rounded-md border grid max-h-[300px] overflow-scroll w-full ">
                 {products.map((product: any, i) => (
-                  <Link
-                    key={i}
-                    target="_blank"
-                    href={url + "/products/" + product.handle}
-                    className="flex items-center gap-2 p-2 group  w-full "
-                  >
-                    <div className="w-10 aspect-square bg-muted rounded-md flex justify-center items-center relative overflow-hidden">
-                      {product?.images[0] && (
-                        <Image src={product?.images[0].src} alt="" fill />
-                      )}
-                      <Icons.media className="h-6 w-6 text-gray-500" />
-                    </div>
-                    <h1 className=" text-lg group-hover:text-muted-foreground w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
-                      {product.title}
-                    </h1>
-                  </Link>
+                  <>
+                    {product?.images[0] && (
+                      <Link
+                        key={i}
+                        target="_blank"
+                        href={url + "/products/" + product.handle}
+                        className="flex items-center gap-2 p-2 group  w-full "
+                      >
+                        <div className="w-10 aspect-square bg-muted rounded-md flex justify-center items-center relative overflow-hidden">
+                          {product?.images[0] && (
+                            <Image src={product?.images[0].src} alt="" fill />
+                          )}
+                          <Icons.media className="h-6 w-6 text-gray-500" />
+                        </div>
+                        <h1 className=" text-lg group-hover:text-muted-foreground w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
+                          {product.title}
+                        </h1>
+                      </Link>
+                    )}
+                  </>
                 ))}
               </div>
             </>
@@ -368,32 +369,19 @@ const StoreDisplay = () => {
 
 const PostsDisplay = () => {
   const { data } = useContext(DataContext)!;
-  // const top5Posts = data.posts.itemList
-  //   .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
-  //   .slice(0, 5);
+
   return (
-    <div className="flex flex-col w-full mt-3">
-      <h1 className="font-bold text-3xl mb-3 text-primary">Top Posts</h1>
-      <div className="grid grid-cols-5 gap-10">
+    <div className="flex flex-col w-full ">
+      <h1 className=" text-2xl text-primary">Top Posts</h1>
+      <h1 className=" text-lg text-muted-foreground">Top 5 posts by views</h1>
+      <div className="grid grid-cols-5 gap-4 mt-3">
         {data.topPosts &&
           data.topPosts.map((item: any, i) => (
-            <div
+            <PostView
               key={i}
-              className="w-[500px] aspect-[9/16] bg-primary rounded-md relative overflow-hidden"
-            >
-              <Image
-                src={item?.cover}
-                alt="video cover"
-                fill
-                sizes="(max-width: 768px) 100vw,  
-                    (max-width: 1200px) 50vw,
-                    33vw"
-              />
-              <div className="absolute top-2 right-2 flex items-center text-base gap-1 text-primary">
-                <Icons.posts className="text-2xl  h-4 w-4" />
-                {formatNumber(item.postData.playCount)}
-              </div>
-            </div>
+              cover={item?.cover}
+              playCount={item.postData.playCount}
+            />
           ))}
       </div>
     </div>
@@ -434,36 +422,36 @@ const StatDisplay = () => {
   const { data } = useContext(DataContext)!;
 
   return (
-    <div className="grid grid-cols-3 gap-6  h-fit items-center rounded-md mt-4">
-      <div className="flex items-center gap-3">
+    <div className="flex md:grid md:grid-cols-3  md:gap-6 gap-3  h-fit items-center rounded-md mt-4">
+      <div className="flex items-center gap-3 ">
         <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
           <Icons.likes className="h-8 w-8 text-muted-foreground" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Likes</h2>
-          <h3 className="text-2xl font-bold text-primary">
+          <h3 className="text-xl md:text-2xl font-bold text-primary">
             {formatNumber(data.accountStats[0].heartCount)}
           </h3>
         </div>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 ">
         <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
           <Icons.followers className="h-8 w-8 text-muted-foreground" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Followers</h2>
-          <h3 className="text-2xl font-bold  text-primary">
+          <h3 className="text-xl md:text-2xl font-bold  text-primary">
             {formatNumber(data.accountStats[0].followerCount)}
           </h3>
         </div>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 ">
         <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
           <Icons.posts className="h-8 w-8 text-muted-foreground" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Posts</h2>
-          <h3 className="text-2xl font-bold  text-primary">
+          <h3 className="text-xl md:text-2xl font-bold  text-primary">
             {formatNumber(data.accountStats[0].videoCount)}
           </h3>
         </div>

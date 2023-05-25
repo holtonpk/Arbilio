@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { AccountDataType } from "@/types";
-
+import PostView from "@/components/post-view";
 const CardDisplay = ({
   accountDataBaseData,
 }: {
@@ -154,24 +154,11 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                     className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden "
                   >
                     {item.topPosts && item.topPosts.length > i && (
-                      <>
-                        <Image
-                          src={item.topPosts[i]?.cover}
-                          alt="video cover"
-                          className="z-20"
-                          fill
-                          sizes="(max-width: 768px) 100vw,  
-                    (max-width: 1200px) 50vw,
-                    33vw"
-                        />
-                        {/* <div className="absolute z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border border-white bg-black rounded-full flex justify-center items-center p-2">
-                          <Icons.posts className="text-white h-3 w-3 md:h-3 md:w-3 pl-[1px]" />
-                        </div> */}
-                        <div className="bg-black/70 rounded-sm absolute bottom-1 p-1 md:bottom-1 left-1 md:left-1 z-30 flex items-center text-[8px] md:text-[12px] gap-[2px] md:gap-1 text-white ">
-                          <Icons.showPassword className="text-2xl h-2 w-2  md:h-4 md:w-4" />
-                          {formatNumber(item.topPosts[i]?.postData.playCount)}
-                        </div>
-                      </>
+                      <PostView
+                        key={i}
+                        cover={item.topPosts[i]?.cover}
+                        playCount={item.topPosts[i]?.postData.playCount}
+                      />
                     )}
                     <Icons.media className="text-primary h-8 w-8 md:h-8 md:w-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" />
                   </div>

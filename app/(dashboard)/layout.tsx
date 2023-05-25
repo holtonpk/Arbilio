@@ -2,13 +2,12 @@ import React, { ReactElement } from "react";
 import Navbar from "@/components/nav/side-nav";
 import { AuthProvider } from "@/context/Auth";
 import ProtectedRoutes from "./protect-routes";
-import { marketingConfig } from "@/config/marketing";
-import DashboardNav from "@/components/nav-dashboard";
+import DashboardNav from "@/components/nav/dashboard-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { AccountInfo } from "@/components/account-preview";
 import { Toaster } from "@/components/ui/toaster";
 import { UserCollectionProvider } from "@/context/user-collections";
 import UserSubscribed from "./is-user-subscribed";
+import { MobileDashboardNav } from "@/components/nav/mobile-dashboard-nav";
 
 export default function Layout({ children }: { children: ReactElement }) {
   return (
@@ -18,8 +17,11 @@ export default function Layout({ children }: { children: ReactElement }) {
           <UserCollectionProvider>
             <>
               <Toaster />
-              <DashboardNav />
-              <div className=" min-h-screen  max-w-screen  overflow-hidden ">
+              <header>
+                <DashboardNav />
+                <MobileDashboardNav />
+              </header>
+              <div className="min-h-screen mt-20 md:mt-0  max-w-screen  overflow-hidden ">
                 <main className=" relative w-full pt-6   overflow-auto  min-h-[80vh] ">
                   {children}
                 </main>
