@@ -91,7 +91,7 @@ const AccountDatabase = ({ originalData }: any) => {
         ) : (
           <>
             {displayType === "grid" ? (
-              <div className="grid  lg:grid-cols-4  grid-cols-2 gap-8 h-full  ">
+              <div className="grid  lg:grid-cols-4  grid-cols-1 sm:grid-cols-2 gap-8 h-full  ">
                 {sortedData.map((account: any, i: number) => (
                   <AccountCard key={i} item={account} />
                 ))}
