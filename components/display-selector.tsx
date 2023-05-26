@@ -9,13 +9,18 @@ const DisplaySelector = ({ displayType, setDisplayType }: any) => {
   const displayColumns = () => {
     setDisplayType("columns");
   };
-  const variant = "outline";
 
   return (
     <div className="flex gap-2 w-fit   ">
       <Button
         onClick={displayGrid}
-        className="flex items-center justify-center whitespace-nowrap"
+        className={`flex items-center justify-center whitespace-nowrap 
+        ${
+          displayType == "grid"
+            ? "border-border bg-background hover:bg-background hover:text-primary"
+            : "hover:bg-transparent hover:border-border"
+        }
+        `}
         variant={displayType == "grid" ? "outline" : "ghost"}
         size="sm"
       >
@@ -23,7 +28,13 @@ const DisplaySelector = ({ displayType, setDisplayType }: any) => {
       </Button>
       <Button
         onClick={displayColumns}
-        className="flex items-center justify-center whitespace-nowrap"
+        className={`flex items-center justify-center whitespace-nowrap 
+        ${
+          displayType == "columns"
+            ? "border-border bg-background hover:bg-background hover:text-primary"
+            : "hover:bg-transparent hover:border-border"
+        }
+        `}
         variant={displayType == "columns" ? "outline" : "ghost"}
         size="sm"
       >

@@ -66,7 +66,7 @@ const Plans = ({ plans }: PlansProps) => {
           } font-bold flex items-center gap-3 relative`}
         >
           Yearly
-          <div className=" text-primary text-[12px] border border-primary whitespace-nowrap py-1 rounded-full px-4 absolute -right-2 translate-x-full">
+          <div className=" text-theme-blue text-[12px] border border-theme-blue whitespace-nowrap py-1 rounded-full px-4 absolute -right-2 translate-x-full">
             Save 40%
           </div>
         </div>
@@ -113,13 +113,13 @@ const PricingCard = ({ plan, priceType, mostPopular }: PricingCardProps) => {
       className={`flex flex-col items-center justify-between relative overflow-hidden  gap-6 rounded-lg border w-full p-8  h-fit 
       ${
         mostPopular
-          ? "bg-muted pt-16 md:h-[540px]"
+          ? "bg-muted/60 pt-16 md:h-[540px]"
           : "bg-transparent md:h-[500px] md:translate-y-10"
       }
       `}
     >
       {mostPopular && (
-        <div className="w-full h-10 bg-primary absolute top-0 left-0 flex justify-center items-center text-background">
+        <div className="w-full h-10 font-bold text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 absolute top-0 left-0 flex justify-center items-center text-background">
           Most popular
         </div>
       )}
@@ -166,7 +166,10 @@ const PricingCard = ({ plan, priceType, mostPopular }: PricingCardProps) => {
             Cancel Plan
           </Button>
         ) : (
-          <Button onClick={selectPlan} variant="default">
+          <Button
+            onClick={selectPlan}
+            variant={mostPopular ? "default" : "outline"}
+          >
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}

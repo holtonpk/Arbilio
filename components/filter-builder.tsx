@@ -5,6 +5,7 @@ import { FilterList } from "@/types";
 import { Icons } from "./icons";
 import { Input } from "./ui/input";
 import { CustomListBox } from "@/components/list-box";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -19,9 +20,14 @@ import { accountDatabaseConfig } from "@/config/dashboard";
 interface Props {
   appliedFilterList: FilterList[];
   setAppliedFilterList: (filterList: FilterList[]) => void;
+  className?: string;
 }
 
-const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
+const FilterBuilder = ({
+  appliedFilterList,
+  setAppliedFilterList,
+  className,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   //   a list of the filters
   const [filterList, setFilterList] = useState<FilterList[]>([]);
@@ -73,7 +79,10 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
     <>
       <Button
         onClick={openModal}
-        className="flex items-center justify-center gap-2"
+        className={cn(
+          "flex items-center justify-center gap-2 bg-background",
+          className
+        )}
         variant="outline"
       >
         <Icons.filter className="h-6 w-6" />

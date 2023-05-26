@@ -8,7 +8,8 @@ import { Icons } from "@/components/icons";
 import { AccountInfo } from "@/components/account-preview";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
-
+import { Button } from "@/components/ui/button";
+import Feedback from "@/components/feedback-modal";
 const DashboardNav = () => {
   const segment = useSelectedLayoutSegment();
   const [collapseNav, setCollapseNav] = useState(false);
@@ -47,17 +48,7 @@ const DashboardNav = () => {
           </span>
         </Link>
         <div className="w-fit flex gap-4 items-center relative">
-          <Link
-            href={"/help"}
-            className={cn(
-              "flex items-center text-lg font-medium transition-colors border rounded-md p-2 hover:text-foreground/80 sm:text-sm",
-              "/help".startsWith(`/${segment}`)
-                ? "text-foreground"
-                : "text-foreground/60"
-            )}
-          >
-            Feedback
-          </Link>
+          <Feedback />
           {marketingConfig.mainNav?.length ? (
             <nav className="hidden gap-6 md:flex">
               {marketingConfig.mainNav?.map((item, index) => (
@@ -93,8 +84,8 @@ const DashboardNav = () => {
       >
         <div
           id="row"
-          className={` flex items-center gap-2 transition-all justify-end duration-[500ms] 
-          ${collapseNav ? "w-[680px]" : "w-[560px]"}
+          className={` flex items-center gap-2 transition-all  justify-end duration-[500ms] 
+          ${collapseNav ? "w-[705px]" : "w-[585px]"}
           `}
         >
           {collapseNav ? (
@@ -181,7 +172,7 @@ const RouteLink = ({ item }: { item: SideNavRoute }) => {
       <Icon className="h-5 w-5 mr-2" />
       <div className="text-sm ">{item.title}</div>
       {item?.disabled && (
-        <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-[#026FF3] border-[#026FF3]">
+        <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
           Coming soon
         </div>
       )}
@@ -226,7 +217,7 @@ const RouteButton = ({ item }: { item: SideNavRoute }) => {
           <div className="text-sm ">{item.title}</div>
         </div>
         {item?.disabled ? (
-          <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-[#026FF3] border-[#026FF3]">
+          <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
             Coming soon
           </div>
         ) : null}

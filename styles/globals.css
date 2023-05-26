@@ -5,6 +5,8 @@
 
 @layer base {
   :root {
+    --blue: #026ff3;
+
     --background: 0 0% 100%;
     --foreground: 0 0% 0%;
 
@@ -44,6 +46,8 @@
   }
 
   .dark {
+    --blue: #026ff3;
+
     --background: 0 0% 0%;
     --foreground: 0 0% 91%;
 

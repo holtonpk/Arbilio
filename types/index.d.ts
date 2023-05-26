@@ -31,6 +31,7 @@ export type MarketingConfig = {
 };
 
 import Account from "@/app/(dashboard)/accounts/account/[id]/page";
+import ProductDataBase from "@/app/(dashboard)/products/product-database/product-database";
 import { Icons } from "@/components/icons";
 
 export interface SubRoute {
@@ -130,6 +131,19 @@ export interface ProductType {
   image: string;
   supplierUrl: string;
   accounts: string[];
+}
+
+export interface ProductDataBaseType {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  updated: string;
+  title: string;
+  image: string;
+  supplierUrl: string;
+  supplierInfo: any;
+  accounts: AccountDataType[];
 }
 
 export interface PostType {

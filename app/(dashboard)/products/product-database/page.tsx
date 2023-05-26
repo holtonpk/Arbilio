@@ -25,7 +25,7 @@ export default async function ProductDatabase() {
         }
       />
       <div className="w-full border-t">
-        <div className="w-full container  pt-6  flex flex-col min-h-screen items-center  ">
+        <div className="w-full  flex flex-col min-h-screen items-center  ">
           <ProductDataBase data={data} />
         </div>
       </div>

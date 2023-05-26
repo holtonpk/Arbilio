@@ -9,9 +9,10 @@ import { ComboBoxType } from "@/types";
 interface ComboBoxProps {
   dropList: ComboBoxType;
   onSelect: (item: any) => void;
+  className?: string;
 }
 
-const ComboBox = ({ dropList, onSelect }: ComboBoxProps) => {
+const ComboBox = ({ dropList, onSelect, className }: ComboBoxProps) => {
   const [selected, setSelected] = useState(dropList.items[0]);
   const [open, setOpen] = useState(false);
   const toggleOpen = () => {
@@ -28,7 +29,10 @@ const ComboBox = ({ dropList, onSelect }: ComboBoxProps) => {
     <div className="relative w-fit">
       <Button
         onClick={toggleOpen}
-        className="flex items-center justify-center whitespace-nowrap"
+        className={cn(
+          "flex items-center justify-center whitespace-nowrap",
+          className
+        )}
         variant="outline"
       >
         {dropList.title + ": " + selected.title}

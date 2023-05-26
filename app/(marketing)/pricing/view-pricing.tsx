@@ -3,10 +3,7 @@ import { useState } from "react";
 import { Switch } from "@headlessui/react";
 import { Icons } from "@/components/icons";
 import { Product } from "@/types";
-import { createCheckoutSession } from "@/stripe/createCheckoutSession";
-import { useAuth } from "@/context/Auth";
-import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
+import { LinkButton } from "@/components/ui/link";
 
 interface PlansProps {
   plans: Product[];
@@ -66,7 +63,7 @@ const Plans = ({ plans }: PlansProps) => {
           } font-bold flex items-center gap-3 relative`}
         >
           Yearly
-          <div className="text-theme-blue text-[12px] border border-theme-blue  whitespace-nowrap py-1 rounded-full px-4 absolute -right-2 translate-x-full">
+          <div className=" text-theme-blue text-[12px] border border-theme-blue whitespace-nowrap py-1 rounded-full px-4 absolute -right-2 translate-x-full">
             Save 40%
           </div>
         </div>
@@ -93,26 +90,15 @@ interface PricingCardProps {
 
 const PricingCard = ({ plan, priceType, mostPopular }: PricingCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { currentUser } = useAuth()!;
-  const price = plan[priceType];
 
-  const selectPlan = async () => {
-    if (!currentUser || !price) return;
-    setIsLoading(true);
-    await createCheckoutSession(
-      currentUser?.uid,
-      price?.id,
-      `${siteConfig.url}/dashboard`,
-      `${siteConfig.url}/onboarding/register`
-    );
-  };
+  const price = plan[priceType];
 
   return (
     <div
       className={`flex flex-col items-center justify-between relative overflow-hidden  gap-6 rounded-lg border w-full p-8  h-fit 
       ${
         mostPopular
-          ? "bg-muted pt-16 md:h-[500px]"
+          ? "bg-muted/60 pt-16 md:h-[500px]"
           : "bg-transparent md:h-[460px] md:translate-y-10"
       }
       `}
@@ -157,13 +143,13 @@ const PricingCard = ({ plan, priceType, mostPopular }: PricingCardProps) => {
         </ul>
       </div>
       <div className="flex flex-col gap-4 text-center">
-        <Button
-          onClick={selectPlan}
+        <LinkButton
+          href={"/onboarding/register"}
           variant={mostPopular ? "default" : "outline"}
         >
           {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Get Started
-        </Button>
+        </LinkButton>
       </div>
     </div>
   );

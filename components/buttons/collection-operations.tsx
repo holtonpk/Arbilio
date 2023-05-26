@@ -122,7 +122,7 @@ export function CollectionOperations({
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"
             onSelect={() => setShowDeleteAlert(true)}
           >
-            Delete
+            Delete Collection
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

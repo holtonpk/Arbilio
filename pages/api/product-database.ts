@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/context/Auth";
-import { collection, getDocs, limit, query } from "firebase/firestore";
-
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
+import { ProductDataBaseType, AccountDataType } from "@/types";
+import { siteConfig } from "@/config/site";
 interface ResponseData {
-  data: any[];
+  data: ProductDataBaseType[];
 }
 
 export default async function handler(
@@ -11,23 +12,25 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   const collectionRef = collection(db, "tiktokProducts");
-  const q = query(collectionRef);
+  const q = query(collectionRef, limit(10));
   const docs = await getDocs(q);
-  const formattedData = docs.docs.map(async (doc) => {
-    return doc.data();
+  const formattedData = docs.docs.map(async (_doc) => {
+    const record = _doc.data();
+    const accountDataRes = await fetch(
+      `${siteConfig.url}/api/get-product-accounts/${record.id}`,
+      {
+        cache: "no-cache",
+      }
+    );
+    const accountData: AccountDataType[] = await accountDataRes.json();
+
+    return {
+      ...record,
+      accounts: accountData,
+    };
   });
 
-  // const formattedData = docs.docs.map(async (doc) => {
-  //   const docData = doc.data();
-
-  //   return {
-  //     id: doc.id,
-  //     title1: docData.title,
-  //     title2: docData?.supplierInfo?.supplierTitle,
-  //   };
-  // });
-
-  const data = await Promise.all(formattedData);
+  const data = (await Promise.all(formattedData)) as ProductDataBaseType[];
 
   res.status(200).json({ data });
 }

@@ -18,10 +18,10 @@ const AccountCollections = () => {
       >
         <CreateCollectionButton variant="default" />
       </PageHeader>
-      <div className="w-full border-t">
+      <div className="w-full border-t bg-muted/60">
         <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
           {userCollections && userCollections?.length > 0 ? (
-            <div className="divide-y divide-border rounded-md border w-full">
+            <div className="divide-y divide-border rounded-md border w-full bg-background">
               {userCollections.map((collection: any, i: number) => (
                 <CollectionDisplay key={i} collection={collection} />
               ))}

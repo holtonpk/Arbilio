@@ -67,6 +67,7 @@ import {
   Triangle,
   Link2,
   RefreshCcwIcon,
+  Send,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -109,6 +110,7 @@ export const Icons = {
   page: File,
   profile: User,
   posts: Play,
+  send: Send,
   lineChart: LineChart,
   rank: FileBarChart,
   media: Image,

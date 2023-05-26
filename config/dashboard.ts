@@ -64,19 +64,9 @@ export const dashboardConfig: DashboardConfig = {
       disabled: false,
     },
     {
-      title: "Your Stores",
+      title: "Ai Store Builder",
       iconName: "store",
       href: "/stores",
-      subPages: [
-        {
-          title: "Product Database",
-          href: "/products/product-database",
-        },
-        {
-          title: "Top Products",
-          href: "/products/top-products",
-        },
-      ],
       disabled: true,
     },
     // {

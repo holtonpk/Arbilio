@@ -156,7 +156,7 @@ const Avatar = () => {
         />
         <Button
           onClick={handleButtonClick}
-          className="h-24 w-24 border rounded-full bg-muted hover:opacity-70 relative overflow-hidden"
+          className="h-24 w-24 border  rounded-full bg-muted hover:opacity-70 relative overflow-hidden"
         >
           <Image src={profilePic} alt="profile" className="rounded-full" fill />
         </Button>

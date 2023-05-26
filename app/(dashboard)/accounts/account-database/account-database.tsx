@@ -62,15 +62,21 @@ const AccountDatabase = ({ originalData }: any) => {
         <DataSearch
           placeholder="Search an user name. ex: @username"
           searchFunction={searchData}
+          className="bg-background rounded-md"
         />
         <div className="flex  w-[100%] flex-col gap-2 items-center lg:flex-row ">
           <div className="flex items-center gap-4 w-full lg:w-fit md:justify-between">
             <FilterBuilder
               appliedFilterList={appliedFilterList}
               setAppliedFilterList={setAppliedFilterList}
+              className="bg-background border-border"
             />
             <div className=" ">
-              <ComboBox dropList={sortOptions} onSelect={setSortParam} />
+              <ComboBox
+                dropList={sortOptions}
+                onSelect={setSortParam}
+                className="bg-background border-border"
+              />
             </div>
           </div>
           <div className="md:flex items-center gap-4 w-full lg:w-fit justify-between hidden ">
