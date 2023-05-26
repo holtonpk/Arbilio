@@ -61,8 +61,8 @@ const AccountRank = ({ data }: any) => {
             </>
             <div className=" flex flex-row items-center text-muted-foreground  w-full mt-4">
               <div className="hidden sm:block relative sm:w-1/2 w-full">
-                <Input placeholder="Search for an account" className="pl-12" />
-                <Icons.search className="absolute top-1/2 transform -translate-y-1/2 left-3" />
+                {/* <Input placeholder="Search for an account" className="pl-12" />
+                <Icons.search className="absolute top-1/2 transform -translate-y-1/2 left-3" /> */}
               </div>
               <div className="grid grid-cols-3 items-center ml-auto sm:text-sm lg:text-base text-[8px]  w-[60%] sm:w-[50%] lg:w-[400px] translate-y-4 sm:translate-y-0">
                 <h1 className="w-full justify-center flex">Followers</h1>

@@ -17,6 +17,13 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { CollectionType } from "@/types";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  getStorage,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 import { doc, setDoc, getFirestore, getDoc } from "firebase/firestore";
 
@@ -35,6 +42,8 @@ interface AuthContextType {
   changeUserEmail: (currentPassword: string, newEmail: string) => any;
   changeUserDisplayName: (newName: string) => any;
   resetPassword: () => any;
+  uploadProfilePicture: (file: File) => any;
+  changeProfilePicture: (url: string) => any;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -59,11 +68,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   >(undefined);
   // const router = useRouter();
 
+  const defaultProfilePictures: string[] = [
+    "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/profile-pictures%2F1.png?alt=media&token=2fa64355-bc2d-485e-bc6b-3bd5ac6aaa05",
+    "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/profile-pictures%2F2.png?alt=media&token=0a370360-d7e8-463e-8173-d27b9ba104b6",
+    "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/profile-pictures%2F3.png?alt=media&token=94ed0bda-533a-48bb-b4a5-6120156c47e6",
+  ];
+
+  // Function to pick a random image URL from the array
+  function getRandomImageUrl(): string {
+    const randomIndex = Math.floor(
+      Math.random() * defaultProfilePictures.length
+    );
+    return defaultProfilePictures[randomIndex] as string;
+  }
+
   async function createAccount(email: string, name: string, password: string) {
     const account = createUserWithEmailAndPassword(auth, email, password)
       .then((cred: any) => {
+        const profileUrl = getRandomImageUrl() as string;
         updateProfile(cred.user, {
           displayName: name,
+          photoURL: profileUrl,
         });
         // createUserStorage(cred?.user);
         return { success: cred };
@@ -95,7 +120,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function logInWithGoogle(): Promise<{ success?: any; error?: any }> {
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
-
       if (result.user) {
         createUserStorage(result.user);
         return { success: result };
@@ -108,18 +132,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const createUserStorage = async (user: any) => {
-    const userRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(userRef);
-    // if (docSnap.exists()) {
-    //   console.log("Document data:", docSnap.data());
-    // } else {
-    //   console.log("No such document!");
-    //   // doc.data() will be undefined in this case
-    //   setDoc(userRef, {
-    //     // settings: defaultSettings,
-    //     collection: [],
-    //   });
-    // }
+    if (!user.photoURL) {
+      const profileUrl = getRandomImageUrl() as string;
+      updateProfile(user, {
+        photoURL: profileUrl,
+      });
+    }
+  };
+
+  const uploadProfilePicture = async (file: any) => {
+    if (!currentUser) return;
+    const storage = getStorage();
+    const storageRef = ref(storage, `profile-pictures/${currentUser.uid}`);
+    // Create a upload task
+    const uploadTask = uploadBytesResumable(storageRef, file, {
+      contentType: "image/jpeg", // Manually set the MIME type
+    });
+
+    // Create a promise to handle the upload task
+    return new Promise<string>((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // You may want to use these to provide feedback to the user
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.error("Upload failed", error);
+          reject(error);
+        },
+        async () => {
+          // Handle successful uploads on complete
+          const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadUrl);
+        }
+      );
+    });
+  };
+
+  const changeProfilePicture = async (url: string) => {
+    if (!currentUser) return;
+    updateProfile(currentUser, {
+      photoURL: url,
+    });
   };
 
   // import {
@@ -234,6 +290,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     changeUserEmail,
     changeUserPassword,
     resetPassword,
+    uploadProfilePicture,
+    changeProfilePicture,
   };
 
   return (

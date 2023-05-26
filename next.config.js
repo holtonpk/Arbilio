@@ -13,6 +13,7 @@ const nextConfig = {
       "cdn.shopify.com",
       "firebasestorage.googleapis.com",
       "ae01.alicdn.com",
+      "lh3.googleusercontent.com",
     ],
   },
   experimental: {

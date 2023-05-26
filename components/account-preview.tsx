@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { LinkButton } from "@/components/ui/link";
 import { useRouter } from "next/navigation";
 import { ModeToggle2 } from "@/components/mode-toggle";
+import Image from "next/image";
 
 export const AccountInfo = () => {
   const { currentUser } = useAuth()!;
@@ -34,7 +35,15 @@ export const AccountInfo = () => {
             variant="ghost"
             size="lg"
           >
-            <div className="aspect-square p-1 mr-2 rounded-full  h-10 w-10  flex justify-center items-center bg-gradient-to-tl from-green-300 to-orange-400"></div>
+            <div className="aspect-square  mr-2 rounded-full  h-10 w-10  flex justify-center items-center bg-gradient-to-tl from-green-300 to-orange-400">
+              <Image
+                src={(currentUser && currentUser.photoURL) || ""}
+                alt="profile"
+                className="rounded-full"
+                width={40}
+                height={40}
+              />
+            </div>
             <div className="flex flex-col items-start">
               <div className="text-sm capitalize font-bold">
                 {currentUser && currentUser.displayName}

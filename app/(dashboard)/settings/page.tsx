@@ -3,42 +3,42 @@ import React, { useState } from "react";
 import Profile from "./Profile";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/header";
+import { siteConfig } from "@/config/site";
+import { useRouter } from "next/navigation";
 const SettingsPage = () => {
-  const [tab, setTab] = useState<"billing" | "profile">("profile");
-
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const stripe = require("stripe")(
+    "sk_test_51KsFpgEewcpAM4MfqUhXKeEnFfdHkN0Btxdxi4pLQzB45cOWyGtk1ujQsZWfT5RIOcijIZqyIrUpeVfJtGxHuMmz00rGEWP0qm"
+  );
+  const ManageSub = async () => {
+    setIsLoading(true);
+    const session = await stripe.billingPortal.sessions.create({
+      customer: "cus_Ns5BZPlhGnvG7w",
+      return_url: `${siteConfig.url}/settings`,
+    });
+    router.push(session.url);
+  };
   return (
     <>
-      <h1 className="text-3xl font-bold mb-3">Account Settings</h1>
-      <div className="w-full flex flex-col overflow-scroll h-full gap-4 rounded-md ">
-        {/* <SettingsNav tab={tab} setTab={setTab} /> */}
-        <Profile />
-        {/* {tab == "billing" && <Billing />} */}
+      <PageHeader heading="Settings">
+        <Button onClick={ManageSub} className="">
+          {isLoading ? (
+            <Icons.spinner className="mr-2 h-6 w-6 animate-spin" />
+          ) : (
+            <Icons.wallet className="mr-2 h-5 w-5" />
+          )}
+          Manage Subscription
+        </Button>
+      </PageHeader>
+      <div className="w-full border-t">
+        <div className="w-full container pt-8  flex flex-col min-h-screen items-center  ">
+          <Profile />
+        </div>
       </div>
     </>
   );
 };
 
 export default SettingsPage;
-
-const SettingsNav = ({ tab, setTab }: any) => {
-  return (
-    <div className="h-full flex w-full gap-2">
-      <Button
-        variant={tab == "profile" ? "secondary" : "outline"}
-        onClick={() => setTab("profile")}
-        className="gap-2 border"
-      >
-        <Icons.profile className="h-6 w-6" />
-        My Profile
-      </Button>
-      <Button
-        variant={tab == "billing" ? "secondary" : "outline"}
-        onClick={() => setTab("billing")}
-        className="gap-2 border"
-      >
-        <Icons.wallet className="h-6 w-6" />
-        Billing
-      </Button>
-    </div>
-  );
-};

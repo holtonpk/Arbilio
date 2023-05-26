@@ -8,52 +8,72 @@ import { toast } from "@/components/ui/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
 import EnterPasswordModal from "@/components/enter-password";
 import { siteConfig } from "@/config/site";
-
+import Image from "next/image";
 const Profile = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const stripe = require("stripe")(
-    "sk_test_51KsFpgEewcpAM4MfqUhXKeEnFfdHkN0Btxdxi4pLQzB45cOWyGtk1ujQsZWfT5RIOcijIZqyIrUpeVfJtGxHuMmz00rGEWP0qm"
-  );
-  const ManageSub = async () => {
-    setIsLoading(true);
-    const session = await stripe.billingPortal.sessions.create({
-      customer: "cus_Ns5BZPlhGnvG7w",
-      return_url: `${siteConfig.url}/settings`,
-    });
-
-    window.location.href = session.url;
-  };
-
   return (
-    <div className="h-full flex-grow p-8 border rounded-md relative">
-      <Button onClick={ManageSub} className="absolute top-4 right-4">
-        {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-        Manage Subscription
-      </Button>
-      <div className="flex flex-col">
-        <div className="flex flex-col gap-4 ">
-          <PersonalInfo />
-          <AccountSettings />
-        </div>
-        {/* <AdvancedSettings /> */}
-      </div>
+    <div className="h-full w-full relative flex flex-col  gap-8 ">
+      <Avatar />
+      <Name />
+      <Email />
+      <AccountSettings />
     </div>
   );
 };
 
 export default Profile;
 
-const PersonalInfo = () => {
-  const [edit, setEdit] = useState(false);
-  const [isSaveLoading, setIsSaveLoading] = useState(false);
-  const toggleEdit = () => setEdit(!edit);
-  const { currentUser, changeUserDisplayName, changeUserEmail } = useAuth()!;
-  const nameRef = useRef<HTMLInputElement>(null);
+const Email = () => {
+  const { currentUser, changeUserEmail } = useAuth()!;
+  const [isLoading, setIsLoading] = useState(false);
   const emailRef = useRef<HTMLInputElement>(null);
-  const confirmPassRef = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
-    setIsSaveLoading(true);
+    setIsLoading(true);
+    if (
+      emailRef.current?.value !== currentUser?.email &&
+      emailRef.current?.value !== undefined
+    ) {
+      // await changeUserEmail(emailRef.current?.value);
+      toast({
+        title: "Check your email",
+        description:
+          "We sent you a verify link. Be sure to check your spam too.",
+      });
+    }
+    setIsLoading(false);
+  };
+
+  return (
+    <div className="flex flex-col w-full border rounded-md p-4 gap-2 relative pb-[72px]">
+      <label className="text-xl font-bold text-primary  ">Your Email</label>
+      <p className="text-sm text-muted-foreground mb-3  ">
+        This is the email you use to login
+      </p>
+      <Input
+        ref={emailRef}
+        defaultValue={currentUser?.email || ""}
+        type={"email"}
+      />
+      <div className="w-full absolute bottom-0 left-0 h-14 bg-muted/40 border-t flex px-6 justify-between items-center ">
+        <p className="text-muted-foreground text-sm">
+          We will email you to verify the change.
+        </p>
+        <Button onClick={handleSave} size="sm" className="py-1">
+          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          Save
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+const Name = () => {
+  const nameRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { currentUser, changeUserDisplayName } = useAuth()!;
+
+  const handleSave = async () => {
+    setIsLoading(true);
     if (
       nameRef.current?.value !== currentUser?.displayName &&
       nameRef.current?.value !== undefined
@@ -62,83 +82,89 @@ const PersonalInfo = () => {
       toast({
         title: "Success",
         description: "Your name has been updated",
-        variant: "default",
       });
     }
-    if (
-      emailRef.current?.value !== currentUser?.email &&
-      emailRef.current?.value !== undefined &&
-      confirmPassRef.current?.value !== undefined
-    ) {
-      const res = await changeUserEmail(
-        emailRef.current?.value,
-        confirmPassRef.current?.value
-      );
-      if (res?.error) {
-        console.log(res);
-        toast({
-          title: "Error",
-          description: "There was an error updating your email",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Success",
-          description: "Your email has been updated",
-          variant: "default",
-        });
-      }
-      confirmPassRef.current.value = "";
-    }
-    setIsSaveLoading(false);
+    setIsLoading(false);
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <h2 className="text-2xl text-primary ">Personal Info</h2>
-      <div className="flex flex-col gap-4 rounded-md relative">
-        <div className="flex flex-col w-full ">
-          <label className="text-base text-primary  ">Name</label>
-          <p className="text-sm text-muted-foreground mb-3  ">
-            This is only for display
-          </p>
-          <Input
-            ref={nameRef}
-            defaultValue={currentUser?.displayName || ""}
-            type="text"
-          />
-        </div>
-
-        <div className="flex flex-col w-full ">
-          <label className="text-base text-primary  ">Email</label>
-          <p className="text-sm text-muted-foreground mb-3  ">
-            This is the email you use to login
-          </p>
-          <Input
-            ref={emailRef}
-            defaultValue={currentUser?.email || ""}
-            type={"email"}
-          />
-        </div>
-        <div className="flex gap-2 items-center">
-          <PasswordInput
-            ref={confirmPassRef}
-            placeholder="enter password to update email"
-            className=" w-[50%]"
-          />
-        </div>
-
-        <Button
-          onClick={handleSave}
-          variant="secondary"
-          size="lg"
-          className="w-fit"
-        >
-          {isSaveLoading && (
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          )}
+    <div className="flex flex-col w-full border rounded-md p-4  gap-2 relative pb-[72px]">
+      <label className="text-xl font-bold text-primary  ">Your Name</label>
+      <p className="text-sm text-muted-foreground mb-3  ">
+        Please enter your full name, or a display name you are comfortable with.
+      </p>
+      <Input
+        ref={nameRef}
+        defaultValue={currentUser?.displayName || ""}
+        type="text"
+        className="w-[300px]"
+      />
+      <div className="w-full absolute bottom-0 left-0 h-14 bg-muted/40  border-t flex px-6 justify-between items-center ">
+        <p className="text-muted-foreground text-sm">
+          Please use 32 characters at maximum.
+        </p>
+        <Button onClick={handleSave} size="sm" className="py-1">
+          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Save
         </Button>
+      </div>
+    </div>
+  );
+};
+
+const Avatar = () => {
+  const { currentUser, uploadProfilePicture, changeProfilePicture } =
+    useAuth()!;
+
+  const [profilePic, setProfilePic] = useState<string>(
+    currentUser?.photoURL || ""
+  );
+
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    if (fileInput.current) {
+      fileInput.current.click();
+    }
+  };
+
+  const handleFileChange = async (event: any) => {
+    const imageURl = await uploadProfilePicture(event.target.files[0]);
+    await changeProfilePicture(imageURl);
+    setProfilePic(imageURl);
+    toast({
+      title: "Avatar Updated",
+      description: "refresh the page to see the changes",
+    });
+  };
+
+  return (
+    <div className="grid grid-cols-[1fr_96px]  justify-between w-full border rounded-md p-4 gap-2 relative pb-[72px]">
+      <div className="grid">
+        <label className="text-xl font-bold text-primary  ">Your Avatar</label>
+        <p className="text-sm text-muted-foreground mb-3  ">
+          This is your avatar. <br /> Click on the avatar to upload a custom one
+          from your files.
+        </p>
+      </div>
+      <div>
+        <input
+          type="file"
+          ref={fileInput}
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+        <Button
+          onClick={handleButtonClick}
+          className="h-24 w-24 border rounded-full bg-muted hover:opacity-70 relative overflow-hidden"
+        >
+          <Image src={profilePic} alt="profile" className="rounded-full" fill />
+        </Button>
+      </div>
+      <div className="w-full absolute bottom-0 left-0 h-14 bg-muted/40 border-t flex px-6 justify-between items-center ">
+        <p className="text-muted-foreground text-sm">
+          An avatar is optional but strongly recommended.
+        </p>
       </div>
     </div>
   );
@@ -196,7 +222,6 @@ const AccountSettings = () => {
       toast({
         title: "Success",
         description: "Your password has been updated",
-        variant: "default",
       });
     }
   };
@@ -219,8 +244,11 @@ const AccountSettings = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <h2 className=" text-2xl text-primary">Password</h2>
+    <div className="flex flex-col w-full border rounded-md p-4 relative pb-[72px]">
+      <label className="text-xl font-bold text-primary  ">Your Password</label>
+      <p className="text-sm text-muted-foreground mb-3  ">
+        Reset or change your password.
+      </p>
       <div className="flex flex-col gap-2  rounded-md relative">
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 w-full gap-4 justify-between">
@@ -240,96 +268,26 @@ const AccountSettings = () => {
             id="currentPassword"
             placeholder="Current password"
           />
-          <div className="w-full">
-            <Button
-              onClick={handleUpdatePassword}
-              className="w-full"
-              variant="secondary"
-              size="lg"
-            >
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Update Password
-            </Button>
-          </div>
           <div className="w-fit mx-auto items-center text-center flex  text-gray-500">
             Can&apos;t remember your password?
             <Button
               variant="link"
               onClick={handleResetPassword}
-              className="text-base font-bold text-c1 hover:opacity-80 underline"
+              className="text-base font-bold text-c1 hover:opacity-80 underline px-1"
             >
               Reset your password
             </Button>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const AdvancedSettings = () => {
-  return (
-    <div className="flex flex-row justify-between p-8  gap-2 w-full">
-      <div className="flex flex-col gap-1">
-        <h2 className="font-bold text-primary">Advanced Settings</h2>
-        <button className=" w-fit text-destructive">Reset to default</button>
-      </div>
-      <div className="flex flex-col gap-4 border-2 border-border p-4 rounded-md">
-        <SettingSelector
-          value={true}
-          placeholder="Allow this advanced settings to work"
-          description="This is an example of a settings field and how it will look"
-        />
-        <SettingSelector
-          value={false}
-          placeholder="Allow this advanced settings to work"
-          description="This is an example of a settings field and how it will look"
-        />
-        <SettingSelector
-          value={true}
-          placeholder="Allow this advanced settings to work"
-          description="This is an example of a settings field and how it will look"
-        />
-        <SettingSelector
-          value={false}
-          placeholder="Allow this advanced settings to work"
-          description="This is an example of a settings field and how it will look"
-        />
-      </div>
-    </div>
-  );
-};
-
-const SettingSelector = ({
-  placeholder,
-  description,
-  functionality,
-  value,
-}: any) => {
-  const [selected, setSelected] = useState(value);
-
-  const handleClick = () => {
-    setSelected(!selected);
-    // functionality();
-  };
-
-  return (
-    <div
-      onClick={handleClick}
-      className="flex items-top gap-4 group cursor-pointer"
-    >
-      <button
-        className={`${
-          selected ? "bg-primary" : "group-hover:bg-accent "
-        } h-5 w-5 border-border border-2 mt-1 rounded-md  cursor-pointer flex justify-center items-center`}
-      >
-        {selected && <Icons.check className="h-5 w-5 text-background " />}
-      </button>
-      <div className="flex flex-col">
-        <h1 className="font-bold text-lg">{placeholder}</h1>
-        <h2 className="text-muted-foreground text-sm">{description}</h2>
+      <div className="w-full absolute bottom-0 left-0 h-14 bg-muted/40 border-t flex px-6 justify-between items-center ">
+        <p className="text-muted-foreground text-sm">
+          We will email you to verify the change.
+        </p>
+        <Button onClick={handleUpdatePassword} className="py-1" size="sm">
+          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          Save
+        </Button>
       </div>
     </div>
   );
