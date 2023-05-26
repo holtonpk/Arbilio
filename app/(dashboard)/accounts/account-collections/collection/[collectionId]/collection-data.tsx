@@ -1,7 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Table from "./account-collection-table";
-import CardDisplay from "@/app/(dashboard)/accounts/account-collections/collection/[collectionId]/account-collection-cards";
 import { Icons } from "@/components/icons";
 import FilterBuilder from "@/components/filter-builder";
 import ComboBox from "@/components/combo-box";
@@ -13,8 +11,10 @@ import EmptySearch from "@/components/empty-search";
 import useData from "@/hooks/use-account-data";
 import { CollectionOperations } from "@/components/buttons/collection-operations";
 import { LinkButton } from "@/components/ui/link";
-
-const CollectionData = ({ data }: any) => {
+import { AccountCollectionData } from "@/types";
+import { AccountCard } from "@/components/account-card";
+import Table from "@/components/account-table";
+const CollectionData = ({ data }: { data: AccountCollectionData }) => {
   const [displayType, setDisplayType] = useState<"grid" | "columns">("grid");
   const {
     sortedData,
@@ -25,9 +25,7 @@ const CollectionData = ({ data }: any) => {
     setDescending,
     unformattedData,
     hideItems,
-  } = useData({ data: data.data });
-
-  console.log("sd", sortedData);
+  } = useData({ data: data.accounts });
 
   const sortOptions = accountCollectionsConfig.sortOptions;
 
@@ -39,15 +37,19 @@ const CollectionData = ({ data }: any) => {
             variant="ghost"
             href="/accounts/account-collections"
             className="w-fit "
+            size="sm"
           >
             <Icons.chevronLeft className=" h-6 w-6" />
           </LinkButton>
+
           <h1 className="text-3xl h-fit  font-bold flex items-center text-primary  pb-0">
-            <Icons.collection className="h-8 w-8 mr-2" />
+            {/* <Icons.collection className="h-8 w-8 mr-2" /> */}
             {data.collection.name}
           </h1>
+          <CollectionOperations collection={data.collection} variant="ghost">
+            <Icons.ellipsis className="h-4 w-4" />
+          </CollectionOperations>
         </div>
-        <CollectionOperations collection={data.collection} />
       </div>
       {unformattedData && unformattedData.length === 0 ? (
         <div className="w-full p-10 items-center justify-center gap-2 flex-col flex">
@@ -93,22 +95,18 @@ const CollectionData = ({ data }: any) => {
               setAppliedFilterList={setAppliedFilterList}
             />
           </div>
-          {displayType === "grid" && (
-            <CardDisplay
-              accountDataBaseData={sortedData}
-              collection={data.collection}
-            />
-          )}
-          {displayType === "columns" && (
-            <div className=" relative">
-              <Table
-                data={sortedData}
-                collection={data.collection}
-                setSortParam={setSortParam}
-                setDescending={setDescending}
-                hideItems={hideItems}
-              />
+          {displayType === "grid" ? (
+            <div className="grid  lg:grid-cols-4  grid-cols-2 gap-8 h-full  ">
+              {sortedData.map((account: any, i: number) => (
+                <AccountCard key={i} item={account} />
+              ))}
             </div>
+          ) : (
+            <Table
+              data={sortedData}
+              setSortParam={setSortParam}
+              setDescending={setDescending}
+            />
           )}
           {sortedData?.length === 0 && <EmptySearch />}
         </>

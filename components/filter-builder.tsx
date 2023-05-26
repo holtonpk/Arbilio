@@ -1,12 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { FilterList } from "@/types";
 import { Icons } from "./icons";
 import { Input } from "./ui/input";
 import { CustomListBox } from "@/components/list-box";
-import { toast } from "@/components/ui/use-toast";
-import { siteConfig } from "@/config/site";
 import {
   Dialog,
   DialogContent,
@@ -21,11 +19,6 @@ import { accountDatabaseConfig } from "@/config/dashboard";
 interface Props {
   appliedFilterList: FilterList[];
   setAppliedFilterList: (filterList: FilterList[]) => void;
-}
-
-interface PresetFilter {
-  label: string;
-  filterList: FilterList[];
 }
 
 const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
@@ -51,6 +44,7 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
         operator: "",
         value: "",
         combine: "and",
+        label: "",
       },
     ]);
   };
@@ -73,32 +67,6 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
   const applyFilters = () => {
     setAppliedFilterList(filterList);
     closeModal();
-    toast({
-      title: "Filters Applied",
-      description: "Your filters have been applied.",
-    });
-  };
-
-  const [presetFilters, setPresetFilters] = useState<PresetFilter[]>([]);
-  const [selectedPresetFilter, setSelectedPresetFilter] = useState<
-    PresetFilter | undefined
-  >(undefined);
-
-  // useEffect(() => {
-  //   fetch(`${siteConfig.url}/api/filters`).then((res) => {
-  //     res.json().then((data) => {
-  //       setPresetFilters(data);
-  //       setSelectedPresetFilter(data[0]);
-  //     });
-  //   });
-  // });
-
-  const selectPreset = (e: PresetFilter) => {
-    setSelectedPresetFilter(e);
-    if (e.label !== "Select A Preset Filter") {
-      const rows = e.filterList || [];
-      setFilterList([...filterList, ...rows]);
-    }
   };
 
   return (
@@ -112,7 +80,7 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
         Filters
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="w-[50vw] max-w-[800px]">
+        <DialogContent className="min-w-[50vw] max-w-[850px]">
           <DialogHeader>
             <DialogTitle>Create a filter</DialogTitle>
             <DialogDescription>
@@ -121,15 +89,6 @@ const FilterBuilder = ({ appliedFilterList, setAppliedFilterList }: Props) => {
           </DialogHeader>
 
           <div className="w-full flex flex-col items-center gap-2 ">
-            {presetFilters.length > 0 && (
-              <div className="absolute top-4 right-4 w-[40%]">
-                <CustomListBox
-                  value={selectedPresetFilter}
-                  values={presetFilters}
-                  onChange={selectPreset}
-                />
-              </div>
-            )}
             <div className="  h-fit w-full flex items-center gap-2 flex-col">
               {filterList.map((filter: FilterList, i) => (
                 <div key={i} className="w-full flex flex-col items-center">
@@ -224,27 +183,34 @@ const FilterRow = ({
     setComparisonValue(event.target.value);
   };
 
-  useEffect(() => {
-    const newFilterList = filterList.map((filterItem: FilterList) => {
+  const createNewFilterList = useCallback(() => {
+    return filterList.map((filterItem: FilterList) => {
       if (filterItem.rowId === filter.rowId) {
         return {
           ...filterItem,
           field: comparisonField?.value || "",
           operator: comparisonOperator?.value || "",
           value: comparisonValue,
+          label: comparisonField?.label || "",
         };
       }
       return filterItem;
     });
-    setFilterList(newFilterList);
   }, [
     comparisonField,
     comparisonOperator,
     comparisonValue,
     filter.rowId,
     filterList,
-    setFilterList,
   ]);
+
+  useEffect(() => {
+    const newFilterList = createNewFilterList();
+
+    if (JSON.stringify(newFilterList) !== JSON.stringify(filterList)) {
+      setFilterList(newFilterList);
+    }
+  }, [createNewFilterList, filterList, setFilterList]);
 
   return (
     <div className="w-full flex relative items-center  ">

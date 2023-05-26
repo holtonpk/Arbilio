@@ -80,9 +80,7 @@ const DashboardNav = () => {
           <AccountInfo />
         </div>
       </div>
-      <span
-        className={` h-12  w-screen ${collapseNav ? "relative" : "hidden"}`}
-      />
+      <span className={` h-12  w-screen ${collapseNav ? "block" : "hidden"}`} />
 
       <nav
         className={` px-4  w-screen z-[35]  h-12 bg-background  pb-[6px]  left-0 

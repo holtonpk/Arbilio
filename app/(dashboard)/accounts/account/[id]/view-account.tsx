@@ -33,6 +33,7 @@ import { AccountDataType } from "@/types";
 import { Icons } from "@/components/icons";
 import { useRouter } from "next/navigation";
 import PostView from "@/components/post-view";
+import { ProductOperations } from "@/components/buttons/product-operations";
 
 interface DataContextData {
   data: AccountDataType;
@@ -59,37 +60,33 @@ const ViewAccount = ({ data }: ViewAccountProps) => {
   const router = useRouter();
   return (
     <div className="container">
-      <div className="w-full rounded-md flex flex-col items-center  pt-0 relative">
-        {data ? (
-          <DataProvider data={data}>
-            <div className="flex items center gap-4 absolute  md:right-4 top-0 right-0 ">
-              <UpdateCollectionButton account={data} variant={"outline"} />
+      <div className="w-full rounded-md flex flex-col items-center  pt-0 relative ">
+        <DataProvider data={data}>
+          <div className="flex items center gap-4 absolute  md:right-4 top-0 right-0 ">
+            <UpdateCollectionButton account={data} variant={"outline"} />
+          </div>
+          <Button
+            onClick={() => router.back()}
+            variant="outline"
+            className="w-fit absolute md:left-4 top-0 left-0 "
+          >
+            <Icons.chevronLeft className=" h-6 w-6" />
+            Back
+          </Button>
+          <div className="flex flex-col w-fit ">
+            <ProfileDisplay />
+          </div>
+          <div className="grid md:grid-cols-2 w-full gap-4 relative ">
+            <div className="md:order-1 order-3">
+              <AnalyticsDisplay />
             </div>
-            <Button
-              onClick={() => router.back()}
-              variant="outline"
-              className="w-fit absolute md:left-4 top-0 left-0 "
-            >
-              <Icons.chevronLeft className=" h-6 w-6" />
-              Back
-            </Button>
-            <div className="flex flex-col w-fit ">
-              <ProfileDisplay />
+            <div className="w-full  flex flex-col  gap-4 order-2 ">
+              {data?.product && <ProductDisplay />}
+              {data?.storeUrl && <StoreDisplay />}
+              {data.topPosts && <PostsDisplay />}
             </div>
-            <div className="grid md:grid-cols-2 w-full gap-4">
-              <div className="md:order-1 order-3">
-                <AnalyticsDisplay />
-              </div>
-              <div className="w-full  flex flex-col  gap-4 order-2">
-                {data?.product && <ProductDisplay />}
-                {data?.storeUrl && <StoreDisplay />}
-                {data.topPosts && <PostsDisplay />}
-              </div>
-            </div>
-          </DataProvider>
-        ) : (
-          <>loading .. </>
-        )}
+          </div>
+        </DataProvider>
       </div>
     </div>
   );
@@ -228,19 +225,19 @@ const ProductDisplay = () => {
   return (
     <>
       {data.product ? (
-        <div className="flex flex-col mt-3  w-full ">
+        <div className="grid mt-3  w-full ">
           <h1 className=" text-2xl text-primary">Product</h1>
           <h1 className=" text-lg text-muted-foreground">
             This is the main product advertised by the account
           </h1>
-          <div className="flex flex-col divide-y w-full divide-border rounded-md border p-3 mt-3">
+          <div className="grid divide-y  divide-border rounded-md border p-3 mt-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-8">
                 <div className="w-[100px] aspect-square bg-muted rounded-md relative overflow-hidden">
                   <Image src={data.product.image} alt="" fill />
                 </div>
 
-                <div className="flex flex-col justify-between   ">
+                <div className="grid justify-between   ">
                   <h1 className=" text-lg whitespace-nowrap">
                     {data.product.title}
                   </h1>
@@ -256,7 +253,9 @@ const ProductDisplay = () => {
                   </Link>
                 </div>
               </div>
-              <MoreButton variant="outline" />
+              <ProductOperations product={data.product} variant="outline">
+                <Icons.ellipsis className="h-4 w-4 " />
+              </ProductOperations>
             </div>
           </div>
         </div>
@@ -270,6 +269,7 @@ const ProductDisplay = () => {
 const StoreDisplay = () => {
   const { data } = useContext(DataContext)!;
   const url = getBaseUrl(data?.storeUrl);
+  console.log(url);
 
   function getBaseUrl(url: string): string {
     // If no protocol is provided, default to https://
@@ -291,87 +291,95 @@ const StoreDisplay = () => {
   const [products, setProducts] = useState<any[] | undefined>(undefined);
   useEffect(() => {
     const getProducts = async () => {
-      const res = await fetch(url + "/products.json");
-      const data = await res.json();
-      setProducts(data.products);
+      try {
+        const res = await fetch(url + "/products.json");
+        const data = await res.json();
+        setProducts(data.products);
+      } catch (e) {
+        console.log(e);
+      }
     };
-    getProducts();
+    try {
+      getProducts();
+    } catch (e) {
+      console.log(e);
+    }
   }, [url]);
 
   console.log(products);
 
   return (
-    <div className="flex flex-col w-full ">
-      <h1 className=" text-2xl text-primary">Store</h1>
-      <h1 className=" text-lg text-muted-foreground">
-        The store linked in the accounts bio
-      </h1>
+    <>
       {products && (
-        <div className="flex-col items-center min-w-full gap-4 p-3 border rounded-md">
-          {products && (
-            <>
-              <div className="flex p-2 gap-2 items-center  w-full">
-                {/* <div className="h-12 aspect-square rounded-md bg-muted relative overflow-hidden border">
+        <div className="grid w-full ">
+          <h1 className=" text-2xl text-primary">Store</h1>
+          <h1 className=" text-lg text-muted-foreground">
+            The store linked in the accounts bio
+          </h1>
+          <div className="flex-col items-center min-w-full gap-4 p-3 border rounded-md">
+            {products && (
+              <>
+                <div className="flex p-2 gap-2 items-center  w-full">
+                  {/* <div className="h-12 aspect-square rounded-md bg-muted relative overflow-hidden border">
                   <Image src={data.avatar} alt="" fill />
                 </div> */}
-                <div className="flex flex-col">
-                  <h1 className="font-bold text-lg text-primary">
-                    {products && products[0]?.vendor}
-                  </h1>
+                  <div className="flex flex-col">
+                    <h1 className="font-bold text-lg text-primary">
+                      {products && products[0]?.vendor}
+                    </h1>
 
-                  <Link
-                    href={data?.storeUrl}
-                    target="_blank"
-                    className=" flex gap-1 items-center text-muted-foreground text-sm w-[280px] overflow-hidden whitespace-nowrap text-ellipsis hover:opacity-60"
-                  >
-                    <Icons.link className="h-4 w-4 text-muted-foreground" />
+                    <Link
+                      href={data?.storeUrl}
+                      target="_blank"
+                      className=" flex gap-1 items-center text-muted-foreground text-sm w-[280px] overflow-hidden whitespace-nowrap text-ellipsis hover:opacity-60"
+                    >
+                      <Icons.link className="h-4 w-4 text-muted-foreground" />
 
-                    {url.replace(/^https?:\/\/(?:www\.)?/, "")}
-                  </Link>
+                      {url.replace(/^https?:\/\/(?:www\.)?/, "")}
+                    </Link>
+                  </div>
                 </div>
-                <MoreButton variant="outline" />
-              </div>
-              <h1 className=" text-sm text-muted-foreground">
-                {"Products in the store (" + products.length + ")"}
-              </h1>
+                <h1 className=" text-sm text-muted-foreground">
+                  {"Products in the store (" + products.length + ")"}
+                </h1>
 
-              <div className="divide-y divide-border rounded-md border grid max-h-[300px] overflow-scroll w-full ">
-                {products.map((product: any, i) => (
-                  <>
-                    {product?.images[0] && (
-                      <Link
-                        key={i}
-                        target="_blank"
-                        href={url + "/products/" + product.handle}
-                        className="flex items-center gap-2 p-2 group  w-full "
-                      >
-                        <div className="w-10 aspect-square bg-muted rounded-md flex justify-center items-center relative overflow-hidden">
-                          {product?.images[0] && (
-                            <Image src={product?.images[0].src} alt="" fill />
-                          )}
-                          <Icons.media className="h-6 w-6 text-gray-500" />
-                        </div>
-                        <h1 className=" text-lg group-hover:text-muted-foreground w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
-                          {product.title}
-                        </h1>
-                      </Link>
-                    )}
-                  </>
-                ))}
-              </div>
-            </>
-          )}
+                <div className="divide-y divide-border rounded-md border grid max-h-[300px] overflow-scroll w-full ">
+                  {products.map((product: any, i) => (
+                    <>
+                      {product?.images[0] && (
+                        <Link
+                          key={i}
+                          target="_blank"
+                          href={url + "/products/" + product.handle}
+                          className="flex items-center gap-2 p-2 group  w-full "
+                        >
+                          <div className="w-10 aspect-square bg-muted rounded-md flex justify-center items-center relative overflow-hidden">
+                            {product?.images[0] && (
+                              <Image src={product?.images[0].src} alt="" fill />
+                            )}
+                            <Icons.media className="h-6 w-6 text-gray-500" />
+                          </div>
+                          <h1 className=" text-lg group-hover:text-muted-foreground w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
+                            {product.title}
+                          </h1>
+                        </Link>
+                      )}
+                    </>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
 const PostsDisplay = () => {
   const { data } = useContext(DataContext)!;
-
   return (
-    <div className="flex flex-col w-full ">
+    <div className="grid w-full ">
       <h1 className=" text-2xl text-primary">Top Posts</h1>
       <h1 className=" text-lg text-muted-foreground">Top 5 posts by views</h1>
       <div className="grid grid-cols-5 gap-4 mt-3">

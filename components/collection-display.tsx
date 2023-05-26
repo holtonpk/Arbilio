@@ -1,70 +1,61 @@
-"use client";
-import React from "react";
+import Link from "next/link";
 import { Icons } from "@/components/icons";
-import { array } from "zod";
 import Image from "next/image";
-import { CollectionOperations } from "./buttons/collection-operations";
-const CollectionDisplay = () => {
-  const [collections, setCollections] = React.useState([]);
+import { CollectionType } from "@/types";
+import { CollectionOperations } from "@/components/buttons/collection-operations";
+import { siteConfig } from "@/config/site";
 
-  React.useEffect(() => {
-    fetch("/api/watchlist")
-      .then((res) => res.json())
-      .then((data) => setCollections(data));
-  }, []);
+interface CollectionDisplayProps {
+  collection: CollectionType;
+}
 
+const CollectionDisplay = ({ collection }: CollectionDisplayProps) => {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-xl font-bold mb-2">Your Collections</h1>
-      <div className="flex flex-col divide-y divide-border border rounded-md w-full">
-        {collections.length >= 0 ? (
-          <>
-            <Collection data={collections} title="Top Sellers" />
-            <Collection data={collections} title="Trending" />
-            <Collection data={collections} title="Collection 1" />
-          </>
-        ) : (
-          "loading..."
-        )}
+    <div className="flex items-center justify-between p-4 relative overflow-hidden group">
+      <Link
+        href={`accounts/account-collections/collection/${collection.id}`}
+        className="w-full h-full absolute group-hover:bg-muted top-0 left-0 z-0 "
+      />
+      <div className="flex w-fit items-center gap-4 ">
+        <div className="grid gap-1 relative z-10 pointer-events-none">
+          <h1 className=" font-bold ">{collection.name}</h1>
+          <p className="text-sm text-muted-foreground ">
+            {`${collection.ids.length} accounts`}
+          </p>
+        </div>
+        <div>
+          {collection.first3Items && (
+            <div className="flex justify-center space-x-[-10px]">
+              {collection.first3Items.map((item: any, i: number) => (
+                <Link
+                  href={`${siteConfig.url}/accounts/account/${item.id}`}
+                  key={i}
+                  className="aspect-square  relative h-10 overflow-hidden rounded-full bg-muted border flex items-center justify-center hover:z-30"
+                >
+                  <Image
+                    src={item.avatar}
+                    alt="img"
+                    fill
+                    sizes="(max-width: 768px) 100vw,
+                    (max-width: 1200px) 50vw,
+                    33vw"
+                  />
+                </Link>
+              ))}
+              <span className="aspect-square text-sm relative h-10 overflow-hidden rounded-full bg-muted border flex items-center justify-center pointer-events-none">
+                {`+${collection.ids.length - 3}`}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="h-fit w-fit relative z-10">
+        <CollectionOperations collection={collection} variant="outline">
+          <Icons.ellipsis className="h-4 w-4" />
+        </CollectionOperations>
       </div>
     </div>
   );
 };
 
 export default CollectionDisplay;
-
-const Collection = ({ data, title }: any) => {
-  return (
-    <div className="flex flex-row items-center justify-between gap-4 p-4 w-full">
-      <div className="flex gap-4">
-        <div className="grid">
-          <h1>{title}</h1>
-          <p className="text-[12px] text-muted-foreground">
-            Account collection
-          </p>
-        </div>
-        <div className="flex justify-center space-x-[-10px]">
-          {data.slice(0, 3).map((item: any, i: number) => (
-            <div
-              key={i}
-              className="aspect-square relative h-10 overflow-hidden rounded-full bg-muted border flex items-center justify-center"
-            >
-              <Image
-                src={item?.avatar}
-                alt="Picture of the author"
-                fill
-                sizes="(max-width: 768px) 100vw,
-                    (max-width: 1200px) 50vw,
-                    33vw"
-              />
-            </div>
-          ))}
-          <span className="aspect-square text-sm relative h-10 overflow-hidden rounded-full bg-muted border flex items-center justify-center">
-            +12
-          </span>
-        </div>
-      </div>
-      <CollectionOperations collection={data[0]} />
-    </div>
-  );
-};

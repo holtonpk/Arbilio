@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import useCollection from "@/hooks/use-collection";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,6 +19,7 @@ import {
 
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
+import { useUserCollections } from "@/context/user-collections";
 
 // interface collectionOperationsProps {
 //   collection: Pick<collection, "id" | "title">
@@ -43,13 +44,13 @@ export function RemoveCollectionButton({
 }: RemoveCollectionButtonProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
-  const { removeIdFromCollection } = useCollection();
+  const { removeIdFromCollection } = useUserCollections();
 
   const handleRemove = async () => {
     console.log("=", collection, accountId);
     setIsDeleteLoading(true);
     const res = await removeIdFromCollection(collection.id, accountId);
-    if (res?.error) {
+    if ("error" in res) {
       toast({
         title: "Error removing account",
         description: "There was an error removing your account.",

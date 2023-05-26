@@ -216,7 +216,7 @@ const AccountManage = () => {
 
   const [updateIsLoading, setUpdateIsLoading] = React.useState<boolean>(false);
 
-  const UpdateAll = async () => {
+  const ConvertPosts = async () => {
     setUpdateIsLoading(true);
     const collectionRef = collection(db, "tiktok-accounts");
     const BATCH_SIZE = 10;
@@ -242,6 +242,38 @@ const AccountManage = () => {
               await updateDoc(docRef, {
                 ...docData,
                 topPosts: NewPosts,
+              });
+            } catch (error) {
+              console.log("error:", docData);
+            }
+          } else {
+            console.log("no Posts");
+          }
+        })
+      );
+    }
+    setUpdateIsLoading(false);
+  };
+
+  const UpdateAll = async () => {
+    setUpdateIsLoading(true);
+    const collectionRef = collection(db, "tiktok-accounts");
+    const BATCH_SIZE = 10;
+    for (let i = 0; i < accountData.length; i += BATCH_SIZE) {
+      const batch = accountData.slice(i, i + BATCH_SIZE);
+      await Promise.all(
+        batch.map(async (account, index) => {
+          console.log(i + index, "/", accountData.length);
+          const docRef = doc(collectionRef, account.id);
+          const docSnap = await getDoc(docRef);
+          const docData = docSnap.data();
+          if (!docData) return;
+          if (docData?.accountStats) {
+            try {
+              const accountStatsLen = docData.accountStats.length;
+              await updateDoc(docRef, {
+                ...docData,
+                accountStatsLength: accountStatsLen,
               });
             } catch (error) {
               console.log("error:", docData);

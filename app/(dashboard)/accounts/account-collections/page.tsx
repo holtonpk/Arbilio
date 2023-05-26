@@ -1,18 +1,12 @@
 "use client";
-import React, { ReactElement, useState } from "react";
+import React from "react";
 import { PageHeader } from "@/components/header";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
-import Link from "next/link";
-import { CollectionOperations } from "@/components/buttons/collection-operations";
 import CreateCollectionButton from "@/components/buttons/create-collection-button";
 import { useUserCollections } from "@/context/user-collections";
-import { CollectionType } from "@/types";
-import Loading from "./loading";
-
+import CollectionDisplay from "@/components/collection-display";
 const AccountCollections = () => {
   const { userCollections, loading } = useUserCollections();
-
-  console.log("userCollections", userCollections, loading);
 
   return (
     <>
@@ -51,34 +45,3 @@ const AccountCollections = () => {
 };
 
 export default AccountCollections;
-
-interface CollectionDisplayProps {
-  collection: CollectionType;
-}
-
-const CollectionDisplay = ({ collection }: CollectionDisplayProps) => {
-  console.log("collection", collection);
-  return (
-    // <div className="flex flex-col gap-4 w-full   mt-6">
-
-    <>
-      <div className="flex items-center justify-between p-4">
-        <div className="grid gap-1">
-          <Link
-            href={`accounts/account-collections/collection/${collection.id}`}
-            className="font-semibold hover:underline"
-          >
-            {collection.name}
-          </Link>
-          <div>
-            <p className="text-sm text-muted-foreground">
-              {/* {formatDate(post.createdAt?.toDateString())} */}
-              {`${collection.ids.length} accounts`}
-            </p>
-          </div>
-        </div>
-        <CollectionOperations collection={collection} />
-      </div>
-    </>
-  );
-};

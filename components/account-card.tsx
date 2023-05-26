@@ -1,55 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { AccountDataType } from "@/types";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { formatNumber } from "@/lib/utils";
-import Skeleton from "@/components/ui/custom-skeleton";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
-import { AccountDataType } from "@/types";
 import PostView from "@/components/post-view";
-const CardDisplay = ({
-  accountDataBaseData,
-}: {
-  accountDataBaseData: AccountDataType[];
-}) => {
-  return (
-    <div className="grid  lg:grid-cols-4  grid-cols-2 gap-8 h-full  ">
-      {accountDataBaseData ? (
-        <>
-          {accountDataBaseData.map((account: any, i: number) => (
-            <AccountCard key={i} item={account} />
-          ))}
-        </>
-      ) : (
-        <>
-          {Array(8)
-            .fill(0)
-            .map((_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-        </>
-      )}
-    </div>
-  );
-};
-
-export default CardDisplay;
+import Skeleton from "./ui/custom-skeleton";
 
 export const AccountCard = ({ item }: { item: AccountDataType }) => {
   return (
     <div className="h-full relative group ">
       {/* <div className="absolute h-1/2 pointer-events-none bottom-0 w-full bg-gradient-to-t dark:from-black/60 from-white/60 to-black/0  rounded-md z-40 hidden group-hover:block fade-in">
-        <div className="flex absolute gap-2 w-fit  bottom-2 pointer-events-auto right-2">
-          <UpdateCollectionButton account={item} size="sm" variant="default" />
-        </div>
-      </div> */}
-
-      <div className="w-full  bg-card rounded-md h-fit border border-border pt-4  shadow-lg  pb-2 p-2 relative flex flex-col">
-        {/* <div className="flex absolute gap-2 w-fit top-2 right-2 ">
-          <UpdateCollectionButton account={item} variant="outline" />
+          <div className="flex absolute gap-2 w-fit  bottom-2 pointer-events-auto right-2">
+            <UpdateCollectionButton account={item} size="sm" variant="default" />
+          </div>
         </div> */}
+
+      <div className="w-full  bg-card rounded-md h-fit border  pt-4  shadow-lg  pb-2 p-2 relative flex flex-col">
+        {/* <div className="flex absolute gap-2 w-fit top-2 right-2 ">
+            <UpdateCollectionButton account={item} variant="outline" />
+          </div> */}
 
         <Link
           href={`/accounts/account/${item.id}`}
@@ -61,8 +30,8 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
               alt="Picture of the author"
               fill
               sizes="(max-width: 768px) 100vw,
-                    (max-width: 1200px) 50vw,
-                    33vw"
+                      (max-width: 1200px) 50vw,
+                      33vw"
             />
           </div>
 
@@ -77,8 +46,8 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
             <div className="flex gap-3 items-center  w-fit ">
               <div className="flex flex-row gap-2 items-center">
                 {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground ">
-                Likes
-              </h2> */}
+                  Likes
+                </h2> */}
                 <Icons.likes className="w-4 h-4 text-primary fill-primary " />
                 <h3 className="text-[12px]  font-bold text-primary">
                   {formatNumber(item.accountStats[0].heartCount)}
@@ -87,8 +56,8 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
 
               <div className="flex flex-row gap-2 items-center">
                 {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground">
-                Followers
-              </h2> */}
+                  Followers
+                </h2> */}
                 <Icons.followers className="w-4 h-4 text-primary fill-primary" />
                 <h3 className="text-[12px]  font-bold text-primary">
                   {formatNumber(item.accountStats[0].followerCount)}
@@ -97,8 +66,8 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
 
               <div className="flex flex-row gap-2 items-center">
                 {/* <h2 className="text-[12px] sm:text-sm text-muted-foreground">
-                Posts
-              </h2> */}
+                  Posts
+                </h2> */}
                 <Icons.posts className="w-4 h-4 text-primary fill-primary" />
                 <h3 className="text-[12px]  font-bold text-primary">
                   {formatNumber(item.accountStats[0].videoCount)}
@@ -121,8 +90,8 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                 alt="img"
                 fill
                 sizes="(max-width: 768px) 100vw,
-                    (max-width: 1200px) 50vw,
-                    33vw"
+                      (max-width: 1200px) 50vw,
+                      33vw"
               />
             </div>
             <div className="grid">
@@ -130,22 +99,28 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                 {item.product?.title}
               </p>
               <p className="whitespace-nowrap text-muted-foreground text-[12px] overflow-hidden text-ellipsis relative z-20 pointer-events-none">
-                {item.product?.title}
+                {item.product?.supplierInfo?.supplierTitle}
               </p>
             </div>
             {/* <Button
-              variant={"outline"}
-              className="w-fit relative z-20 bg-background"
-              size="xsm"
-            >
-              <Icons.ellipsis className="text-primary h-3 w-3" />
-            </Button> */}
+                variant={"outline"}
+                className="w-fit relative z-20 bg-background"
+                size="xsm"
+              >
+                <Icons.ellipsis className="text-primary h-3 w-3" />
+              </Button> */}
           </div>
         </div>
         <div className="flex flex-col mt-2 w-full">
           <h1 className="text-sm mb-2">Top Posts</h1>
           <div className="grid grid-cols-3 gap-4 w-full ">
-            {Array(3)
+            {Array(
+              item.topPosts
+                ? item.topPosts.length > 3
+                  ? 3
+                  : item.topPosts.length
+                : 3
+            )
               .fill(0)
               .map((_, i: number) => {
                 return (
@@ -160,7 +135,6 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                         playCount={item.topPosts[i]?.postData.playCount}
                       />
                     )}
-                    <Icons.media className="text-primary h-8 w-8 md:h-8 md:w-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" />
                   </div>
                 );
               })}
@@ -171,27 +145,31 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
   );
 };
 
-export const CardSkeleton = () => {
+export const AccountCardSkeleton = () => {
   return (
-    <div className="w-full bg-background border border-border rounded-md h-fit  pb-2 items-center relative flex flex-col">
-      <div className="flex items-center gap-2 w-full pb-0 p-4">
-        <Skeleton height={40} width={40} />
-        <div className="flex flex-col gap-2 ">
-          <Skeleton height={15} width={100} />
-          <Skeleton height={10} width={100} />
+    <div className="w-full rounded-md h-fit border  pt-4  pb-2 p-2 relative flex flex-col gap-2">
+      <div className="grid grid-cols-[70px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-full pb-0 ">
+        <Skeleton height={70} width={70} />
+        <div className="flex flex-col max-w-full gap-1 overflow-hidden ">
+          <Skeleton height={35} width={"100%"} />
+          <Skeleton height={20} width={"100%"} />
         </div>
       </div>
-      <div className=" p-4">
-        <Skeleton height={50} width={200} />
+      <div className=" gap-3 grid grid-cols-3   w-full">
+        <Skeleton height={50} width={"100%"} />
+        <Skeleton height={50} width={"100%"} />
+        <Skeleton height={50} width={"100%"} />
       </div>
 
-      <Skeleton height={60} width={"90%"} />
+      <Skeleton height={60} width={"100%"} />
 
-      <div className="flex flex-col mt-auto w-[90%] pt-8">
+      <div className="flex flex-col w-[100%] gap-2 ">
+        <Skeleton height={20} width={100} />
+
         <div className="grid grid-cols-3 gap-2 w-full ">
-          <Skeleton height={100} width={"100%"} />
-          <Skeleton height={100} width={"100%"} />
-          <Skeleton height={100} width={"100%"} />
+          <Skeleton width={"100%"} className="w-full aspect-[9/16]" />
+          <Skeleton width={"100%"} className="w-full aspect-[9/16]" />
+          <Skeleton width={"100%"} className="w-full aspect-[9/16]" />
         </div>
       </div>
     </div>

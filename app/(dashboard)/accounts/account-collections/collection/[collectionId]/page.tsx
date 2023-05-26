@@ -1,11 +1,13 @@
 import CollectionData from "./collection-data";
-import Loading from "./loading";
 import { siteConfig } from "@/config/site";
-
+import Loading from "./loading";
 async function getData(collectionId: string) {
-  const res = await fetch(`${siteConfig.url}/api/collection/${collectionId}`, {
-    cache: "no-cache",
-  });
+  const res = await fetch(
+    `${siteConfig.url}/api/accounts/collection/${collectionId}`,
+    {
+      cache: "no-cache",
+    }
+  );
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
@@ -24,7 +26,7 @@ export default async function CollectionPage({
   console.log("data", data);
 
   return (
-    <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
+    <div className="w-full container   flex flex-col min-h-screen items-center  ">
       <div className="flex flex-col gap-4 w-full ">
         <div className="w-full z-20   rounded-md  flex flex-col    ">
           <CollectionData data={data} />

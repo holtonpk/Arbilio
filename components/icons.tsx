@@ -66,6 +66,7 @@ import {
   Copy,
   Triangle,
   Link2,
+  RefreshCcwIcon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -98,6 +99,7 @@ export const Icons = {
   dashboard: LayoutDashboard,
   database: Database,
   download: DownloadCloud,
+  update: RefreshCcwIcon,
   followers: User,
   error: AlertTriangleIcon,
   trash: Trash,

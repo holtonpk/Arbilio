@@ -1,11 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import Table from "./account-database-table";
+import Table from "@/components/account-table";
 import FilterBuilder from "@/components/filter-builder";
 import ComboBox from "@/components/combo-box";
 import DisplaySelector from "@/components/display-selector";
-import { PageHeader } from "@/components/header";
-import CardDisplay from "@/app/(dashboard)/accounts/account-database/account-database-cards";
 import { DataSearch } from "@/components/data-search";
 import AppliedFilters from "@/components/applied-filters";
 import { Icons } from "@/components/icons";
@@ -14,6 +12,7 @@ import EmptySearch from "@/components/empty-search";
 import useData from "@/hooks/use-account-data";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { AccountCard } from "@/components/account-card";
 
 const getData = async (startAfterId: string) => {
   const url = `${siteConfig.url}/api/account-database/startAfter/${startAfterId}`;
@@ -22,12 +21,9 @@ const getData = async (startAfterId: string) => {
   });
 
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
-
   return res.json();
-  // return DummyData
 };
 
 const AccountDatabase = ({ originalData }: any) => {
@@ -40,10 +36,10 @@ const AccountDatabase = ({ originalData }: any) => {
   const loadMore = async () => {
     setLoading(true);
     const newData = await getData(lastDocId);
+    setLoading(false);
     console.log("new", newData);
     setData((prevData: any) => [...prevData, ...newData]);
     setLastDocId(newData[newData.length - 1]?.id); // assuming each data object has an 'id' field
-    setLoading(false);
   };
 
   const {
@@ -94,10 +90,13 @@ const AccountDatabase = ({ originalData }: any) => {
           <EmptySearch />
         ) : (
           <>
-            {displayType === "grid" && (
-              <CardDisplay accountDataBaseData={sortedData} />
-            )}
-            {displayType === "columns" && (
+            {displayType === "grid" ? (
+              <div className="grid  lg:grid-cols-4  grid-cols-2 gap-8 h-full  ">
+                {sortedData.map((account: any, i: number) => (
+                  <AccountCard key={i} item={account} />
+                ))}
+              </div>
+            ) : (
               <Table
                 data={sortedData}
                 setDescending={setDescending}

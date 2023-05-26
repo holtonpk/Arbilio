@@ -1,9 +1,10 @@
 export interface FilterList {
   rowId: number;
-  field: string;
+  field: typeof AccountStatsType | string;
   operator: string;
   value: string;
   combine: "and" | "or";
+  label: string;
 }
 
 export type SiteConfig = {
@@ -29,6 +30,7 @@ export type MarketingConfig = {
   mainNav: MainNavItem[];
 };
 
+import Account from "@/app/(dashboard)/accounts/account/[id]/page";
 import { Icons } from "@/components/icons";
 
 export interface SubRoute {
@@ -66,6 +68,7 @@ export type ComboBoxType = {
     title: string;
     icon?: keyof typeof Icons | string;
     value: string | number;
+    disabled?: boolean;
   }[];
 };
 
@@ -73,10 +76,12 @@ type FilterOptions = {
   fields: {
     value: string;
     label: string;
+    disabled?: boolean;
   }[];
   operators: {
     value: string;
     label: string;
+    disabled?: boolean;
   }[];
 };
 
@@ -95,6 +100,15 @@ export type CollectionType = {
   id: string;
   name: string;
   ids: string[];
+  first3Items?: {
+    id: string;
+    avatar: string;
+  }[];
+};
+
+export type AccountCollectionData = {
+  collection: CollectionType;
+  accounts: AccountDataType[];
 };
 
 export interface AccountStatsType {

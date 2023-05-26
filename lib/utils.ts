@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 import { FilterList } from "@/types";
+
 export function formatDate(timestamp: number): string {
   const date = new Date(timestamp);
 
@@ -147,30 +148,31 @@ export function sortData(rawData: any[], filterList: FilterList[]) {
     if (combine == "and") {
       data = sortedData;
     }
+    console.log(field, data);
     const intermediateData: any = [];
     for (const item of data) {
       if (operator === ">") {
-        if (item.stats[field] > value) {
+        if (item.accountStats[0][field] > value) {
           intermediateData.push(item);
         }
       }
       if (operator === ">=") {
-        if (item.stats[field] >= value) {
+        if (item.accountStats[0][field] >= value) {
           intermediateData.push(item);
         }
       }
       if (operator === "<") {
-        if (item.stats[field] < value) {
+        if (item.accountStats[0][field] < value) {
           intermediateData.push(item);
         }
       }
       if (operator === "<=") {
-        if (item.stats[field] <= value) {
+        if (item.accountStats[0][field] <= value) {
           intermediateData.push(item);
         }
       }
       if (operator === "=") {
-        if (item.stats[field] === value) {
+        if (item.accountStats[0][field] === value) {
           intermediateData.push(item);
         }
       }

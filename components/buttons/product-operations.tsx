@@ -38,70 +38,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
-import { CollectionType } from "@/types";
-import { useUserCollections } from "@/context/user-collections";
+import { ProductType } from "@/types";
 
-interface collectionOperationsProps {
-  collection: CollectionType;
+interface productOperationsProps {
+  product: ProductType;
   variant?: "default" | "outline" | "secondary" | "destructive" | "ghost";
   children?: React.ReactNode;
 }
 
-export function CollectionOperations({
-  collection,
+export function ProductOperations({
+  product,
   variant,
   children,
-}: collectionOperationsProps) {
+}: productOperationsProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [showUpdateName, setShowUpdateName] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
   const [isUpdateLoading, setIsUpdateLoading] = React.useState<boolean>(false);
   const nameRef = React.useRef<HTMLInputElement>(null);
-  const { deleteCollection, updateAccountCollectionName } =
-    useUserCollections();
-
-  const handleDelete = async () => {
-    setIsDeleteLoading(true);
-    console.log("id==>>", collection);
-    const res = await deleteCollection(collection.id);
-    setIsDeleteLoading(false);
-
-    if ("error" in res) {
-      toast({
-        title: "unable to delete collection",
-        description: "There was an error deleting your collection.",
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Successfully deleted collection",
-        description: "This collection has been deleted.",
-        variant: "default",
-      });
-    }
-  };
-
-  const handleUpdateName = async () => {
-    setIsUpdateLoading(true);
-    const res = await updateAccountCollectionName(
-      collection.id,
-      nameRef.current?.value!
-    );
-    setIsUpdateLoading(false);
-    if ("error" in res) {
-      toast({
-        title: "unable to update collection name",
-        description: "There was an error updating your collection name.",
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Successfully updated collection name",
-        description: "This collection name has been updated.",
-        variant: "default",
-      });
-    }
-  };
 
   return (
     <>
@@ -113,20 +67,20 @@ export function CollectionOperations({
         <DropdownMenuContent align="end">
           <DropdownMenuItem
             className="flex cursor-pointer items-center "
-            onSelect={() => setShowUpdateName(true)}
+            // onSelect={() => setShowUpdateName(true)}
           >
-            Rename
+            option 1
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-            onSelect={() => setShowDeleteAlert(true)}
+            // onSelect={() => setShowDeleteAlert(true)}
           >
-            Delete
+            option 2
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
+      {/* <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
@@ -151,9 +105,9 @@ export function CollectionOperations({
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
 
-      <Dialog open={showUpdateName} onOpenChange={setShowUpdateName}>
+      {/* <Dialog open={showUpdateName} onOpenChange={setShowUpdateName}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Update collection name</DialogTitle>
@@ -173,7 +127,7 @@ export function CollectionOperations({
             </DialogAction>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 }

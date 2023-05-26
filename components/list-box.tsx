@@ -19,12 +19,12 @@ export const CustomListBox = ({ value, values, onChange }: any) => {
                 key={Idx}
                 disabled={item?.disabled || false}
                 className={({ active }) =>
-                  `relative cursor-pointer select-none rounded-md py-2 pl-6 pr-3 ${
+                  `relative  select-none rounded-md py-2 pl-6 pr-3 ${
                     active && !item?.disabled
                       ? "bg-muted text-primary"
                       : item?.disabled
-                      ? "text-indigo-600"
-                      : "text-primary"
+                      ? "text-muted-foreground"
+                      : "text-primary cursor-pointer"
                   }`
                 }
                 value={item}

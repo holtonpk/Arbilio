@@ -20,7 +20,6 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
-import useCollection from "@/hooks/use-collection";
 
 interface UpdateCollectionButtonProps {
   accountArray: string[];
@@ -79,7 +78,7 @@ const UpdateDialog = ({
     addIdToMultipleCollections,
     findCollectionsContainingId,
     removeIdFromMultipleCollections,
-  } = useCollection();
+  } = useUserCollections();
 
   const { userCollections } = useUserCollections();
 
@@ -91,7 +90,7 @@ const UpdateDialog = ({
         selectedCollections,
         accountId
       );
-      if (res?.error) {
+      if ("error" in res) {
         toast({
           title: "Error updating to collection",
           description: "There was an error updating to your collection.",

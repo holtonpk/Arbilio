@@ -9,6 +9,7 @@ import {
   getDoc,
   where,
   startAt,
+  orderBy,
 } from "firebase/firestore";
 
 export default async function handler(
@@ -29,6 +30,7 @@ export default async function handler(
     collectionRef,
     where("topPosts", "!=", []),
     limit(12),
+    // orderBy("accountStatsLength", "desc"),
     startAt(startAfterSnapshot)
   );
 

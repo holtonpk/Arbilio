@@ -19,7 +19,6 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import useCollection from "@/hooks/use-collection";
 
 interface UpdateCollectionButtonProps {
   variant?: "default" | "outline" | "secondary";
@@ -81,18 +80,15 @@ const UpdateDialog = ({
   >([]);
 
   const {
+    userCollections,
     addIdToMultipleCollections,
     findCollectionsContainingId,
     removeIdFromMultipleCollections,
-  } = useCollection();
-
-  const { userCollections } = useUserCollections();
+  } = useUserCollections();
 
   React.useEffect(() => {
     async function fetchActiveCollections() {
-      const activeCollections = await findCollectionsContainingId(
-        account.recordId
-      );
+      const activeCollections = await findCollectionsContainingId(account.id);
       setSelectedCollections(activeCollections.data);
       setCurrentCollections(activeCollections.data);
     }
@@ -109,19 +105,19 @@ const UpdateDialog = ({
       return !selectedCollections.includes(collection);
     });
 
-    const res = await addIdToMultipleCollections(
-      newCollections,
-      account.recordId
-    );
+    console.log("newCollections", newCollections);
+    console.log("oldCollections", newCollections);
+
+    const res = await addIdToMultipleCollections(newCollections, account.id);
 
     const res2 = await removeIdFromMultipleCollections(
       oldCollections,
-      account.recordId
+      account.id
     );
 
     setIsLoading(false);
 
-    if (res?.error || res2?.error) {
+    if ("error" in res || "error" in res2) {
       toast({
         title: "Error updating to collection",
         description: "There was an error updating to your collection.",
@@ -142,7 +138,9 @@ const UpdateDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Select a Collection</DialogTitle>
-          <DialogDescription>scroll to view all collections</DialogDescription>
+          <DialogDescription>
+            select a collection to add or deselect to remove
+          </DialogDescription>
         </DialogHeader>
         <div className="divide-y divide-border rounded-md border max-h-[200px] overflow-scroll">
           {userCollections &&
@@ -162,9 +160,9 @@ const UpdateDialog = ({
             {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <Icons.add className="mr-2 h-4 w-4" />
+              <Icons.update className="mr-2 h-4 w-4" />
             )}
-            <span>add to collection </span>
+            <span>update collections</span>
           </DialogAction>
         </DialogFooter>
       </DialogContent>
@@ -192,10 +190,10 @@ const CollectionDisplay: React.FC<CollectionDisplayProps> = ({
       setSelectedCollections(
         selectedCollections.filter((id) => id !== collection.id)
       );
-      setSelected(false);
+      // setSelected(false);
     } else {
       setSelectedCollections([...selectedCollections, collection.id]);
-      setSelected(true);
+      // setSelected(true);
     }
   };
 

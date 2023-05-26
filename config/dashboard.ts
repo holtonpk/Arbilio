@@ -115,6 +115,14 @@ export const accountDatabaseConfig: AccountDatabaseConfig = {
         title: "Posts",
         value: "posts",
       },
+      {
+        title: "Days Tracked",
+        value: "",
+      },
+      {
+        title: "Most Views ",
+        value: "",
+      },
     ],
   },
 
@@ -146,14 +154,14 @@ export const accountDatabaseConfig: AccountDatabaseConfig = {
 
   filterOptions: {
     fields: [
-      { value: "", label: "Field" },
-      { value: "likes", label: "Likes" },
-      { value: "followers", label: "Followers" },
-      { value: "following", label: "Following" },
-      { value: "posts", label: "Posts" },
+      { value: "", label: "Field", disabled: true },
+      { value: "heartCount", label: "Likes" },
+      { value: "followerCount", label: "Followers" },
+      { value: "followingCount", label: "Following" },
+      { value: "videoCount", label: "Posts" },
     ],
     operators: [
-      { value: "", label: "Operator" },
+      { value: "", label: "Operator", disabled: true },
       { value: ">", label: "Greater than" },
       { value: ">=", label: "Greater than or equal" },
       { value: "<", label: "Less than" },

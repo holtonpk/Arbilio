@@ -1,32 +1,29 @@
 import React, { useState, ReactNode, useRef, useContext } from "react";
 import Link from "next/link";
 import ScrollBar from "@/components/scroll-bar";
+import Skeleton from "@/components/ui/custom-skeleton";
+import { Button } from "@/components/ui/button";
 import {
   ProductDisplay,
   StatDisplay,
   AccountDisplay,
 } from "@/components/table-components";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { accountCollectionsConfig } from "@/config/dashboard";
+
+import { accountDatabaseConfig } from "@/config/dashboard";
+import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { Icons } from "@/components/icons";
-import { RemoveCollectionButton } from "@/components/buttons/remove-collection-button";
-import { CollectionType } from "@/types";
-import { RemoveMultiAccountCollectionButton } from "@/components/buttons/remove-multi-collection-button";
+import { UpdateMultiCollectionButton } from "@/components/buttons/update-multi-collection-button";
 import CreateCollectionButton from "@/components/buttons/create-collection-button";
+import { LinkButton } from "@/components/ui/link";
 import { AccountDataType, AccountStatsType } from "@/types";
 
-const PrimaryHeaders = accountCollectionsConfig.tableHeaders.primaryHeaders;
-const SecondaryHeaders = accountCollectionsConfig.tableHeaders.secondaryHeaders;
+const PrimaryHeaders = accountDatabaseConfig.tableHeaders.primaryHeaders;
+const SecondaryHeaders = accountDatabaseConfig.tableHeaders.secondaryHeaders;
 
 interface TableContextData {
   selectedRows: string[];
   setSelectedRows: React.Dispatch<React.SetStateAction<string[]>>;
   tableData: any;
-  hideItems: (recordIdArray: string[]) => void;
-  collection: CollectionType;
-  setDescending: (param: boolean) => void;
-  setSortParam: (param: keyof AccountStatsType) => void;
 }
 
 // Create the context
@@ -37,21 +34,10 @@ const TableContext = React.createContext<TableContextData | undefined>(
 // Create a provider component
 interface TableProviderProps {
   children: ReactNode;
-  data: any;
-  hideItems: (recordIdArray: string[]) => void;
-  collection: CollectionType;
-  setDescending: (param: boolean) => void;
-  setSortParam: (param: keyof AccountStatsType) => void;
+  data: AccountDataType[];
 }
 
-const TableProvider: React.FC<TableProviderProps> = ({
-  children,
-  data,
-  hideItems,
-  collection,
-  setDescending,
-  setSortParam,
-}) => {
+const TableProvider: React.FC<TableProviderProps> = ({ children, data }) => {
   const [selectedRows, setSelectedRows] = React.useState<string[]>([]);
   const tableData = data;
   return (
@@ -60,10 +46,6 @@ const TableProvider: React.FC<TableProviderProps> = ({
         selectedRows,
         setSelectedRows,
         tableData,
-        hideItems,
-        collection,
-        setDescending,
-        setSortParam,
       }}
     >
       {children}
@@ -72,21 +54,12 @@ const TableProvider: React.FC<TableProviderProps> = ({
 };
 
 interface TableProps {
-  data: any;
-  collection: CollectionType;
+  data: AccountDataType[];
+  setDescending: (value: boolean) => void;
   setSortParam: (param: keyof AccountStatsType) => void;
-
-  setDescending: (param: boolean) => void;
-  hideItems: (recordIdArray: string[]) => void;
 }
 
-const Table = ({
-  data,
-  collection,
-  setSortParam,
-  setDescending,
-  hideItems,
-}: TableProps) => {
+const Table = ({ data, setDescending, setSortParam }: TableProps) => {
   const tableRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const heightRef = useRef<HTMLDivElement | null>(null);
@@ -95,15 +68,9 @@ const Table = ({
   const [showScrollBar, setShowScrollbar] = useState(false);
 
   return (
-    <TableProvider
-      data={data}
-      hideItems={hideItems}
-      collection={collection}
-      setDescending={setDescending}
-      setSortParam={setSortParam}
-    >
+    <TableProvider data={data}>
       <SelectedPreview />
-      <div className="w-full relative max-h-full overflow-hidden  border rounded-md ">
+      <div className="w-full relative  h-fit border rounded-md  ">
         <ScrollBar
           tableRef={tableRef}
           scrollContainerRef={scrollContainerRef}
@@ -116,11 +83,11 @@ const Table = ({
 
         <div
           ref={tableRef}
-          className="flex w-full overflow-x-scroll rounded-md scrollbar-hide relative "
+          className="flex w-full overflow-x-scroll scrollbar-hide relative "
         >
           <div
             ref={heightRef}
-            className="min-w-[600px] w-[50%] flex flex-col sticky left-0 z-20 divide-y divide-border  "
+            className="min-w-[600px] w-[50%] flex flex-col sticky left-0 z-20 "
           >
             <div ref={headerHeightRef} className="h-fit ">
               <PrimaryHeader />
@@ -135,26 +102,31 @@ const Table = ({
             {data.map((item: any, i: number) => (
               <div
                 key={i}
-                className="bg-background w-full p-4 grid grid-cols-[40px_1fr_1fr_1fr]  sticky items-center     h-20"
+                className="bg-background w-full p-4 grid grid-cols-[40px_1fr_1fr_60px] sticky items-center  border border-b-0 border-x-0   h-20"
               >
                 <PrimaryRow item={item} />
               </div>
             ))}
           </div>
-          <div className="flex flex-col w-full divide-y divide-border  ">
-            <div className=" flex-grow overflow-hidden p-4  flex  relative min-h-[60px] ">
+          <div className="flex flex-col w-full ">
+            <div className=" flex-grow overflow-hidden p-4  flex  relative max-h-[60px] ">
               {SecondaryHeaders.map((item: any, i: any) => (
-                <SecondaryHeader key={i} item={item} />
+                <SecondaryHeader
+                  key={i}
+                  item={item}
+                  setDescending={setDescending}
+                  setSortParam={setSortParam}
+                />
               ))}
             </div>
             {showScrollBar && <span className="min-h-[16px]  w-full" />}
 
-            {data.map((item: any, i: number) => (
+            {data.map((data: any, i: number) => (
               <div
                 key={i}
-                className="bg-background w-full p-4 grid grid-cols-3 sticky items-center    h-20"
+                className="bg-background w-full overflow-hidden p-4  flex relative border border-x-0  border-b-0  h-20 pr-10"
               >
-                <SecondaryRow item={item} />
+                <SecondaryRow data={data} />
               </div>
             ))}
           </div>
@@ -162,14 +134,14 @@ const Table = ({
 
         <div
           ref={buttonContainerRef}
-          className="flex flex-col absolute right-0 z-20 divide-y divide-border   top-0  h-fit"
+          className="flex flex-col absolute right-0 z-20  top-0  h-fit border-t "
         >
-          {data.map((item: any, i: number) => (
+          {data.map((data: any, indx: number) => (
             <div
-              key={i}
-              className=" w-10 z-20  grid grid-rows-2 items-center border-l    bg-background h-20 "
+              key={indx}
+              className=" w-10 z-20  grid grid-rows-2 items-center border-b border-border border-l  bg-background h-20 "
             >
-              <RowButtons item={item} />
+              <RowButtons data={data} />
             </div>
           ))}
         </div>
@@ -182,7 +154,7 @@ export default Table;
 
 const PrimaryHeader = () => {
   return (
-    <div className="w-full p-4 grid grid-cols-[40px_1fr_1fr_1fr] sticky  min-h-[60px] items-center  ">
+    <div className="w-full p-4 grid grid-cols-[40px_1fr_1fr_60px] sticky  min-h-[60px] items-center   ">
       <SelectorAll />
       {PrimaryHeaders.map((item: any, i: any) => (
         <div key={i} className="flex items-center text-muted-foreground">
@@ -193,18 +165,21 @@ const PrimaryHeader = () => {
   );
 };
 
-const SecondaryHeader = ({ item }: any) => {
-  const { setDescending, setSortParam } = useContext(TableContext)!;
+const SecondaryHeader = ({ item, setDescending, setSortParam }: any) => {
+  // const { setDescending, setSortParam } = useAccountDataBase();
   const [descend, setDescend] = useState(false);
+
   const handleClick = () => {
     setDescend(!descend);
     setDescending(!descend);
     setSortParam(item.value);
   };
   return (
-    <button
+    <Button
       onClick={handleClick}
-      className="min-w-[150px] pr-10 flex items-center text-muted-foreground hover:text-primary"
+      variant="ghost"
+      size="sm"
+      className="min-w-[150px]  max-h-full flex items-center justify-between text-muted-foreground hover:text-primary"
     >
       {item.title}
       <Icons.chevronDown
@@ -212,96 +187,99 @@ const SecondaryHeader = ({ item }: any) => {
           descend ? "rotate-0" : "rotate-180"
         } h-6 w-6 ml-2 transition-all`}
       />
-    </button>
+    </Button>
   );
 };
 
-const PrimaryRow = ({ item }: any) => {
+const PrimaryRow = ({ item }: { item: AccountDataType }) => {
   return (
     <>
-      {/* <div className="h-6 w-6 border rounded-md "></div> */}
       <Selector item={item} />
-      <AccountDisplay data={item} />
-      <ProductDisplay data={item} />
+      <AccountDisplay item={item} />
+      <ProductDisplay item={item} />
       <Link
         target="_blank"
-        href={item.bioLink || "/"}
+        href={item.storeUrl || "/"}
         className="text-sm underline whitespace-nowrap text-ellipsis overflow-hidden"
       >
-        {item.bioLink}
+        <Icons.link className="h-6 w-6 ml-4" />
       </Link>
     </>
   );
 };
 
-const SecondaryRow = ({ item }: any) => {
+const SecondaryRow = ({ data }: { data: AccountDataType }) => {
   return (
     <>
-      <span className="min-w-[150px] pr-10 flex items-center   ">
-        <StatDisplay displayValue={item.stats.likes} />
+      <span className="min-w-[150px] pr-10 flex items-center justify-center">
+        <StatDisplay displayValue={data.accountStats[0].followerCount} />
       </span>
-      <span className="min-w-[150px]  pr-10 flex items-center">
-        <StatDisplay displayValue={item.stats.followers} />
+      <span className="min-w-[150px]  pr-10 flex items-center  justify-center">
+        <StatDisplay displayValue={data.accountStats[0].heartCount} />
       </span>
-      <span className="min-w-[150px] pr-10 flex items-center">
-        <StatDisplay displayValue={item.stats.posts} />
+      <span className="min-w-[150px] pr-10 flex items-center  justify-center">
+        <StatDisplay displayValue={data.accountStats[0].videoCount} />
+      </span>
+      <span className="min-w-[150px] pr-10 flex items-center  justify-center">
+        <StatDisplay displayValue={data.accountStats.length} />
+      </span>
+      <span className="min-w-[150px] pr-10 flex items-center  justify-center">
+        <StatDisplay
+          displayValue={data.topPosts ? data.topPosts[0].postData.playCount : 0}
+        />
       </span>
     </>
   );
 };
 
-const RowButtons = ({ item }: any) => {
-  const { collection, hideItems } = useContext(TableContext)!;
+const RowButtons = ({ data }: { data: AccountDataType }) => {
   return (
     <>
-      <RemoveCollectionButton
+      <UpdateCollectionButton
+        account={data}
+        variant="secondary"
+        size={"xsm"}
+        className="w-full justify-center  flex  h-full items-center rounded-none bg-transparent"
+      />
+
+      <LinkButton
         variant="secondary"
         size="xsm"
-        accountId={item.recordId}
-        collection={collection}
-        hideItems={hideItems}
-        className="bg-transparent w-full justify-center  flex  h-full items-center rounded-none"
-      />
-      <Link
-        href={`accounts/account/${item.recordId}`}
-        className={cn(
-          buttonVariants({
-            variant: "secondary",
-            size: "xsm",
-          }),
-          "w-full justify-center  flex  h-full items-center rounded-none bg-transparent"
-        )}
+        className="w-full justify-center  flex  h-full items-center rounded-none bg-transparent"
+        href={`/accounts/account/${data.id}`}
       >
-        <Icons.analytics className="h-5 w-5 " />
-      </Link>
+        <Icons.analytics className="h-5 w-5" />
+      </LinkButton>
     </>
   );
 };
 
 const SelectedPreview = () => {
-  const { selectedRows, setSelectedRows, tableData, hideItems, collection } =
-    useContext(TableContext)!;
+  const { selectedRows, setSelectedRows } = useContext(TableContext)!;
 
   return (
     <>
       {selectedRows.length > 0 && (
-        <div className="fixed bottom-10 z-40 fade-in left-1/2 -translate-x-1/2 h-10 w-fit border rounded-md bg-background mb-2 flex justify-between p-2 gap-4 items-center mx-auto">
+        <div className="fixed bottom-10 z-40 fade-in left-1/2 -translate-x-1/2 h-fit p-2 w-fit border rounded-md bg-background mb-2 flex justify-between gap-4 items-center mx-auto">
           <h1 className="font-bold">{`${selectedRows.length} ${
             selectedRows.length > 1 ? "accounts" : "account"
           } selected`}</h1>
 
           <Button
             variant="outline"
-            size="xsm"
+            size="sm"
             onClick={() => setSelectedRows([])}
           >
             reset
           </Button>
-          <RemoveMultiAccountCollectionButton
-            accountList={selectedRows}
+
+          <UpdateMultiCollectionButton
+            accountArray={selectedRows}
             setSelectedRows={setSelectedRows}
-            collection={collection}
-            hideItems={hideItems}
+          />
+          <CreateCollectionButton
+            variant="default"
+            accountArray={selectedRows}
           />
         </div>
       )}

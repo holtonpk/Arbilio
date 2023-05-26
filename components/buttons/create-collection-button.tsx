@@ -13,10 +13,11 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "../icons";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import useCollection from "@/hooks/use-collection";
+
+import { useUserCollections } from "@/context/user-collections";
 
 interface CreateCollectionButtonProps {
-  variant?: "default" | "outline" | "secondary";
+  variant?: "default" | "outline" | "secondary" | "destructive" | "ghost";
   accountArray?: string[];
 }
 
@@ -30,27 +31,27 @@ const CreateCollectionButton = ({
   const nameRef = React.useRef<HTMLInputElement>(null);
 
   // const { createCollection } = useUserCollections();
-  const { createCollection, addIdToMultipleCollections } = useCollection();
+  const { createCollection, addIdToMultipleCollections } = useUserCollections();
 
   async function handleCreateCollection() {
     setIsLoading(true);
     const newCollection = await createCollection(nameRef.current?.value!, []);
     console.log("newCollection", newCollection);
 
-    if (newCollection?.error) {
+    if ("error" in newCollection) {
       toast({
         title: "Error creating collection",
         description: "There was an error creating your collection.",
         variant: "destructive",
       });
-    } else if (newCollection?.success) {
+    } else if ("success" in newCollection) {
       if (accountArray) {
         for (const accountId of accountArray) {
           const res = await addIdToMultipleCollections(
             [newCollection.docId],
             accountId
           );
-          if (res?.error) {
+          if ("error" in res) {
             toast({
               title: "Error updating to collection",
               description: "There was an error updating to your collection.",
