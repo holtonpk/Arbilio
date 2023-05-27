@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Background from "@/components/background";
 import LoginForm from "./login-form";
 import { Toaster } from "@/components/ui/toaster";
 import { Icons } from "@/components/icons";
@@ -22,7 +23,8 @@ const Login = () => {
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] ">
         <div className="flex flex-col space-y-2 text-center">
           {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
-          <h1 className="text-2xl font-semibold tracking-tight">
+
+          <h1 className="text-4xl font-semibold bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent">
             Welcome Back
           </h1>
           <p className="text-sm text-muted-foreground">
@@ -43,6 +45,7 @@ const Login = () => {
           </p>
         </div>
       </div>
+      <Background />
     </div>
   );
 };

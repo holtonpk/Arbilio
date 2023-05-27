@@ -7,8 +7,8 @@ const Analyze = () => {
   return (
     <section id="features" className="flex flex-col items-center">
       <HeroHeader
-        gradient="bg-gradient-to-r from-green-400 to-blue-500"
-        lineColor="md:to-accent md:from-green-400 from-green-400 "
+        gradient="bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400"
+        lineColor="md:to-accent md:from-blue-600 from-sky-500 "
         lineHeight="h-[250px]"
         number="2"
         title="Analyze"
@@ -32,7 +32,7 @@ const Analyze = () => {
           <span className="w-[1px] h-[150px] bg-accent border-accent " />
         </div>
         <div className="absolute md:hidden flex items-center flex-col h-full  md:gap-[1px]  top-0 left-1/2 -translate-x-1/2">
-          <span className="w-[1px] h-[120px] bg-gradient-to-t  from-accent "></span>
+          <span className="w-[1px] h-[200px] bg-gradient-to-t  from-accent "></span>
           <span className="h-4 w-4 border rounded-full border-accent " />
           <span className="w-[1px] h-[276px] border border-dashed border-accent " />
           <span className="h-4 w-4 border rounded-full border-accent" />

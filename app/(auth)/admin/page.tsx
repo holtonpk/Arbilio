@@ -8,6 +8,7 @@ import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import AccountManage from "./account-manage";
 import DataScrape from "./data-scrape";
 import ProductManage from "./products-manage";
+import Background from "@/components/background";
 
 const AdminLayout = () => {
   const [showDataScrape, setShowDataScrape] = useState(false);
@@ -61,6 +62,7 @@ const AdminLayout = () => {
           </div>
         </div>
       </div>
+      <Background />
     </>
   );
 };

@@ -7,7 +7,88 @@ import Tooltip from "@/components/ui/tooltip";
 import { Product } from "@/types";
 import { LinkButton } from "@/components/ui/link";
 
-const Pricing = ({ plans }: { plans: Product[] }) => {
+const plans = [
+  {
+    id: "prod_NsPgipXnz61jAR",
+    name: "Premium",
+    description: "",
+    monthly_price: { id: "price_1N6erTEewcpAM4MfvFFQC4no", unit_amount: 7900 },
+    annual_price: { id: "price_1N6exkEewcpAM4Mfptccq7sK", unit_amount: 58800 },
+    firebaseRole: "premium",
+    features: [
+      { text: "Unlimited users" },
+      { text: "Unlimited branded links" },
+      { text: "Unlimited custom domains" },
+      { text: "Free SSL certificates" },
+      {
+        text: "Advanced link features",
+        footnote:
+          "Password protection, link expiration, device targeting, custom social media cards, etc.",
+      },
+      {
+        text: "Root domain redirect",
+        footnote:
+          "Redirect vistors that land on the root of your domain (e.g. yourdomain.com) to a page of your choice.",
+        negative: true,
+      },
+      { text: "Custom QR Code Logo", negative: true },
+    ],
+  },
+  {
+    id: "prod_NsPgx3fbEtgp1i",
+    name: "Standard",
+    description: "",
+    monthly_price: { id: "price_1N6eqvEewcpAM4Mfq7Ee3orH", unit_amount: 4900 },
+    annual_price: { id: "price_1N6ewwEewcpAM4MfHvcbQ0qE", unit_amount: 36000 },
+    firebaseRole: "standard",
+    features: [
+      { text: "Unlimited users" },
+      { text: "Unlimited branded links" },
+      { text: "Unlimited custom domains" },
+      { text: "Free SSL certificates" },
+      {
+        text: "Advanced link features",
+        footnote:
+          "Password protection, link expiration, device targeting, custom social media cards, etc.",
+      },
+      {
+        text: "Root domain redirect",
+        footnote:
+          "Redirect vistors that land on the root of your domain (e.g. yourdomain.com) to a page of your choice.",
+        negative: true,
+      },
+      { text: "Custom QR Code Logo", negative: true },
+    ],
+  },
+  {
+    id: "prod_NsPejSOm20kcO8",
+    name: "Base",
+    description: "",
+    monthly_price: { id: "price_1N6ep6EewcpAM4MfyFL95phK", unit_amount: 2900 },
+    annual_price: { id: "price_1N6et6EewcpAM4MfshZRFOwV", unit_amount: 22800 },
+    firebaseRole: "base",
+    features: [
+      { text: "Unlimited users" },
+      { text: "Unlimited branded links" },
+      { text: "Unlimited custom domains" },
+      { text: "Free SSL certificates" },
+      {
+        text: "Advanced link features",
+        footnote:
+          "Password protection, link expiration, device targeting, custom social media cards, etc.",
+      },
+      {
+        text: "Root domain redirect",
+        footnote:
+          "Redirect vistors that land on the root of your domain (e.g. yourdomain.com) to a page of your choice.",
+        negative: true,
+      },
+      { text: "Custom QR Code Logo", negative: true },
+    ],
+  },
+];
+
+const Pricing = () => {
   const [annualBilling, setAnnualBilling] = useState(true);
   const period = useMemo(
     () => (annualBilling ? "monthly_price" : "annual_price"),

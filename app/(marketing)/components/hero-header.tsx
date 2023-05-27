@@ -25,7 +25,7 @@ const HeroHeader: React.FC<HeroHeaderProps> = ({
       <div className="flex items-center flex-col">
         <div
           className={cn(
-            "h-[250px] w-[1px] bg-gradient-to-t",
+            "h-[150px] w-[1px] bg-gradient-to-t",
             lineColor,
             lineHeight
           )}

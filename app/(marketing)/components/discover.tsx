@@ -19,8 +19,8 @@ const Discover = () => {
   return (
     <section id="discover" className="flex flex-col items-center ">
       <HeroHeader
-        gradient="bg-gradient-to-r from-purple-400 to-pink-600"
-        lineColor=" from-pink-600"
+        gradient="bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600"
+        lineColor=" from-fuchsia-600"
         lineHeight="h-[100px]"
         number="1"
         title="Discover"
