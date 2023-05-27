@@ -6,6 +6,7 @@
 @layer base {
   :root {
     --background-url: url("/_static/grid.svg");
+    --globe-style: 0;
 
     --blue: #026ff3;
 
@@ -49,6 +50,8 @@
 
   .dark {
     --background-url: url("/_static/grid-dark.svg");
+
+    --globe-style: 3;
 
     --blue: #026ff3;
 

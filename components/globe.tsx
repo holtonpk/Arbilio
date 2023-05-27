@@ -5,11 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import createGlobe from "cobe";
 import { useSpring } from "react-spring";
 import useIntersectionObserver from "@/lib/hooks/use-intersection-observer";
-import { Icons } from "@/components/icons";
-interface MarkerProps {
-  location: [number, number];
-  size: number;
-}
 
 export default function GlobeClient() {
   const divRef = useRef<any>();
@@ -71,6 +66,8 @@ const GlobeAnimation = () => {
   useEffect(() => {
     let phi = -0.5;
     let width = 0;
+    var style = getComputedStyle(document.body);
+    const dark = parseInt(style.getPropertyValue("--globe-style"));
     const onResize = () =>
       canvasRef.current && (width = canvasRef.current.offsetWidth);
     window.addEventListener("resize", onResize);
@@ -81,7 +78,7 @@ const GlobeAnimation = () => {
       height: width,
       phi,
       theta: 0.15,
-      dark: 0,
+      dark: dark,
       diffuse: 1.2,
       scale: 1,
       mapSamples: 20000,

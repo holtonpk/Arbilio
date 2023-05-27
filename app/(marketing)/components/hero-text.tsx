@@ -64,14 +64,14 @@ const HeroText: React.FC = () => {
           </p>
         </a>
 
-        <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.15] text-black sm:text-6xl sm:leading-[1.15] ">
+        <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.15] text-primary sm:text-6xl sm:leading-[1.15] ">
           Unlock Sales Growth with
           <br />
           <span className="bg-gradient-to-r whitespace-nowrap from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent ">
             Strategic Sourcing
           </span>
         </h1>
-        <h2 className="mt-5 text-gray-600 sm:text-xl">
+        <h2 className="mt-5 text-muted-foreground sm:text-xl">
           Experience the ultimate tool for TikTok dropshipping. Use data to find
           top products, craft engaging videos, and boost your earnings. Simplify
           and succeed with us.
