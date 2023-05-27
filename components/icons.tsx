@@ -68,11 +68,17 @@ import {
   Link2,
   RefreshCcwIcon,
   Send,
+  XCircleIcon,
+  CheckCircle2,
+  HelpCircleIcon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  helpCircle: HelpCircleIcon,
+  checkCircle: CheckCircle2,
+  xCircle: XCircleIcon,
   accounts: Users2,
   ArrowUpRight: ArrowUpRight,
   showPassword: Eye,

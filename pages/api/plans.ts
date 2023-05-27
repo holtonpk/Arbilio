@@ -26,10 +26,29 @@ export default async function handler(
             annual_price: { id: "", unit_amount: 0 },
             firebaseRole: product.metadata.firebaseRole,
             features: [
-              "1 User",
-              "1 GB Storage",
-              "Email Support",
-              "Help Center Access",
+              { text: "Unlimited users" },
+              { text: "Unlimited branded links" },
+              {
+                text: "Unlimited custom domains",
+              },
+              {
+                text: "Free SSL certificates",
+              },
+              {
+                text: "Advanced link features",
+                footnote:
+                  "Password protection, link expiration, device targeting, custom social media cards, etc.",
+              },
+              {
+                text: "Root domain redirect",
+                footnote:
+                  "Redirect vistors that land on the root of your domain (e.g. yourdomain.com) to a page of your choice.",
+                negative: true,
+              },
+              {
+                text: "Custom QR Code Logo",
+                negative: true,
+              },
             ],
           };
         }

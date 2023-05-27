@@ -8,7 +8,7 @@ import { accountCollectionsConfig } from "@/config/dashboard";
 import AppliedFilters from "@/components/applied-filters";
 import { DataSearch } from "@/components/data-search";
 import EmptySearch from "@/components/empty-search";
-import useData from "@/hooks/use-account-data";
+import useData from "@/lib/hooks/use-account-data";
 import { CollectionOperations } from "@/components/buttons/collection-operations";
 import { LinkButton } from "@/components/ui/link";
 import { AccountCollectionData } from "@/types";

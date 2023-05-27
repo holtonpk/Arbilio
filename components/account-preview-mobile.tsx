@@ -6,7 +6,7 @@ import { Icons } from "@/components/icons";
 import { MoreButton } from "./profile-actions";
 import LogoutButton from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
-import useClickOutside from "@/hooks/use-click-outside";
+import useClickOutside from "@/lib/hooks/use-click-outside";
 export const AccountInfoMobile = () => {
   // const { data: session, status } = useSession();
 

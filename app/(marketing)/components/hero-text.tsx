@@ -37,7 +37,7 @@ const HeroText: React.FC = () => {
 
   return (
     <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center ">
-      <div className="relative w-full h-fit bg-accent p-[1px] glow  rounded-md">
+      {/* <div className="relative w-full h-fit bg-accent p-[1px] glow  rounded-md">
         <LinkButton
           href={"/pricing"}
           variant="link"
@@ -51,9 +51,52 @@ const HeroText: React.FC = () => {
             <Icons.ArrowUpRight className="h-5 w-5 md:h-6 md:w-6" />
           </div>
         </LinkButton>
-        {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-full blur-[10px] bg-accent  "></div> */}
+      </div> */}
+      <div className="mx-auto mb-10 mt-20  px-2.5 text-center  sm:px-0">
+        <a
+          href="https://dub.sh/launch"
+          target="_blank"
+          rel="noreferrer"
+          className="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-md border-theme-blue border px-7 py-2 transition-all "
+        >
+          <p className="text-sm font-semibold text-theme-blue">
+            7 day free trial
+          </p>
+        </a>
+
+        <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.15] text-black sm:text-6xl sm:leading-[1.15] ">
+          Unlock Sales Growth with
+          <br />
+          <span className="bg-gradient-to-r whitespace-nowrap from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent ">
+            Strategic Sourcing
+          </span>
+        </h1>
+        <h2 className="mt-5 text-gray-600 sm:text-xl">
+          Experience the ultimate tool for TikTok dropshipping. Use data to find
+          top products, craft engaging videos, and boost your earnings. Simplify
+          and succeed with us.
+        </h2>
+
+        <div className="mx-auto mt-10 flex max-w-fit space-x-4">
+          <LinkButton
+            size="lg"
+            variant={"default"}
+            href="/pricing"
+            className="w-full md:w-fit whitespace-nowrap  shadow-lg"
+          >
+            View Pricing
+          </LinkButton>
+          <LinkButton
+            href={"/dashboard"}
+            variant="outline"
+            size={"lg"}
+            className="bg-background  shadow-lg   z-10 w-full  md:w-fit relative "
+          >
+            Get Started
+          </LinkButton>
+        </div>
       </div>
-      <div className="flex flex-col lg:gap-0 lg:flex-row items-center py-12">
+      {/* <div className="flex flex-col lg:gap-0 lg:flex-row items-center py-12">
         {headers.map((header, index) => (
           <div key={index} className="relative overflow-visible ">
             <h1
@@ -135,7 +178,7 @@ const HeroText: React.FC = () => {
               `}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

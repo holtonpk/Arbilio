@@ -2,20 +2,17 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { formatNumber } from "@/lib/utils";
-import Skeleton from "@/components/ui/custom-skeleton";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
-import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
+import { formatDateShort, formatNumber } from "@/lib/utils";
+import { LineChart } from "@/components/charts";
 import { ProductDataBaseType, AccountDataType } from "@/types";
-import PostView from "@/components/post-view";
+
 interface CardDisplayProps {
   data: ProductDataBaseType[];
 }
 
 const CardDisplay = ({ data }: CardDisplayProps) => {
   return (
-    <div className="grid grid-cols-2 gap-8 h-full w-full ">
+    <div className="grid  gap-8 h-full w-full ">
       {/* <div className="grid lg:grid-cols-5 grid-cols-2 gap-4 h-full w-full"> */}
       {data.map((item: any, i: number) => (
         <ProductDisplay key={i} item={item} />
@@ -64,7 +61,13 @@ export const ProductDisplay = ({ item }: CardProps) => {
             </div> */}
           </div>
         </Link>
-        <AccountInfo accounts={item.accounts} />
+        {/* <AccountInfo accounts={item.accounts} /> */}
+        <div className="p-4">
+          <h1 className="text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary"></h1>
+          <div className="w-full h-[200px] relative">
+            <DataGraph accounts={item.accounts} title={item.title} />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -144,82 +147,97 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
   );
 };
 
-export const Card = ({ item }: CardProps) => {
-  return (
-    <div className="h-full relative group ">
-      <Link
-        href={`/products/product/${item.id}`}
-        className="w-full   bg-card rounded-md   p-4    pb-2 items-center relative flex flex-col  cursor-pointer "
-      >
-        <div className="flex  flex-col  w-full  gap-[2px] sm:gap-2   pb-0  rounded-md ">
-          <div className="aspect-square w-full bg-muted rounded-md relative overflow-hidden">
-            <div className="absolute h-1/2 pointer-events-none bottom-0 w-full bg-gradient-to-t from-black/50 to-black/0  rounded-md z-30 hidden group-hover:block fade-in">
-              <div className="flex absolute gap-4 w-fit  bottom-2 pointer-events-auto right-2">
-                <Button
-                  className="flex items-center justify-center whitespace-nowrap"
-                  variant="default"
-                  size="sm"
-                >
-                  <Icons.ellipsis className="h-6 w-6 " />
-                </Button>
-                <Button
-                  className="flex items-center justify-center whitespace-nowrap"
-                  variant="default"
-                  size="sm"
-                >
-                  <Icons.crosshair className="h-6 w-6 " />
-                </Button>
-              </div>
-            </div>
-            <Image
-              src={item.image}
-              alt="Picture of the author"
-              fill
-              sizes="(max-width: 768px) 100vw,
-                    (max-width: 1200px) 50vw,
-                    33vw"
-            />
-          </div>
-          <div className="grid ">
-            <h1 className="text-sm capitalize text-ellipsis  text-left w-fit text-primary">
-              {item.title}
-            </h1>
-            <div className="w-[100px] flex items-center h-fit gap-2 text-muted-foreground">
-              <Icons.likes className="h-5 w-5 fill-muted-foreground " />
-              234
-              <Icons.profile className="h-5 w-5 fill-muted-foreground " />
-              16
-            </div>
-          </div>
-        </div>
-      </Link>
-    </div>
+interface DataGraphProps {
+  accounts: AccountDataType[];
+  title: string;
+}
+
+const DataGraph = ({ accounts, title }: DataGraphProps) => {
+  const combinedStats = combineStats(accounts);
+
+  const combineDays = combineSameDay(combinedStats).reverse();
+
+  const view = combineDays.map((item: any) => {
+    return {
+      data: item.heartCount,
+      label: formatDateShort(item.dataCollectionTime),
+      total: item.totalCombined,
+    };
+  });
+  console.log("view ==> ", title, accounts.length, view);
+
+  const labels = combineDays.map((item) => {
+    return formatDateShort(item.dataCollectionTime);
+  });
+
+  const data = combineDays.map(
+    (item: any) => item.heartCount / item.totalCombined
   );
+
+  // console.log("data ==> ", data);
+  return <LineChart data={data} labels={labels} dataTitle="Likes" />;
 };
 
-export const CardSkeleton = () => {
-  return (
-    <div className="w-full bg-background border border-border rounded-md h-fit  pb-2 items-center relative flex flex-col">
-      <div className="flex items-center gap-2 w-full pb-0 p-4">
-        <Skeleton height={40} width={40} />
-        <div className="flex flex-col gap-2 ">
-          <Skeleton height={15} width={100} />
-          <Skeleton height={10} width={100} />
-        </div>
-      </div>
-      <div className=" p-4">
-        <Skeleton height={50} width={200} />
-      </div>
+const combineStats = (accounts: AccountDataType[]): DataType[] => {
+  const seenDays: Record<string, Record<string, boolean>> = {};
 
-      <Skeleton height={60} width={"90%"} />
+  const combinedStats = accounts.flatMap((account) => {
+    return account.accountStats.filter((item) => {
+      const dayStart = startOfDay(item.dataCollectionTime).getTime();
 
-      <div className="flex flex-col mt-auto w-[90%] pt-8">
-        <div className="grid grid-cols-3 gap-2 w-full ">
-          <Skeleton height={100} width={"100%"} />
-          <Skeleton height={100} width={"100%"} />
-          <Skeleton height={100} width={"100%"} />
-        </div>
-      </div>
-    </div>
-  );
+      if (!seenDays[account.id]) {
+        seenDays[account.id] = {};
+      }
+
+      if (!seenDays[account.id][dayStart]) {
+        seenDays[account.id][dayStart] = true;
+        return true;
+      }
+
+      return false;
+    });
+  });
+
+  return combinedStats;
+};
+import { startOfDay } from "date-fns";
+
+type DataType = {
+  heart?: number;
+  heartCount?: number;
+  dataCollectionTime: number;
+  followerCount?: number;
+  videoCount?: number;
+  diggCount?: number;
+  followingCount?: number;
+  totalCombined?: number;
+};
+
+const combineSameDay = (data: DataType[]): DataType[] => {
+  const combined: Record<string, DataType> = {};
+
+  data.forEach((item) => {
+    const dayStart = startOfDay(item.dataCollectionTime).getTime();
+
+    if (!combined[dayStart]) {
+      combined[dayStart] = { ...item, totalCombined: 1 };
+    } else {
+      combined[dayStart].heart =
+        (combined[dayStart].heart || 0) + (item.heart || 0);
+      combined[dayStart].heartCount =
+        (combined[dayStart].heartCount || 0) + (item.heartCount || 0);
+      combined[dayStart].followerCount =
+        (combined[dayStart].followerCount || 0) + (item.followerCount || 0);
+      combined[dayStart].videoCount =
+        (combined[dayStart].videoCount || 0) + (item.videoCount || 0);
+      combined[dayStart].diggCount =
+        (combined[dayStart].diggCount || 0) + (item.diggCount || 0);
+      combined[dayStart].followingCount =
+        (combined[dayStart].followingCount || 0) + (item.followingCount || 0);
+      combined[dayStart].totalCombined =
+        (combined[dayStart].totalCombined || 0) + 1;
+    }
+  });
+
+  return Object.values(combined);
 };

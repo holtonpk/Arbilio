@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import useData from "@/hooks/use-product-data";
+import useData from "@/lib/hooks/use-product-data";
 import Table from "./product-database-table";
 import { ProductDataBaseType } from "@/types";
 import FilterBuilder from "@/components/filter-builder";

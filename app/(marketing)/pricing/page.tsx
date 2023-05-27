@@ -1,5 +1,6 @@
 import { Product } from "@/types";
-import Plans from "./view-pricing";
+// import Plans from "./view-pricing";
+import Pricing from "./plans";
 import { siteConfig } from "@/config/site";
 
 async function getPlans(): Promise<Product[]> {
@@ -12,16 +13,8 @@ export default async function Plan() {
   const plan = await getPlans();
 
   return (
-    <div className="container flex flex-col items-center  gap-6  min-h-screen bg-background border border-background ">
-      <div className="mx-auto flex items-center flex-col gap-2 w-full">
-        <h2 className="font-heading text-xl leading-[1.1] sm:text-3xl md:text-6xl">
-          Choose your plan
-        </h2>
-        <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-          7 day free trial. No credit card required.
-        </p>
-      </div>
-      <Plans plans={plan} />
+    <div className="container flex flex-col items-center  min-h-screen  border border-background ">
+      <Pricing plans={plan} />
     </div>
   );
 }

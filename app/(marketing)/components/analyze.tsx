@@ -1,6 +1,8 @@
 import React from "react";
 import HeroHeader from "@/app/(marketing)/components/hero-header";
 import { Icons } from "@/components/icons";
+import GlobeClient from "@/components/globe";
+
 const Analyze = () => {
   return (
     <section id="features" className="flex flex-col items-center">
@@ -67,7 +69,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const Icon = Icons[data.icon];
 
   return (
-    <div className="relative overflow-hidden rounded-lg  h-[250px] md:p-2 md:h-[180px] bg-background">
+    <div className="relative overflow-hidden rounded-lg  h-[250px] md:p-2 md:h-[180px] ">
       <div className="flex h-fit flex-col items-center md:items-start justify-between rounded-md ">
         <div className="bg-muted p-3 flex items-center justify-center w-fit h-fit mb-2 rounded-md border-accent border ">
           <Icon className="text-muted-foreground" />

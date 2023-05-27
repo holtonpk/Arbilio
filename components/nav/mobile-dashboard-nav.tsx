@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useSelectedLayoutSegment, usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useLockBody } from "@/hooks/use-lock-body";
+import { useLockBody } from "@/lib/hooks/use-lock-body";
 import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { AccountInfoMobile } from "../account-preview-mobile";

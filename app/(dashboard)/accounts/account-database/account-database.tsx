@@ -9,7 +9,7 @@ import AppliedFilters from "@/components/applied-filters";
 import { Icons } from "@/components/icons";
 import { accountDatabaseConfig } from "@/config/dashboard";
 import EmptySearch from "@/components/empty-search";
-import useData from "@/hooks/use-account-data";
+import useData from "@/lib/hooks/use-account-data";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { AccountCard } from "@/components/account-card";

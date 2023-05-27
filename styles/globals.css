@@ -5,6 +5,8 @@
 
 @layer base {
   :root {
+    --background-url: url("/_static/grid.svg");
+
     --blue: #026ff3;
 
     --background: 0 0% 100%;
@@ -46,6 +48,8 @@
   }
 
   .dark {
+    --background-url: url("/_static/grid-dark.svg");
+
     --blue: #026ff3;
 
     --background: 0 0% 0%;

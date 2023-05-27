@@ -1,6 +1,6 @@
 import React from "react";
 import HeroHeader from "@/app/(marketing)/components/hero-header";
-
+import GlobeClient from "@/components/globe";
 const Profit = () => {
   return (
     <section id="profit">
@@ -12,6 +12,10 @@ const Profit = () => {
         subtitle="Profit from the best deals"
         description="With TikDrop.io, reap the benefits of the finest deals and engage in profitable arbitrage. Our platform opens up access to top-quality products at competitive prices, creating lucrative opportunities for optimal margins."
       />
+      <div className="grid grid-cols-[1fr_60%]">
+        <div></div>
+        <GlobeClient />
+      </div>
     </section>
   );
 };

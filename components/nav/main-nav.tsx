@@ -18,7 +18,7 @@ export function MainNav({ items, children }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 
   return (
-    <div className="flex justify-between md:justify-start w-full items-center  md:gap-10 ">
+    <div className="flex justify-between md:justify-start w-full items-center sticky  md:gap-10 ">
       <Link href="/" className=" items-center space-x-2 flex">
         <span className=" text-xl font-bold inline-block ">TikDrop.io</span>
       </Link>

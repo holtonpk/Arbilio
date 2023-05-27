@@ -5,13 +5,9 @@ import { Icons } from "@/components/icons";
 import Switch from "@/components/ui/switch";
 import Tooltip from "@/components/ui/tooltip";
 import { Product } from "@/types";
-import { useAuth } from "@/context/Auth";
-import { siteConfig } from "@/config/site";
-import { createCheckoutSession } from "@/stripe/createCheckoutSession";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link";
 
 const Pricing = ({ plans }: { plans: Product[] }) => {
-  console.log("plans", plans);
   const [annualBilling, setAnnualBilling] = useState(true);
   const period = useMemo(
     () => (annualBilling ? "monthly_price" : "annual_price"),
@@ -19,7 +15,6 @@ const Pricing = ({ plans }: { plans: Product[] }) => {
   );
 
   const orderedPlans = plans.sort((a, b) => {
-    // Assuming both products always have a monthly_price. If not, you need to add checks.
     return a[period].unit_amount - b[period].unit_amount;
   });
 
@@ -78,25 +73,8 @@ interface PlanCardProps {
 }
 
 const PlanCard = ({ plan, popular, period }: PlanCardProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { currentUser, userPlan } = useAuth()!;
-
-  const price = plan[period];
-
-  const selectPlan = async () => {
-    if (!currentUser || !price) return;
-    setIsLoading(true);
-    await createCheckoutSession(
-      currentUser?.uid,
-      price?.id,
-      `${siteConfig.url}/dashboard`,
-      `${siteConfig.url}/onboarding/register`
-    );
-  };
-
   return (
     <div
-      key={plan.id}
       className={`relative rounded-2xl bg-background ${
         popular ? "border-2 border-blue-600 shadow-blue-200" : "border"
       } shadow-lg`}
@@ -171,17 +149,16 @@ const PlanCard = ({ plan, popular, period }: PlanCardProps) => {
       </ul>
       <div className="border-t border-border" />
       <div className="p-5">
-        <Button
-          onClick={selectPlan}
+        <LinkButton
+          href={"/onboarding/register"}
           className={`${
             popular
               ? "bg-theme-blue border-none hover:bg-primary text-white hover:text-theme-blue"
               : ""
           } w-full`}
         >
-          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Get Started
-        </Button>
+        </LinkButton>
       </div>
     </div>
   );

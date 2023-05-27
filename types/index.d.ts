@@ -202,8 +202,14 @@ export interface Product {
   description: string;
   monthly_price: Price;
   annual_price: Price;
-  features: string[];
+  features: feature[];
   firebaseRole: string;
+}
+
+export interface feature {
+  text: string;
+  footnote?: string;
+  negative?: boolean;
 }
 
 export type ProductType = {

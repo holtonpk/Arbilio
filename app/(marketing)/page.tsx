@@ -5,6 +5,7 @@ import Discover from "@/app/(marketing)/components/discover";
 import Analyze from "@/app/(marketing)/components/analyze";
 import Profit from "@/app/(marketing)/components/profit";
 import Testimonials from "@/app/(marketing)/components/testimonials";
+import Background from "@/components/background";
 export default async function IndexPage() {
   return (
     <>

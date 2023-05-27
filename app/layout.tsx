@@ -6,13 +6,12 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/context/Auth";
 interface IProps {
   children: React.ReactNode;
-  session: any;
 }
 
-export default function RootLayout({ children, session }: IProps) {
+export default function RootLayout({ children }: IProps) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-background">
+      <body className="min-h-screen ">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
