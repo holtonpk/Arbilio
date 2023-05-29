@@ -285,7 +285,7 @@ const StatDisplay = ({
           </div>
         </Tooltip>
       </div>
-      \
+
       <div className="flex flex-col  gap-2 items-center justify-center w-full md:hidden">
         <div className="bg-muted flex items-center justify-center aspect-square w-fit p-2  rounded-md">
           <Icon className=" h-3 w-3 text-primary fill-primary" />
