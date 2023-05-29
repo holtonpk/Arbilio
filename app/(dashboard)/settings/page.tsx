@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Profile from "@/app/(dashboard)/settings/profile";
+import Profile from "@/app/(dashboard)/settings/Profile";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/header";
