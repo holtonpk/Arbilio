@@ -12,7 +12,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { MoreButton } from "@/components/profile-actions";
+import { MoreButton } from "@/components/buttons/profile-actions";
 import { Line } from "react-chartjs-2";
 interface GraphProps {
   labels: string[];

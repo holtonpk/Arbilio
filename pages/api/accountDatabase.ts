@@ -22,9 +22,9 @@ export default async function handler(
   // where product != null
   const q = query(
     collectionRef,
-    // where("topPost", "!=", []), // assuming topPost is an array field
+    where("topPosts", "!=", []), // assuming topPost is an array field
     // where("product", "!=", null), // assuming product is a field
-    orderBy("accountStatsLength", "desc"), // assuming accountStatsLength is a field that stores array length
+    // orderBy("accountStatsLength", "desc"), // assuming accountStatsLength is a field that stores array length
     limit(40)
   );
   const docs = await getDocs(q);
@@ -43,9 +43,18 @@ export default async function handler(
 
     if (record.topPosts && record.topPosts.length) {
       const topPosts = record?.topPosts.map(async (post: any) => {
-        const postRef = doc(db, "tiktok-posts", post);
+        const postRef = doc(db, "tiktok-posts-test", post);
         const postData = await getDoc(postRef);
-        return postData.data();
+        return {
+          ...postData.data(),
+          author: {
+            avatar: record.avatar,
+            id: record.id,
+            secUid: record.secUid,
+            uniqueId: record.uniqueId,
+            nickname: record.userInfo?.user?.nickname,
+          },
+        };
       });
       topPostsData = await Promise.all(topPosts);
     }

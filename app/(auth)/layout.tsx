@@ -3,6 +3,7 @@ interface AuthLayoutProps {
   children: React.ReactElement;
 }
 import Link from "next/link";
+import Background from "@/components/background";
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
@@ -18,6 +19,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       </Link>
 
       {children}
+      <Background />
     </AuthProvider>
   );
 }

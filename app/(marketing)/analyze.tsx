@@ -1,7 +1,7 @@
 import React from "react";
-import HeroHeader from "@/app/(marketing)/components/hero-header";
+import HeroHeader from "@/app/(marketing)/hero-header";
 import { Icons } from "@/components/icons";
-import GlobeClient from "@/components/globe";
+import GlobeClient from "@/app/(marketing)/globe";
 
 const Analyze = () => {
   return (

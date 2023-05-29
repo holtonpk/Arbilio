@@ -146,16 +146,27 @@ export interface ProductDataBaseType {
   accounts: AccountDataType[];
 }
 
-export interface PostType {
-  collectionId: string;
-  collectionName: string;
-  cover: string;
-  created: string;
-  expand: any;
+interface Music {
   id: string;
-  postData: any;
+  title: string;
+  authorName: string;
+}
+
+export interface PostType {
+  cover: string;
+  video: string;
+  createTime: string;
+  desc: string;
+  postData: {
+    collectCount: number;
+    commentCount: number;
+    diggCount: number;
+    playCount: number;
+    shareCount: number;
+  };
   postId: string;
-  updated: string;
+  author: Account;
+  music: Music;
 }
 
 export interface AccountDataType {
@@ -182,6 +193,7 @@ export interface AccountDataType {
 interface Post {
   postId: string;
   cover: string;
+  video: string;
   postData: {
     collectCount: number;
     commentCount: number;
@@ -289,4 +301,12 @@ interface AccountDataType {
   topPosts: Post[];
   uniqueId: string;
   userInfo: any;
+}
+
+interface Account {
+  avatar: string;
+  id: string;
+  secUid: string;
+  nickname: string;
+  uniqueId: string;
 }

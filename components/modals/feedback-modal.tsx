@@ -14,7 +14,7 @@ import { Icons } from "@/components/icons";
 import { useAuth } from "@/context/Auth";
 import { db } from "@/context/Auth";
 import { collection, addDoc } from "firebase/firestore";
-import { toast } from "./ui/use-toast";
+import { toast } from "../ui/use-toast";
 
 const Feedback = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false);

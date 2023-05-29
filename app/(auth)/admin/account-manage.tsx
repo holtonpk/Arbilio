@@ -268,18 +268,13 @@ const AccountManage = () => {
           const docSnap = await getDoc(docRef);
           const docData = docSnap.data();
           if (!docData) return;
-          if (docData?.accountStats) {
-            try {
-              const accountStatsLen = docData.accountStats.length;
-              await updateDoc(docRef, {
-                ...docData,
-                accountStatsLength: accountStatsLen,
-              });
-            } catch (error) {
-              console.log("error:", docData);
-            }
-          } else {
-            console.log("no Posts");
+
+          try {
+            await updateDoc(docRef, {
+              topPosts: [],
+            });
+          } catch (error) {
+            console.log("error:", docData);
           }
         })
       );

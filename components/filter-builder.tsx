@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FilterList } from "@/types";
 import { Icons } from "./icons";
 import { Input } from "./ui/input";
-import { CustomListBox } from "@/components/list-box";
+import { CustomListBox } from "@/components/ui/list-box";
 import { cn } from "@/lib/utils";
 import {
   Dialog,

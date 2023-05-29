@@ -87,7 +87,7 @@ export function timeSince(timestamp: number): string {
   for (const [name, secondsInUnit] of intervals) {
     const interval: number = Math.floor(seconds / secondsInUnit);
     if (interval >= 1) {
-      return `${interval}${name} ago`;
+      return `${interval} ${name} ago`;
     }
   }
   return "just now";

@@ -6,21 +6,24 @@ import Image from "next/image";
 import { Icons } from "@/components/icons";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import PostView from "@/components/post-view";
+import Tooltip from "@/components/ui/tooltip";
 interface ViewProductProps {
-  data: ProductType;
+  item: ProductType;
 }
+import { DataGraph } from "../../product-database/product-database-cards";
 
-const ViewProduct = ({ data }: ViewProductProps) => {
+const ViewProduct = ({ item }: ViewProductProps) => {
+  console.log("item ==> ", item);
   return (
     <div className="grid md:grid-cols-[30%_1fr] gap-4 p-4 container">
-      <h1 className="md:hidden text-2xl font-bold capitalize">{data.title}</h1>
+      <h1 className="md:hidden text-2xl font-bold capitalize">{item.title}</h1>
 
-      <ProductImage images={data.supplierInfo.supplierImages} />
+      <ProductImage images={item.supplierInfo.supplierImages} />
       <section className=" rounded-md">
         <h1 className="text-2xl font-bold capitalize md:block hidden ">
-          {data.title}
+          {item.title}
         </h1>
-        <div className="grid grid-cols-3 border rounded-md p-2 mt-4">
+        {/* <div className="grid grid-cols-3 border rounded-md p-2 mt-4">
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-[12px] sm:text-base text-muted-foreground w-fit whitespace-nowrap">
               Popularity Rank
@@ -44,8 +47,46 @@ const ViewProduct = ({ data }: ViewProductProps) => {
               {"$" + data.supplierInfo.supplierPrice.min + "/ unit"}
             </h1>
           </div>
+        </div> */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="p-4 border rounded-md mt-4">
+            <div className="flex  items-center ">
+              <div className="rounded-md bg-muted aspect-square p-2 w-fit relative flex justify-center items-center">
+                <Icons.likes className=" text-primary" />
+              </div>
+              <h1 className="ml-3 text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
+                Average likes
+              </h1>
+              <Tooltip content="Average likes received by the accounts promoting the product ">
+                <div className="flex h-4 w-8 justify-center">
+                  <Icons.helpCircle className="h-4 w-4 text-gray-600" />
+                </div>
+              </Tooltip>
+            </div>
+            <div className="w-full h-[200px] relative mt-3">
+              <DataGraph accounts={item.accountsData} field="heartCount" />
+            </div>
+          </div>
+          <div className="p-4 border rounded-md mt-4">
+            <div className="flex  items-center ">
+              <div className="rounded-md bg-muted aspect-square p-2 w-fit relative flex justify-center items-center">
+                <Icons.followers className=" text-primary" />
+              </div>
+              <h1 className=" ml-3 text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
+                Average followers
+              </h1>
+              <Tooltip content="Average followers for accounts promoting the product">
+                <div className="flex h-4 w-8 justify-center">
+                  <Icons.helpCircle className="h-4 w-4 text-gray-600" />
+                </div>
+              </Tooltip>
+            </div>
+            <div className="w-full h-[200px] relative mt-3">
+              <DataGraph accounts={item.accountsData} field="followerCount" />
+            </div>
+          </div>
         </div>
-        <AccountInfo accounts={data.accountsData} />
+        <AccountInfo accounts={item.accountsData} />
       </section>
     </div>
   );
@@ -110,7 +151,14 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
   return (
     <div className="grid  gap-4">
       <div className="flex flex-col ">
-        <h1 className="text-xl mt-4">{`Active Sellers (${accounts.length})`}</h1>
+        <div className="flex items-center mt-4 mb-3">
+          <h1 className="text-xl">{`Active Sellers (${accounts.length})`}</h1>
+          <Tooltip content="Sellers linked to the product ">
+            <div className="flex h-4 w-8 justify-center">
+              <Icons.helpCircle className="h-4 w-4 text-gray-600" />
+            </div>
+          </Tooltip>
+        </div>
         <div className="h-fit max-h-[300px] overflow-scroll border rounded-md">
           <div className="grid divide-y divide-border  h-fit   ">
             {sortedAccounts.map((account, i) => (
@@ -145,17 +193,18 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
         </div>
       </div>
       <div className="flex flex-col">
-        <h1 className="text-xl">Top Videos</h1>
+        <div className="flex items-center mb-3">
+          <h1 className="text-xl">Top Videos</h1>
+          <Tooltip content="Top performing posts by view count linked to the product ">
+            <div className="flex h-4 w-8 justify-center">
+              <Icons.helpCircle className="h-4 w-4 text-gray-600" />
+            </div>
+          </Tooltip>
+        </div>
         <div className="grid md:grid-cols-6 grid-cols-3 gap-4 w-full">
           {accounts &&
             topPosts.slice(0, 6).map((item: any, i: number) => {
-              return (
-                <PostView
-                  key={i}
-                  cover={item?.cover}
-                  playCount={item.postData.playCount}
-                />
-              );
+              return <PostView key={i} video={item} />;
             })}
         </div>
       </div>

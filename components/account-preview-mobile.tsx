@@ -3,8 +3,8 @@ import React from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/Auth";
 import { Icons } from "@/components/icons";
-import { MoreButton } from "./profile-actions";
-import LogoutButton from "@/components/logout-button";
+import { MoreButton } from "./buttons/profile-actions";
+import LogoutButton from "@/components/buttons/logout-button";
 import { Button } from "@/components/ui/button";
 import useClickOutside from "@/lib/hooks/use-click-outside";
 export const AccountInfoMobile = () => {

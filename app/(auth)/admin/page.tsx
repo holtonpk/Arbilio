@@ -16,7 +16,7 @@ const AdminLayout = () => {
   const [showProductsManagement, setShowProductsManagement] = useState(false);
   return (
     <>
-      <div className="flex flex-col items-center p-8 gap-4 w-full mx-auto   ">
+      <div className="flex flex-col items-center p-8 gap-4 w-full mx-auto mt-12 relative ">
         <div className="grid divide-y divide-border border w-full rounded-md">
           <div className="w-full flex-col flex gap-4  p-6 ">
             <div
@@ -62,7 +62,6 @@ const AdminLayout = () => {
           </div>
         </div>
       </div>
-      <Background />
     </>
   );
 };

@@ -1,28 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { formatDateShort, formatNumber } from "@/lib/utils";
 import { LineChart } from "@/components/charts";
-import { ProductDataBaseType, AccountDataType } from "@/types";
-
-interface CardDisplayProps {
-  data: ProductDataBaseType[];
-}
-
-const CardDisplay = ({ data }: CardDisplayProps) => {
-  return (
-    <div className="grid  gap-8 h-full w-full ">
-      {/* <div className="grid lg:grid-cols-5 grid-cols-2 gap-4 h-full w-full"> */}
-      {data.map((item: any, i: number) => (
-        <ProductDisplay key={i} item={item} />
-      ))}
-    </div>
-  );
-};
-
-export default CardDisplay;
-
+import { ProductDataBaseType, AccountDataType, ProductType } from "@/types";
+import { Icons } from "@/components/icons";
+import Tooltip from "@/components/ui/tooltip";
+import { ProductOperations } from "@/components/buttons/product-operations";
 interface CardProps {
   item: ProductDataBaseType;
 }
@@ -31,11 +18,12 @@ export const ProductDisplay = ({ item }: CardProps) => {
   return (
     <div className="h-full relative group w-full rounded-md border bg-background  ">
       <div className="grid w-full">
-        <Link
-          href={`/products/product/${item.id}`}
-          className="grid grid-cols-[80px_1fr] border-b  gap-4  w-full h-fit hover:bg-muted sm:gap-2  p-4    "
-        >
-          <div className="h-20 w-20 relative overflow-hidden rounded-md">
+        <div className="grid  grid-cols-[80px_1fr] border items-start gap-4 relative w-full h-fit hover:bg-muted/30 sm:gap-2  p-4    ">
+          <Link
+            href={`/products/product/${item.id}`}
+            className="w-full h-full absolute top-0 left-0 z-10"
+          />
+          <div className="h-20 w-20 relative overflow-hidden z-20 rounded-md  pointer-events-none">
             <Image
               src={item.image}
               alt="Picture of the author"
@@ -46,27 +34,46 @@ export const ProductDisplay = ({ item }: CardProps) => {
             />
           </div>
 
-          <div className="grid ">
+          <div className="grid gap-0 relative z-20 pointer-events-none">
             <h1 className="text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
               {item.title}
             </h1>
             <h1 className="text-sm capitalize text-ellipsis  text-left w-fit text-primary">
               {item?.supplierInfo?.supplierTitle}
             </h1>
-            {/* <div className="w-[100px] flex items-center h-fit gap-2 text-muted-foreground">
-              <Icons.likes className="h-5 w-5 fill-muted-foreground " />
-              234
-              <Icons.profile className="h-5 w-5 fill-muted-foreground " />
-              {item.accounts?.length}
-            </div> */}
           </div>
-        </Link>
+          {/* <ProductOperations
+            product={item}
+            variant="outline"
+            className="hidden md:block relative z-20"
+          >
+            <Icons.ellipsis className="h-5 w-5 fill-muted-foreground  " />
+          </ProductOperations> */}
+        </div>
+
         {/* <AccountInfo accounts={item.accounts} /> */}
         <div className="p-4">
-          <h1 className="text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary"></h1>
-          <div className="w-full h-[200px] relative">
-            <DataGraph accounts={item.accounts} title={item.title} />
+          <div className="flex items-center ">
+            <div className="rounded-md bg-muted aspect-square p-2 w-fit relative flex justify-center items-center">
+              <Icons.likes className=" text-primary" />
+            </div>
+            <h1 className="ml-3 text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
+              Average likes
+            </h1>
+            <Tooltip content="Average likes received by the accounts promoting the product ">
+              <div className="flex h-4 w-8 justify-center">
+                <Icons.helpCircle className="h-4 w-4 text-gray-600" />
+              </div>
+            </Tooltip>
           </div>
+          <div className="w-full h-[200px] relative mt-3">
+            <DataGraph accounts={item.accounts} field="heartCount" />
+          </div>
+        </div>
+        <div className="w-full p-4">
+          <LinkButton href={`/products/product/${item.id}`} className="w-full">
+            View Product
+          </LinkButton>
         </div>
       </div>
     </div>
@@ -149,30 +156,19 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
 
 interface DataGraphProps {
   accounts: AccountDataType[];
-  title: string;
+  field: "heartCount" | "followerCount" | "followingCount" | "videoCount";
 }
 
-const DataGraph = ({ accounts, title }: DataGraphProps) => {
+export const DataGraph = ({ accounts, field }: DataGraphProps) => {
   const combinedStats = combineStats(accounts);
 
   const combineDays = combineSameDay(combinedStats).reverse();
-
-  const view = combineDays.map((item: any) => {
-    return {
-      data: item.heartCount,
-      label: formatDateShort(item.dataCollectionTime),
-      total: item.totalCombined,
-    };
-  });
-  console.log("view ==> ", title, accounts.length, view);
 
   const labels = combineDays.map((item) => {
     return formatDateShort(item.dataCollectionTime);
   });
 
-  const data = combineDays.map(
-    (item: any) => item.heartCount / item.totalCombined
-  );
+  const data = combineDays.map((item: any) => item[field] / item.totalCombined);
 
   // console.log("data ==> ", data);
   return <LineChart data={data} labels={labels} dataTitle="Likes" />;

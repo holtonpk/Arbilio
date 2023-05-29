@@ -17,6 +17,7 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  deleteObject,
 } from "firebase/storage";
 import {
   doc,
@@ -36,6 +37,8 @@ import {
 import { siteConfig } from "@/config/site";
 import { AccountStatsResponse } from "@/types";
 import { record } from "zod";
+import { to } from "react-spring";
+import { ca } from "date-fns/locale";
 
 export default function DataScrape() {
   const [data, setData] = useState<any>(undefined);
@@ -300,76 +303,43 @@ const UpdateData = ({ data }: any) => {
         limit(availableCredits),
         startAt(startAfterSnapshot)
       );
+
       const res = await getDocs(q);
       const records = res.docs;
-      const totalRecords = records.length;
+      let totalRecords = records.length;
+      if (totalRecords < availableCredits) {
+        const q = query(
+          collection(db, "tiktok-accounts"),
+          limit(availableCredits - totalRecords)
+        );
+        const res = await getDocs(q);
+        const records2 = res.docs;
+        records.push(...records2);
+        totalRecords = records.length;
+      }
 
       updateMessage("🔄 Updating account posts...");
+
+      updateMessage(`totalRecords = ${totalRecords}`);
 
       const recordPromises = records.map(async (record, i) => {
         if (forceStopRef.current) return;
         try {
-          const { secUid, id } = record.data();
+          const { secUid, id, topPosts } = record.data();
           updateMessage(
             `🔄 Fetching posts for account ${i + 1} of ${totalRecords}`
           );
           const response = await fetch(
             `${siteConfig.url}/api/scrape/posts/${secUid}`
           );
-          const posts = await response.json();
+          const postsArray = await response.json();
 
-          const top5Posts: any = posts
-            .sort((a: any, b: any) => b.stats.playCount - a.stats.playCount)
-            .slice(0, 5);
-
-          // Create a set of post ids
-          const postIds = new Set(top5Posts.map((post: any) => post.id));
-
-          // Query all existing posts in one go
-          updateMessage(
-            `🔄 Checking if posts already exist in database for account ${
-              i + 1
-            }`
-          );
-          const postExists = await getDocs(
-            query(
-              collection(db, "tiktok-posts"),
-              where("postId", "in", Array.from(postIds))
-            )
-          );
-
-          // Convert the results into a Map for easy lookup
-          const existingPosts = new Map(
-            postExists.docs.map((doc) => [doc.data().postId, doc.id])
-          );
-
-          // Now create or get post id
-          const top5PostsIDsPromises = top5Posts.map(async (post: any) => {
-            const existingPostId = existingPosts.get(post.id);
-            if (existingPostId) {
-              return existingPostId;
-            } else {
-              // add post to db
-              updateMessage(
-                `🔄 Creating new post in database for account ${i + 1}`
-              );
-
-              const image = await downloadImageAndUploadToFirebase(
-                "posts",
-                post.video.cover,
-                post.id
-              );
-              const docRef = doc(db, "tiktok-posts", post.id);
-              await setDoc(docRef, {
-                postId: post.id,
-                postData: post.stats,
-                cover: image,
-              });
-              return post.id;
+          topPosts.forEach((post: any) => {
+            if (!postsArray.includes(post)) {
+              deleteOldPost(post);
             }
           });
 
-          const postsArray = await Promise.all(top5PostsIDsPromises);
           updateMessage(`🔄 Updating top 5 posts for account ${i + 1}`);
           await updateDoc(doc(db, "tiktok-accounts", id), {
             topPosts: postsArray,
@@ -438,7 +408,7 @@ const UpdateData = ({ data }: any) => {
         <span className="text-base ">{"Last updated " + lastUpdate}</span>
       </div>
 
-      <div className=" h-fit p-4 gap-3 items-center bg-background border w-full rounded-md   z-40 flex flex-row">
+      <div className=" h-fit p-4 gap-3 items-center border w-full rounded-md   z-40 flex flex-row">
         <Listbox value={selectedUpdateType} onChange={setSelectedUpdateType}>
           <div className="w-full flex-grow relative z-50">
             <Listbox.Button className="text-sm relative w-full cursor-default rounded-lg border text-primary  py-2 pl-3 pr-10 text-left shadow-md ">
@@ -616,6 +586,25 @@ const addNewAccountToDb = async (account: AccountStatsResponse) => {
   await setDoc(docRef, data);
 };
 
+const deleteOldPost = async (id: string) => {
+  const docRef = doc(collection(db, "tiktok-posts"), id);
+  await deleteDoc(docRef);
+
+  const storage = getStorage();
+  try {
+    const videoStorageRef = ref(storage, `tiktok-posts/${id}.mp4`);
+    await deleteObject(videoStorageRef);
+  } catch (e) {
+    console.log(e);
+  }
+  try {
+    const coverStorageRef = ref(storage, `tiktok-posts/${id}.jpg`);
+    await deleteObject(coverStorageRef);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export async function downloadImageAndUploadToFirebase(
   storagePath: string,
   imageUrl: string,
@@ -625,7 +614,7 @@ export async function downloadImageAndUploadToFirebase(
   const response = await fetch(imageUrl);
   const buffer = await response.arrayBuffer();
 
-  const storageRef = ref(storage, `${storagePath}s/${imageName}`);
+  const storageRef = ref(storage, `${storagePath}/${imageName}`);
 
   // Create a upload task
   const uploadTask = uploadBytesResumable(storageRef, buffer, {

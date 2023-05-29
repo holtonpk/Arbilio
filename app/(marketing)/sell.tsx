@@ -1,6 +1,6 @@
 import React from "react";
-import HeroHeader from "@/app/(marketing)/components/hero-header";
-import GlobeClient from "@/components/globe";
+import HeroHeader from "@/app/(marketing)/hero-header";
+import GlobeClient from "@/app/(marketing)/globe";
 const Sell = () => {
   return (
     <section id="profit">

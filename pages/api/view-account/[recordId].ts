@@ -22,9 +22,18 @@ export default async function handler(
 
   if (record?.topPosts) {
     const topPosts = record?.topPosts.map(async (post: any) => {
-      const postRef = doc(db, "tiktok-posts", post);
+      const postRef = doc(db, "tiktok-posts-test", post);
       const postData = await getDoc(postRef);
-      return postData.data();
+      return {
+        ...postData.data(),
+        author: {
+          avatar: record.avatar,
+          id: record.id,
+          secUid: record.secUid,
+          uniqueId: record.uniqueId,
+          nickname: record.userInfo?.user?.nickname,
+        },
+      };
     });
     topPostsData = await Promise.all(topPosts);
   }

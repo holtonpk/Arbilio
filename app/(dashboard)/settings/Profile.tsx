@@ -6,7 +6,6 @@ import { useAuth } from "@/context/Auth";
 import { Icons } from "@/components/icons";
 import { toast } from "@/components/ui/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
-import EnterPasswordModal from "@/components/enter-password";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
 const Profile = () => {
@@ -45,7 +44,7 @@ const Email = () => {
 
   return (
     <div className="flex flex-col w-full border rounded-md p-4 gap-2 relative pb-[72px]">
-      <label className="text-xl font-bold text-primary  ">Your Email</label>
+      <label className="text-xl font-bold text-primary  ">Email</label>
       <p className="text-sm text-muted-foreground mb-3  ">
         This is the email you use to login
       </p>
@@ -89,7 +88,7 @@ const Name = () => {
 
   return (
     <div className="flex flex-col w-full border rounded-md p-4  gap-2 relative pb-[72px]">
-      <label className="text-xl font-bold text-primary  ">Your Name</label>
+      <label className="text-xl font-bold text-primary  ">Name</label>
       <p className="text-sm text-muted-foreground mb-3  ">
         Please enter your full name, or a display name you are comfortable with.
       </p>
@@ -141,7 +140,7 @@ const Avatar = () => {
   return (
     <div className="grid grid-cols-[1fr_96px]  justify-between w-full border rounded-md p-4 gap-2 relative pb-[72px]">
       <div className="grid">
-        <label className="text-xl font-bold text-primary  ">Your Avatar</label>
+        <label className="text-xl font-bold text-primary  ">Avatar</label>
         <p className="text-sm text-muted-foreground mb-3  ">
           This is your avatar. <br /> Click on the avatar to upload a custom one
           from your files.
@@ -245,7 +244,7 @@ const AccountSettings = () => {
 
   return (
     <div className="flex flex-col w-full border rounded-md p-4 relative pb-[72px]">
-      <label className="text-xl font-bold text-primary  ">Your Password</label>
+      <label className="text-xl font-bold text-primary  ">Password</label>
       <p className="text-sm text-muted-foreground mb-3  ">
         Reset or change your password.
       </p>

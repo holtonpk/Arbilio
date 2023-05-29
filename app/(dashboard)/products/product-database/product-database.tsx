@@ -5,7 +5,7 @@ import useData from "@/lib/hooks/use-product-data";
 import Table from "./product-database-table";
 import { ProductDataBaseType } from "@/types";
 import FilterBuilder from "@/components/filter-builder";
-import ComboBox from "@/components/combo-box";
+import Sort from "@/components/sort-results";
 import DisplaySelector from "@/components/display-selector";
 import { DataSearch } from "@/components/data-search";
 import AppliedFilters from "@/components/applied-filters";
@@ -13,64 +13,122 @@ import { Icons } from "@/components/icons";
 import EmptySearch from "@/components/empty-search";
 import { Button } from "@/components/ui/button";
 import { productDatabaseConfig } from "@/config/dashboard";
-import CardDisplay from "./product-database-cards";
+import { ProductDisplay } from "./product-database-cards";
+import { Input } from "@/components/ui/input";
+import Tooltip from "@/components/ui/tooltip";
+import categories from "@/a.json";
+import { siteConfig } from "@/config/site";
+import { set } from "date-fns";
+import { toast } from "@/components/ui/use-toast";
 
 interface ProductDataBaseProps {
   data: ProductDataBaseType[];
 }
 
-const ProductDataBase = ({ data }: ProductDataBaseProps) => {
-  const {
-    sortedData,
-    appliedFilterList,
-    setAppliedFilterList,
-    setSortParam,
-    searchData,
-    setDescending,
-  } = useData({
-    data: data,
-  });
+const ProductDataBase = () => {
+  // const {
+  //   sortedData,
+  //   appliedFilterList,
+  //   setAppliedFilterList,
+  //   setSortParam,
+  //   searchData,
+  //   setDescending,
+  // } = useData({
+  //   data: data,
+  // });
+  const [data, setData] = React.useState<ProductDataBaseType[] | undefined>(
+    undefined
+  );
 
   const [displayType, setDisplayType] = React.useState<"grid" | "columns">(
     "grid"
   );
-  const sortOptions = productDatabaseConfig.sortOptions;
+  // const sortOptions = productDatabaseConfig.sortOptions;
+
+  const setDescending = (value: boolean) => {
+    // setSortParam((prev) => ({ ...prev, descending: value }));
+  };
+  const setSortParam = (value: string) => {
+    // setSortParam((prev) => ({ ...prev, param: value }));
+  };
+
+  const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const SearchData = async () => {
+    if (selectedItems.length > 0) {
+      setIsLoading(true);
+      const queryData: ProductDataBaseType[] = [];
+
+      const getIds = selectedItems.map(async (categoryId) => {
+        console.log(
+          `${siteConfig.url}/api/product-database-query/${categoryId}`
+        );
+        const res = await fetch(
+          `${siteConfig.url}/api/product-database-query/${categoryId}`
+        );
+        const newData = await res.json();
+        queryData.push(...newData);
+      });
+      const d = await Promise.all(getIds);
+      setData(queryData);
+      setIsLoading(false);
+    } else {
+      toast({
+        title: "Select a category",
+        description:
+          "Please select at least one category to search the database",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <>
-      <ItemChecklist />
-
-      <div className="w-full mt-2  p-4 bg-muted/60 ">
-        <div className="gap-2 w-full flex mb-3 ">
-          <DataSearch
-            placeholder="Search for a product"
-            searchFunction={searchData}
-            className="bg-background rounded-md"
-          />
-
-          <div className="md:flex items-center gap-4 w-full lg:w-fit justify-between hidden ">
-            <DisplaySelector
-              displayType={displayType}
-              setDisplayType={setDisplayType}
-            />
-          </div>
-        </div>
-        <AppliedFilters
-          appliedFilterList={appliedFilterList}
-          setAppliedFilterList={setAppliedFilterList}
+      <div className="container bg-background rounded-md  p-4  border-2 w-[80%] -translate-y-[150px]">
+        <ItemChecklist
+          selectedItems={selectedItems}
+          setSelectedItems={setSelectedItems}
         />
-        {sortedData?.length === 0 ? (
-          <EmptySearch />
-        ) : (
+        <Button
+          onClick={SearchData}
+          variant="default"
+          className="w-full"
+          size="lg"
+        >
+          {isLoading && <Icons.spinner className="animate-spin h-6 w-6" />}
+          Search Database
+        </Button>
+      </div>
+
+      {/* <div className="absolute top-4 right-4 hidden md:block">
+        <DisplaySelector
+          displayType={displayType}
+          setDisplayType={setDisplayType}
+        />
+      </div> */}
+      <div className="w-full  p-4 bg-muted -translate-y-[130px]">
+        {data && (
           <>
-            {displayType === "grid" && <CardDisplay data={sortedData} />}
-            {displayType === "columns" && (
+            <div className="grid md:grid-cols-2  gap-8 h-full w-full ">
+              {data.map((item: any, i: number) => (
+                <ProductDisplay key={i} item={item} />
+              ))}
+            </div>
+            {/* {displayType === "grid" ? (
+              <div className="grid md:grid-cols-2  gap-8 h-full w-full ">
+                {data.map((item: any, i: number) => (
+                  <ProductDisplay key={i} item={item} />
+                ))}
+              </div>
+            ) : (
               <Table
-                data={sortedData}
+                data={data}
                 setDescending={setDescending}
                 setSortParam={setSortParam}
               />
-            )}
+            )} */}
           </>
         )}
       </div>
@@ -102,67 +160,119 @@ const ProductView = ({ item }: ProductViewProps) => {
   );
 };
 
-const items = [
-  "Car Accessories",
-  "Wireless Chargers",
-  "Cable Chargers",
-  "Stress Relief Toys",
-  "Blenders/Juicers",
-  "Lighting/Decor",
-  "Fitness Equipment",
-  "Sleep Devices",
-  "Power Banks",
-  "Printers",
-  "Pet Supplies",
-  "Smoking Accessories",
-  "Pens",
-  "Flasks",
-  "Lighters",
-  "Cleaning Devices",
-  "Massage Tools",
-  "Portable Chargers",
-];
+interface ItemChecklistProps {
+  selectedItems: string[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
+}
 
-const ItemChecklist: React.FC = () => {
-  const [selectedItems, setSelectedItems] = React.useState<
-    Record<string, boolean>
-  >(items.reduce((acc, item) => ({ ...acc, [item]: true }), {}));
-
-  const handleCheckboxChange = (item: string) => {
-    setSelectedItems((prevState) => ({
-      ...prevState,
-      [item]: !prevState[item],
-    }));
+const ItemChecklist = ({
+  selectedItems,
+  setSelectedItems,
+}: ItemChecklistProps) => {
+  const handleCheckboxChange = (id: string) => {
+    if (selectedItems.includes(id)) {
+      setSelectedItems((prevItems) => prevItems.filter((item) => item !== id));
+    } else {
+      setSelectedItems((prevItems) => [...prevItems, id]);
+    }
   };
 
   const DeselectAll = () => {
-    setSelectedItems({});
+    setSelectedItems([]);
   };
 
+  console.log("sI", selectedItems);
   return (
-    <div className="grid p-4  rounded-md">
-      <div className="flex w-full justify-between">
-        <h1 className="text-lg">Product Categories</h1>
-        <button
-          onClick={DeselectAll}
-          className="text-theme-blue hover:opacity-60"
-        >
-          Deselect all
-        </button>
+    <>
+      {/* <h1 className="text-2xl">Query Builder</h1> */}
+      <div className="grid   ">
+        {/* <div className="p-2 flex flex-col gap-4">
+          <div className="grid gap-3">
+            <div className="flex items-center">
+              <label className="text-lg">Price</label>
+              <Tooltip content="Filter product by suppliers listed unit price ">
+                <div className="flex h-4 w-8 justify-center">
+                  <Icons.helpCircle className="h-4 w-4 text-gray-600" />
+                </div>
+              </Tooltip>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                type="number"
+                className="border rounded-md p-2"
+                placeholder="Min price"
+              />
+              <Input
+                type="number"
+                className="border rounded-md p-2"
+                placeholder="Max price"
+              />
+            </div>
+          </div>
+          <div className="grid gap-3">
+            <div className="flex items-center">
+              <label className="text-lg">Total Sellers</label>
+              <Tooltip content="Filter product by total sellers linked the the account">
+                <div className="flex h-4 w-8 justify-center">
+                  <Icons.helpCircle className="h-4 w-4 text-gray-600" />
+                </div>
+              </Tooltip>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                type="number"
+                className="border rounded-md p-2"
+                placeholder="Min sellers"
+              />
+              <Input
+                type="number"
+                className="border rounded-md p-2"
+                placeholder="Max sellers"
+              />
+            </div>
+          </div>
+        </div> */}
+
+        <div className="grid w-full p-2">
+          <div className="flex w-full justify-between">
+            <div className="flex items-center">
+              <h1 className="text-lg">Product Niche</h1>
+              <Tooltip content="Filter product by niche/category of product">
+                <div className="flex h-4 w-8 justify-center">
+                  <Icons.helpCircle className="h-4 w-4 text-gray-600" />
+                </div>
+              </Tooltip>
+            </div>
+
+            <button
+              onClick={DeselectAll}
+              className="text-destructive hover:opacity-60"
+            >
+              Deselect all
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2  border rounded-md p-4 lg:grid-cols-3 gap-4 mt-3 w-full ">
+            {categories.map((item, index) => (
+              <>
+                {item.ids.length > 0 && (
+                  <label key={index} className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox h-5 w-5 text-theme-blue"
+                      checked={selectedItems && selectedItems.includes(item.id)}
+                      onChange={() => handleCheckboxChange(item.id)}
+                    />
+                    <span className="text-muted-foreground text-[12px] md:text-base font-medium whitespace-nowrap ">
+                      {item.title + " (" + item.ids.length + ")"}
+                    </span>
+                  </label>
+                )}
+              </>
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="grid grid-cols-6 gap-3 mt-3 w-full ">
-        {items.map((item, index) => (
-          <label key={index} className="flex items-center space-x-3">
-            <input
-              type="checkbox"
-              className="form-checkbox h-5 w-5 text-theme-blue"
-              checked={selectedItems[item] || false}
-              onChange={() => handleCheckboxChange(item)}
-            />
-            <span className="text-muted-foreground font-medium ">{item}</span>
-          </label>
-        ))}
-      </div>
-    </div>
+    </>
   );
 };

@@ -9,7 +9,7 @@ import { AccountInfo } from "@/components/account-preview";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import Feedback from "@/components/feedback-modal";
+import Feedback from "@/components/modals/feedback-modal";
 const DashboardNav = () => {
   const segment = useSelectedLayoutSegment();
   const [collapseNav, setCollapseNav] = useState(false);

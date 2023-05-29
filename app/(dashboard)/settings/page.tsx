@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Profile from "./Profile";
+import Profile from "./profile";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/header";
@@ -23,7 +23,7 @@ const SettingsPage = () => {
   return (
     <>
       <PageHeader heading="Settings">
-        <Button onClick={ManageSub} className="">
+        <Button onClick={ManageSub} className="whitespace-nowrap mr-10">
           {isLoading ? (
             <Icons.spinner className="mr-2 h-6 w-6 animate-spin" />
           ) : (

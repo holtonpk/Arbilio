@@ -10,24 +10,18 @@ async function getData() {
   });
   console.log("res===>", response);
   const data = await response.json();
-  return data.data;
+  return data;
 }
 
 export default async function ProductDatabase() {
-  const data = await getData();
-
   return (
     <>
       <PageHeader
         heading="Product Database"
-        text={
-          "Browse our collection of over 500 active sellers and 1000+ accounts."
-        }
+        text={"Browse our collection of over 500 high converting products."}
       />
-      <div className="w-full border-t">
-        <div className="w-full  flex flex-col min-h-screen items-center  ">
-          <ProductDataBase data={data} />
-        </div>
+      <div className="w-full border-t mt-[180px] flex flex-col relative  items-center bg-muted ">
+        <ProductDataBase />
       </div>
     </>
   );

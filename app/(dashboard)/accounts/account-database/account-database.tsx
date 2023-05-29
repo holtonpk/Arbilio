@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Table from "@/components/account-table";
 import FilterBuilder from "@/components/filter-builder";
-import ComboBox from "@/components/combo-box";
+import Sort from "@/components/sort-results";
 import DisplaySelector from "@/components/display-selector";
 import { DataSearch } from "@/components/data-search";
 import AppliedFilters from "@/components/applied-filters";
@@ -72,7 +72,7 @@ const AccountDatabase = ({ originalData }: any) => {
               className="bg-background border-border"
             />
             <div className=" ">
-              <ComboBox
+              <Sort
                 dropList={sortOptions}
                 onSelect={setSortParam}
                 className="bg-background border-border"

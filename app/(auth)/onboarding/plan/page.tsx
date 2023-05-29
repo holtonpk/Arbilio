@@ -1,7 +1,7 @@
 import { Product } from "@/types";
 import Plans from "@/components/plans";
 import { siteConfig } from "@/config/site";
-import LogoutButton from "@/components/logout-button";
+import LogoutButton from "@/components/buttons/logout-button";
 import { Icons } from "@/components/icons";
 import Background from "@/components/background";
 async function getPlans(): Promise<Product[]> {

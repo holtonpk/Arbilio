@@ -42,5 +42,5 @@ export default async function Product({
 }) {
   const data = await getData(params.id);
 
-  return <ViewProduct data={data} />;
+  return <ViewProduct item={data} />;
 }

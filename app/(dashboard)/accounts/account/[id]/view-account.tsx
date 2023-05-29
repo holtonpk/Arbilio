@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import PostView from "@/components/post-view";
 import { ProductOperations } from "@/components/buttons/product-operations";
 import { LineChart } from "@/components/charts";
-
+import Tooltip from "@/components/ui/tooltip";
 interface DataContextData {
   data: AccountDataType;
 }
@@ -94,10 +94,15 @@ export const More = () => {
 const AnalyticsDisplay = () => {
   return (
     <div className="flex flex-col w-full mt-3">
-      <h1 className=" text-2xl text-primary">Analytics</h1>
-      <h1 className=" text-lg text-muted-foreground">
-        Account growth over time
-      </h1>
+      <div className="flex items-center">
+        <h1 className=" text-2xl text-primary">Analytics</h1>
+
+        <Tooltip content=" Account growth over time ">
+          <div className="flex h-4 w-8 justify-center">
+            <Icons.helpCircle className="h-4 w-4 text-muted-foreground" />
+          </div>
+        </Tooltip>
+      </div>
       <div className="grid gap-8  mt-3">
         <DataGraph
           field="followerCount"
@@ -211,10 +216,15 @@ const ProductDisplay = () => {
     <>
       {data.product ? (
         <div className="grid mt-3  w-full ">
-          <h1 className=" text-2xl text-primary">Product</h1>
-          <h1 className=" text-lg text-muted-foreground">
-            This is the main product advertised by the account
-          </h1>
+          <div className="flex items-center">
+            <h1 className=" text-2xl text-primary">Product</h1>
+            <Tooltip content="This is the main product advertised by the account ">
+              <div className="flex h-4 w-8 justify-center">
+                <Icons.helpCircle className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </Tooltip>
+          </div>
+
           <div className="grid divide-y  divide-border rounded-md border p-3 mt-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-8">
@@ -297,10 +307,15 @@ const StoreDisplay = () => {
     <>
       {products && (
         <div className="grid w-full ">
-          <h1 className=" text-2xl text-primary">Store</h1>
-          <h1 className=" text-lg text-muted-foreground">
-            The store linked in the accounts bio
-          </h1>
+          <div className="flex items-center">
+            <h1 className=" text-2xl text-primary">Store</h1>
+            <Tooltip content="This is the store linked in the account's bio">
+              <div className="flex h-4 w-8 justify-center">
+                <Icons.helpCircle className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </Tooltip>
+          </div>
+
           <div className="flex-col items-center min-w-full gap-4 p-3 border rounded-md">
             {products && (
               <>
@@ -365,16 +380,18 @@ const PostsDisplay = () => {
   const { data } = useContext(DataContext)!;
   return (
     <div className="grid w-full ">
-      <h1 className=" text-2xl text-primary">Top Posts</h1>
-      <h1 className=" text-lg text-muted-foreground">Top 5 posts by views</h1>
+      <div className="flex items-center">
+        <h1 className=" text-2xl text-primary">Top Posts</h1>
+        <Tooltip content="These are the current top 5 posts based on view count">
+          <div className="flex h-4 w-8 justify-center">
+            <Icons.helpCircle className="h-4 w-4 text-muted-foreground" />
+          </div>
+        </Tooltip>
+      </div>
       <div className="grid grid-cols-5 gap-4 mt-3">
         {data.topPosts &&
           data.topPosts.map((item: any, i) => (
-            <PostView
-              key={i}
-              cover={item?.cover}
-              playCount={item.postData.playCount}
-            />
+            <PostView key={i} video={item} />
           ))}
       </div>
     </div>

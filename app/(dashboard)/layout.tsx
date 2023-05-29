@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: ReactElement }) {
                 <DashboardNav />
                 <MobileDashboardNav />
               </header>
-              <div className="w-full h-fit hidden md:flex bg-gradient-to-r text-white from-indigo-500 via-purple-500 to-pink-500  items-center gap-3 justify-center p-1">
+              {/* <div className="w-full h-fit hidden md:flex bg-gradient-to-r text-white from-indigo-500 via-purple-500 to-pink-500  items-center gap-3 justify-center p-1">
                 Your trial expires in 11 days. To maintain access to premium
                 features, upgrade to Pro.
                 <LinkButton
@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: ReactElement }) {
                 >
                   Upgrade
                 </LinkButton>
-              </div>
+              </div> */}
               <div className="min-h-screen mt-20 md:mt-0  max-w-screen  overflow-hidden ">
                 <main className=" relative w-full pt-6   overflow-auto  min-h-[80vh] ">
                   {children}

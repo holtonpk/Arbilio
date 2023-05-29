@@ -4,7 +4,8 @@ import Link from "next/link";
 import { formatNumber } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import PostView from "@/components/post-view";
-import Skeleton from "./ui/custom-skeleton";
+import Skeleton from "@/components/ui/custom-skeleton";
+import Tooltip from "@/components/ui/tooltip";
 
 export const AccountCard = ({ item }: { item: AccountDataType }) => {
   return (
@@ -78,7 +79,14 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
         </Link>
 
         <div className="flex flex-col mt-2 w-full ">
-          <h1 className="text-sm ">Product</h1>
+          <div className="flex items-center">
+            <h1 className="text-sm ">Product</h1>
+            <Tooltip content="This is the main product advertised by the account">
+              <div className="flex h-3 w-4 justify-center">
+                <Icons.helpCircle className="h-3 w-3 text-muted-foreground" />
+              </div>
+            </Tooltip>
+          </div>
           <div className="grid grid-cols-[36px_1fr] relative gap-2 items-center rounded-md p-1 ">
             <Link
               href={`/products/product/${item.product?.id}`}
@@ -112,7 +120,14 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
           </div>
         </div>
         <div className="flex flex-col mt-2 w-full">
-          <h1 className="text-sm mb-2">Top Posts</h1>
+          <div className="flex items-center mb-2">
+            <h1 className="text-sm">Top Posts</h1>
+            <Tooltip content="These are the current top 5 posts based on view count">
+              <div className="flex h-3 w-4 justify-center">
+                <Icons.helpCircle className="h-3 w-3 text-muted-foreground" />
+              </div>
+            </Tooltip>
+          </div>
           <div className="grid grid-cols-3 gap-4 w-full ">
             {Array(
               item.topPosts
@@ -131,8 +146,8 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                     {item.topPosts && item.topPosts.length > i && (
                       <PostView
                         key={i}
-                        cover={item.topPosts[i]?.cover}
                         playCount={item.topPosts[i]?.postData.playCount}
+                        video={item.topPosts[i]}
                       />
                     )}
                   </div>

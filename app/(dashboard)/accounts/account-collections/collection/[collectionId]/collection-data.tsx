@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Icons } from "@/components/icons";
 import FilterBuilder from "@/components/filter-builder";
-import ComboBox from "@/components/combo-box";
+import Sort from "@/components/sort-results";
 import DisplaySelector from "@/components/display-selector";
 import { accountCollectionsConfig } from "@/config/dashboard";
 import AppliedFilters from "@/components/applied-filters";
@@ -58,7 +58,7 @@ const CollectionData = ({ data }: { data: AccountCollectionData }) => {
                   className="bg-background border-border"
                 />
                 <div className=" ">
-                  <ComboBox
+                  <Sort
                     dropList={sortOptions}
                     onSelect={setSortParam}
                     className="bg-background border-border"

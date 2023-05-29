@@ -78,7 +78,7 @@ const Table = ({ data, setDescending, setSortParam }: TableProps) => {
 
         <div
           ref={tableRef}
-          className="flex w-full overflow-x-scroll scrollbar-hide relative"
+          className="flex w-full overflow-x-scroll scrollbar-hide relative bg-background rounded-md"
         >
           <div
             ref={heightRef}

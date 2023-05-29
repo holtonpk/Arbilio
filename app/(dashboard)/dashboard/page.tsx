@@ -2,7 +2,7 @@
 import React from "react";
 import { PageHeader } from "@/components/header";
 import { Icons } from "@/components/icons";
-import KeyFeatures from "@/components/key-features";
+import KeyFeatures from "@/app/(dashboard)/dashboard/key-features";
 
 const Dashboard = () => {
   function getTimeOfDay() {

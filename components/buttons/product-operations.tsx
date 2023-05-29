@@ -38,18 +38,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
-import { ProductType } from "@/types";
+import { ProductType, ProductDataBaseType } from "@/types";
 
 interface productOperationsProps {
-  product: ProductType;
+  product: ProductType | ProductDataBaseType;
   variant?: "default" | "outline" | "secondary" | "destructive" | "ghost";
   children?: React.ReactNode;
+  className?: string;
 }
 
 export function ProductOperations({
   product,
   variant,
   children,
+  className,
 }: productOperationsProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [showUpdateName, setShowUpdateName] = React.useState<boolean>(false);
@@ -61,7 +63,9 @@ export function ProductOperations({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button variant={variant}>{children}</Button>
+          <Button variant={variant} className={className}>
+            {children}
+          </Button>
           <span className="sr-only">Open</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

@@ -6,13 +6,13 @@ import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import { ComboBoxType } from "@/types";
 
-interface ComboBoxProps {
+interface SortProps {
   dropList: ComboBoxType;
   onSelect: (item: any) => void;
   className?: string;
 }
 
-const ComboBox = ({ dropList, onSelect, className }: ComboBoxProps) => {
+const Sort = ({ dropList, onSelect, className }: SortProps) => {
   const [selected, setSelected] = useState(dropList.items[0]);
   const [open, setOpen] = useState(false);
   const toggleOpen = () => {
@@ -58,7 +58,7 @@ const ComboBox = ({ dropList, onSelect, className }: ComboBoxProps) => {
   );
 };
 
-export default ComboBox;
+export default Sort;
 
 interface MenuItemProps {
   item: {
