@@ -144,11 +144,7 @@ export const AccountCard = ({ item }: { item: AccountDataType }) => {
                     className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden "
                   >
                     {item.topPosts && item.topPosts.length > i && (
-                      <PostView
-                        key={i}
-                        playCount={item.topPosts[i]?.postData.playCount}
-                        video={item.topPosts[i]}
-                      />
+                      <PostView key={i} video={item.topPosts[i]} />
                     )}
                   </div>
                 );
