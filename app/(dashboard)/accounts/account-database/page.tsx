@@ -23,9 +23,6 @@ export default async function AccountDataBase() {
       <PageHeader
         heading="Account Database"
         tooltip="Browse our collection of over 500 active sellers and 1000+ accounts."
-        // text={
-        //   "Browse our collection of over 500 active sellers and 1000+ accounts."
-        // }
       />
       <div className="w-full border-t bg-muted/60">
         <div className="w-full container   pt-4  flex flex-col min-h-screen items-center  ">
