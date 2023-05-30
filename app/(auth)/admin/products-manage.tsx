@@ -596,7 +596,7 @@ const CategorySelect = ({ item }: { item: ProductType }) => {
         disabled: true,
       });
     }
-  }, [item, categories]);
+  }, [item]);
 
   const onChange = async (updateValue: any) => {
     setIsLoading(true);
