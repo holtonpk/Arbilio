@@ -8,6 +8,7 @@ import {
   collection,
   where,
 } from "firebase/firestore";
+import { storage } from "@/config/data-storage";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,10 +16,7 @@ export default async function handler(
 ) {
   const id = req.query.productId as string;
 
-  const q = query(
-    collection(db, "tiktok-accounts"),
-    where("product", "==", id)
-  );
+  const q = query(collection(db, storage.accounts), where("product", "==", id));
   const docs = await getDocs(q);
 
   const formattedData = docs.docs.map(async (_doc) => {
@@ -27,7 +25,7 @@ export default async function handler(
 
     if (record?.topPosts) {
       const topPosts = record?.topPosts.map(async (post: any) => {
-        const postRef = doc(db, "tiktok-posts", post);
+        const postRef = doc(db, storage.posts, post);
         const postData = await getDoc(postRef);
         return {
           ...postData.data(),

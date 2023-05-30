@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/context/Auth";
 import { doc, getDoc } from "firebase/firestore";
+import { storage } from "@/config/data-storage";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,21 +9,21 @@ export default async function handler(
 ) {
   const recordId = req.query.recordId as string;
 
-  const document = await getDoc(doc(db, "tiktok-accounts", recordId));
+  const document = await getDoc(doc(db, storage.accounts, recordId));
   const record = document.data();
 
   let productData = undefined;
   let topPostsData = undefined;
 
   if (record?.product) {
-    const productRef = doc(db, "tiktokProducts", record?.product);
+    const productRef = doc(db, storage.products, record?.product);
     const productInfo = await getDoc(productRef);
     if (productInfo.data()) productData = productInfo.data() as any;
   }
 
   if (record?.topPosts) {
     const topPosts = record?.topPosts.map(async (post: any) => {
-      const postRef = doc(db, "tiktok-posts-test", post);
+      const postRef = doc(db, storage.posts, post);
       const postData = await getDoc(postRef);
       return {
         ...postData.data(),

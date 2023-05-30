@@ -39,7 +39,7 @@ import { AccountStatsResponse } from "@/types";
 import { record } from "zod";
 import { to } from "react-spring";
 import { ca } from "date-fns/locale";
-import { storage } from "@/config/data-storage";
+import { storage as DataStorage } from "@/config/data-storage";
 
 export default function DataScrape() {
   const [data, setData] = useState<any>(undefined);
@@ -48,7 +48,7 @@ export default function DataScrape() {
     async function getLastUpdate() {
       try {
         const records = await getDocs(
-          query(collection(db, storage.updateLogs), orderBy("time", "desc"))
+          query(collection(db, DataStorage.updateLogs), orderBy("time", "desc"))
         );
         setData(records.docs);
       } catch (error) {}
@@ -150,7 +150,7 @@ const UpdateData = ({ data }: any) => {
 
   const fetchStartAfter = async (data: string) => {
     const q = query(
-      collection(db, storage.updateLogs),
+      collection(db, DataStorage.updateLogs),
       where("data", "==", data),
       orderBy("time", "desc")
     );
@@ -165,11 +165,11 @@ const UpdateData = ({ data }: any) => {
     try {
       const startAfter = await fetchStartAfter("accountInfo");
       const startAfterSnapshot = await getDoc(
-        doc(db, storage.accounts, startAfter)
+        doc(db, DataStorage.accounts, startAfter)
       );
       const availableCredits = await fetchAvailableCredits();
       const q = query(
-        collection(db, storage.accounts),
+        collection(db, DataStorage.accounts),
         limit(availableCredits),
         startAt(startAfterSnapshot)
       );
@@ -192,7 +192,7 @@ const UpdateData = ({ data }: any) => {
             );
             const data = await response.json();
 
-            await updateDoc(doc(db, storage.accounts, id), {
+            await updateDoc(doc(db, DataStorage.accounts, id), {
               userInfo: data.json.userInfo,
             });
 
@@ -234,7 +234,7 @@ const UpdateData = ({ data }: any) => {
         try {
           const account = records[i];
 
-          const collectionRef = collection(db, storage.accounts);
+          const collectionRef = collection(db, DataStorage.accounts);
           const q = query(
             collectionRef,
             where("secUid", "==", account.user.secUid)
@@ -286,7 +286,7 @@ const UpdateData = ({ data }: any) => {
     try {
       const startAfter = await fetchStartAfter("accountsPosts");
       const startAfterSnapshot = await getDoc(
-        doc(db, storage.accounts, startAfter)
+        doc(db, DataStorage.accounts, startAfter)
       );
       const availableCredits = await fetchAvailableCredits();
       updateMessage(
@@ -294,7 +294,7 @@ const UpdateData = ({ data }: any) => {
       );
 
       const q = query(
-        collection(db, storage.accounts),
+        collection(db, DataStorage.accounts),
         limit(availableCredits),
         startAt(startAfterSnapshot)
       );
@@ -304,7 +304,7 @@ const UpdateData = ({ data }: any) => {
       let totalRecords = records.length;
       if (totalRecords < availableCredits) {
         const q = query(
-          collection(db, storage.accounts),
+          collection(db, DataStorage.accounts),
           limit(availableCredits - totalRecords)
         );
         const res = await getDocs(q);
@@ -336,7 +336,7 @@ const UpdateData = ({ data }: any) => {
           });
 
           updateMessage(`🔄 Updating top 5 posts for account ${i + 1}`);
-          await updateDoc(doc(db, storage.accounts, id), {
+          await updateDoc(doc(db, DataStorage.accounts, id), {
             topPosts: postsArray,
           });
         } catch (error: any) {
@@ -377,7 +377,7 @@ const UpdateData = ({ data }: any) => {
       updateMessage(`Error ==> ${error}`);
     }
 
-    await addDoc(collection(db, storage.updateLogs), {
+    await addDoc(collection(db, DataStorage.updateLogs), {
       data: selectedUpdateType.value,
       time: new Date(),
       startAfter: startAfter,
@@ -567,7 +567,7 @@ const addNewAccountToDb = async (account: AccountStatsResponse) => {
   const dataCollectionTime = new Date().getTime();
 
   // const docRef = doc(db, "tiktokAccounts", account.user.id);
-  const docRef = doc(db, storage.accounts, account.user.id);
+  const docRef = doc(db, DataStorage.accounts, account.user.id);
 
   const avatar = await downloadImageAndUploadToFirebase(
     "tiktok-avatars",
@@ -593,18 +593,18 @@ const addNewAccountToDb = async (account: AccountStatsResponse) => {
 };
 
 const deleteOldPost = async (id: string) => {
-  const docRef = doc(collection(db, "tiktok-posts"), id);
+  const docRef = doc(collection(db, DataStorage.posts), id);
   await deleteDoc(docRef);
 
   const storage = getStorage();
   try {
-    const videoStorageRef = ref(storage, `tiktok-posts/${id}.mp4`);
+    const videoStorageRef = ref(storage, `${DataStorage.postsMedia}/${id}.mp4`);
     await deleteObject(videoStorageRef);
   } catch (e) {
     console.log(e);
   }
   try {
-    const coverStorageRef = ref(storage, `tiktok-posts/${id}.jpg`);
+    const coverStorageRef = ref(storage, `${DataStorage.postsMedia}/${id}.jpg`);
     await deleteObject(coverStorageRef);
   } catch (e) {
     console.log(e);

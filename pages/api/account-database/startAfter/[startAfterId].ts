@@ -11,6 +11,7 @@ import {
   startAt,
   orderBy,
 } from "firebase/firestore";
+import { storage } from "@/config/data-storage";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,11 +19,11 @@ export default async function handler(
 ) {
   const startAfter = req.query.startAfterId as string;
 
-  const collectionRef = collection(db, "tiktok-accounts");
+  const collectionRef = collection(db, storage.accounts);
 
   let q;
 
-  const startAfterDoc = doc(db, "tiktok-accounts", startAfter);
+  const startAfterDoc = doc(db, storage.accounts, startAfter);
 
   const startAfterSnapshot = await getDoc(startAfterDoc);
 
@@ -43,14 +44,14 @@ export default async function handler(
     let topPostsData = null;
 
     if (record.product) {
-      const productRef = doc(db, "tiktokProducts", record.product);
+      const productRef = doc(db, storage.products, record.product);
       const productInfo = await getDoc(productRef);
       productData = productInfo.data();
     }
 
     if (record.topPosts && record.topPosts.length) {
       const topPosts = record?.topPosts.map(async (post: any) => {
-        const postRef = doc(db, "tiktok-posts", post);
+        const postRef = doc(db, storage.posts, post);
         const postData = await getDoc(postRef);
         return postData.data();
       });

@@ -18,9 +18,6 @@ import {
 } from "firebase/firestore";
 import { storage } from "@/config/data-storage";
 
-const postStorageLocation = storage.posts;
-const mediaStorageLocation = storage.postsMedia;
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
@@ -44,7 +41,7 @@ export default async function handler(
 
   const postExists = await getDocs(
     query(
-      collection(db, postStorageLocation),
+      collection(db, storage.posts),
       where("postId", "in", Array.from(postIds))
     )
   );
@@ -58,18 +55,18 @@ export default async function handler(
   const top5PostsIDsPromises = top5Posts.map(async (post: any) => {
     const existingPostId = existingPosts.get(post.id);
     if (existingPostId) {
-      updateDoc(doc(db, postStorageLocation, existingPostId), {
+      updateDoc(doc(db, storage.posts, existingPostId), {
         postData: post.stats,
       });
     } else {
       // add post to db
       const image = await downloadImageAndUploadToFirebase(
-        mediaStorageLocation,
+        storage.postsMedia,
         post.video.cover,
         post.id
       );
       const video = await saveVideoAndUploadToFirebase(
-        mediaStorageLocation,
+        storage.postsMedia,
         post.id,
         post.video.downloadAddr,
         response.json.$other.videoLinkHeaders
@@ -77,7 +74,7 @@ export default async function handler(
 
       // save video to firebase function here
 
-      const docRef = doc(db, postStorageLocation, post.id);
+      const docRef = doc(db, storage.posts, post.id);
       await setDoc(docRef, {
         postId: post.id,
         postData: post.stats,
@@ -87,8 +84,8 @@ export default async function handler(
         desc: post.desc,
         music: post.music,
       });
-      return post.id;
     }
+    return post.id;
   });
 
   const postsArray = (await Promise.all(top5PostsIDsPromises)) as string[];

@@ -11,22 +11,17 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { AccountDataType } from "@/types";
+import { storage } from "@/config/data-storage";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AccountDataType[]>
 ) {
-  const collectionRef = collection(db, "tiktok-accounts");
+  const collectionRef = collection(db, storage.accounts);
   // order by accountStats.length
   // where topPost != []
   // where product != null
-  const q = query(
-    collectionRef,
-    where("topPosts", "!=", []), // assuming topPost is an array field
-    // where("product", "!=", null), // assuming product is a field
-    // orderBy("accountStatsLength", "desc"), // assuming accountStatsLength is a field that stores array length
-    limit(40)
-  );
+  const q = query(collectionRef, where("topPosts", "!=", []), limit(40));
   const docs = await getDocs(q);
 
   const formattedData = docs.docs.map(async (_doc) => {
@@ -36,14 +31,19 @@ export default async function handler(
     let topPostsData = null;
 
     if (record.product) {
-      const productRef = doc(db, "tiktokProducts", record.product);
+      const productRef = doc(db, storage.products, record.product);
       const productInfo = await getDoc(productRef);
       productData = productInfo.data();
     }
 
-    if (record.topPosts && record.topPosts.length) {
+    if (
+      record.topPosts &&
+      record.topPosts.length &&
+      !record.topPosts.includes(null)
+    ) {
       const topPosts = record?.topPosts.map(async (post: any) => {
-        const postRef = doc(db, "tiktok-posts-test", post);
+        if (post === null) return null;
+        const postRef = doc(db, storage.posts, post);
         const postData = await getDoc(postRef);
         return {
           ...postData.data(),

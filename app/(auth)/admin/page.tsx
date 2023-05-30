@@ -14,6 +14,7 @@ const AdminLayout = () => {
   const [showDataScrape, setShowDataScrape] = useState(false);
   const [showAccountManagement, setShowAccountManagement] = useState(false);
   const [showProductsManagement, setShowProductsManagement] = useState(false);
+
   return (
     <>
       <div className="flex flex-col items-center p-8 gap-4 w-full mx-auto mt-12 relative ">

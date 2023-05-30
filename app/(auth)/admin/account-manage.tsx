@@ -258,7 +258,7 @@ const AccountManage = () => {
 
   const UpdateAll = async () => {
     setUpdateIsLoading(true);
-    const collectionRef = collection(db, "tiktok-posts-test");
+    const collectionRef = collection(db, storage.posts);
     const BATCH_SIZE = 10;
     const res = await getDocs(collectionRef);
     const postData = res.docs;
@@ -270,11 +270,19 @@ const AccountManage = () => {
           const docRef = doc(collectionRef, account.id);
           const docSnap = await getDoc(docRef);
           const docData = docSnap.data();
-          try {
-            const newDocRef = doc(collection(db, storage.posts), account.id);
-            await setDoc(newDocRef, docData);
-          } catch (error) {
-            console.log("error:", docData);
+
+          if (docData?.topPosts) {
+            try {
+              const newTopPosts = docData.topPosts.filter(
+                (element: any) => element !== null && element !== undefined
+              );
+              console.log(docData.id, newTopPosts);
+              // await updateDoc(docRef, {
+              //   topPosts: newTopPosts
+              // });
+            } catch (error) {
+              console.log("error:", docData);
+            }
           }
         })
       );
