@@ -17,7 +17,7 @@ async function getData() {
 }
 
 export default async function AccountDataBase() {
-  const data = await getData();
+  // const data = await getData();
 
   return (
     <>
@@ -30,7 +30,7 @@ export default async function AccountDataBase() {
       />
       <div className="w-full border-t bg-muted/60">
         <div className="w-full container   pt-4  flex flex-col min-h-screen items-center  ">
-          <AccountDatabase originalData={data} />
+          {/* <AccountDatabase originalData={data} /> */}
         </div>
       </div>
     </>
