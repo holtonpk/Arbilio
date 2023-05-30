@@ -4,19 +4,15 @@ import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { ProductDataBaseType, AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
 import categories from "@/a.json";
-
+import { storage } from "@/config/data-storage";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ProductDataBaseType[]>
 ) {
   const categoryId = req.query.categoryId as any;
 
-  // find category with id equal to categoryId and return the ids
-  const category = categories.find((category) => category.id === categoryId);
-  const ids = category?.ids;
-
-  const collectionRef = collection(db, "tiktokProducts");
-  const q = query(collectionRef, limit(5), where("id", "in", ids));
+  const collectionRef = collection(db, storage.products);
+  const q = query(collectionRef, limit(5), where("category", "==", categoryId));
   const docs = await getDocs(q);
   const formattedData = docs.docs.map(async (_doc) => {
     const record = _doc.data();

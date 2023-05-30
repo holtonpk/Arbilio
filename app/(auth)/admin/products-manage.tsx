@@ -31,13 +31,17 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import exp from "constants";
+import categories from "@/a.json";
+import { storage } from "@/config/data-storage";
+import { CustomListBox } from "@/components/ui/list-box";
 
 const ProductManage = () => {
   const [products, setProducts] = React.useState<ProductType[]>([]);
   const [expanded, setExpanded] = React.useState<ProductType>();
   const [updateIsLoading, setUpdateIsLoading] = React.useState<boolean>(false);
+
   useEffect(() => {
-    const collectionRef = collection(db, "tiktokProducts");
+    const collectionRef = collection(db, storage.products);
     const q = query(collectionRef);
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -65,7 +69,7 @@ const ProductManage = () => {
 
   const AddSupplierInfo = async () => {
     setUpdateIsLoading(true);
-    const collectionRef = collection(db, "tiktokProducts");
+    const collectionRef = collection(db, storage.products);
 
     for (let i = 0; i < products.length; i += BATCH_SIZE) {
       const batch = products.slice(i, i + BATCH_SIZE);
@@ -112,7 +116,7 @@ const ProductManage = () => {
     setUpdateIsLoading(false);
   };
 
-  const Update = async () => {
+  const Update2 = async () => {
     setUpdateIsLoading(true);
     const collectionRef = collection(db, "tiktokPosts");
 
@@ -158,21 +162,117 @@ const ProductManage = () => {
     setUpdateIsLoading(false);
   };
 
+  const Update = async () => {
+    setUpdateIsLoading(true);
+    const collectionRef = collection(db, storage.products);
+    const productsRes = await getDocs(collectionRef);
+    const products = productsRes.docs;
+
+    for (let i = 0; i < products.length; i += BATCH_SIZE) {
+      const batch = products.slice(i, i + BATCH_SIZE);
+      await Promise.all(
+        batch.map(async (product, index) => {
+          console.log(i + index, "/", products.length);
+          const docRef = doc(collectionRef, product.id);
+          const docSnap = await getDoc(docRef);
+          const docData = docSnap.data();
+          try {
+            const data = {
+              ...docData,
+              category: getCategoryTitle(docData?.id),
+            };
+
+            console.log(data);
+            const newDocRef = doc(
+              collection(db, storage.products),
+              docData?.id
+            );
+            await setDoc(newDocRef, data);
+          } catch (error) {
+            console.error(`Error processing ${error}`);
+          }
+        })
+      );
+    }
+    setUpdateIsLoading(false);
+  };
+
+  const getCategoryTitle = (id: string): string | null => {
+    for (let category of categories) {
+      if (category.ids.includes(id)) {
+        return category.id;
+      }
+    }
+    return null; // Return null if the id wasn't found in any category
+  };
+
   const [goodProducts, setGoodProducts] = useState<ProductType[]>([]);
   const [badProducts, setBadProducts] = useState<ProductType[]>([]);
+  const [hiddenList, setHiddenList] = useState<string[]>([]);
+  const [activeFilters, setActiveFilters] = React.useState<Filters[]>([]);
+
+  const handleFilterChange = (filter: Filters) => {
+    if (activeFilters.includes(filter)) {
+      setActiveFilters(activeFilters.filter((item) => item !== filter));
+    } else {
+      setActiveFilters([...activeFilters, filter]);
+    }
+  };
 
   useEffect(() => {
-    const good = products.filter((product) => product.supplierInfo);
-    const bad = products.filter((product) => !product.supplierInfo);
+    if (activeFilters.length > 0) {
+      const bad = products?.filter((product) => {
+        for (const filter of activeFilters) {
+          if (product[filter] === undefined || product[filter] === null) {
+            return true;
+          }
+        }
 
-    setGoodProducts(good);
-    setBadProducts(bad);
-  }, [products]);
+        return false;
+      });
+
+      const good = products?.filter((account) => {
+        for (const filter of activeFilters) {
+          if (account[filter] === undefined || account[filter] === null) {
+            return false;
+          }
+        }
+
+        return true;
+      });
+
+      const filteredBad = bad.filter(
+        (account) => !hiddenList.includes(account.id)
+      );
+
+      setBadProducts(filteredBad);
+      setGoodProducts(good);
+    } else {
+      setGoodProducts(products);
+      setBadProducts([]);
+    }
+  }, [products, activeFilters, hiddenList]);
+
+  type Filters = "category" | "supplierInfo";
 
   return (
     <>
       {products.length > 0 ? (
         <>
+          <div className="flex gap-4  items-center">
+            <input
+              type="checkbox"
+              checked={activeFilters.includes("category")}
+              onChange={() => handleFilterChange("category")}
+            />
+            <label>Category</label>
+            <input
+              type="checkbox"
+              checked={activeFilters.includes("supplierInfo")}
+              onChange={() => handleFilterChange("supplierInfo")}
+            />
+            <label>Supplier Info</label>
+          </div>
           <Button onClick={Update} className="w-fit">
             {updateIsLoading ? (
               <Icons.spinner className="animate-spin" />
@@ -190,25 +290,27 @@ const ProductManage = () => {
                 : null
             }`}
           >
-            <div className="grid gap-2 ">
-              <div className="grid max-h-[80vh] overflow-scroll divide-y divide-border border border-destructive rounded-md max-w-full ">
-                <div className="h-fit p-2 flex z-10 text-lg sticky top-0 w-full bg-muted">
-                  {badProducts.length}
-                </div>
-                {badProducts.map((product, i) => (
-                  <div
-                    onClick={() => setExpanded(product)}
-                    key={i}
-                    className="flex p-4 gap-4 items-center w-full cursor-pointer"
-                  >
-                    <div className="h-10 w-10 rounded-md relative overflow-hidden">
-                      <Image src={product.image} alt="no image" fill />
-                    </div>
-                    <h1>{product.title}</h1>
+            {badProducts && badProducts.length > 0 && (
+              <div className="grid gap-2 ">
+                <div className="grid max-h-[80vh] overflow-scroll divide-y divide-border border border-destructive rounded-md max-w-full ">
+                  <div className="h-fit p-2 flex z-10 text-lg sticky top-0 w-full bg-muted">
+                    {badProducts.length}
                   </div>
-                ))}
+                  {badProducts.map((product, i) => (
+                    <div
+                      onClick={() => setExpanded(product)}
+                      key={i}
+                      className="flex p-4 gap-4 items-center w-full cursor-pointer"
+                    >
+                      <div className="h-10 w-10 rounded-md relative overflow-hidden">
+                        <Image src={product.image} alt="no image" fill />
+                      </div>
+                      <h1>{product.title}</h1>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="grid gap-2 ">
               <div className="grid max-h-[80vh] overflow-scroll divide-y divide-border border border-green-500 rounded-md max-w-full ">
@@ -232,9 +334,11 @@ const ProductManage = () => {
             {expanded && (
               <div
                 className={`${
-                  expanded?.supplierInfo
-                    ? "border-green-500"
-                    : "border-destructive"
+                  activeFilters.length > 0
+                    ? goodProducts.includes(expanded)
+                      ? "border-green-500"
+                      : "border-destructive"
+                    : null
                 } h-full w-full border rounded-md flex flex-col p-4  items-center relative`}
               >
                 <Expanded item={expanded} />
@@ -271,7 +375,7 @@ const ScrapeAli = async (supplierId: string, recordId: string) => {
       supplierPrice: productInfo.salePrice,
     };
 
-    const docRef = doc(collection(db, "tiktokProducts"), recordId);
+    const docRef = doc(collection(db, storage.products), recordId);
     await updateDoc(docRef, {
       supplierInfo: productInfoData,
     });
@@ -299,7 +403,7 @@ const Expanded = ({ item }: ExpandedProps) => {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const deleteProduct = async () => {
-    const docRef = doc(collection(db, "tiktokProducts"), item.id);
+    const docRef = doc(collection(db, storage.products), item.id);
     await deleteDoc(docRef);
   };
 
@@ -333,6 +437,7 @@ const Expanded = ({ item }: ExpandedProps) => {
         />
       </div>
       <div className="grid gap-3 w-full">
+        <CategorySelect item={item} />
         <UpdateFieldInput item={item} field="title" />
         <UpdateFieldInput item={item} field="supplierUrl" />
         <UpdateFieldInput item={item} field="supplierId" />
@@ -420,7 +525,7 @@ const UpdateFieldInput = <T extends keyof ProductType>({
 
   const updateField = async () => {
     setIsLoading(true);
-    const collectionRef = collection(db, "tiktokProducts");
+    const collectionRef = collection(db, storage.products);
     const docRef = doc(collectionRef, item.id);
     await updateDoc(docRef, {
       [field]: value,
@@ -452,6 +557,65 @@ const UpdateFieldInput = <T extends keyof ProductType>({
             "Update"
           )}
         </Button>
+      </div>
+    </div>
+  );
+};
+
+const CategorySelect = ({ item }: { item: ProductType }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
+
+  const values = categories
+    .map((category) => ({
+      label: category.title,
+      value: category.id,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+
+  const [value, setValue] = useState<{
+    label: string;
+    value: string;
+    disabled?: boolean;
+  }>({
+    label: "",
+    value: "",
+  });
+
+  useEffect(() => {
+    const cat = categories.find((category) => category.id === item.category);
+    if (cat) {
+      setValue({
+        label: cat.title,
+        value: cat.id,
+      });
+    } else {
+      setValue({
+        label: "--",
+        value: "",
+        disabled: true,
+      });
+    }
+  }, [item, categories]);
+
+  const onChange = async (updateValue: any) => {
+    setIsLoading(true);
+    const collectionRef = collection(db, storage.products);
+    const docRef = doc(collectionRef, item.id);
+    await updateDoc(docRef, {
+      category: updateValue.value,
+    });
+    setIsLoading(false);
+    setIsUpdated(true);
+    setTimeout(() => setIsUpdated(false), 3000);
+    setValue(updateValue);
+  };
+
+  return (
+    <div className="grid gap-1 items-center w-full">
+      <h1>{"Category"}</h1>
+      <div className="flex gap-2 w-full">
+        <CustomListBox values={values} value={value} onChange={onChange} />
       </div>
     </div>
   );

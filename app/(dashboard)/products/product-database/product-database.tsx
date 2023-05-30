@@ -16,7 +16,7 @@ import { productDatabaseConfig } from "@/config/dashboard";
 import { ProductDisplay } from "./product-database-cards";
 import { Input } from "@/components/ui/input";
 import Tooltip from "@/components/ui/tooltip";
-import categories from "@/a.json";
+import { categories } from "@/config/categories";
 import { siteConfig } from "@/config/site";
 import { set } from "date-fns";
 import { toast } from "@/components/ui/use-toast";
@@ -181,7 +181,8 @@ const ItemChecklist = ({
     setSelectedItems([]);
   };
 
-  console.log("sI", selectedItems);
+  // const total = categories.flatMap((item) => item.ids).length;
+
   return (
     <>
       {/* <h1 className="text-2xl">Query Builder</h1> */}
@@ -255,19 +256,17 @@ const ItemChecklist = ({
           <div className="grid grid-cols-2  border rounded-md p-4 lg:grid-cols-3 gap-4 mt-3 w-full ">
             {categories.map((item, index) => (
               <>
-                {item.ids.length > 0 && (
-                  <label key={index} className="flex items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      className="form-checkbox h-5 w-5 text-theme-blue"
-                      checked={selectedItems && selectedItems.includes(item.id)}
-                      onChange={() => handleCheckboxChange(item.id)}
-                    />
-                    <span className="text-muted-foreground text-[12px] md:text-base font-medium whitespace-nowrap ">
-                      {item.title + " (" + item.ids.length + ")"}
-                    </span>
-                  </label>
-                )}
+                <label key={index} className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-5 w-5 text-theme-blue"
+                    checked={selectedItems && selectedItems.includes(item.id)}
+                    onChange={() => handleCheckboxChange(item.id)}
+                  />
+                  <span className="text-muted-foreground text-[12px] md:text-base font-medium whitespace-nowrap ">
+                    {item.title}
+                  </span>
+                </label>
               </>
             ))}
           </div>

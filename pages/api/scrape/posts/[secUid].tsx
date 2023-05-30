@@ -16,9 +16,10 @@ import {
   where,
   updateDoc,
 } from "firebase/firestore";
+import { storage } from "@/config/data-storage";
 
-const postStorageLocation = "tiktok-posts";
-const mediaStorageLocation = "tiktok-posts";
+const postStorageLocation = storage.posts;
+const mediaStorageLocation = storage.postsMedia;
 
 export default async function handler(
   req: NextApiRequest,

@@ -10,6 +10,7 @@ import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Feedback from "@/components/modals/feedback-modal";
+import { siteConfig } from "@/config/site";
 const DashboardNav = () => {
   const segment = useSelectedLayoutSegment();
   const [collapseNav, setCollapseNav] = useState(false);
@@ -42,7 +43,7 @@ const DashboardNav = () => {
         <Link href="/" className=" items-center space-x-2 flex w-fit">
           <span className="text-2xl p-2 text-primary font-bold inline-block ">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600">
-              TikDrop
+              {siteConfig.name}
             </span>
             .io
           </span>
@@ -92,7 +93,7 @@ const DashboardNav = () => {
             <Link href="/" className=" items-center space-x-2 flex fade-in2">
               <span className="text-lg p-2 text-primary font-bold inline-block ">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                  TikDrop
+                  {siteConfig.name}
                 </span>
                 .io
               </span>

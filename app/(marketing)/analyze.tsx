@@ -2,6 +2,7 @@ import React from "react";
 import HeroHeader from "@/app/(marketing)/hero-header";
 import { Icons } from "@/components/icons";
 import GlobeClient from "@/app/(marketing)/globe";
+import { siteConfig } from "@/config/site";
 
 const Analyze = () => {
   return (
@@ -13,7 +14,7 @@ const Analyze = () => {
         number="2"
         title="Analyze"
         subtitle="Leverage the power of our tools"
-        description="Unleash the potential of TikDrop.io's robust tools designed to empower your dropshipping business. They offer streamlined solutions for product discovery, video creation, and revenue enhancement, making your path to success both efficient and profitable."
+        description={`Unleash the potential of ${siteConfig.name} robust tools designed to empower your dropshipping business. They offer streamlined solutions for product discovery, video creation, and revenue enhancement, making your path to success both efficient and profitable.`}
       />
       <div className="grid grid-cols-2 w-full px-4 md:px-0 md:w-[80%] gap-4 md:gap-20 pt-[180px] relative ">
         <div className="absolute md:flex items-center flex-col h-full hidden md:gap-[1px]  top-0 left-1/2 -translate-x-1/2">

@@ -39,6 +39,7 @@ import { AccountStatsResponse } from "@/types";
 import { record } from "zod";
 import { to } from "react-spring";
 import { ca } from "date-fns/locale";
+import { storage } from "@/config/data-storage";
 
 export default function DataScrape() {
   const [data, setData] = useState<any>(undefined);
@@ -47,7 +48,7 @@ export default function DataScrape() {
     async function getLastUpdate() {
       try {
         const records = await getDocs(
-          query(collection(db, "updateLogs"), orderBy("time", "desc"))
+          query(collection(db, storage.updateLogs), orderBy("time", "desc"))
         );
         setData(records.docs);
       } catch (error) {}
@@ -147,15 +148,9 @@ const UpdateData = ({ data }: any) => {
   const updateMessage = (text: string) =>
     setUpdateSteps((prevSteps) => [...prevSteps, text]);
 
-  const fetchAvailableCredits = async () => {
-    const res = await fetch(`${siteConfig.url}/api/scrape/tiktok-api`);
-    const data = await res.json();
-    return data as number;
-  };
-
   const fetchStartAfter = async (data: string) => {
     const q = query(
-      collection(db, "updateLogs"),
+      collection(db, storage.updateLogs),
       where("data", "==", data),
       orderBy("time", "desc")
     );
@@ -170,11 +165,11 @@ const UpdateData = ({ data }: any) => {
     try {
       const startAfter = await fetchStartAfter("accountInfo");
       const startAfterSnapshot = await getDoc(
-        doc(db, "tiktok-accounts", startAfter)
+        doc(db, storage.accounts, startAfter)
       );
       const availableCredits = await fetchAvailableCredits();
       const q = query(
-        collection(db, "tiktok-accounts"),
+        collection(db, storage.accounts),
         limit(availableCredits),
         startAt(startAfterSnapshot)
       );
@@ -197,7 +192,7 @@ const UpdateData = ({ data }: any) => {
             );
             const data = await response.json();
 
-            await updateDoc(doc(db, "tiktok-accounts", id), {
+            await updateDoc(doc(db, storage.accounts, id), {
               userInfo: data.json.userInfo,
             });
 
@@ -239,7 +234,7 @@ const UpdateData = ({ data }: any) => {
         try {
           const account = records[i];
 
-          const collectionRef = collection(db, "tiktok-accounts");
+          const collectionRef = collection(db, storage.accounts);
           const q = query(
             collectionRef,
             where("secUid", "==", account.user.secUid)
@@ -291,7 +286,7 @@ const UpdateData = ({ data }: any) => {
     try {
       const startAfter = await fetchStartAfter("accountsPosts");
       const startAfterSnapshot = await getDoc(
-        doc(db, "tiktok-accounts", startAfter)
+        doc(db, storage.accounts, startAfter)
       );
       const availableCredits = await fetchAvailableCredits();
       updateMessage(
@@ -299,7 +294,7 @@ const UpdateData = ({ data }: any) => {
       );
 
       const q = query(
-        collection(db, "tiktok-accounts"),
+        collection(db, storage.accounts),
         limit(availableCredits),
         startAt(startAfterSnapshot)
       );
@@ -309,7 +304,7 @@ const UpdateData = ({ data }: any) => {
       let totalRecords = records.length;
       if (totalRecords < availableCredits) {
         const q = query(
-          collection(db, "tiktok-accounts"),
+          collection(db, storage.accounts),
           limit(availableCredits - totalRecords)
         );
         const res = await getDocs(q);
@@ -341,7 +336,7 @@ const UpdateData = ({ data }: any) => {
           });
 
           updateMessage(`🔄 Updating top 5 posts for account ${i + 1}`);
-          await updateDoc(doc(db, "tiktok-accounts", id), {
+          await updateDoc(doc(db, storage.accounts, id), {
             topPosts: postsArray,
           });
         } catch (error: any) {
@@ -382,7 +377,7 @@ const UpdateData = ({ data }: any) => {
       updateMessage(`Error ==> ${error}`);
     }
 
-    await addDoc(collection(db, "updateLogs"), {
+    await addDoc(collection(db, storage.updateLogs), {
       data: selectedUpdateType.value,
       time: new Date(),
       startAfter: startAfter,
@@ -401,9 +396,20 @@ const UpdateData = ({ data }: any) => {
     }
   }, [updateSteps]);
 
+  const [availableCredits, setAvailableCredits] = useState<number>(0);
+
+  useEffect(() => {
+    async function getTotalCredits() {
+      const credits = await fetchAvailableCredits();
+      setAvailableCredits(credits);
+    }
+    getTotalCredits();
+  }, []);
+
   return (
     <>
-      <div className="flex items-center gap-4 justify-end ml-auto text-primary/70 absolute right-4 top-4">
+      <div className="flex items-center gap-4 justify-end w-fit  text-primary/70 fixed right-4 top-4 z-[60] ">
+        credits available: {availableCredits}
         <Icons.refresh className="h-5 w-5 text-primary" />
         <span className="text-base ">{"Last updated " + lastUpdate}</span>
       </div>
@@ -561,7 +567,7 @@ const addNewAccountToDb = async (account: AccountStatsResponse) => {
   const dataCollectionTime = new Date().getTime();
 
   // const docRef = doc(db, "tiktokAccounts", account.user.id);
-  const docRef = doc(db, "tiktok-accounts", account.user.id);
+  const docRef = doc(db, storage.accounts, account.user.id);
 
   const avatar = await downloadImageAndUploadToFirebase(
     "tiktok-avatars",
@@ -642,3 +648,9 @@ export async function downloadImageAndUploadToFirebase(
     );
   });
 }
+
+const fetchAvailableCredits = async () => {
+  const res = await fetch(`${siteConfig.url}/api/scrape/tiktok-api`);
+  const data = await res.json();
+  return data as number;
+};

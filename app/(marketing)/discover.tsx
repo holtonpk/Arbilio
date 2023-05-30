@@ -15,6 +15,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { FeatureCard } from "./analyze";
+import { siteConfig } from "@/config/site";
 const Discover = () => {
   return (
     <section id="discover" className="flex flex-col items-center ">
@@ -25,7 +26,7 @@ const Discover = () => {
         number="1"
         title="Discover"
         subtitle="Explore 500+ active sellers"
-        description="Immerse yourself in TikDrop.io's vast network of over 500 active sellers. It's an exciting marketplace teeming with unique products and a dynamic community of entrepreneurs, poised to drive your business growth in dropshipping."
+        description={`Immerse yourself in ${siteConfig.name}'s vast network of over 500 active sellers. It's an exciting marketplace teeming with unique products and a dynamic community of entrepreneurs, poised to drive your business growth in dropshipping.`}
       />
       <div className="lg:grid lg:grid-cols-2 gap-10 items-center grid lg:w-[90%] mt-16 ">
         <div className="absolute lg:flex  flex-col items-center h-[580px] lg:h-[600px] hidden gap-[1px]  md:h-[600px] left-1/2 -translate-x-1/2">
@@ -50,7 +51,7 @@ const Discover = () => {
                 <div className="h-6  w-[50%] text-sm px-7 text-primary rounded-md bg-muted-foreground/20 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex items-center">
                   <Icons.lock className="h-3 w-3  absolute left-2 top-1/2 -translate-y-1/2" />
                   <h1 className="max-w-full overflow-hidden text-ellipsis">
-                    TikDrop.io/accounts/accountDatabase
+                    {`${siteConfig.url}/accounts/accountDatabase`}
                   </h1>
                   <Icons.rotate className="h-3 w-3  absolute right-2 top-1/2 -translate-y-1/2" />
                 </div>
@@ -91,7 +92,7 @@ const Discover = () => {
                 <div className="h-6  w-[50%] text-sm px-7 text-primary rounded-md bg-muted-foreground/20 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex items-center">
                   <Icons.lock className="h-3 w-3  absolute left-2 top-1/2 -translate-y-1/2" />
                   <h1 className="max-w-full overflow-hidden text-ellipsis">
-                    TikDrop.io/accounts/viewAccount
+                    {`${siteConfig.url}/accounts/viewAccount`}
                   </h1>
                   <Icons.rotate className="h-3 w-3  absolute right-2 top-1/2 -translate-y-1/2" />
                 </div>

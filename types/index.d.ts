@@ -247,6 +247,7 @@ export interface ProductType {
   title: string;
   supplierInfo: SupplierInfo;
   accountsData: AccountDataType[];
+  category: string;
 }
 
 export interface SupplierInfo {

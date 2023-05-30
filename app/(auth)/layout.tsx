@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/context/Auth";
+import { siteConfig } from "@/config/site";
 interface AuthLayoutProps {
   children: React.ReactElement;
 }
@@ -13,7 +14,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         className=" items-center space-x-2 flex w-fit absolute top-4 left-4 "
       >
         <span className="text-base p-2 text-primary font-bold inline-block ">
-          <span className=" text-primary">TikDrop</span>
+          <span className=" text-primary">{siteConfig.name}</span>
           .io
         </span>
       </Link>

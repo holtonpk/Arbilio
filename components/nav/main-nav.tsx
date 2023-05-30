@@ -22,7 +22,7 @@ export function MainNav({ items, children }: MainNavProps) {
       <Link href="/" className=" items-center space-x-2 flex w-fit">
         <span className="text-2xl p-2 text-primary font-bold inline-block ">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600">
-            TikDrop
+            {siteConfig.name}
           </span>
           .io
         </span>

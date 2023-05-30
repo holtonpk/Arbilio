@@ -8,6 +8,7 @@ import { useDropzone } from "react-dropzone";
 import { Icons } from "@/components/icons";
 import { db } from "@/context/Auth";
 import { downloadImageAndUploadToFirebase } from "./data-scrape";
+import { storage } from "@/config/data-storage";
 import {
   collection,
   getDoc,
@@ -88,7 +89,7 @@ const AccountManage = () => {
   });
 
   useEffect(() => {
-    const q = query(collection(db, "tiktok-accounts"));
+    const q = query(collection(db, storage.accounts));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const newAccounts = snapshot.docs.map((doc) => doc.data()) as any;
       setAccountData(newAccounts);
@@ -218,7 +219,7 @@ const AccountManage = () => {
 
   const ConvertPosts = async () => {
     setUpdateIsLoading(true);
-    const collectionRef = collection(db, "tiktok-accounts");
+    const collectionRef = collection(db, storage.accounts);
     const BATCH_SIZE = 10;
     for (let i = 0; i < accountData.length; i += BATCH_SIZE) {
       const batch = accountData.slice(i, i + BATCH_SIZE);
@@ -232,7 +233,7 @@ const AccountManage = () => {
           if (docData?.topPosts) {
             try {
               const NewPostIDs = docData.topPosts.map(async (post: any) => {
-                const postRef = doc(db, "tiktokPosts", post);
+                const postRef = doc(db, storage.posts, post);
                 const postSnap = await getDoc(postRef);
                 const postData = postSnap.data();
                 return postData?.postId;
@@ -257,22 +258,21 @@ const AccountManage = () => {
 
   const UpdateAll = async () => {
     setUpdateIsLoading(true);
-    const collectionRef = collection(db, "tiktok-accounts");
+    const collectionRef = collection(db, "tiktok-posts-test");
     const BATCH_SIZE = 10;
-    for (let i = 0; i < accountData.length; i += BATCH_SIZE) {
-      const batch = accountData.slice(i, i + BATCH_SIZE);
+    const res = await getDocs(collectionRef);
+    const postData = res.docs;
+    for (let i = 0; i < postData.length; i += BATCH_SIZE) {
+      const batch = postData.slice(i, i + BATCH_SIZE);
       await Promise.all(
         batch.map(async (account, index) => {
           console.log(i + index, "/", accountData.length);
           const docRef = doc(collectionRef, account.id);
           const docSnap = await getDoc(docRef);
           const docData = docSnap.data();
-          if (!docData) return;
-
           try {
-            await updateDoc(docRef, {
-              topPosts: [],
-            });
+            const newDocRef = doc(collection(db, storage.posts), account.id);
+            await setDoc(newDocRef, docData);
           } catch (error) {
             console.log("error:", docData);
           }
@@ -494,7 +494,7 @@ const Expanded = ({ item, products, setExpanded }: expandedProps) => {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const handleDelete = async () => {
     //  delete doc
-    const docRef = doc(db, "tiktok-accounts", item.id);
+    const docRef = doc(db, storage.accounts, item.id);
     await deleteDoc(docRef);
     setExpanded(undefined);
   };
@@ -605,7 +605,7 @@ const ProductDisplay = ({
   }, [productId]);
 
   const addProductToAccount = async (product: ProductType) => {
-    const docRef = doc(db, "tiktok-accounts", accountId);
+    const docRef = doc(db, storage.accounts, accountId);
     await updateDoc(docRef, {
       product: product.id,
     });
@@ -856,7 +856,7 @@ const UpdateFieldInput = <T extends keyof AccountDataType>({
 
   const updateField = async () => {
     setIsLoading(true);
-    const collectionRef = collection(db, "tiktok-accounts");
+    const collectionRef = collection(db, storage.accounts);
     const docRef = doc(collectionRef, item.id);
     await updateDoc(docRef, {
       [field]: value,

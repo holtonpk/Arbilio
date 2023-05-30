@@ -13,41 +13,43 @@ export const CustomListBox = ({ value, values, onChange }: any) => {
           </span>
         </Listbox.Button>
         <Transition as={Fragment} leave="transition ease-in duration-100">
-          <Listbox.Options className="absolute mt-1 z-40  h-fit min-w-full w-fit  rounded-md bg-background   border  px-2  py-1 text-base  ">
-            {values.map((item: any, Idx: number) => (
-              <Listbox.Option
-                key={Idx}
-                disabled={item?.disabled || false}
-                className={({ active }) =>
-                  `relative  select-none rounded-md py-2 pl-6 pr-3 ${
-                    active && !item?.disabled
-                      ? "bg-muted text-primary"
-                      : item?.disabled
-                      ? "text-muted-foreground"
-                      : "text-primary cursor-pointer"
-                  }`
-                }
-                value={item}
-              >
-                {({ selected }) => (
-                  <>
-                    <span
-                      className={`block truncate ${
-                        selected ? "font-medium" : "font-normal"
-                      }`}
-                    >
-                      {item.label}
-                    </span>
-                    {selected && !item?.disabled ? (
-                      <span className="absolute inset-y-0 left-1 flex items-center text-primary">
-                        <Icons.check className="h-3 w-3" aria-hidden="true" />
+          <div className="h-[250px] overflow-scroll absolute mt-1 w-full">
+            <Listbox.Options className=" z-40 h-fit min-w-full w-fit  rounded-md bg-background   border  px-2  py-1 text-base  ">
+              {values.map((item: any, Idx: number) => (
+                <Listbox.Option
+                  key={Idx}
+                  disabled={item?.disabled || false}
+                  className={({ active }) =>
+                    `relative  select-none rounded-md py-2 pl-6 pr-3 ${
+                      active && !item?.disabled
+                        ? "bg-muted text-primary"
+                        : item?.disabled
+                        ? "text-muted-foreground"
+                        : "text-primary cursor-pointer"
+                    }`
+                  }
+                  value={item}
+                >
+                  {({ selected }) => (
+                    <>
+                      <span
+                        className={`block truncate ${
+                          selected ? "font-medium" : "font-normal"
+                        }`}
+                      >
+                        {item.label}
                       </span>
-                    ) : null}
-                  </>
-                )}
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
+                      {selected && !item?.disabled ? (
+                        <span className="absolute inset-y-0 left-1 flex items-center text-primary">
+                          <Icons.check className="h-3 w-3" aria-hidden="true" />
+                        </span>
+                      ) : null}
+                    </>
+                  )}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </div>
         </Transition>
       </div>
     </Listbox>

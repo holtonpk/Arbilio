@@ -10,6 +10,7 @@ import { AccountInfoMobile } from "../account-preview-mobile";
 import { dashboardConfig } from "@/config/dashboard";
 import { SideNavRoute } from "@/types";
 import { Button } from "../ui/button";
+import { siteConfig } from "@/config/site";
 
 export function MobileDashboardNav() {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
@@ -20,7 +21,7 @@ export function MobileDashboardNav() {
         <Link href="/" className=" items-center space-x-2 flex">
           <span className="text-lg text-primary font-bold inline-block ">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              TikDrop
+              {siteConfig.name}
             </span>
             .io
           </span>
