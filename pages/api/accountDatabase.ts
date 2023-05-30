@@ -8,7 +8,6 @@ import {
   limit,
   getDoc,
   where,
-  orderBy,
 } from "firebase/firestore";
 import { AccountDataType } from "@/types";
 import { storage } from "@/config/data-storage";
@@ -18,7 +17,7 @@ export default async function handler(
   res: NextApiResponse<AccountDataType[]>
 ) {
   const collectionRef = collection(db, storage.accounts);
-  const q = query(collectionRef, where("topPosts", "!=", []), limit(20));
+  const q = query(collectionRef, where("topPosts", "!=", []), limit(10));
   const docs = await getDocs(q);
 
   const formattedData = docs.docs.map(async (_doc) => {
@@ -39,7 +38,6 @@ export default async function handler(
       !record.topPosts.includes(null)
     ) {
       const topPosts = record?.topPosts.map(async (post: any) => {
-        if (post === null) return null;
         const postRef = doc(db, storage.posts, post);
         const postData = await getDoc(postRef);
         return {
