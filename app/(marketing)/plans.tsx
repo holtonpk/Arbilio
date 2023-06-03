@@ -112,7 +112,9 @@ const Pricing = () => {
       </div>
 
       <div className="relative mx-auto mb-14 flex max-w-fit items-center space-x-2">
-        <p className="text-muted-foreground">Billed Monthly</p>
+        <p className="text-muted-foreground whitespace-nowrap">
+          Billed Monthly
+        </p>
         <Confetti
           active={period === "annual_price"}
           config={{ elementCount: 200, spread: 90 }}
@@ -124,8 +126,10 @@ const Pricing = () => {
           thumbDimensions="h-5 w-5"
           thumbTranslate="translate-x-6"
         />
-        <p className="text-muted-foreground">Billed Annually</p>
-        <span className="absolute -right-12 -top-8 rounded-full bg-purple-200 px-3 py-1 text-sm text-purple-700 sm:-right-[9.5rem] sm:-top-2">
+        <p className="text-muted-foreground whitespace-nowrap">
+          Billed Annually
+        </p>
+        <span className="absolute -right-12 -top-8 rounded-full bg-purple-200 px-3 py-1 text-[12px] hidden sm:block  text-purple-700 sm:-right-[9.5rem] sm:-top-2">
           🎁 2 months FREE
         </span>
       </div>
