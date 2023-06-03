@@ -101,7 +101,3 @@ function MenuItemIcon({ name, className, ...props }: MenuItemIconProps) {
     </div>
   );
 }
-
-export const ComboBoxSkeleton = () => {
-  return <Skeleton height={40} width={200} />;
-};
