@@ -1,10 +1,11 @@
 import Background from "@/components/background";
+import Link from "next/link";
 import RegisterForm from "./register-form";
 import { LinkButton } from "@/components/ui/link";
 
 const Register = () => {
   return (
-    <div className="container flex h-screen w-screen bg-background flex-col items-center justify-center">
+    <div className="container flex h-screen w-screen bg-background flex-col items-center">
       <LinkButton
         href="/login"
         variant="ghost"
@@ -12,37 +13,35 @@ const Register = () => {
       >
         Login
       </LinkButton>
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] ">
-        <div className="flex flex-col space-y-2 text-center">
+      <div className=" mt-[calc(20vh)] h-fit w-full max-w-md overflow-hidden border sm:rounded-2xl sm:shadow-xl z-20">
+        <div className="flex flex-col space-y-2 text-center bg-background px-4 py-6 pt-8">
           <h1 className="text-4xl font-semibold bg-gradient-to-r to-amber-400 via-orange-500 from-red-500 bg-clip-text text-transparent">
-            Let&apos;s Get Started
+            Let&apos;s Get Started!
           </h1>
           <p className="text-sm text-muted-foreground">
             Enter your details below to create your account
           </p>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-4 bg-background/60 px-4 py-8 sm:px-16">
           <RegisterForm />
 
-          <p className="px-8 text-center flex items-center flex-col text-sm text-muted-foreground">
-            By clicking continue, you agree to our{" "}
-            <div className="flex items-center">
-              <LinkButton
+          <p className="px-4 text-center flex items-center flex-col text-sm text-muted-foreground whitespace-nowrap">
+            By clicking continue, you agree to our
+            <div className="flex items-center gap-1">
+              <Link
                 href="/terms"
-                variant="link"
-                className="hover:text-brand underline underline-offset-4 px-1 whitespace-nowrap"
+                className="font-semibold text-muted-foreground transition-colors hover:text-primary"
               >
                 Terms of Service
-              </LinkButton>
+              </Link>
               &
-              <LinkButton
-                variant="link"
+              <Link
                 href="/privacy"
-                className="hover:text-brand underline underline-offset-4 px-1 whitespace-nowrap"
+                className="font-semibold text-muted-foreground transition-colors hover:text-primary"
               >
                 Privacy Policy
-              </LinkButton>
+              </Link>
             </div>
           </p>
         </div>

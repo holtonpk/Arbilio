@@ -8,9 +8,9 @@ import { LinkButton } from "@/components/ui/link";
 
 const Login = () => {
   return (
-    <div className="container flex h-screen w-screen bg-background flex-col items-center justify-center">
+    <div className="container flex h-screen w-screen bg-background flex-col items-center ">
       <Toaster />
-      <LinkButton
+      {/* <LinkButton
         variant={"ghost"}
         href="/"
         className={"absolute left-4 top-4 md:left-8 md:top-8"}
@@ -19,9 +19,9 @@ const Login = () => {
           <Icons.chevronLeft className="mr-2 h-4 w-4" />
           Back
         </>
-      </LinkButton>
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] ">
-        <div className="flex flex-col space-y-2 text-center">
+      </LinkButton> */}
+      <div className="z-10 mt-[calc(20vh)] h-fit w-full max-w-md overflow-hidden border sm:rounded-2xl sm:shadow-xl">
+        <div className="flex flex-col space-y-2 text-center bg-background px-4 py-6 pt-8">
           {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
 
           <h1 className="text-4xl font-semibold bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent">
@@ -31,17 +31,18 @@ const Login = () => {
             Welcome back! Please enter your details
           </p>
         </div>
-        <div className="grid gap-6">
+        <div className="grid gap-6 bg-background/60 px-4 py-8 sm:px-16">
           <LoginForm />
 
-          <p className="px-8 text-center text-sm text-muted-foreground">
-            <LinkButton
-              variant={"link"}
+          <p className="text-center text-sm text-gray-500">
+            Don't have an account?{" "}
+            <Link
               href="/onboarding/register"
-              className="hover:text-brand underline underline-offset-4"
+              className="font-semibold text-muted-foreground transition-colors hover:text-primary"
             >
-              Don&apos;t have an account? Sign Up
-            </LinkButton>
+              Sign up
+            </Link>
+            .
           </p>
         </div>
       </div>
