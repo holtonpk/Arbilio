@@ -15,11 +15,11 @@ import { RemoveTrackProductButton } from "@/components/buttons/remove-track-prod
 import Image from "next/image";
 const DashboardLayout = () => {
   return (
-    <div className="grid gap-4 container">
+    <div className="grid   gap-4 container">
       <div className="grid gap-4 ">
         {/* <AccountStatDisplay /> */}
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <AccountCollectionDisplay />
           <ProductTrackDisplay />
         </div>

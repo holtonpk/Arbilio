@@ -79,8 +79,8 @@
   opacity: 0.15;
 }
 
-@media screen and (max-width: 640px) {
+/* @media screen and (max-width: 640px) {
   .content {
     max-width: 200px;
   }
-}
+} */
