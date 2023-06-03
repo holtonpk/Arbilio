@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { AccountCollectionTable } from "@/types";
-import CreateCollectionButton from "@/components/buttons/create-collection-button";
+import { CreateCollectionButton } from "@/components/buttons/create-collection-button";
 import { RemoveCollectionButton } from "@/components/buttons/remove-collection-button";
 interface DataTableRowActionsProps<TData> {
   row: Row<AccountCollectionTable>;

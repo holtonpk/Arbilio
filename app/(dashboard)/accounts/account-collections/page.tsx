@@ -2,7 +2,7 @@
 import React from "react";
 import { PageHeader } from "@/components/header";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
-import CreateCollectionButton from "@/components/buttons/create-collection-button";
+import { CreateCollectionButton } from "@/components/buttons/create-collection-button";
 import { useUserCollections } from "@/context/user-collections";
 import CollectionDisplay from "@/app/(dashboard)/accounts/account-collections/collection-display";
 import Loading from "./loading";

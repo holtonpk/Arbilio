@@ -6,7 +6,7 @@ import KeyFeatures from "@/app/(dashboard)/dashboard/key-features";
 import { useUserCollections } from "@/context/user-collections";
 import CollectionDisplay from "@/app/(dashboard)/accounts/account-collections/collection-display";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
-import CreateCollectionButton from "@/components/buttons/create-collection-button";
+import { CreateCollectionButton } from "@/components/buttons/create-collection-button";
 import Tooltip from "@/components/ui/tooltip";
 import { LinkButton } from "@/components/ui/link";
 import { Button } from "@/components/ui/button";

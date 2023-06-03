@@ -1,7 +1,7 @@
 "use client";
 import Skeleton from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/header";
-import CreateCollectionButton from "@/components/buttons/create-collection-button";
+import { CreateCollectionButton } from "@/components/buttons/create-collection-button";
 
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.

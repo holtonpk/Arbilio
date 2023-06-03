@@ -9,7 +9,7 @@ import { productDatabaseConfig } from "@/config/dashboard";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { Icons } from "@/components/icons";
 import { UpdateMultiCollectionButton } from "@/components/buttons/update-multi-collection-button";
-import CreateCollectionButton from "@/components/buttons/create-collection-button";
+import { CreateCollectionButton } from "@/components/buttons/create-collection-button";
 import { LinkButton } from "@/components/ui/link";
 
 const PrimaryHeaders = productDatabaseConfig.tableHeaders.primaryHeaders;
