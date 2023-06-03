@@ -13,8 +13,8 @@ import useData from "@/lib/hooks/use-account-data";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { AccountCard } from "@/components/ui/account-card";
-import { DataTable } from "@/components/account-table/data-table";
-import { columns } from "@/components/account-table/columns";
+import { DataTable } from "@/components/table/data-table";
+import { columns } from "./table/columns";
 
 // Simulate a database read for tasks.
 async function getTasks() {

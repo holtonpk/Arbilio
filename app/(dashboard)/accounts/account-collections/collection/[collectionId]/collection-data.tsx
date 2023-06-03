@@ -13,8 +13,8 @@ import { CollectionOperations } from "@/components/buttons/collection-operations
 import { LinkButton } from "@/components/ui/link";
 import { AccountCollectionData } from "@/types";
 import { AccountCard } from "@/components/ui/account-card";
-import { DataTable } from "@/components/account-table/data-table";
-import { columns } from "./table/table-columns";
+import { DataTable } from "@/components/table/data-table";
+import { columns } from "./table/columns";
 import Loading from "./loading";
 const CollectionData = ({ data }: { data: AccountCollectionData }) => {
   const [displayType, setDisplayType] = useState<"grid" | "columns">("columns");
