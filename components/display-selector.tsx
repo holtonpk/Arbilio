@@ -44,12 +44,3 @@ const DisplaySelector = ({ displayType, setDisplayType }: any) => {
   );
 };
 export default DisplaySelector;
-
-export const DisplaySelectSkeleton = () => {
-  return (
-    <div className="flex gap-2 w-fit ">
-      <Skeleton width={"40px"} height={"40px"} />
-      <Skeleton width={"40px"} height={"40px"} />
-    </div>
-  );
-};
