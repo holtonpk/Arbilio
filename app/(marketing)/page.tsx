@@ -14,7 +14,7 @@ export default async function IndexPage() {
         <section className="space-y-6 pb-8 pt-6 md:pb-12  ">
           <HeroText />
         </section>
-        <Testimonials />
+        {/* <Testimonials /> */}
         <p className="text-muted-foreground text-md w-fit mx-auto uppercase font-bold mb-3">
           explore the power of TikDop.io
         </p>

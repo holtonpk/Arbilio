@@ -109,10 +109,6 @@ const Pricing = () => {
           </span>{" "}
           pricing.
         </h2>
-        <p className="mt-5 text-primary sm:text-lg">
-          Shorten your links without breaking your bank. <br />
-          Start for free, no credit card required.
-        </p>
       </div>
 
       <div className="relative mx-auto mb-14 flex max-w-fit items-center space-x-2">
