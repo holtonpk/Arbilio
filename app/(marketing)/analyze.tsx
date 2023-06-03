@@ -14,9 +14,9 @@ const Analyze = () => {
         number="2"
         title="Analyze"
         subtitle="Leverage the power of our tools"
-        description={`Unleash the potential of ${siteConfig.name} robust tools designed to empower your dropshipping business. They offer streamlined solutions for product discovery, video creation, and revenue enhancement, making your path to success both efficient and profitable.`}
+        description={`Unleash the potential of ${siteConfig.name} robust tools designed to empower your dropshipping business.`}
       />
-      <div className="grid grid-cols-2 w-full px-4 md:px-0 md:w-[80%] gap-4 md:gap-20 pt-[180px] relative ">
+      <div className="grid grid-cols-2 w-[100vw] px-4 md:px-0 md:w-[80%] gap-4 md:gap-20 pt-[180px] relative">
         <div className="absolute md:flex items-center flex-col h-full hidden md:gap-[1px]  top-0 left-1/2 -translate-x-1/2">
           <span className="w-[1px] h-[120px] bg-gradient-to-t  from-accent "></span>
           <span className="h-4 w-4 border rounded-full border-accent " />
@@ -41,7 +41,7 @@ const Analyze = () => {
           <span className="h-4 w-4 border rounded-full border-accent" />
           <span className="w-[1px] h-[250px] bg-accent border-accent " />
         </div>
-        <div className=" grid w-full  md:w-[80%]   gap-4 md:gap-0   md:ml-auto">
+        <div className=" grid w-full  md:w-[80%]   gap-4 md:gap-0  md:ml-auto">
           {features.slice(3, 6).map((feature, indx) => (
             <FeatureCardFlip key={indx} data={feature} />
           ))}
@@ -76,10 +76,10 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
           <Icon className="text-muted-foreground" />
         </div>
 
-        <h3 className="font-bold text-center text-xl md:text-left">
+        <h3 className="font-bold text-center text-base md:text-xl md:text-left whitespace-nowrap">
           {data.name}
         </h3>
-        <p className="text-sm text-muted-foreground text-center  w-full md:text-left">
+        <p className="text-[12px] md:text-sm text-muted-foreground text-center  w-full md:text-left">
           {data.description}
         </p>
       </div>
@@ -97,10 +97,10 @@ export const FeatureCardFlip = ({ data }: FeatureCardProps) => {
           <Icon className="text-muted-foreground" />
         </div>
 
-        <h3 className="font-bold text-center text-xl md:text-right">
+        <h3 className="font-bold text-center text-base md:text-xl md:text-right whitespace-nowrap">
           {data.name}
         </h3>
-        <p className="text-sm text-muted-foreground text-center w-[90%] md:w-full md:text-right">
+        <p className="text-[12px] md:text-sm text-muted-foreground text-center w-full md:text-right">
           {data.description}
         </p>
       </div>

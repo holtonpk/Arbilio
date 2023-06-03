@@ -13,9 +13,8 @@ const Sell = () => {
 "
         description=""
       />
-      <div className="w-[90%] mx-auto ">
-        <div className="w-full relative  overflow-hidden ">
-          {/* <div className="absolute  h-[70%] bottom-0 w-full z-10 bg-gradient-to-t from-background to-background/10  "></div> */}
+      <div className="w-[200%] relative -translate-x-1/2 left-1/2 md:translate-x-0 md:w-[90%] md:mx-auto h-fit">
+        <div className="w-full relative   h-fit  ">
           <GlobeClient />
         </div>
       </div>

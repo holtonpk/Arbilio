@@ -6,7 +6,6 @@ import { MainNavItem } from "@/types";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "@/components/nav/mobile-main-nav";
-
 import { Icons } from "@/components/icons";
 
 interface MainNavProps {
