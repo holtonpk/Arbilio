@@ -9,7 +9,7 @@
   position: fixed;
   display: flex;
   justify-content: center;
-  padding: 120px 24px 160px 24px;
+  /* padding: 120px 24px 160px 24px; */
   pointer-events: none;
   top: 0;
 }
@@ -39,8 +39,9 @@
 .content {
   height: fit-content;
   z-index: 3;
+  border: 1px solid red;
   width: 100%;
-  max-width: 200px;
+  max-width: 800px;
   background-image: radial-gradient(
       at 27% 37%,
       hsla(215, 98%, 61%, 1) 0px,
@@ -62,11 +63,6 @@
   opacity: 1;
 }
 
-@media (min-width: 640px) {
-  .content {
-    max-width: 640px;
-  }
-}
 /* @media screen and (max-width: 640px) {
   .content {
     max-width: 200px;
