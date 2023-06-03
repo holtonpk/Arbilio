@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import Navbar from "@/components/nav/side-nav";
+
 import { AuthProvider } from "@/context/Auth";
 import ProtectedRoutes from "./protect-routes";
 import DashboardNav from "@/components/nav/dashboard-nav";
