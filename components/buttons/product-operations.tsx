@@ -39,19 +39,22 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 import { ProductType, ProductDataBaseType } from "@/types";
+import { ButtonProps, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
+import { CreateCollectionButton } from "@/components/buttons/create-collection-button";
+import { LinkButton } from "@/components/ui/link";
+import { TrackProductButton } from "@/components/buttons/track-product-button";
 
-interface productOperationsProps {
+interface productOperationsProps extends ButtonProps {
   product: ProductType | ProductDataBaseType;
-  variant?: "default" | "outline" | "secondary" | "destructive" | "ghost";
-  children?: React.ReactNode;
-  className?: string;
 }
 
 export function ProductOperations({
   product,
   variant,
-  children,
   className,
+  ...props
 }: productOperationsProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [showUpdateName, setShowUpdateName] = React.useState<boolean>(false);
@@ -63,25 +66,29 @@ export function ProductOperations({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button variant={variant} className={className}>
-            {children}
-          </Button>
+          <button
+            className={cn(buttonVariants({ variant }), className)}
+            {...props}
+          />
           <span className="sr-only">Open</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            className="flex cursor-pointer items-center "
-            // onSelect={() => setShowUpdateName(true)}
-          >
-            option 1
-          </DropdownMenuItem>
+          <TrackProductButton
+            product={product}
+            variant={"ghost"}
+            trackingVariant={"ghost"}
+            className="relative whitespace-nowrap justify-start h-fit flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
+          />
+
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-            // onSelect={() => setShowDeleteAlert(true)}
+          <LinkButton
+            variant={"ghost"}
+            href={`/products/product/${product.id}`}
+            className="relative whitespace-nowrap justify-start flex h-fit cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
           >
-            option 2
-          </DropdownMenuItem>
+            <Icons.products className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+            View Product
+          </LinkButton>
         </DropdownMenuContent>
       </DropdownMenu>
       {/* <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>

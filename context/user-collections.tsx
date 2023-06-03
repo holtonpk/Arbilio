@@ -22,6 +22,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { db } from "@/context/Auth";
+import { storage } from "@/config/data-storage";
 
 interface CollectionContextType {
   userCollections: CollectionType[] | undefined;
@@ -91,7 +92,7 @@ export const UserCollectionProvider = ({
             let first3 = undefined;
             if (ids.length > 0) {
               const q = query(
-                collection(db, "tiktok-accounts"),
+                collection(db, storage.accounts),
                 limit(3),
                 where("id", "in", ids)
               );
@@ -137,7 +138,7 @@ export const UserCollectionProvider = ({
     if (currentUser) {
       const userCollectionsRef = collection(
         db,
-        `users/${currentUser.uid}/accountCollections`
+        `${storage.users}/${currentUser.uid}/${storage.userAccountCollections}`
       );
       const unsubscribeUserCollections = onSnapshot(
         userCollectionsRef,
@@ -183,7 +184,7 @@ export const UserCollectionProvider = ({
     id: string
   ): Promise<CollectionType | null> => {
     try {
-      const ref = doc(db, `accountCollections/${id}`);
+      const ref = doc(db, `${storage.accountCollections}/${id}`);
       const docSnapshot = await getDoc(ref);
       if (docSnapshot.exists()) {
         return docSnapshot.data() as CollectionType;
@@ -202,7 +203,7 @@ export const UserCollectionProvider = ({
     if (!currentUser) return { error: "no user" };
     try {
       // Get a reference to the 'collections' collection
-      const collectionsRef = collection(db, "accountCollections");
+      const collectionsRef = collection(db, storage.accountCollections);
 
       // Add a new document with the specified data to the 'collections' collection
       const docRef = await addDoc(collectionsRef, {
@@ -213,7 +214,7 @@ export const UserCollectionProvider = ({
       // Get a reference to the user's collections
       const userCollectionsRef = doc(
         db,
-        `users/${currentUser.uid}/accountCollections/${docRef.id}`
+        `${storage.users}/${currentUser.uid}/${storage.userAccountCollections}/${docRef.id}`
       );
 
       // Add the reference to the newly created collection to the user's collections
@@ -235,7 +236,7 @@ export const UserCollectionProvider = ({
     try {
       const userCollectionsRef = collection(
         db,
-        `users/${currentUser.uid}/accountCollections`
+        `${storage.users}/${currentUser.uid}/${storage.userAccountCollections}`
       );
       const q = query(userCollectionsRef);
       const querySnapshot = await getDocs(q);
@@ -254,12 +255,12 @@ export const UserCollectionProvider = ({
   ): Promise<{ success: string } | { error: any }> => {
     if (!currentUser) return { error: "no user" };
     try {
-      const docRef = doc(db, `accountCollections/${docId}`);
+      const docRef = doc(db, `${storage.accountCollections}/${docId}`);
       await deleteDoc(docRef);
 
       const userCollectionsRef = doc(
         db,
-        `users/${currentUser.uid}/accountCollections/${docId}`
+        `${storage.users}/${currentUser.uid}/${storage.userAccountCollections}/${docId}`
       );
       await deleteDoc(userCollectionsRef);
 
@@ -278,7 +279,7 @@ export const UserCollectionProvider = ({
     try {
       const promises = collectionIds.map(async (collectionId) => {
         // Get a reference to the main collection document
-        const collectionRef = doc(db, "accountCollections", collectionId);
+        const collectionRef = doc(db, storage.accountCollections, collectionId);
 
         // Fetch the document
         const docSnapshot = await getDoc(collectionRef);
@@ -309,7 +310,7 @@ export const UserCollectionProvider = ({
     try {
       const promises = collectionIds.map(async (collectionId) => {
         // Get a reference to the main collection document
-        const collectionRef = doc(db, "accountCollections", collectionId);
+        const collectionRef = doc(db, storage.accountCollections, collectionId);
 
         // Update the 'ids' field by removing the specified ID
         await updateDoc(collectionRef, {
@@ -332,7 +333,7 @@ export const UserCollectionProvider = ({
   ): Promise<{ success: string } | { error: any }> => {
     if (!currentUser) return { error: "no user" };
     try {
-      const docRef = doc(db, `accountCollections/${docId}`);
+      const docRef = doc(db, `${storage.accountCollections}/${docId}`);
       await updateDoc(docRef, {
         ids: arrayRemove(idToRemove),
       });
@@ -348,7 +349,7 @@ export const UserCollectionProvider = ({
   ): Promise<{ success: string } | { error: any }> => {
     if (!currentUser) return { error: "no user" };
     try {
-      const docRef = doc(db, `accountCollections/${docId}`);
+      const docRef = doc(db, `${storage.accountCollections}/${docId}`);
       await updateDoc(docRef, {
         name: newCollectionName,
       });
@@ -365,7 +366,7 @@ export const UserCollectionProvider = ({
     try {
       const userCollectionsRef = collection(
         db,
-        `users/${currentUser.uid}/accountCollections`
+        `${storage.users}/${currentUser.uid}/${storage.userAccountCollections}`
       );
       const querySnapshot: QuerySnapshot = await getDocs(userCollectionsRef);
       const promises = querySnapshot.docs.map(async (doc) => {

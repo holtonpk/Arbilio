@@ -1,7 +1,7 @@
 import React, { useState, ReactNode, useRef, useContext } from "react";
 import Image from "next/image";
 import ScrollBar from "@/components/scroll-bar";
-import Skeleton from "@/components/ui/custom-skeleton";
+import Skeleton from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ProductType } from "@/types";
 
@@ -240,7 +240,9 @@ const RowButtons = ({ data }: any) => {
         variant="secondary"
         size={"xsm"}
         className="w-full justify-center  flex  h-full items-center rounded-none bg-transparent"
-      />
+      >
+        <Icons.addCollection className="h-5 w-5 " />
+      </UpdateCollectionButton>
 
       <LinkButton
         variant="secondary"
@@ -276,7 +278,10 @@ const SelectedPreview = () => {
           <UpdateMultiCollectionButton
             accountArray={selectedRows}
             setSelectedRows={setSelectedRows}
-          />
+          >
+            <Icons.addCollection className="h-5 w-5 " />
+            Add to a collection
+          </UpdateMultiCollectionButton>
           <CreateCollectionButton
             variant="default"
             accountArray={selectedRows}

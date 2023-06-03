@@ -5,7 +5,7 @@ import {
 } from "@/types";
 
 export const dashboardConfig: DashboardConfig = {
-  sideNav: [
+  navigation: [
     {
       title: "Dashboard",
       iconName: "dashboard",
@@ -54,11 +54,11 @@ export const dashboardConfig: DashboardConfig = {
           icon: "database",
         },
         {
-          title: "Top Products",
-          href: "/products/top-products",
+          title: "Product Tracker",
+          href: "/products/product-tracker",
           description:
-            "Discover the top selling products and analyze their performance over time.",
-          icon: "rank",
+            "Track the performance of of products and discover new trends.",
+          icon: "crosshair",
         },
       ],
       disabled: false,

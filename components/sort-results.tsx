@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Skeleton from "@/components/ui/custom-skeleton";
+import Skeleton from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";

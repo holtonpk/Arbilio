@@ -1,17 +1,28 @@
 type Storage = {
-  products: string;
-  posts: string;
-  accounts: string;
   accountCollections: string;
+  accounts: string;
+  posts: string;
+  products: string;
   updateLogs: string;
+  users: string;
+  userAccountCollections: string;
+  userProductTrack: string;
   postsMedia: string;
 };
 
 export const storage: Storage = {
-  products: "tiktok-products",
-  posts: "tiktok-posts",
-  postsMedia: "tiktok-posts",
-  accounts: "tiktok-accounts",
+  // fireStore/
   accountCollections: "accountCollections",
+  accounts: "tiktok-accounts",
+  posts: "tiktok-posts",
+  products: "tiktok-products",
   updateLogs: "updateLogs",
+  users: "users",
+
+  // fireStore/users/
+  userAccountCollections: "accountCollections",
+  userProductTrack: "tracked-products",
+
+  // storage/
+  postsMedia: "tiktok-posts",
 };

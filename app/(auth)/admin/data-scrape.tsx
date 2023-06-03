@@ -77,6 +77,7 @@ const UpdateTable = ({ updates }: any) => {
         <div className="w-[30%] text-primary ">Data</div>
         <div className="w-[30%] text-primary">time</div>
         <div className="w-[30%] text-primary">timeSince</div>
+        <div className="w-[30%] text-primary">startAfter</div>
       </div>
       <div className="flex flex-col divide-y divide-border rounded-md border  mt-2 max-h-[50vh] overflow-scroll">
         {updates &&
@@ -110,6 +111,9 @@ const UpdateTable = ({ updates }: any) => {
                 <div className="w-[30%] text-primary">{mstDate}</div>
                 <div className="w-[30%] text-primary">
                   {timeSince(date.getTime() / 1000)}
+                </div>
+                <div className="w-[30%] text-primary">
+                  {update.data().startAfter}
                 </div>
               </div>
             );

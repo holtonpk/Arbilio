@@ -56,6 +56,11 @@ export default async function handler(
 
     return {
       accountStats: record.accountStats,
+      followerCount: record.accountStats[0]?.followerCount,
+      likeCount: record.accountStats[0]?.heartCount,
+      postCount: record.accountStats[0]?.videoCount,
+      daysTracked: record.accountStats.length,
+      mostViews: (topPostsData && topPostsData[0].postData.playCount) || 0,
       avatar: record.avatar,
       id: record.id,
       product: productData,

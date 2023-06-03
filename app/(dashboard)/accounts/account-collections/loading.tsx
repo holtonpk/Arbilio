@@ -1,16 +1,29 @@
-import Skeleton from "@/components/ui/custom-skeleton";
+"use client";
+import Skeleton from "@/components/ui/skeleton";
+import { PageHeader } from "@/components/header";
+import CreateCollectionButton from "@/components/buttons/create-collection-button";
+
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
   return (
-    <div className="flex flex-col gap-2">
-      <Skeleton height={60} width={"40%"} />
-      <div className="flex justify-between w-full">
-        <Skeleton height={40} width={"50%"} />
-        <Skeleton height={40} width={100} />
+    <>
+      <PageHeader
+        heading="Account Collections"
+        text={
+          "Leverage the power of collections to organize your accounts and products."
+        }
+      >
+        <CreateCollectionButton variant="default" className="whitespace-nowrap">
+          + New Collection
+        </CreateCollectionButton>
+      </PageHeader>
+      <div className="w-full container  pt-6  flex flex-col min-h-screen items-center gap-4  ">
+        <div className="divide-y divide-border rounded-md border w-full bg-background">
+          <Skeleton className="w-full h-[80px] rounded-none" />
+          <Skeleton className="w-full h-[80px] rounded-none" />
+          <Skeleton className="w-full h-[80px] rounded-none" />
+        </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <Skeleton height={100} width={"100%"} />
-      </div>
-    </div>
+    </>
   );
 }

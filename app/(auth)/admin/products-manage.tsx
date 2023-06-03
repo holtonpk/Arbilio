@@ -275,7 +275,7 @@ const ProductManage = () => {
           </div>
           <Button onClick={Update} className="w-fit">
             {updateIsLoading ? (
-              <Icons.spinner className="animate-spin" />
+              <Icons.spinner className="animate-spin mr-2" />
             ) : null}
             Update
           </Button>
@@ -410,7 +410,7 @@ const Expanded = ({ item }: ExpandedProps) => {
   return (
     <>
       <Button onClick={scrape} className="absolute top-4 right-4">
-        {scrapeLoading ? <Icons.spinner className="animate-spin" /> : null}
+        {scrapeLoading ? <Icons.spinner className="animate-spin mr-2" /> : null}
         Scrape
       </Button>
       <Button
@@ -550,7 +550,7 @@ const UpdateFieldInput = <T extends keyof ProductType>({
         />
         <Button onClick={updateField} className="w-fit">
           {isLoading ? (
-            <Icons.spinner className="animate-spin" />
+            <Icons.spinner className="animate-spin mr-2" />
           ) : isUpdated ? (
             "Updated"
           ) : (

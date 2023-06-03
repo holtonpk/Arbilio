@@ -24,7 +24,7 @@ export default async function AccountDataBase() {
         heading="Account Database"
         tooltip="Browse our collection of over 500 active sellers and 1000+ accounts."
       />
-      <div className="w-full border-t bg-muted/60">
+      <div className="w-full border-t ">
         <div className="w-full container   pt-4  flex flex-col min-h-screen items-center  ">
           <AccountDatabase originalData={data} />
         </div>

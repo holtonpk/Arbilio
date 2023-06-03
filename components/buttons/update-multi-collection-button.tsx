@@ -18,10 +18,10 @@ import {
 import { CollectionType } from "@/types";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
-import { buttonVariants } from "../ui/button";
+import { ButtonProps, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface UpdateCollectionButtonProps {
+interface UpdateCollectionButtonProps extends ButtonProps {
   accountArray: string[];
   setSelectedRows: React.Dispatch<React.SetStateAction<string[]>>;
 }
@@ -29,21 +29,20 @@ interface UpdateCollectionButtonProps {
 export function UpdateMultiCollectionButton({
   accountArray,
   setSelectedRows,
+  variant,
+  className,
+  ...props
 }: UpdateCollectionButtonProps) {
   const [showCollectionUpdate, setShowCollectionUpdate] =
     React.useState<boolean>(false);
 
   return (
     <>
-      <Button
+      <button
         onClick={() => setShowCollectionUpdate(true)}
-        variant="outline"
-        size="sm"
-        className="flex items-center justify-center whitespace-nowrap gap-2"
-      >
-        <Icons.addCollection className="h-5 w-5 " />
-        Add to a collection
-      </Button>
+        className={cn(buttonVariants({ variant }), className)}
+        {...props}
+      />
       {showCollectionUpdate && (
         <UpdateDialog
           showCollectionUpdate={showCollectionUpdate}

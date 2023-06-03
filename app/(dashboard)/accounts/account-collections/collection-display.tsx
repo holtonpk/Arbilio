@@ -14,11 +14,13 @@ const CollectionDisplay = ({ collection }: CollectionDisplayProps) => {
     <div className="flex items-center justify-between p-4 relative overflow-hidden group">
       <Link
         href={`accounts/account-collections/collection/${collection.id}`}
-        className="w-full h-full absolute group-hover:bg-muted top-0 left-0 z-0 "
+        className="w-full h-full absolute  top-0 left-0 z-0 "
       />
       <div className="flex w-fit items-center gap-4 ">
         <div className="grid gap-1 relative z-10 pointer-events-none">
-          <h1 className=" font-bold ">{collection.name}</h1>
+          <h1 className=" font-bold group-hover:underlined">
+            {collection.name}
+          </h1>
           <p className="text-sm text-muted-foreground ">
             {`${collection.ids.length} accounts`}
           </p>
@@ -50,7 +52,7 @@ const CollectionDisplay = ({ collection }: CollectionDisplayProps) => {
         </div>
       </div>
       <div className="h-fit w-fit relative z-10">
-        <CollectionOperations collection={collection} variant="outline">
+        <CollectionOperations collection={collection} variant="ghost">
           <Icons.ellipsis className="h-4 w-4" />
         </CollectionOperations>
       </div>

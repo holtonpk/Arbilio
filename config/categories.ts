@@ -8,7 +8,7 @@ export const categories: Category[] = [
     id: "1",
     title: "Appliances",
   },
-  { id: "2", title: "Grocery & Gourmet Food" },
+  // { id: "2", title: "Grocery & Gourmet Food" },
   {
     id: "3",
     title: "Arts Crafts & Sewing",
@@ -25,11 +25,11 @@ export const categories: Category[] = [
     id: "6",
     title: "Home & Kitchen & Dining",
   },
-  { id: "7", title: "Baby" },
-  {
-    id: "8",
-    title: "Musical Instruments",
-  },
+  // { id: "7", title: "Baby" },
+  // {
+  //   id: "8",
+  //   title: "Musical Instruments",
+  // },
   {
     id: "9",
     title: "Beauty & Personal Care",

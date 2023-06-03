@@ -5,11 +5,13 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { formatDateShort, formatNumber } from "@/lib/utils";
-import { LineChart } from "@/components/charts";
+import { LineChart, BarChart } from "@/components/charts";
 import { ProductDataBaseType, AccountDataType, ProductType } from "@/types";
 import { Icons } from "@/components/icons";
 import Tooltip from "@/components/ui/tooltip";
 import { ProductOperations } from "@/components/buttons/product-operations";
+import TrackProductButton from "@/components/buttons/track-product-button";
+
 interface CardProps {
   item: ProductDataBaseType;
 }
@@ -17,13 +19,13 @@ interface CardProps {
 export const ProductDisplay = ({ item }: CardProps) => {
   return (
     <div className="h-full relative group w-full rounded-md border bg-background  ">
-      <div className="grid w-full">
+      <div className="grid w-full gap-4 md:gap-0 p-4 md:p-0">
         <div className="grid  grid-cols-[80px_1fr] border items-start gap-4 relative w-full h-fit hover:bg-muted/30 sm:gap-2  p-4    ">
           <Link
             href={`/products/product/${item.id}`}
             className="w-full h-full absolute top-0 left-0 z-10"
           />
-          <div className="h-20 w-20 relative overflow-hidden z-20 rounded-md  pointer-events-none">
+          <div className="h-20 w-20 relative overflow-hidden z-20 rounded-md border pointer-events-none">
             <Image
               src={item.image}
               alt="Picture of the author"
@@ -42,20 +44,24 @@ export const ProductDisplay = ({ item }: CardProps) => {
               {item?.supplierInfo?.supplierTitle}
             </h1>
           </div>
-          {/* <ProductOperations
+        </div>
+        <TrackProductButton
+          product={item}
+          className="md:absolute md:top-4 md:right-4 z-20 w-full md:w-fit  "
+        />
+        {/* <ProductOperations
             product={item}
             variant="outline"
             className="hidden md:block relative z-20"
           >
             <Icons.ellipsis className="h-5 w-5 fill-muted-foreground  " />
           </ProductOperations> */}
-        </div>
 
         {/* <AccountInfo accounts={item.accounts} /> */}
         <div className="p-4">
           <div className="flex items-center ">
-            <div className="rounded-md bg-muted aspect-square p-2 w-fit relative flex justify-center items-center">
-              <Icons.likes className=" text-primary" />
+            <div className="rounded-md bg-theme-blue aspect-square p-2 w-fit relative flex justify-center items-center">
+              <Icons.likes className=" text-white" />
             </div>
             <h1 className="ml-3 text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
               Average likes
@@ -70,11 +76,12 @@ export const ProductDisplay = ({ item }: CardProps) => {
             <DataGraph accounts={item.accounts} field="heartCount" />
           </div>
         </div>
-        <div className="w-full p-4">
+        {/* <div className="w-full p-4 grid gap-3">
           <LinkButton href={`/products/product/${item.id}`} className="w-full">
             View Product
           </LinkButton>
-        </div>
+         
+        </div> */}
       </div>
     </div>
   );
@@ -140,11 +147,6 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
                     </div>
                   </div>
                 </Link>
-                {/* <UpdateCollectionButton
-                  account={account}
-                  variant="outline"
-                  size="sm"
-                /> */}
               </div>
             ))}
           </div>
@@ -160,6 +162,8 @@ interface DataGraphProps {
 }
 
 export const DataGraph = ({ accounts, field }: DataGraphProps) => {
+  const [chartType, setChartType] = useState<"line" | "bar">("line");
+
   const combinedStats = combineStats(accounts);
 
   const combineDays = combineSameDay(combinedStats).reverse();
@@ -170,8 +174,44 @@ export const DataGraph = ({ accounts, field }: DataGraphProps) => {
 
   const data = combineDays.map((item: any) => item[field] / item.totalCombined);
 
-  // console.log("data ==> ", data);
-  return <LineChart data={data} labels={labels} dataTitle="Likes" />;
+  return (
+    <>
+      <div className="absolute right-0 -translate-y-full">
+        <Button
+          onClick={() => setChartType("bar")}
+          size="sm"
+          variant={chartType === "line" ? "ghost" : "outline"}
+          className={`${
+            chartType == "bar"
+              ? "border-border bg-background hover:bg-background hover:text-primary"
+              : "hover:bg-transparent hover:border-border"
+          }
+          `}
+        >
+          <Icons.barChart className="h-4 w-4" />
+        </Button>
+        <Button
+          onClick={() => setChartType("line")}
+          size="sm"
+          variant={chartType === "bar" ? "ghost" : "outline"}
+          className={`${
+            chartType == "line"
+              ? "border-border bg-background hover:bg-background hover:text-primary"
+              : "hover:bg-transparent hover:border-border"
+          }
+          `}
+        >
+          <Icons.lineChart className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {chartType === "line" ? (
+        <LineChart data={data} labels={labels} dataTitle="Likes" />
+      ) : (
+        <BarChart data={data} labels={labels} dataTitle="Likes" />
+      )}
+    </>
+  );
 };
 
 const combineStats = (accounts: AccountDataType[]): DataType[] => {

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { buttonVariants, ButtonProps } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 import {
@@ -25,12 +25,9 @@ import { useUserCollections } from "@/context/user-collections";
 //   collection: Pick<collection, "id" | "title">
 // }
 
-interface RemoveCollectionButtonProps {
-  variant?: "default" | "outline" | "secondary";
-  className?: string;
-  size?: "sm" | "xsm" | "lg";
+interface RemoveCollectionButtonProps extends ButtonProps {
   accountId: string;
-  collection: any;
+  collectionId: string;
   hideItems?: (recordIdArray: string[]) => void;
 }
 
@@ -39,17 +36,17 @@ export function RemoveCollectionButton({
   size,
   className,
   accountId,
-  collection,
+  collectionId,
   hideItems,
+  ...props
 }: RemoveCollectionButtonProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
   const { removeIdFromCollection } = useUserCollections();
 
   const handleRemove = async () => {
-    console.log("=", collection, accountId);
     setIsDeleteLoading(true);
-    const res = await removeIdFromCollection(collection.id, accountId);
+    const res = await removeIdFromCollection(collectionId, accountId);
     if ("error" in res) {
       toast({
         title: "Error removing account",
@@ -70,17 +67,11 @@ export function RemoveCollectionButton({
 
   return (
     <>
-      <Button
+      <button
         onClick={() => setShowDeleteAlert(!showDeleteAlert)}
-        className={cn(
-          className,
-          "flex items-center justify-center whitespace-nowrap hover:text-destructive"
-        )}
-        variant={variant}
-        size={size}
-      >
-        <Icons.remove className="h-5 w-5 " />
-      </Button>
+        className={cn(buttonVariants({ variant }), className)}
+        {...props}
+      />
 
       <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
         <AlertDialogContent>
@@ -96,7 +87,7 @@ export function RemoveCollectionButton({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleRemove}
-              className="bg-red-600 focus:ring-red-600"
+              className="bg-red-600 focus:ring-red-600 border-none"
             >
               {isDeleteLoading ? (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

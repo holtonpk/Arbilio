@@ -4,23 +4,13 @@ import Link from "next/link";
 import { formatNumber } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import PostView from "@/components/post-view";
-import Skeleton from "@/components/ui/custom-skeleton";
+import Skeleton from "@/components/ui/skeleton";
 import Tooltip from "@/components/ui/tooltip";
 
 export const AccountCard = ({ item }: { item: AccountDataType }) => {
   return (
     <div className="h-full relative group ">
-      {/* <div className="absolute h-1/2 pointer-events-none bottom-0 w-full bg-gradient-to-t dark:from-black/60 from-white/60 to-black/0  rounded-md z-40 hidden group-hover:block fade-in">
-          <div className="flex absolute gap-2 w-fit  bottom-2 pointer-events-auto right-2">
-            <UpdateCollectionButton account={item} size="sm" variant="default" />
-          </div>
-        </div> */}
-
       <div className="w-full  bg-card rounded-md h-fit border  pt-4  shadow-lg  pb-2 p-2 relative flex flex-col">
-        {/* <div className="flex absolute gap-2 w-fit top-2 right-2 ">
-            <UpdateCollectionButton account={item} variant="outline" />
-          </div> */}
-
         <Link
           href={`/accounts/account/${item.id}`}
           className="grid grid-cols-[70px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-full pb-0  rounded-md hover:opacity-70"
@@ -160,27 +150,25 @@ export const AccountCardSkeleton = () => {
   return (
     <div className="w-full rounded-md h-fit border  pt-4  pb-2 p-2 relative flex flex-col gap-2">
       <div className="grid grid-cols-[70px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-full pb-0 ">
-        <Skeleton height={70} width={70} />
+        <Skeleton className="h-[70px] w-[70px]" />
         <div className="flex flex-col max-w-full gap-1 overflow-hidden ">
-          <Skeleton height={35} width={"100%"} />
-          <Skeleton height={20} width={"100%"} />
+          <Skeleton className="h-[35px] w-[100%]" />
+          <Skeleton className="h-[25px] w-[100%]" />
         </div>
       </div>
       <div className=" gap-3 grid grid-cols-3   w-full">
-        <Skeleton height={50} width={"100%"} />
-        <Skeleton height={50} width={"100%"} />
-        <Skeleton height={50} width={"100%"} />
+        <Skeleton className="h-[50px] w-[100%]" />
+        <Skeleton className="h-[50px] w-[100%]" />
+        <Skeleton className="h-[50px] w-[100%]" />
       </div>
-
-      <Skeleton height={60} width={"100%"} />
-
+      <Skeleton className="h-[60px] w-[100%]" />
       <div className="flex flex-col w-[100%] gap-2 ">
-        <Skeleton height={20} width={100} />
+        <Skeleton className="h-[20px] w-[100px]" />
 
         <div className="grid grid-cols-3 gap-2 w-full ">
-          <Skeleton width={"100%"} className="w-full aspect-[9/16]" />
-          <Skeleton width={"100%"} className="w-full aspect-[9/16]" />
-          <Skeleton width={"100%"} className="w-full aspect-[9/16]" />
+          <Skeleton className="w-full aspect-[9/16]" />
+          <Skeleton className="w-full aspect-[9/16]" />
+          <Skeleton className="w-full aspect-[9/16]" />
         </div>
       </div>
     </div>

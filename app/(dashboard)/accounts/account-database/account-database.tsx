@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Table from "@/components/account-table";
+// import { DataTable } from "@/components/account-table";
 import FilterBuilder from "@/components/filter-builder";
 import Sort from "@/components/sort-results";
 import DisplaySelector from "@/components/display-selector";
@@ -12,7 +12,16 @@ import EmptySearch from "@/components/empty-search";
 import useData from "@/lib/hooks/use-account-data";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
-import { AccountCard } from "@/components/account-card";
+import { AccountCard } from "@/components/ui/account-card";
+import { DataTable } from "@/components/account-table/data-table";
+import { columns } from "@/components/account-table/columns";
+
+// Simulate a database read for tasks.
+async function getTasks() {
+  const res = await fetch("/api/tasks");
+  const tasks = await res.json();
+  return tasks;
+}
 
 const getData = async (startAfterId: string) => {
   const url = `${siteConfig.url}/api/account-database/startAfter/${startAfterId}`;
@@ -28,6 +37,7 @@ const getData = async (startAfterId: string) => {
 
 const AccountDatabase = ({ originalData }: any) => {
   const [data, setData] = useState(originalData);
+  const [TableData, setTableData] = useState(undefined);
   const [lastDocId, setLastDocId] = useState(
     originalData[originalData.length - 1]?.id
   );
@@ -37,7 +47,9 @@ const AccountDatabase = ({ originalData }: any) => {
     setLoading(true);
     const newData = await getData(lastDocId);
     setLoading(false);
-    console.log("new", newData);
+    const newTableData = await getTasks();
+    console.log("nt", newTableData);
+    setTableData(newTableData);
     setData((prevData: any) => [...prevData, ...newData]);
     setLastDocId(newData[newData.length - 1]?.id); // assuming each data object has an 'id' field
   };
@@ -103,17 +115,23 @@ const AccountDatabase = ({ originalData }: any) => {
                 ))}
               </div>
             ) : (
-              <Table
-                data={sortedData}
-                setDescending={setDescending}
-                setSortParam={setSortParam}
-              />
+              <>
+                {sortedData && (
+                  <DataTable data={sortedData} columns={columns} />
+                )}
+              </>
+              // <DataTable
+              //   data={TableData}
+              //   columns={columns}
+              //   // setDescending={setDescending}
+              //   // setSortParam={setSortParam}
+              // />
             )}
           </>
         )}
       </div>
       <Button onClick={loadMore} className="mt-3">
-        {loading ? <Icons.spinner className="animate-spin" /> : null}
+        {loading ? <Icons.spinner className="animate-spin mr-2" /> : null}
         Load more
       </Button>
     </>

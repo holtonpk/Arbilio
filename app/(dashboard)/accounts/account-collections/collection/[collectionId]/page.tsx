@@ -14,7 +14,6 @@ async function getData(collectionId: string) {
   );
 
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
   return res.json();
@@ -26,8 +25,6 @@ export default async function CollectionPage({
   params: { collectionId: string };
 }) {
   const data = await getData(params.collectionId);
-
-  console.log("data", data);
 
   return (
     <>
@@ -52,7 +49,7 @@ export default async function CollectionPage({
         </CollectionOperations>
       </div>
 
-      <div className="w-full border-t bg-muted/60">
+      <div className="w-full border-t ">
         <div className="w-full container   pt-4  flex flex-col min-h-screen items-center  ">
           <CollectionData data={data} />
         </div>

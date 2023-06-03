@@ -17,38 +17,30 @@ import {
 import { CollectionType } from "@/types";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import { ButtonProps, buttonVariants } from "@/components/ui/button";
+
 import { cn } from "@/lib/utils";
 
-interface UpdateCollectionButtonProps {
-  variant?: "default" | "outline" | "secondary";
-  className?: string;
-  size?: "sm" | "xsm" | "lg";
+interface UpdateCollectionButtonProps extends ButtonProps {
   account: any;
 }
 
 export function UpdateCollectionButton({
-  variant,
-  size,
-  className,
   account,
+  className,
+  variant,
+  ...props
 }: UpdateCollectionButtonProps) {
   const [showCollectionUpdate, setShowCollectionUpdate] =
     React.useState<boolean>(false);
 
   return (
     <>
-      <Button
+      <button
         onClick={() => setShowCollectionUpdate(true)}
-        className={cn(
-          className,
-          "flex items-center justify-center whitespace-nowrap"
-        )}
-        variant={variant}
-        size={size}
-      >
-        <Icons.addCollection className="h-5 w-5 " />
-      </Button>
+        className={cn(buttonVariants({ variant }), className)}
+        {...props}
+      />
       {showCollectionUpdate && (
         <UpdateDialog
           showCollectionUpdate={showCollectionUpdate}

@@ -12,7 +12,7 @@ export default async function handler(
   const categoryId = req.query.categoryId as any;
 
   const collectionRef = collection(db, storage.products);
-  const q = query(collectionRef, limit(5), where("category", "==", categoryId));
+  const q = query(collectionRef, where("category", "==", categoryId));
   const docs = await getDocs(q);
   const formattedData = docs.docs.map(async (_doc) => {
     const record = _doc.data();

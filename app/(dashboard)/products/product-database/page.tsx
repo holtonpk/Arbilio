@@ -18,9 +18,11 @@ export default async function ProductDatabase() {
     <>
       <PageHeader
         heading="Product Database"
-        text={"Browse our collection of over 500 high converting products."}
+        text={
+          "Browse our collection of over 500 high product that perform well on TikTok"
+        }
       />
-      <div className="w-full border-t mt-[180px] flex flex-col relative  items-center bg-muted ">
+      <div className="w-full flex flex-col relative  items-center ">
         <ProductDataBase />
       </div>
     </>

@@ -332,7 +332,9 @@ const AccountManage = () => {
           <label>Store Url</label>
         </div>
         <Button onClick={addNew} variant="outline" className="w-fit">
-          {updateIsLoading ? <Icons.spinner className="animate-spin" /> : null}
+          {updateIsLoading ? (
+            <Icons.spinner className="animate-spin mr-2" />
+          ) : null}
           update all
         </Button>
       </div>
@@ -601,11 +603,9 @@ const ProductDisplay = ({
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          console.log("Document data:", docSnap.data());
           setProductData(docSnap.data() as ProductType);
         } else {
           // doc.data() will be undefined in this case
-          console.log("No such document!");
         }
       }
     };

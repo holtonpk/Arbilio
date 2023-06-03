@@ -25,7 +25,7 @@ export default async function TopAccounts() {
         <PageHeader
           heading={"Top Accounts"}
           text={
-            "Discover the top sellers and anylize their performance over time."
+            "Discover the top sellers and analyze their performance over time."
           }
         />
         <div className="w-full border-t">

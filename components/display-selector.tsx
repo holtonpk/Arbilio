@@ -1,5 +1,5 @@
 "use client";
-import Skeleton from "@/components/ui/custom-skeleton";
+import Skeleton from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 const DisplaySelector = ({ displayType, setDisplayType }: any) => {

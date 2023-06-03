@@ -76,11 +76,16 @@ import {
   MessageSquare,
   Bookmark,
   Music,
+  Folder,
+  BarChart3Icon,
+  LineChartIcon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  barChart: BarChart3Icon,
+  lineChart: LineChartIcon,
   music: Music,
   bookmark: Bookmark,
   comment: MessageSquare,
@@ -93,6 +98,7 @@ export const Icons = {
   showPassword: Eye,
   hidePassword: EyeOff,
   addCollection: FolderPlus,
+  folder: Folder,
   analytics: BarChart3,
   logo: ShoppingCart,
   close: X,
@@ -127,7 +133,6 @@ export const Icons = {
   profile: User,
   posts: Play,
   send: Send,
-  lineChart: LineChart,
   rank: FileBarChart,
   media: Image,
   menu: Menu,

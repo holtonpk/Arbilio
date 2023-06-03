@@ -10,7 +10,6 @@ interface PostViewProps {
 
 const PostView = ({ video }: PostViewProps) => {
   const [showPlayer, setShowPlayer] = React.useState(false);
-  console.log("video", video);
 
   return (
     <div className="w-full aspect-[9/16] bg-primary rounded-md relative overflow-hidden">

@@ -8,7 +8,8 @@ import React, {
 } from "react";
 import Link from "next/link";
 import { formatNumber } from "@/lib/utils";
-import DateRange from "@/components/date-range";
+// import DateRange from "@/components/date-range";
+import { DateRangePicker } from "@/components/date-range-picker";
 import Image from "next/image";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { Button } from "@/components/ui/button";
@@ -18,8 +19,11 @@ import { Icons } from "@/components/icons";
 import { useRouter } from "next/navigation";
 import PostView from "@/components/post-view";
 import { ProductOperations } from "@/components/buttons/product-operations";
-import { LineChart } from "@/components/charts";
+import { LineChart, BarChart } from "@/components/charts";
 import Tooltip from "@/components/ui/tooltip";
+import { DateRange } from "react-day-picker";
+import TrackProductButton from "@/components/buttons/track-product-button";
+
 interface DataContextData {
   data: AccountDataType;
 }
@@ -45,30 +49,31 @@ const ViewAccount = ({ data }: ViewAccountProps) => {
   const router = useRouter();
   return (
     <div className="container">
+      {/* <div className="flex justify-between w-full mb-4"> */}
+      {/* <Button
+          onClick={() => router.back()}
+          variant="outline"
+          className="w-fit"
+        >
+          <Icons.chevronLeft className=" h-6 w-6" />
+          Back
+        </Button> */}
+
+      {/* </div> */}
       <div className="w-full rounded-md flex flex-col items-center  pt-0 relative ">
         <DataProvider data={data}>
-          <div className="flex items center gap-4 absolute  md:right-4 top-0 right-0 ">
-            <UpdateCollectionButton account={data} variant={"outline"} />
-          </div>
-          <Button
-            onClick={() => router.back()}
-            variant="outline"
-            className="w-fit absolute md:left-4 top-0 left-0 "
-          >
-            <Icons.chevronLeft className=" h-6 w-6" />
-            Back
-          </Button>
-          <div className="flex flex-col w-fit ">
+          {/* <div className="flex flex-col w-fit ">
             <ProfileDisplay />
-          </div>
+          </div> */}
           <div className="grid md:grid-cols-2 w-full gap-4 relative ">
-            <div className="md:order-1 order-3">
-              <AnalyticsDisplay />
-            </div>
-            <div className="w-full  flex flex-col  gap-4 order-2 ">
+            <div className="w-full  flex flex-col  gap-4">
+              <ProfileDisplay />
               {data?.product && <ProductDisplay />}
               {data?.storeUrl && <StoreDisplay />}
               {data.topPosts && <PostsDisplay />}
+            </div>
+            <div className="">
+              <AnalyticsDisplay />
             </div>
           </div>
         </DataProvider>
@@ -94,8 +99,10 @@ export const More = () => {
 const AnalyticsDisplay = () => {
   return (
     <div className="flex flex-col w-full mt-3">
-      <div className="flex items-center">
-        <h1 className=" text-2xl text-primary">Analytics</h1>
+      <div className="flex items-center  mb-3">
+        <h1 className=" text-lg font-semibold leading-none tracking-tight">
+          Analytics
+        </h1>
 
         <Tooltip content=" Account growth over time ">
           <div className="flex h-4 w-8 justify-center">
@@ -103,24 +110,24 @@ const AnalyticsDisplay = () => {
           </div>
         </Tooltip>
       </div>
-      <div className="grid gap-8  mt-3">
+      <div className="grid gap-8 ">
         <DataGraph
           field="followerCount"
           title="Followers"
-          icon={<Icons.followers className="h-8 w-8 text-muted-foreground" />}
+          icon={<Icons.followers className="h-8 w-8 text-white" />}
         />
 
         <DataGraph
           field="heartCount"
           title="Likes"
-          icon={<Icons.likes className="h-8 w-8 text-muted-foreground" />}
+          icon={<Icons.likes className="h-8 w-8 text-white" />}
           width={250}
         />
 
         <DataGraph
           field="videoCount"
           title="Posts"
-          icon={<Icons.posts className="h-8 w-8 text-muted-foreground" />}
+          icon={<Icons.posts className="h-8 w-8 text-white" />}
           width={250}
         />
       </div>
@@ -136,8 +143,9 @@ interface DataGraphProps {
 }
 
 const DataGraph = ({ field, title, icon }: DataGraphProps) => {
-  const [date1, setDate1] = useState<Date | undefined>(undefined);
-  const [date2, setDate2] = useState<Date | undefined>(undefined);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+  const [chartType, setChartType] = useState<"line" | "bar">("bar");
+
   const { data } = useContext(DataContext)!;
   const orderedData = data.accountStats.sort((a: any, b: any) => {
     return a.dataCollectionTime - b.dataCollectionTime;
@@ -151,11 +159,14 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
 
   useEffect(() => {
     orderedData.map((stat: any) => formatDateShort(stat.dataCollectionTime));
-    if (date1 && date2) {
+    const { to, from } = dateRange || {};
+    if (to && from) {
+      console.log("to", to);
+      console.log("from", from);
       const filteredData = orderedData.filter((stat: any) => {
         return (
-          stat.dataCollectionTime >= date1.getTime() &&
-          stat.dataCollectionTime <= date2.getTime()
+          stat.dataCollectionTime >= from.getTime() &&
+          stat.dataCollectionTime <= to.getTime()
         );
       });
       setGraphData({
@@ -165,6 +176,8 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
         data: filteredData.map((stat: any) => stat[field]),
       });
     } else {
+      console.log("to", to);
+      console.log("from", from);
       setGraphData({
         labels: orderedData.map((stat: any) =>
           formatDateShort(stat.dataCollectionTime)
@@ -172,13 +185,13 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
         data: orderedData.map((stat: any) => stat[field]),
       });
     }
-  }, [date1, date2, field, orderedData]);
+  }, [dateRange, field, orderedData]);
 
   return (
     <div className="w-full h-fit border rounded-md p-4 relative">
       <div className="h-fit w-full flex">
         <div className="flex items-center gap-3">
-          <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
+          <div className="rounded-md bg-theme-blue aspect-square p-2 relative flex justify-center items-center">
             {icon}
           </div>
           <div className="flex flex-col">
@@ -188,17 +201,55 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
             </h3>
           </div>
         </div>
-        <div className="absolute top-4 right-4 w-fit h-fit">
-          <DateRange setDate1={setDate1} setDate2={setDate2} />
+        <div className="absolute top-4 right-4 w-fit h-fit flex gap-3">
+          <DateRangePicker date={dateRange} setDate={setDateRange} />
+          <div className="">
+            <Button
+              onClick={() => setChartType("bar")}
+              size="sm"
+              variant={chartType === "line" ? "ghost" : "outline"}
+              className={`${
+                chartType == "bar"
+                  ? "border-border bg-background hover:bg-background hover:text-primary"
+                  : "hover:bg-transparent hover:border-border"
+              }
+          `}
+            >
+              <Icons.barChart className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={() => setChartType("line")}
+              size="sm"
+              variant={chartType === "bar" ? "ghost" : "outline"}
+              className={`${
+                chartType == "line"
+                  ? "border-border bg-background hover:bg-background hover:text-primary"
+                  : "hover:bg-transparent hover:border-border"
+              }
+          `}
+            >
+              <Icons.lineChart className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
       <div className="relative h-[250px]  w-full aspect-square  mt-3  rounded-md">
         {GraphData && GraphData.labels.length > 0 ? (
-          <LineChart
-            labels={GraphData.labels}
-            data={GraphData.data}
-            dataTitle={title}
-          />
+          <>
+            {chartType === "line" ? (
+              <LineChart
+                data={GraphData.data}
+                labels={GraphData.labels}
+                dataTitle={title}
+              />
+            ) : (
+              <BarChart
+                data={GraphData.data}
+                labels={GraphData.labels}
+                dataTitle={title}
+              />
+            )}
+          </>
         ) : (
           <div className="w-full flex flex-col justify-center items-center p-10">
             <Icons.error className="h-8 w-8 text-gray-500" />
@@ -216,8 +267,10 @@ const ProductDisplay = () => {
     <>
       {data.product ? (
         <div className="grid mt-3  w-full ">
-          <div className="flex items-center">
-            <h1 className=" text-2xl text-primary">Product</h1>
+          <div className="flex items-center  mb-3">
+            <h1 className="text-lg font-semibold leading-none tracking-tight ">
+              Product
+            </h1>
             <Tooltip content="This is the main product advertised by the account ">
               <div className="flex h-4 w-8 justify-center">
                 <Icons.helpCircle className="h-4 w-4 text-muted-foreground" />
@@ -225,31 +278,24 @@ const ProductDisplay = () => {
             </Tooltip>
           </div>
 
-          <div className="grid divide-y  divide-border rounded-md border p-3 mt-3">
+          <div className="grid divide-y  divide-border rounded-md border p-3 ">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-8">
-                <div className="w-[100px] aspect-square bg-muted rounded-md relative overflow-hidden">
+              <div className="grid grid-cols-[80px_1fr] gap-4 items-center">
+                <div className="w-[80px] aspect-square bg-muted rounded-md relative overflow-hidden">
                   <Image src={data.product.image} alt="" fill />
                 </div>
 
-                <div className="grid justify-between   ">
-                  <h1 className=" text-lg whitespace-nowrap">
+                <div className="flex flex-col    ">
+                  <h1 className=" text-xl whitespace-nowrap">
                     {data.product.title}
                   </h1>
-                  <h1 className=" text-sm text-muted-foreground">Supplier</h1>
-                  <Link
-                    href={"/"}
-                    className="text-primary  w-[200px] overflow-hidden whitespace-nowrap text-ellipsis"
-                  >
-                    {data.product.supplierUrl.replace(
-                      /^https?:\/\/(?:www\.)?/,
-                      ""
-                    )}
-                  </Link>
+                  <h1 className=" text-md text-muted-foreground">
+                    Active Sellers: {data.product.accounts.length}
+                  </h1>
                 </div>
               </div>
-              <ProductOperations product={data.product} variant="outline">
-                <Icons.ellipsis className="h-4 w-4 " />
+              <ProductOperations variant={"outline"} product={data.product}>
+                <Icons.ellipsis className="h-4 w-4 text-muted-foreground" />
               </ProductOperations>
             </div>
           </div>
@@ -307,8 +353,10 @@ const StoreDisplay = () => {
     <>
       {products && (
         <div className="grid w-full ">
-          <div className="flex items-center">
-            <h1 className=" text-2xl text-primary">Store</h1>
+          <div className="flex items-center  mb-3">
+            <h1 className="text-lg font-semibold leading-none tracking-tight ">
+              Store
+            </h1>
             <Tooltip content="This is the store linked in the account's bio">
               <div className="flex h-4 w-8 justify-center">
                 <Icons.helpCircle className="h-4 w-4 text-muted-foreground" />
@@ -380,15 +428,17 @@ const PostsDisplay = () => {
   const { data } = useContext(DataContext)!;
   return (
     <div className="grid w-full ">
-      <div className="flex items-center">
-        <h1 className=" text-2xl text-primary">Top Posts</h1>
+      <div className="flex items-center  mb-3">
+        <h1 className=" text-lg font-semibold leading-none tracking-tight ">
+          Top Posts
+        </h1>
         <Tooltip content="These are the current top 5 posts based on view count">
           <div className="flex h-4 w-8 justify-center">
             <Icons.helpCircle className="h-4 w-4 text-muted-foreground" />
           </div>
         </Tooltip>
       </div>
-      <div className="grid grid-cols-5 gap-4 mt-3">
+      <div className="grid grid-cols-5 gap-4 ">
         {data.topPosts &&
           data.topPosts.map((item: any, i) => (
             <PostView key={i} video={item} />
@@ -402,7 +452,7 @@ const ProfileDisplay = () => {
   const { data } = useContext(DataContext)!;
   return (
     <div className="flex items-center flex-col md:flex-row gap-4  rounded-md w-fit relative">
-      <div className="rounded-md bg-muted relative aspect-square shadow-lg dark:border h-20 md:h-40  overflow-hidden">
+      <div className="rounded-md bg-muted relative aspect-square border h-20 md:h-40  overflow-hidden">
         <Image
           src={data?.avatar}
           alt="Picture of the author"
@@ -415,7 +465,7 @@ const ProfileDisplay = () => {
 
       {/* <AccountRank /> */}
       {/* <AddToCollection /> */}
-      <div className="flex flex-col w-fit items-center md:items-start ">
+      <div className="flex flex-col w-fit items-center md:items-start relative ">
         <h1 className="text-3xl font-bold w-fit ">
           {data.userInfo?.user?.nickname}
         </h1>
@@ -423,6 +473,14 @@ const ProfileDisplay = () => {
           {"@" + data?.uniqueId}
         </h2>
         <StatDisplay />
+        <UpdateCollectionButton
+          account={data}
+          variant={"outline"}
+          className="absolute top-0 right-0"
+        >
+          <Icons.add className="h-5 w-5 mr-3" />
+          Add to collection
+        </UpdateCollectionButton>
       </div>
     </div>
   );
@@ -434,8 +492,8 @@ const StatDisplay = () => {
   return (
     <div className="flex md:grid md:grid-cols-3  md:gap-6 gap-3  h-fit items-center rounded-md mt-4">
       <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
-          <Icons.likes className="h-8 w-8 text-muted-foreground" />
+        <div className="rounded-md bg-muted/60 aspect-square p-2 relative flex justify-center items-center">
+          <Icons.likes className="h-8 w-8 text-primary" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Likes</h2>
@@ -445,8 +503,8 @@ const StatDisplay = () => {
         </div>
       </div>
       <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
-          <Icons.followers className="h-8 w-8 text-muted-foreground" />
+        <div className="rounded-md bg-muted/60 aspect-square p-2 relative flex justify-center items-center">
+          <Icons.followers className="h-8 w-8 text-primary" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Followers</h2>
@@ -456,8 +514,8 @@ const StatDisplay = () => {
         </div>
       </div>
       <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-muted aspect-square p-2 relative flex justify-center items-center">
-          <Icons.posts className="h-8 w-8 text-muted-foreground" />
+        <div className="rounded-md bg-muted/60 aspect-square p-2 relative flex justify-center items-center">
+          <Icons.posts className="h-8 w-8 text-primary" />
         </div>
         <div className="flex flex-col">
           <h2 className="text-md text-muted-foreground">Posts</h2>

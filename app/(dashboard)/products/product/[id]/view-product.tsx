@@ -7,52 +7,29 @@ import { Icons } from "@/components/icons";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import PostView from "@/components/post-view";
 import Tooltip from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 interface ViewProductProps {
   item: ProductType;
 }
 import { DataGraph } from "../../product-database/product-database-cards";
+import TrackProductButton from "@/components/buttons/track-product-button";
 
 const ViewProduct = ({ item }: ViewProductProps) => {
-  console.log("item ==> ", item);
   return (
     <div className="grid md:grid-cols-[30%_1fr] gap-4 p-4 container">
-      <h1 className="md:hidden text-2xl font-bold capitalize">{item.title}</h1>
-
-      <ProductImage images={item.supplierInfo.supplierImages} />
-      <section className=" rounded-md">
+      <div className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold capitalize md:block hidden ">
           {item.title}
         </h1>
-        {/* <div className="grid grid-cols-3 border rounded-md p-2 mt-4">
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-[12px] sm:text-base text-muted-foreground w-fit whitespace-nowrap">
-              Popularity Rank
-            </h1>
-            <div className="font-bold text-primary text-[12px] sm:text-lg">
-              #1
-            </div>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-[12px] sm:text-base text-muted-foreground w-fit">
-              Supplier
-            </h1>
-
-            <Icons.aliExpress className="text-2xl w-16 sm:w-20 h-[16px]" />
-          </div>
-          <div className="flex flex-col items-center justify-center ">
-            <h1 className="text-[12px] sm:text-base text-muted-foreground w-fit">
-              Supplier Price
-            </h1>
-            <h1 className="text-[12px] sm:text-lg  text-primary font-bold ">
-              {"$" + data.supplierInfo.supplierPrice.min + "/ unit"}
-            </h1>
-          </div>
-        </div> */}
+        <TrackProductButton product={item} />
+        <ProductImage images={item.supplierInfo.supplierImages} />
+      </div>
+      <section className=" rounded-md">
         <div className="grid md:grid-cols-2 gap-4">
           <div className="p-4 border rounded-md mt-4">
             <div className="flex  items-center ">
-              <div className="rounded-md bg-muted aspect-square p-2 w-fit relative flex justify-center items-center">
-                <Icons.likes className=" text-primary" />
+              <div className="rounded-md bg-theme-blue aspect-square p-2 w-fit relative flex justify-center items-center">
+                <Icons.likes className=" text-white" />
               </div>
               <h1 className="ml-3 text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
                 Average likes
@@ -69,8 +46,8 @@ const ViewProduct = ({ item }: ViewProductProps) => {
           </div>
           <div className="p-4 border rounded-md mt-4">
             <div className="flex  items-center ">
-              <div className="rounded-md bg-muted aspect-square p-2 w-fit relative flex justify-center items-center">
-                <Icons.followers className=" text-primary" />
+              <div className="rounded-md bg-theme-blue aspect-square p-2 w-fit relative flex justify-center items-center">
+                <Icons.followers className=" text-white" />
               </div>
               <h1 className=" ml-3 text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
                 Average followers
@@ -135,10 +112,8 @@ interface AccountInfoProps {
 }
 
 const AccountInfo = ({ accounts }: AccountInfoProps) => {
-  console.log("accounts", accounts);
   const topPosts = accounts.flatMap((account) => account.topPosts || []);
 
-  console.log("topPosts", topPosts);
   topPosts.sort(
     (a: any, b: any) => b.postData.playCount - a.postData.playCount
   );
@@ -152,7 +127,7 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
     <div className="grid  gap-4">
       <div className="flex flex-col ">
         <div className="flex items-center mt-4 mb-3">
-          <h1 className="text-xl">{`Active Sellers (${accounts.length})`}</h1>
+          <h1 className="text-lg font-semibold leading-none tracking-tight">{`Active Sellers (${accounts.length})`}</h1>
           <Tooltip content="Sellers linked to the product ">
             <div className="flex h-4 w-8 justify-center">
               <Icons.helpCircle className="h-4 w-4 text-gray-600" />
@@ -186,7 +161,9 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
                   account={account}
                   variant="outline"
                   size="sm"
-                />
+                >
+                  <Icons.addCollection className="h-5 w-5 " />
+                </UpdateCollectionButton>
               </div>
             ))}
           </div>
@@ -194,7 +171,9 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
       </div>
       <div className="flex flex-col">
         <div className="flex items-center mb-3">
-          <h1 className="text-xl">Top Videos</h1>
+          <h1 className="text-lg font-semibold leading-none tracking-tight">
+            Top Videos
+          </h1>
           <Tooltip content="Top performing posts by view count linked to the product ">
             <div className="flex h-4 w-8 justify-center">
               <Icons.helpCircle className="h-4 w-4 text-gray-600" />

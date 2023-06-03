@@ -2,6 +2,7 @@
 import "@/styles/globals.css";
 import "@/styles/animations.css";
 import "@/styles/skeletonStyle.css";
+import "@/styles/mdx.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/context/Auth";
 interface IProps {

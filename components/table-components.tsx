@@ -30,7 +30,7 @@ export const StatDisplay = ({ displayValue }: any) => {
 };
 
 export const AccountDisplay = ({ item }: { item: AccountDataType }) => {
-  console.log(firebaseConfig.avatarStorage + item?.avatar);
+  console.log("ii", item);
   return (
     <Link
       href={`accounts/account/${item.id}`}

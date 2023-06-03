@@ -31,12 +31,6 @@ const DashboardNav = () => {
     };
   }, []);
 
-  const hideHoverBar = () => {
-    const hoverBar = document.getElementById("hoverBar");
-    hoverBar!.style.display = "none";
-    hoverBar!.style.transition = "none";
-  };
-
   return (
     <div className="md:block hidden">
       <div className="w-screen h-20  justify-between px-6 z-40 relative flex">
@@ -85,8 +79,8 @@ const DashboardNav = () => {
       >
         <div
           id="row"
-          className={` flex items-center gap-2 transition-all  justify-end duration-[500ms] 
-          ${collapseNav ? "w-[705px]" : "w-[585px]"}
+          className={` flex items-center gap-2 transition-all justify-end duration-[500ms] 
+          ${collapseNav ? "w-[675px]" : "w-[555px]"}
           `}
         >
           {collapseNav ? (
@@ -99,16 +93,8 @@ const DashboardNav = () => {
               </span>
             </Link>
           ) : null}
-          <div onMouseLeave={hideHoverBar} className="flex gap">
-            {dashboardConfig.sideNav.map((route, indx) => (
-              <Route key={indx} item={route} />
-            ))}
-            <span
-              // className="absolute z-10 rounded-md bg-muted transition-all duration-200"
-              className="absolute z-10 rounded-md bg-muted "
-              id="hoverBar"
-            />
-          </div>
+
+          <NavigationMenuDemo />
         </div>
       </nav>
     </div>
@@ -117,182 +103,106 @@ const DashboardNav = () => {
 
 export default DashboardNav;
 
-const Route = ({ item }: { item: SideNavRoute }) => {
-  const segment = useSelectedLayoutSegment();
-  const elementRef = useRef<HTMLSpanElement>(null); // For a div element
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
-  const onHover = () => {
-    if (elementRef.current) {
-      const hoverBar = document.getElementById("hoverBar");
-      if (hoverBar) {
-        hoverBar.style.display = "block";
-        // set position before transition
-        hoverBar.style.height = `${elementRef.current.offsetHeight}px`;
-        hoverBar.style.width = `${elementRef.current.offsetWidth}px`;
-        hoverBar.style.left = `${elementRef.current.offsetLeft}px`;
-        // Add a short delay to ensure the transition doesn't start until the position is set
-        setTimeout(() => {
-          hoverBar.style.transition = "all 0.2s ease-in-out";
-        }, 0);
-      }
-    }
-  };
-
+export function NavigationMenuDemo() {
   return (
-    <span
-      ref={elementRef}
-      onMouseOver={onHover}
-      className={`"flex gap-2 pr-2 relative h-fit items-center
-      ${item?.disabled && "pointer-events-none"}
-      `}
-    >
-      {!item?.subPages ? (
-        <RouteLink item={item} />
-      ) : (
-        <RouteButton item={item} />
-      )}
-      {item?.href.startsWith(`/${segment}`) && (
-        <div className="absolute pointer-events-none w-full h-[2px] bg-primary rounded-full -bottom-[6px]" />
-      )}
-    </span>
-  );
-};
-
-const RouteLink = ({ item }: { item: SideNavRoute }) => {
-  const segment = useSelectedLayoutSegment();
-  const Icon = Icons[item.iconName];
-  return (
-    <Link
-      href={item?.href}
-      className={`group flex items-center  whitespace-nowrap px-2 py-2 text-sm font-medium  hover:text-primary text-muted-foreground relative z-20 ${
-        item?.href.startsWith(`/${segment}`) && "text-primary "
-      }
-      ${item?.disabled && "cursor-not-allowed opacity-50 pointer-events-none"}
-      `}
-    >
-      <Icon className="h-5 w-5 mr-2" />
-      <div className="text-sm ">{item.title}</div>
-      {item?.disabled && (
-        <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
-          Coming soon
-        </div>
-      )}
-    </Link>
-  );
-};
-
-const RouteButton = ({ item }: { item: SideNavRoute }) => {
-  const [showSubPages, setShowSubPages] = useState(false);
-  const segment = useSelectedLayoutSegment();
-  const Icon = Icons[item.iconName];
-  const onClick = () => {
-    setShowSubPages(!showSubPages);
-  };
-
-  const handleMouseOff = () => {
-    setShowSubPages(false);
-  };
-  const onHover = () => {
-    setShowSubPages(true);
-  };
-
-  return (
-    <div
-      onMouseOver={onHover}
-      onMouseLeave={handleMouseOff}
-      onBlur={handleMouseOff}
-    >
-      <button
-        onClick={onClick}
-        disabled={item?.disabled}
-        className={`group flex items-center justify-between  whitespace-nowrap px-2 py-2 text-sm font-medium hover:text-primary text-muted-foreground  relative z-20  ${
-          item?.href.startsWith(`/${segment}`) && "text-primary "
-        }
-        ${item?.disabled && "cursor-not-allowed opacity-50 pointer-events-none"}
-        
-        
-        `}
-      >
-        <div className="flex items-center gap-2">
-          <Icon className="h-5 w-5" />
-          <div className="text-sm ">{item.title}</div>
-        </div>
-        {item?.disabled ? (
-          <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
-            Coming soon
-          </div>
-        ) : null}
-      </button>
-
-      {showSubPages && item.subPages && (
-        <SubPagesMenu
-          mainRoute={item}
-          subPages={item.subPages}
-          setShowSubPages={setShowSubPages}
-        />
-      )}
-    </div>
-  );
-};
-
-const SubPagesMenu = ({
-  mainRoute,
-  subPages,
-  setShowSubPages,
-}: {
-  mainRoute: SideNavRoute;
-  subPages: SubRouteType[];
-  setShowSubPages: (val: boolean) => void;
-}) => {
-  return (
-    <div className="absolute w-[500px] h-fit bg-background shadow-lg border -bottom-3 translate-y-full  rounded-md">
-      <div className="absolute w-[170px] h-10 top-0 z-20 -translate-y-full" />
-      <div className="grid gap-2 p-4">
-        <h1 className="">{mainRoute.title}</h1>
-        {subPages.map((subPage, indx) => (
-          <SubRoute
+    <NavigationMenu>
+      <NavigationMenuList>
+        {dashboardConfig.navigation.map((route, indx) => (
+          <NavigationMenuItem
             key={indx}
-            item={subPage}
-            setShowSubPages={setShowSubPages}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
+            className={`${
+              route?.disabled && "cursor-not-allowed  pointer-events-none"
+            }`}
+          >
+            {route.subPages ? (
+              <>
+                <NavigationMenuTrigger>
+                  {route.title}
+                  {route?.disabled && (
+                    <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
+                      Coming soon
+                    </div>
+                  )}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px]  lg:w-[600px] lg:grid-cols-[.75fr_1fr]  ">
+                    <li className="row-span-3">
+                      <NavigationMenuLink asChild>
+                        <a
+                          className="flex h-full gap- w-full select-none flex-col justify-end rounded-md bg-gradient-to-b  from-blue-600 via-sky-500 to-cyan-400  p-6 no-underline outline-none focus:shadow-md"
+                          href="/"
+                        >
+                          <div className="p-2 rounded-md bg-muted/60 text-primary w-fit  flex justify-center items-center">
+                            <Icons.accounts className="h-5 w-6" />
+                          </div>
+                          <div className="  text-lg font-medium text-primary">
+                            Accounts
+                          </div>
+                          <p className="text-sm leading-tight text-primary">
+                            Beautifully designed components built with Radix UI
+                            and Tailwind CSS.
+                          </p>
+                        </a>
+                      </NavigationMenuLink>
+                    </li>
 
-const SubRoute = ({
-  item,
-  setShowSubPages,
-}: {
-  item: SubRouteType;
-  setShowSubPages: (val: boolean) => void;
-}) => {
+                    {route.subPages.map((subPage: any, indx: number) => (
+                      <SubRoute key={subPage.title} item={subPage} />
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </>
+            ) : (
+              <Link href={route.href} legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  {route.title}
+                  {route?.disabled && (
+                    <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
+                      Coming soon
+                    </div>
+                  )}
+                </NavigationMenuLink>
+              </Link>
+            )}
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
+
+const SubRoute = ({ item }: { item: SubRouteType }) => {
   const Icon = Icons[item.icon];
 
   if (!Icon) {
     return null;
   }
-  const handleClick = () => {
-    console.log("clicked");
-    setShowSubPages(false);
-    const hoverBar = document.getElementById("hoverBar");
-    hoverBar!.style.display = "none";
-  };
 
   return (
-    <button onClick={handleClick}>
-      <Link href={item.href}>
-        <div className="grid grid-cols-[28px_1fr] gap-4 items-start hover:bg-muted p-2 rounded-md">
-          <div className="p-2 rounded-md bg-muted text-primary w-fit  flex justify-center items-center">
-            <Icon className="h-5 w-5" />
-          </div>
-          <div className="grid items-start text-left">
-            <h1>{item.title}</h1>
-            <p className="text-muted-foreground/60">{item.description}</p>
-          </div>
+    <Link href={item.href}>
+      <div className="grid grid-cols-[20px_1fr] gap-6 items-start hover:bg-muted p-2 rounded-md">
+        <div className="p-2 rounded-md bg-muted/60 text-primary w-fit  flex justify-center items-center">
+          <Icon className="h-5 w-5" />
         </div>
-      </Link>
-    </button>
+        <div className="grid items-start text-left gap-1">
+          <div className="text-sm font-medium leading-none text-primary">
+            {item.title}
+          </div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {item.description}
+          </p>
+        </div>
+      </div>
+    </Link>
   );
 };

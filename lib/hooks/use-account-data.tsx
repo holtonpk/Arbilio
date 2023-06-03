@@ -70,7 +70,6 @@ const useData = ({ data }: UseDataProps): UseDataReturn => {
     setActiveData(filteredData);
     setUnformattedData(filteredData);
   };
-  console.log("activeData", activeData);
 
   const sortedData =
     activeData &&

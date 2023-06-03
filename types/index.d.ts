@@ -50,7 +50,7 @@ export interface SideNavRoute {
 }
 
 export interface DashboardConfig {
-  sideNav: SideNavRouteProps[];
+  navigation: SideNavRouteProps[];
 }
 
 type TableHeader = {
@@ -110,6 +110,10 @@ export type CollectionType = {
 export type AccountCollectionData = {
   collection: CollectionType;
   accounts: AccountDataType[];
+};
+
+export type AccountCollectionTable = AccountDataType & {
+  collection: CollectionType;
 };
 
 export interface AccountStatsType {
@@ -174,13 +178,12 @@ export interface AccountDataType {
   id: string;
   uniqueId: string;
   nickname: string;
+  followerCount: string;
+  likeCount: string;
+  postCount: string;
   accountStats: AccountStatsType[];
-  stats: {
-    heartCount: number;
-    followerCount: number;
-    followingCount: number;
-    videoCount: number;
-  };
+  daysTracked: number;
+  mostViews: number;
   avatar: string;
   secUid: string;
   bio: string;

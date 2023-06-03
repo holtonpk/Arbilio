@@ -12,22 +12,21 @@ import useData from "@/lib/hooks/use-account-data";
 import { CollectionOperations } from "@/components/buttons/collection-operations";
 import { LinkButton } from "@/components/ui/link";
 import { AccountCollectionData } from "@/types";
-import { AccountCard } from "@/components/account-card";
-import Table from "@/components/account-table";
+import { AccountCard } from "@/components/ui/account-card";
+import { DataTable } from "@/components/account-table/data-table";
+import { columns } from "./table/table-columns";
+import Loading from "./loading";
 const CollectionData = ({ data }: { data: AccountCollectionData }) => {
-  const [displayType, setDisplayType] = useState<"grid" | "columns">("grid");
-  const {
-    sortedData,
-    searchData,
-    appliedFilterList,
-    setAppliedFilterList,
-    setSortParam,
-    setDescending,
-    unformattedData,
-    hideItems,
-  } = useData({ data: data.accounts });
+  const [displayType, setDisplayType] = useState<"grid" | "columns">("columns");
 
-  const sortOptions = accountCollectionsConfig.sortOptions;
+  const { sortedData, searchData, unformattedData } = useData({
+    data: data.accounts,
+  });
+
+  const sortedDataCollection = data.accounts.map((account) => ({
+    collection: data.collection,
+    ...account,
+  }));
 
   return (
     <>
@@ -44,49 +43,32 @@ const CollectionData = ({ data }: { data: AccountCollectionData }) => {
         </div>
       ) : (
         <>
-          <div className="flex md:flex-row flex-col gap-2 w-full mb-3">
+          <div className="flex md:flex-row flex-col gap-2 w-full mb-3 ">
             <DataSearch
               placeholder="search"
               searchFunction={searchData}
               className="bg-background rounded-md"
             />
-            <div className="flex  w-[100%] flex-col gap-2 items-center lg:flex-row ">
-              <div className="flex items-center gap-4 w-full lg:w-fit md:justify-between">
-                <FilterBuilder
-                  appliedFilterList={appliedFilterList}
-                  setAppliedFilterList={setAppliedFilterList}
-                  className="bg-background border-border"
-                />
-                <div className=" ">
-                  <Sort
-                    dropList={sortOptions}
-                    onSelect={setSortParam}
-                    className="bg-background border-border"
-                  />
-                </div>
-              </div>
-              <div className="md:flex items-center gap-4 w-full lg:w-fit justify-between hidden ">
-                <DisplaySelector
-                  displayType={displayType}
-                  setDisplayType={setDisplayType}
-                />
-              </div>
+
+            <div className="md:flex items-center gap-4 w-full lg:w-fit justify-between hidden ">
+              <DisplaySelector
+                displayType={displayType}
+                setDisplayType={setDisplayType}
+              />
             </div>
           </div>
-          {displayType === "grid" ? (
-            <div className="grid  lg:grid-cols-4 grid-cols-1 sm:grid-cols-2 gap-8 h-full  ">
-              {sortedData.map((account: any, i: number) => (
-                <AccountCard key={i} item={account} />
-              ))}
-            </div>
-          ) : (
-            <Table
-              data={sortedData}
-              setSortParam={setSortParam}
-              setDescending={setDescending}
-            />
-          )}
-          {sortedData?.length === 0 && <EmptySearch />}
+          <div className="pb-2 w-full ">
+            {displayType === "grid" ? (
+              <div className="grid  lg:grid-cols-4 grid-cols-1 sm:grid-cols-2 gap-8 h-full  ">
+                {sortedData.map((account: any, i: number) => (
+                  <AccountCard key={i} item={account} />
+                ))}
+              </div>
+            ) : (
+              <DataTable data={sortedDataCollection} columns={columns} />
+            )}
+            {sortedData?.length === 0 && <EmptySearch />}
+          </div>
         </>
       )}
     </>

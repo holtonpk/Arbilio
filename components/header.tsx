@@ -15,7 +15,7 @@ export function PageHeader({
   tooltip,
 }: PageHeaderProps) {
   return (
-    <div className="flex items-center justify-between  mb-4 ">
+    <div className="flex items-center justify-between container  mb-4 ">
       <div className="grid gap-1  container">
         <div className="flex items-center">
           <h1 className="font-heading text-3xl md:text-4xl">{heading}</h1>

@@ -9,21 +9,23 @@ import {
   DialogFooter,
   DialogAction,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { buttonVariants, ButtonProps } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Icons } from "../icons";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 
 import { useUserCollections } from "@/context/user-collections";
 
-interface CreateCollectionButtonProps {
-  variant?: "default" | "outline" | "secondary" | "destructive" | "ghost";
+interface CreateCollectionButtonProps extends ButtonProps {
   accountArray?: string[];
 }
 
-const CreateCollectionButton = ({
+export const CreateCollectionButton = ({
   variant,
+  className,
   accountArray,
+  ...props
 }: CreateCollectionButtonProps) => {
   const [showCreateCollection, setShowCreateCollection] =
     React.useState<boolean>(false);
@@ -73,15 +75,11 @@ const CreateCollectionButton = ({
 
   return (
     <>
-      <Button
+      <button
         onClick={() => setShowCreateCollection(true)}
-        className="flex items-center justify-center whitespace-nowrap capitalize"
-        variant={variant}
-        size="sm"
-      >
-        new collection
-        <Icons.add className="h-5 w-5 mr-2" />
-      </Button>
+        className={cn(buttonVariants({ variant }), className)}
+        {...props}
+      />
       <Dialog
         open={showCreateCollection}
         onOpenChange={setShowCreateCollection}
@@ -114,5 +112,3 @@ const CreateCollectionButton = ({
     </>
   );
 };
-
-export default CreateCollectionButton;

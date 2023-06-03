@@ -15,6 +15,7 @@ import { LinkButton } from "@/components/ui/link";
 import { useRouter } from "next/navigation";
 import { ModeToggle2 } from "@/components/mode-toggle";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const AccountInfo = () => {
   const { currentUser } = useAuth()!;
@@ -26,6 +27,15 @@ export const AccountInfo = () => {
     router.push("/");
   };
 
+  function getInitials(fullName: string): string {
+    let initials = fullName
+      .split(" ")
+      .map((name) => name.charAt(0).toUpperCase());
+    return initials.join("");
+  }
+
+  // Test the function
+
   return (
     <div className="relative w-fit h-fit">
       <DropdownMenu>
@@ -35,16 +45,17 @@ export const AccountInfo = () => {
             variant="ghost"
             size="lg"
           >
-            <div className="aspect-square  mr-2 rounded-full  h-10 w-10  flex justify-center items-center bg-gradient-to-tl from-green-300 to-orange-400">
-              <Image
+            <Avatar>
+              <AvatarImage
                 src={(currentUser && currentUser.photoURL) || ""}
-                alt="profile"
-                className="rounded-full"
-                width={40}
-                height={40}
+                alt={(currentUser && currentUser?.displayName) || ""}
               />
-            </div>
-            <div className="flex flex-col items-start">
+              <AvatarFallback>
+                {currentUser?.displayName &&
+                  getInitials(currentUser?.displayName)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col items-start ml-2">
               <div className="text-sm capitalize font-bold">
                 {currentUser && currentUser.displayName}
               </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import { useAuth } from "@/context/Auth";
 import { LinkButton } from "@/components/ui/link";
 

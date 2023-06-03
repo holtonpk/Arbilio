@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
-import { PageHeader } from "@/components/header";
-import { Icons } from "@/components/icons";
-import KeyFeatures from "@/app/(dashboard)/dashboard/key-features";
+import { useAuth } from "@/context/Auth";
+import DashboardLayout from "@/app/(dashboard)/dashboard/dashboard-layout";
 
 const Dashboard = () => {
   function getTimeOfDay() {
@@ -18,62 +17,29 @@ const Dashboard = () => {
     }
   }
 
+  const { currentUser } = useAuth()!;
+
   return (
     <>
       <div>
-        <PageHeader
-          heading={`Good ${getTimeOfDay()}, Patrick!`}
-          text="This is your dashboard, come here to manage your account"
-        />
-        <div className="grid gap-4">
-          <div className="grid gap-4 ">
-            <div className="flex gap-4">
-              <div className="border p-4 rounded-md flex  h-fit items-center gap-4">
-                <span className="p-2 aspect-square h-10 rounded bg-muted">
-                  <Icons.accounts className="h-6 w-6 text-primary" />
-                </span>
-                <div className="flex flex-col">
-                  <h1 className="font-bold capitalize text-base text-muted-foreground whitespace-nowrap">
-                    Tracked accounts
-                  </h1>
-                  <div className="text-4xl font-bold flex items-center ">
-                    16
-                    <h2 className="text-muted-foreground text-xl ">/20</h2>
-                  </div>
-                </div>
-              </div>
-              <div className="border p-4 rounded-md flex  h-fit items-center gap-4">
-                <span className="p-2 aspect-square h-10 rounded bg-muted">
-                  <Icons.products className="h-6 w-6 text-primary" />
-                </span>
-                <div className="flex flex-col">
-                  <h1 className="font-bold capitalize text-base text-muted-foreground whitespace-nowrap">
-                    Tracked products
-                  </h1>
-                  <div className="text-4xl font-bold flex items-center ">
-                    23
-                    <h2 className="text-muted-foreground text-xl ">/30</h2>
-                  </div>
-                </div>
-              </div>
-              <div className="border p-4 rounded-md flex  h-fit items-center gap-4">
-                <span className="p-2 aspect-square h-10 rounded bg-muted">
-                  <Icons.store className="h-6 w-6 text-primary" />
-                </span>
-                <div className="flex flex-col">
-                  <h1 className="font-bold capitalize text-base text-muted-foreground whitespace-nowrap">
-                    Linked Stores
-                  </h1>
-                  <div className="text-4xl font-bold flex items-center ">
-                    1<h2 className="text-muted-foreground text-xl ">/3</h2>
-                  </div>
-                </div>
-              </div>
+        <div className="flex items-center justify-between  mb-4 ">
+          <div className="grid gap-1  container">
+            <div className="flex items-center">
+              <span className="font-heading text-3xl md:text-4xl flex gap-2">
+                {`Good ${getTimeOfDay()},`}
+                <p className="bg-gradient-to-r whitespace-nowrap to-amber-400 via-orange-500  from-red-500 bg-clip-text text-transparent">
+                  {(currentUser?.displayName &&
+                    currentUser?.displayName.split(" ")[0]) ||
+                    ""}
+                </p>
+              </span>
             </div>
-            {/* <CollectionDisplay /> */}
-            <KeyFeatures />
+            <p className="text-lg text-muted-foreground">
+              This is your dashboard, come here to manage your account
+            </p>
           </div>
         </div>
+        <DashboardLayout />
       </div>
     </>
   );
