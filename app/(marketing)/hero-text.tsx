@@ -9,7 +9,7 @@ type HeaderProps = {
 
 const HeroText: React.FC = () => {
   return (
-    <div className="container flex max-w-[64rem] flex-col items-center gap-2 text-center ">
+    <div className=" flex  flex-col items-center gap-2 text-center ">
       <div className="mx-auto mb-10 mt-20 px-2.5 text-center  sm:px-0">
         <a
           href="https://dub.sh/launch"

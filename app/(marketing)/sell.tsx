@@ -13,9 +13,11 @@ const Sell = () => {
 "
         description=""
       />
-      <div className="w-[200%] relative -translate-x-1/2 left-1/2 md:translate-x-0 md:w-[90%] md:mx-auto h-fit">
-        <div className="w-full relative   h-fit  ">
-          <GlobeClient />
+      <div className="w-full h-[400px]  md:h-fit relative md:items-center md:justify-center md:flex">
+        <div className="w-[400px] h-[400px] absolute md:relative -translate-x-1/2 left-1/2 md:translate-x-0 md:left-0 md:w-[90%] md:h-fit  ">
+          <div className="w-full relative   h-fit  ">
+            <GlobeClient />
+          </div>
         </div>
       </div>
     </section>

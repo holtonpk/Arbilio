@@ -10,14 +10,14 @@ import Pricing from "@/app/(marketing)/plans";
 export default async function IndexPage() {
   return (
     <>
-      <section className="space-y-6 pb-8 pt-6 md:pb-12  ">
-        <HeroText />
-      </section>
-      <Testimonials />
-      <p className="text-muted-foreground text-md w-fit mx-auto uppercase font-bold mb-3">
-        explore the power of TikDop.io
-      </p>
       <div className="container">
+        <section className="space-y-6 pb-8 pt-6 md:pb-12  ">
+          <HeroText />
+        </section>
+        <Testimonials />
+        <p className="text-muted-foreground text-md w-fit mx-auto uppercase font-bold mb-3">
+          explore the power of TikDop.io
+        </p>
         <Discover />
         <Analyze />
         <Sell />
@@ -26,3 +26,4 @@ export default async function IndexPage() {
     </>
   );
 }
+x;
