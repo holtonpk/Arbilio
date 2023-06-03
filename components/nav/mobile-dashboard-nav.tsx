@@ -45,7 +45,7 @@ const NavMenu = ({ setShowMobileMenu }: { setShowMobileMenu: any }) => {
     <div className="fixed inset-0  w-full top-16 z-50 h-[calc(100vh-4rem)]  auto-rows-max overflow-auto   shadow-md animate-in slide-in-from-bottom-80 ">
       <div className="relative z-20 h-full  flex  flex-col gap-4 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
         <nav className="grid grid-flow-row  auto-rows-max text-sm divide-y divide-border ">
-          {dashboardConfig.sideNav.map((route, indx) => (
+          {dashboardConfig.navigation.map((route, indx) => (
             <Route key={indx} item={route} setShowMenu={setShowMobileMenu} />
           ))}
         </nav>
