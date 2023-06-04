@@ -47,11 +47,7 @@ export default async function handler(
   ];
   // res.status(200).json(ids);
 
-  const q = query(
-    collection(db, storage.accounts),
-    where("id", "in", ids),
-    limit(5)
-  );
+  const q = query(collection(db, storage.accounts), where("id", "in", ids));
   const docs = await getDocs(q);
 
   const formattedData = docs.docs.map(async (_doc) => {
