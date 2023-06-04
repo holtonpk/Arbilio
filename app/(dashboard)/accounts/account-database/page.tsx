@@ -4,13 +4,14 @@ import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 
 async function getData() {
-  const url = `${siteConfig.url}/api/account-database-default`;
+  // const url = `${siteConfig.url}/api/account-database-default`;
+  const url = `${siteConfig.url}/api/accountDatabase`;
   const response = await fetch(url, {
     cache: "no-cache",
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch data ${response}`);
+    throw new Error(`Failed to fetch data ${response.text}`);
   }
   return response.json();
 }
