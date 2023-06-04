@@ -25,7 +25,7 @@ export function DataSearch({
 
   return (
     <form className={cn("relative w-full h-fit ", className)} {...props}>
-      <Icons.search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+      <Icons.search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
       <Input
         type="search"
         placeholder={placeholder}
@@ -33,9 +33,6 @@ export function DataSearch({
         ref={inputRef}
         onChange={onSubmit}
       />
-      {/* <Button className="absolute right-0 top-0 h-full w-[150px] rounded-l-none">
-        Search
-      </Button> */}
     </form>
   );
 }

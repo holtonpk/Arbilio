@@ -2,6 +2,7 @@ import React from "react";
 import { siteConfig } from "@/config/site";
 import ProductDataBase from "./product-database";
 import { PageHeader } from "@/components/header";
+import ProtectFeature from "@/components/protect-feature";
 
 async function getData() {
   const url = `${siteConfig.url}/api/product-database`;
@@ -15,16 +16,18 @@ async function getData() {
 
 export default async function ProductDatabase() {
   return (
-    <>
-      <PageHeader
-        heading="Product Database"
-        text={
-          "Browse our collection of over 500 high product that perform well on TikTok"
-        }
-      />
-      <div className="w-full flex flex-col relative  items-center ">
-        <ProductDataBase />
-      </div>
-    </>
+    <ProtectFeature planLevel="standard">
+      <>
+        <PageHeader
+          heading="Product Database"
+          text={
+            "Browse our collection of over 500 high product that perform well on TikTok"
+          }
+        />
+        <div className="w-full flex flex-col relative  items-center ">
+          <ProductDataBase />
+        </div>
+      </>
+    </ProtectFeature>
   );
 }

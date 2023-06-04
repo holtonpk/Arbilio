@@ -48,7 +48,6 @@ const AccountDatabase = ({ originalData }: any) => {
     const newData = await getData(lastDocId);
     setLoading(false);
     const newTableData = await getTasks();
-    console.log("nt", newTableData);
     setTableData(newTableData);
     setData((prevData: any) => [...prevData, ...newData]);
     setLastDocId(newData[newData.length - 1]?.id); // assuming each data object has an 'id' field

@@ -16,13 +16,13 @@ import { Button } from "@/components/ui/button";
 import { formatDateShort } from "@/lib/utils";
 import { AccountDataType } from "@/types";
 import { Icons } from "@/components/icons";
-import { useRouter } from "next/navigation";
 import PostView from "@/components/post-view";
 import { ProductOperations } from "@/components/buttons/product-operations";
 import { LineChart, BarChart } from "@/components/charts";
 import Tooltip from "@/components/ui/tooltip";
 import { DateRange } from "react-day-picker";
-import TrackProductButton from "@/components/buttons/track-product-button";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface DataContextData {
   data: AccountDataType;
@@ -46,25 +46,10 @@ interface ViewAccountProps {
 }
 
 const ViewAccount = ({ data }: ViewAccountProps) => {
-  const router = useRouter();
   return (
     <div className="container">
-      {/* <div className="flex justify-between w-full mb-4"> */}
-      {/* <Button
-          onClick={() => router.back()}
-          variant="outline"
-          className="w-fit"
-        >
-          <Icons.chevronLeft className=" h-6 w-6" />
-          Back
-        </Button> */}
-
-      {/* </div> */}
       <div className="w-full rounded-md flex flex-col items-center  pt-0 relative ">
         <DataProvider data={data}>
-          {/* <div className="flex flex-col w-fit ">
-            <ProfileDisplay />
-          </div> */}
           <div className="grid md:grid-cols-2 w-full gap-4 relative ">
             <div className="w-full  flex flex-col  gap-4">
               <ProfileDisplay />
@@ -72,9 +57,7 @@ const ViewAccount = ({ data }: ViewAccountProps) => {
               {data?.storeUrl && <StoreDisplay />}
               {data.topPosts && <PostsDisplay />}
             </div>
-            <div className="">
-              <AnalyticsDisplay />
-            </div>
+            <AnalyticsDisplay />
           </div>
         </DataProvider>
       </div>
@@ -289,9 +272,11 @@ const ProductDisplay = () => {
                   <h1 className=" text-xl whitespace-nowrap">
                     {data.product.title}
                   </h1>
-                  <h1 className=" text-md text-muted-foreground">
-                    Active Sellers: {data.product.accounts.length}
-                  </h1>
+                  {data.product.accounts?.length && (
+                    <h1 className=" text-md text-muted-foreground">
+                      Active Sellers: {data.product.accounts?.length}
+                    </h1>
+                  )}
                 </div>
               </div>
               <ProductOperations variant={"outline"} product={data.product}>
@@ -310,41 +295,41 @@ const ProductDisplay = () => {
 const StoreDisplay = () => {
   const { data } = useContext(DataContext)!;
   const url = getBaseUrl(data?.storeUrl);
-  console.log(url);
-
-  function getBaseUrl(url: string): string {
+  function getBaseUrl(url: string): string | undefined {
     // If no protocol is provided, default to https://
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
       url = "https://" + url;
     }
-
     let urlObj;
     try {
       urlObj = new URL(url);
     } catch (e) {
       console.error("Invalid URL");
-      return "";
+      return undefined;
     }
 
     return urlObj.protocol + "//" + urlObj.hostname;
   }
 
   const [products, setProducts] = useState<any[] | undefined>(undefined);
+
   useEffect(() => {
+    if (!url) return;
     const getProducts = async () => {
       try {
         const res = await fetch(url + "/products.json");
+        if (!res.ok) {
+          // check if HTTP request is successful
+          throw new Error("HTTP status " + res.status);
+        }
         const data = await res.json();
         setProducts(data.products);
       } catch (e) {
         console.log(e);
+        setProducts(undefined);
       }
     };
-    try {
-      getProducts();
-    } catch (e) {
-      console.log(e);
-    }
+    getProducts();
   }, [url]);
 
   console.log(products);
@@ -368,9 +353,6 @@ const StoreDisplay = () => {
             {products && (
               <>
                 <div className="flex p-2 gap-2 items-center  w-full">
-                  {/* <div className="h-12 aspect-square rounded-md bg-muted relative overflow-hidden border">
-                  <Image src={data.avatar} alt="" fill />
-                </div> */}
                   <div className="flex flex-col">
                     <h1 className="font-bold text-lg text-primary">
                       {products && products[0]?.vendor}
@@ -383,38 +365,52 @@ const StoreDisplay = () => {
                     >
                       <Icons.link className="h-4 w-4 text-muted-foreground" />
 
-                      {url.replace(/^https?:\/\/(?:www\.)?/, "")}
+                      {url?.replace(/^https?:\/\/(?:www\.)?/, "")}
                     </Link>
                   </div>
                 </div>
                 <h1 className=" text-sm text-muted-foreground">
                   {"Products in the store (" + products.length + ")"}
                 </h1>
+                <ScrollArea className="h-[300px] border rounded-md">
+                  <div className="divide-y divide-border  grid h-fit  w-full ">
+                    {products.map((product: any, i) => (
+                      <>
+                        {product?.images[0] && (
+                          <Link
+                            key={i}
+                            target="_blank"
+                            href={url + "/products/" + product.handle}
+                            className="grid grid-cols-[40px_400px_1fr] items-center gap-2 p-2 group  w-full "
+                          >
+                            <div className="w-10 aspect-square bg-muted rounded-md flex justify-center items-center relative overflow-hidden">
+                              {product?.images[0] && (
+                                <Image
+                                  src={product?.images[0].src}
+                                  alt=""
+                                  fill
+                                />
+                              )}
+                              <Icons.media className="h-6 w-6 text-gray-500" />
+                            </div>
 
-                <div className="divide-y divide-border rounded-md border grid max-h-[300px] overflow-scroll w-full ">
-                  {products.map((product: any, i) => (
-                    <>
-                      {product?.images[0] && (
-                        <Link
-                          key={i}
-                          target="_blank"
-                          href={url + "/products/" + product.handle}
-                          className="flex items-center gap-2 p-2 group  w-full "
-                        >
-                          <div className="w-10 aspect-square bg-muted rounded-md flex justify-center items-center relative overflow-hidden">
-                            {product?.images[0] && (
-                              <Image src={product?.images[0].src} alt="" fill />
-                            )}
-                            <Icons.media className="h-6 w-6 text-gray-500" />
-                          </div>
-                          <h1 className=" text-lg group-hover:text-muted-foreground w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
-                            {product.title}
-                          </h1>
-                        </Link>
-                      )}
-                    </>
-                  ))}
-                </div>
+                            <h1 className=" text-lg group-hover:text-muted-foreground  overflow-hidden text-ellipsis whitespace-nowrap">
+                              {product.title}
+                            </h1>
+                            <div className=" w-full items-center h-10 grid grid-cols-[1fr_2px_1fr] gap-2 text-sm group-hover:text-muted-foreground whitespace-nowrap">
+                              {product.variants.length}{" "}
+                              {product.variants.length > 1
+                                ? "variants"
+                                : "variant"}
+                              <Separator orientation="vertical" />
+                              {"$" + product.variants[0].price}
+                            </div>
+                          </Link>
+                        )}
+                      </>
+                    ))}
+                  </div>
+                </ScrollArea>
               </>
             )}
           </div>
@@ -451,8 +447,8 @@ const PostsDisplay = () => {
 const ProfileDisplay = () => {
   const { data } = useContext(DataContext)!;
   return (
-    <div className="flex items-center flex-col md:flex-row gap-4  rounded-md w-fit relative">
-      <div className="rounded-md bg-muted relative aspect-square border h-20 md:h-40  overflow-hidden">
+    <div className="flex items-center flex-col md:grid md:grid-cols-[150px_1fr] gap-4  rounded-md w-fit relative">
+      <div className="rounded-md bg-muted relative aspect-square border h-20 md:h-[150px]  overflow-hidden">
         <Image
           src={data?.avatar}
           alt="Picture of the author"
@@ -462,67 +458,25 @@ const ProfileDisplay = () => {
                     33vw"
         />
       </div>
-
-      {/* <AccountRank /> */}
-      {/* <AddToCollection /> */}
       <div className="flex flex-col w-fit items-center md:items-start relative ">
         <h1 className="text-3xl font-bold w-fit ">
           {data.userInfo?.user?.nickname}
         </h1>
-        <h2 className="text-base text-muted-foreground w-fit ">
+        <Link
+          target="_blank"
+          href={`https://www.tiktok.com/@${data?.uniqueId}`}
+          className="text-base text-muted-foreground w-fit "
+        >
           {"@" + data?.uniqueId}
-        </h2>
-        <StatDisplay />
+        </Link>
         <UpdateCollectionButton
           account={data}
           variant={"outline"}
-          className="absolute top-0 right-0"
+          className="mt-3"
         >
           <Icons.add className="h-5 w-5 mr-3" />
           Add to collection
         </UpdateCollectionButton>
-      </div>
-    </div>
-  );
-};
-
-const StatDisplay = () => {
-  const { data } = useContext(DataContext)!;
-
-  return (
-    <div className="flex md:grid md:grid-cols-3  md:gap-6 gap-3  h-fit items-center rounded-md mt-4">
-      <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-muted/60 aspect-square p-2 relative flex justify-center items-center">
-          <Icons.likes className="h-8 w-8 text-primary" />
-        </div>
-        <div className="flex flex-col">
-          <h2 className="text-md text-muted-foreground">Likes</h2>
-          <h3 className="text-xl md:text-2xl font-bold text-primary">
-            {formatNumber(data.accountStats[0].heartCount)}
-          </h3>
-        </div>
-      </div>
-      <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-muted/60 aspect-square p-2 relative flex justify-center items-center">
-          <Icons.followers className="h-8 w-8 text-primary" />
-        </div>
-        <div className="flex flex-col">
-          <h2 className="text-md text-muted-foreground">Followers</h2>
-          <h3 className="text-xl md:text-2xl font-bold  text-primary">
-            {formatNumber(data.accountStats[0].followerCount)}
-          </h3>
-        </div>
-      </div>
-      <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-muted/60 aspect-square p-2 relative flex justify-center items-center">
-          <Icons.posts className="h-8 w-8 text-primary" />
-        </div>
-        <div className="flex flex-col">
-          <h2 className="text-md text-muted-foreground">Posts</h2>
-          <h3 className="text-xl md:text-2xl font-bold  text-primary">
-            {formatNumber(data.accountStats[0].videoCount)}
-          </h3>
-        </div>
       </div>
     </div>
   );

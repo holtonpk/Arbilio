@@ -17,6 +17,7 @@ import {
   onSnapshot,
   setDoc,
   query,
+  where,
 } from "firebase/firestore";
 import { siteConfig } from "@/config/site";
 import { LinkButton } from "@/components/ui/link";
@@ -39,6 +40,7 @@ const ProductManage = () => {
   const [products, setProducts] = React.useState<ProductType[]>([]);
   const [expanded, setExpanded] = React.useState<ProductType>();
   const [updateIsLoading, setUpdateIsLoading] = React.useState<boolean>(false);
+  const [syncIsLoading, setSyncIsLoading] = React.useState<boolean>(false);
 
   useEffect(() => {
     const collectionRef = collection(db, storage.products);
@@ -114,6 +116,43 @@ const ProductManage = () => {
       );
     }
     setUpdateIsLoading(false);
+  };
+
+  const SyncAccountsWithProduct = async () => {
+    try {
+      setSyncIsLoading(true);
+      const productsRef = collection(db, storage.products);
+      const accountsRef = collection(db, storage.accounts);
+      const q = query(productsRef, limit(10));
+
+      for (let i = 0; i < products.length; i += BATCH_SIZE) {
+        const batch = products.slice(i, i + BATCH_SIZE);
+        await Promise.all(
+          batch.map(async (product, index) => {
+            console.log(i + index, "/", products.length);
+            const docRef = doc(productsRef, product.id);
+            const docSnap = await getDoc(docRef);
+            const docData = docSnap.data();
+            if (!docData) return;
+            const { id } = docData;
+
+            const q = query(accountsRef, where("product", "==", id));
+            const accountsWithProduct = await getDocs(q);
+            const accountsData = accountsWithProduct.docs.map(
+              (doc) => doc.data().id
+            );
+
+            await updateDoc(docRef, {
+              accounts: accountsData,
+            });
+          })
+        );
+      }
+    } catch (e) {
+      console.error(e); // log any errors that occur
+    } finally {
+      setSyncIsLoading(false); // ensure isLoading is set to false even if there was an error
+    }
   };
 
   const Update2 = async () => {
@@ -278,6 +317,13 @@ const ProductManage = () => {
               <Icons.spinner className="animate-spin mr-2" />
             ) : null}
             Update
+          </Button>
+
+          <Button onClick={SyncAccountsWithProduct} className="w-fit">
+            {syncIsLoading ? (
+              <Icons.spinner className="animate-spin mr-2" />
+            ) : null}
+            Sync Products with Accounts
           </Button>
           <div
             className={`grid gap-4 ${

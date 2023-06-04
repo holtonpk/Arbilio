@@ -37,10 +37,10 @@
 }
 
 .content {
-  height: 100vh;
+  height: fit-content;
   z-index: 3;
   width: 100%;
-  max-width: 80vw;
+  max-width: 800px;
   background-image: radial-gradient(
       at 27% 37%,
       hsla(215, 98%, 61%, 1) 0px,

@@ -39,6 +39,8 @@ export interface SubRoute {
   description: string;
   href: string;
   icon: keyof typeof Icons;
+  featured?: boolean;
+  disabled?: boolean;
 }
 
 export interface SideNavRoute {

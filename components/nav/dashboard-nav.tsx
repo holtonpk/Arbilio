@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Feedback from "@/components/modals/feedback-modal";
 import { siteConfig } from "@/config/site";
+
 const DashboardNav = () => {
   const segment = useSelectedLayoutSegment();
   const [collapseNav, setCollapseNav] = useState(false);
@@ -114,6 +115,14 @@ import {
 } from "@/components/ui/navigation-menu";
 
 export function NavigationMenuDemo() {
+  const bgGradients = [
+    // "from-blue-600 via-sky-500 to-cyan-400 ",
+    "from-muted/20 to-muted",
+    "from-muted/20 to-muted",
+    "from-muted/20 to-muted",
+    // "to-amber-400 via-orange-500 from-red-500",
+    // "from-purple-600 via-fuchsia-600 to-pink-600",
+  ];
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -136,28 +145,12 @@ export function NavigationMenuDemo() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px]  lg:w-[600px] lg:grid-cols-[.75fr_1fr]  ">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <a
-                          className="flex h-full gap- w-full select-none flex-col justify-end rounded-md bg-gradient-to-b  from-blue-600 via-sky-500 to-cyan-400  p-6 no-underline outline-none focus:shadow-md"
-                          href="/"
-                        >
-                          <div className="p-2 rounded-md bg-muted/60 text-primary w-fit  flex justify-center items-center">
-                            <Icons.accounts className="h-5 w-6" />
-                          </div>
-                          <div className="  text-lg font-medium text-primary">
-                            Accounts
-                          </div>
-                          <p className="text-sm leading-tight text-primary">
-                            Beautifully designed components built with Radix UI
-                            and Tailwind CSS.
-                          </p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-
-                    {route.subPages.map((subPage: any, indx: number) => (
-                      <SubRoute key={subPage.title} item={subPage} />
+                    {route.subPages.map((subPage: any) => (
+                      <SubRoute
+                        key={subPage.title}
+                        item={subPage}
+                        bgGradient={bgGradients[indx]}
+                      />
                     ))}
                   </ul>
                 </NavigationMenuContent>
@@ -181,7 +174,13 @@ export function NavigationMenuDemo() {
   );
 }
 
-const SubRoute = ({ item }: { item: SubRouteType }) => {
+const SubRoute = ({
+  item,
+  bgGradient,
+}: {
+  item: SubRouteType;
+  bgGradient: string;
+}) => {
   const Icon = Icons[item.icon];
 
   if (!Icon) {
@@ -189,20 +188,54 @@ const SubRoute = ({ item }: { item: SubRouteType }) => {
   }
 
   return (
-    <Link href={item.href}>
-      <div className="grid grid-cols-[20px_1fr] gap-6 items-start hover:bg-muted p-2 rounded-md">
-        <div className="p-2 rounded-md bg-muted/60 text-primary w-fit  flex justify-center items-center">
-          <Icon className="h-5 w-5" />
-        </div>
-        <div className="grid items-start text-left gap-1">
-          <div className="text-sm font-medium leading-none text-primary">
-            {item.title}
-          </div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {item.description}
-          </p>
-        </div>
-      </div>
-    </Link>
+    <>
+      {item?.featured ? (
+        <li className="row-span-3">
+          <NavigationMenuLink asChild>
+            <a
+              className={`flex h-full text-primary gap- w-full select-none flex-col justify-end rounded-md bg-gradient-to-b ${bgGradient} p-6 no-underline outline-none focus:shadow-md`}
+              href={item.href}
+            >
+              <div className="p-2 rounded-md bg-theme-blue text-primary w-fit  flex justify-center items-center">
+                <Icon className="h-5 w-6 text-white" />
+              </div>
+              <div className=" text-lg font-medium ">{item.title}</div>
+              <p className="text-sm leading-tight ">{item.description}</p>
+            </a>
+          </NavigationMenuLink>
+        </li>
+      ) : (
+        <NavigationMenuLink asChild>
+          <a
+            href={item.href}
+            className={`grid grid-cols-[20px_1fr] gap-6 items-start hover:bg-muted p-2 rounded-md relative
+            ${item.disabled && "cursor-not-allowed  pointer-events-none"}
+            `}
+          >
+            {/* {item.disabled && (
+              <div className="absolute top-1/2 left-1/2 whitespace-nowrap -translate-x-1/2 -translate-y-1/2 w-fit p-2 items-center border  justify-center flex bg-background/40 blurBack rounded-md text-theme-blue">
+                Coming soon
+              </div>
+            )} */}
+            <div className="p-2 rounded-md bg-theme-blue text-primary w-fit text-white  flex justify-center items-center">
+              <Icon className="h-5 w-5" />
+            </div>
+            <div className="grid items-start text-left gap-1">
+              <div className="text-sm font-medium leading-none text-primary flex items-center gap-2 ">
+                {item.title}
+                {item.disabled && (
+                  <div className="border p-1 opacity-100 w-fit  rounded-md text-[8px] leading-[8px] text-theme-blue border-theme-blue">
+                    Coming soon
+                  </div>
+                )}
+              </div>
+              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                {item.description}
+              </p>
+            </div>
+          </a>
+        </NavigationMenuLink>
+      )}
+    </>
   );
 };

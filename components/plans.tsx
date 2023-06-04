@@ -24,7 +24,7 @@ const Pricing = ({ plans }: { plans: Product[] }) => {
   });
 
   return (
-    <div className=" text-center">
+    <div className=" text-center z-20">
       <div id="pricing" className="mx-auto my-10 sm:max-w-lg">
         <h2 className="font-display text-4xl font-extrabold text-primary sm:text-5xl">
           Simple,{" "}
@@ -33,10 +33,10 @@ const Pricing = ({ plans }: { plans: Product[] }) => {
           </span>{" "}
           pricing.
         </h2>
-        <p className="mt-5 text-primary sm:text-lg">
+        {/* <p className="mt-5 text-primary sm:text-lg">
           Shorten your links without breaking your bank. <br />
           Start for free, no credit card required.
-        </p>
+        </p> */}
       </div>
 
       <div className="relative mx-auto mb-14 flex max-w-fit items-center space-x-2">
@@ -82,8 +82,10 @@ const PlanCard = ({ plan, popular, period }: PlanCardProps) => {
   const { currentUser, userPlan } = useAuth()!;
 
   const price = plan[period];
+  console.log("plan ===>", plan);
 
   const selectPlan = async () => {
+    console.log("price ===>", price);
     if (!currentUser || !price) return;
     setIsLoading(true);
     await createCheckoutSession(

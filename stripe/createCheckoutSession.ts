@@ -7,6 +7,7 @@ import {
 } from "firebase/firestore";
 import { app } from "@/firebase";
 import getStripe from "./initializeStripe";
+import { storage } from "@/config/data-storage";
 
 export async function createCheckoutSession(
   uid: string,
@@ -17,9 +18,15 @@ export async function createCheckoutSession(
   const db = getFirestore(app);
   const stripe = await getStripe();
 
-  const checkoutSessionRef = collection(db, "users", uid, "checkout_sessions");
+  const checkoutSessionRef = collection(
+    db,
+    storage.users,
+    uid,
+    "checkout_sessions"
+  );
 
   const checkoutSessionDecRef = await addDoc(checkoutSessionRef, {
+    mode: "payment",
     price: priceCode,
     success_url: success_url,
     cancel_url: cancel_url,
@@ -27,6 +34,7 @@ export async function createCheckoutSession(
 
   onSnapshot(checkoutSessionDecRef, (doc) => {
     const { sessionId } = doc.data()!;
+    console.log("sessionId", sessionId, uid);
     if (sessionId) {
       stripe?.redirectToCheckout({ sessionId });
     }

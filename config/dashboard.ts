@@ -22,7 +22,8 @@ export const dashboardConfig: DashboardConfig = {
           description:
             "Browse our collection of over 500 active sellers and 1000+ accounts.",
           href: "/accounts/account-database",
-          icon: "database",
+          icon: "accounts",
+          featured: true,
         },
         {
           title: "Top Accounts",
@@ -51,7 +52,8 @@ export const dashboardConfig: DashboardConfig = {
           href: "/products/product-database",
           description:
             "Browse our collection of over 200 high converting products.",
-          icon: "database",
+          icon: "products",
+          featured: true,
         },
         {
           title: "Product Tracker",
@@ -59,6 +61,14 @@ export const dashboardConfig: DashboardConfig = {
           description:
             "Track the performance of of products and discover new trends.",
           icon: "crosshair",
+        },
+        {
+          title: "Video Creator",
+          href: "/#",
+          description:
+            "Harness the power of AI to create high converting video ads.",
+          icon: "posts",
+          disabled: true,
         },
       ],
       disabled: false,
