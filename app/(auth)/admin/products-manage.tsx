@@ -32,7 +32,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import exp from "constants";
-import categories from "@/a.json";
+import categories from "@/categories.json";
 import { storage } from "@/config/data-storage";
 import { CustomListBox } from "@/components/ui/list-box";
 

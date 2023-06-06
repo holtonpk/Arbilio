@@ -3,7 +3,7 @@ import { db } from "@/context/Auth";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { ProductDataBaseType, AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
-import categories from "@/a.json";
+import categories from "@/categories.json";
 import { storage } from "@/config/data-storage";
 export default async function handler(
   req: NextApiRequest,
