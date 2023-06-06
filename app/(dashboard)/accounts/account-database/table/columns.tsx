@@ -37,7 +37,7 @@ export const columns: ColumnDef<AccountDataType>[] = [
       <DataTableColumnHeader column={column} title="Account" />
     ),
     cell: ({ row }) => (
-      <div className="w-[150px]">
+      <div className="w-[250px]">
         <AccountDisplay item={row.original} />
       </div>
     ),

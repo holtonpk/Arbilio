@@ -6,10 +6,10 @@ import { LinkButton } from "@/components/ui/link";
 async function getData() {
   const url = `${siteConfig.url}/api/account-database-demo`;
   // const url = `${siteConfig.url}/api/accountDatabase`;
-  const response = await fetch(url, {
-    cache: "no-cache",
-  });
-
+  // const response = await fetch(url, {
+  //   cache: "no-cache",
+  // });
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch data ${response.text}`);
   }

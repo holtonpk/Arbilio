@@ -86,37 +86,36 @@ export const AccountCard = ({
               </div>
             </Tooltip>
           </div>
-          <div className="grid grid-cols-[36px_1fr] relative gap-2 items-center rounded-md p-1 ">
-            <Link
-              href={`/products/product/${item.product?.id}`}
-              className="w-full h-full z-10 rounded-md absolute hover:bg-muted"
-            ></Link>
-            <div className="h-9 w-9 relative overflow-hidden rounded-md z-20 pointer-events-none">
-              <Image
-                src={item?.product?.image || ""}
-                alt="img"
-                fill
-                sizes="(max-width: 768px) 100vw,
+          {item.product ? (
+            <div className="grid grid-cols-[36px_1fr] relative gap-2 items-center rounded-md p-1 ">
+              <Link
+                href={`/products/product/${item.product?.id}`}
+                className="w-full h-full z-10 rounded-md absolute hover:bg-muted"
+              />
+              <div className="h-9 w-9 relative overflow-hidden rounded-md z-20 pointer-events-none">
+                <Image
+                  src={item?.product?.image || ""}
+                  alt="img"
+                  fill
+                  sizes="(max-width: 768px) 100vw,
                       (max-width: 1200px) 50vw,
                       33vw"
-              />
+                />
+              </div>
+              <div className="grid">
+                <p className="whitespace-nowrap overflow-hidden text-ellipsis relative z-20 pointer-events-none">
+                  {item.product?.title}
+                </p>
+                <p className="whitespace-nowrap text-muted-foreground text-[12px] overflow-hidden text-ellipsis relative z-20 pointer-events-none">
+                  {item.product?.supplierInfo?.supplierTitle}
+                </p>
+              </div>
             </div>
-            <div className="grid">
-              <p className="whitespace-nowrap overflow-hidden text-ellipsis relative z-20 pointer-events-none">
-                {item.product?.title}
-              </p>
-              <p className="whitespace-nowrap text-muted-foreground text-[12px] overflow-hidden text-ellipsis relative z-20 pointer-events-none">
-                {item.product?.supplierInfo?.supplierTitle}
-              </p>
+          ) : (
+            <div className="p-1 w-full border bg-muted rounded-md">
+              <div className="h-9 w-full"></div>
             </div>
-            {/* <Button
-                variant={"outline"}
-                className="w-fit relative z-20 bg-background"
-                size="xsm"
-              >
-                <Icons.ellipsis className="text-primary h-3 w-3" />
-              </Button> */}
-          </div>
+          )}
         </div>
         <div className="flex flex-col mt-2 w-full">
           <div className="flex items-center mb-2">

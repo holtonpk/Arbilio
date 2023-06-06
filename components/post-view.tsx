@@ -12,14 +12,16 @@ const PostView = ({ video }: PostViewProps) => {
   const [showPlayer, setShowPlayer] = React.useState(false);
 
   return (
-    <div className="w-full aspect-[9/16] bg-primary rounded-md relative overflow-hidden">
+    <div className="w-full aspect-[9/16] bg-primary border rounded-md relative overflow-hidden">
       <Image
         src={video.cover}
         alt="video cover"
         fill
-        sizes="(max-width: 768px) 100vw,  
-          (max-width: 1200px) 50vw,
-          33vw"
+        priority
+        quality={50}
+        sizes="500px" // sizes="(max-width: 768px) 100vw,
+        //   (max-width: 1200px) 50vw,
+        //   33vw"
         className="z-[4]"
       />
 

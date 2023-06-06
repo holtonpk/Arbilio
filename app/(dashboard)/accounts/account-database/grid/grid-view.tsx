@@ -25,9 +25,10 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  PaginationState,
 } from "@tanstack/react-table";
 
-import { AccountCardPagination } from "@/components/account-card-pagination";
+import { Pagination } from "./pagination";
 
 const GridView = ({
   data,
@@ -47,7 +48,10 @@ const GridView = ({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 16,
+  });
   const table = useReactTable({
     data,
     columns,
@@ -56,12 +60,14 @@ const GridView = ({
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -126,7 +132,7 @@ const GridView = ({
             <AccountCard key={i} item={account.original} />
           ))}
         </div>
-        <AccountCardPagination table={table} />
+        <Pagination table={table} />
       </div>
     </>
   );

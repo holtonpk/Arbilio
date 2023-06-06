@@ -17,7 +17,7 @@ export default async function handler(
   res: NextApiResponse<AccountDataType[]>
 ) {
   const collectionRef = collection(db, storage.accounts);
-  const q = query(collectionRef, where("topPosts", "!=", []), limit(40));
+  const q = query(collectionRef, limit(100));
   const docs = await getDocs(q);
 
   const formattedData = docs.docs.map(async (_doc) => {
