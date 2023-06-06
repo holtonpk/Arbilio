@@ -31,11 +31,11 @@ export const dashboardNavigation: DashboardNavigation = {
               requiredSubscription: "base",
             },
             {
-              href: "/accounts/account-database",
+              href: "/accounts/account-database/full",
               requiredSubscription: "standard",
             },
             {
-              href: "/accounts/account-database",
+              href: "/accounts/account-database/full",
               requiredSubscription: "premium",
             },
           ],
