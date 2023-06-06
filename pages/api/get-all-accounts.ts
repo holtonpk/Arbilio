@@ -9,8 +9,6 @@ import {
   getDoc,
   where,
 } from "firebase/firestore";
-import { AccountDataType } from "@/types";
-import { storage } from "@/config/data-storage";
 
 export default async function handler(
   req: NextApiRequest,
