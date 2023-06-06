@@ -14,6 +14,7 @@ import Loading from "./loading";
 // }
 
 const getData = async (id: string): Promise<AccountDataType> => {
+  console.log("id====>", id);
   const res = await fetch(`${siteConfig.url}/api/view-account/${id}`, {
     cache: "no-store",
   });
