@@ -32,16 +32,8 @@ export default async function Account({
 }
 
 export async function generateStaticParams() {
-  // const res = await fetch(`${siteConfig.url}/api/get-all-accounts`);
-  // const data = await res.json();
-
-  const data = [
-    { id: "7225973619160925230" },
-    { id: "7207635280716006446" },
-    { id: "7195614012493792262" },
-    { id: "7015845722935657477" },
-    { id: "7208996266717987882" },
-  ];
+  const res = await fetch(`${siteConfig.url}/api/get-all-accounts`);
+  const data = await res.json();
 
   return data.map((item: any) => ({
     id: item.id,
