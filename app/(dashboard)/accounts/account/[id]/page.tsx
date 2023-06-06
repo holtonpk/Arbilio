@@ -33,9 +33,7 @@ export default async function Account({
 export async function generateStaticParams() {
   const res = await fetch(`${siteConfig.url}/api/accountDatabase`);
   const data = await res.json();
-  const paths = data.map((item: AccountDataType) => ({
-    params: { id: item.id },
+  return data.map((item: AccountDataType) => ({
+    id: item.id,
   }));
-
-  return { paths, fallback: true };
 }
