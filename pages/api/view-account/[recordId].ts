@@ -23,6 +23,7 @@ export default async function handler(
 
   if (record?.topPosts) {
     const topPosts = record?.topPosts.map(async (post: any) => {
+      if (!post) return;
       const postRef = doc(db, storage.posts, post);
       const postData = await getDoc(postRef);
       return {
