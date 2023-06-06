@@ -33,11 +33,19 @@ export default async function Account({
   return <ViewAccount data={data} />;
 }
 
-// export async function generateStaticParams() {
-//   const res = await fetch(`${siteConfig.url}/api/get-all-accounts`);
-//   const data = await res.json();
+export async function generateStaticParams() {
+  // const res = await fetch(`${siteConfig.url}/api/get-all-accounts`);
+  // const data = await res.json();
 
-//   return data.map((item: AccountDataType) => ({
-//     item,
-//   }));
-// }
+  const data = [
+    { id: "7225973619160925230" },
+    { id: "7207635280716006446" },
+    { id: "7195614012493792262" },
+    { id: "7015845722935657477" },
+    { id: "7208996266717987882" },
+  ];
+
+  return data.map((item) => ({
+    item,
+  }));
+}
