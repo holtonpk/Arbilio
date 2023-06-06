@@ -25,53 +25,8 @@ export default async function handler(
 
   const formattedData = docs.docs.map(async (_doc) => {
     const record = _doc.data();
-
-    let productData = null;
-    let topPostsData = null;
-
-    if (record.product) {
-      const productRef = doc(db, storage.products, record.product);
-      const productInfo = await getDoc(productRef);
-      productData = productInfo.data();
-    }
-
-    if (
-      record.topPosts &&
-      record.topPosts.length &&
-      !record.topPosts.includes(null)
-    ) {
-      const topPosts = record?.topPosts.map(async (post: any) => {
-        const postRef = doc(db, storage.posts, post);
-        const postData = await getDoc(postRef);
-        return {
-          ...postData.data(),
-          author: {
-            avatar: record.avatar,
-            id: record.id,
-            secUid: record.secUid,
-            uniqueId: record.uniqueId,
-            nickname: record.userInfo?.user?.nickname,
-          },
-        };
-      });
-      topPostsData = await Promise.all(topPosts);
-    }
-
     return {
-      accountStats: record.accountStats,
-      followerCount: record.accountStats[0]?.followerCount,
-      likeCount: record.accountStats[0]?.heartCount,
-      postCount: record.accountStats[0]?.videoCount,
-      daysTracked: record.accountStats.length,
-      mostViews: (topPostsData && topPostsData[0].postData.playCount) || 0,
-      avatar: record.avatar,
       id: record.id,
-      product: productData,
-      secUid: record.secUid,
-      storeUrl: record.storeUrl,
-      topPosts: topPostsData,
-      uniqueId: record.uniqueId,
-      userInfo: record.userInfo,
     };
   });
 
