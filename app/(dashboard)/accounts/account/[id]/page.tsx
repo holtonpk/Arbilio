@@ -3,15 +3,15 @@ import { AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
 import Loading from "./loading";
 
-export async function getStaticPaths() {
-  const res = await fetch(`${siteConfig.url}/api/accountDatabase`);
-  const data = await res.json();
-  const paths = data.map((item: AccountDataType) => ({
-    params: { id: item.id },
-  }));
+// export async function getStaticPaths() {
+//   const res = await fetch(`${siteConfig.url}/api/accountDatabase`);
+//   const data = await res.json();
+//   const paths = data.map((item: AccountDataType) => ({
+//     params: { id: item.id },
+//   }));
 
-  return { paths, fallback: true };
-}
+//   return { paths, fallback: true };
+// }
 
 const getData = async (id: string): Promise<AccountDataType> => {
   const res = await fetch(`${siteConfig.url}/api/view-account/${id}`);
