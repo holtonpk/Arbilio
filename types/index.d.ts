@@ -35,7 +35,7 @@ import ProductDataBase from "@/app/(dashboard)/products/product-database/product
 import { Icons } from "@/components/icons";
 import { Plans } from "@/config/plans";
 
-type Links = {
+export type Links = {
   href: string;
   requiredSubscription?: Plans;
 };

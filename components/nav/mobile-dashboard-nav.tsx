@@ -8,10 +8,10 @@ import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { AccountInfoMobile } from "../account-preview-mobile";
 import { dashboardNavigation } from "@/config/dashboard";
-import { SideNavRoute } from "@/types";
+import { SideNavRoute, Links } from "@/types";
 import { Button } from "../ui/button";
 import { siteConfig } from "@/config/site";
-import {useAuth} from "@/context/Auth";
+import { useAuth } from "@/context/Auth";
 import { Plans } from "@/config/plans";
 
 export function MobileDashboardNav() {
@@ -50,7 +50,12 @@ const NavMenu = ({ setShowMobileMenu }: { setShowMobileMenu: any }) => {
       <div className="relative z-20 h-full  flex  flex-col gap-4 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
         <nav className="grid grid-flow-row  auto-rows-max text-sm divide-y divide-border ">
           {dashboardNavigation.routes.map((route, indx) => (
-            <Route key={indx} item={route} setShowMenu={setShowMobileMenu} currentUser={currentUser} />
+            <Route
+              key={indx}
+              item={route}
+              setShowMenu={setShowMobileMenu}
+              currentUser={currentUser}
+            />
           ))}
         </nav>
 
@@ -63,7 +68,7 @@ const NavMenu = ({ setShowMobileMenu }: { setShowMobileMenu: any }) => {
 const Route = ({
   item,
   setShowMenu,
-  currentUser
+  currentUser,
 }: {
   item: SideNavRoute;
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -77,17 +82,15 @@ const Route = ({
     setShowSubPages(!showSubPages);
   };
 
-
-
   const Icon = Icons[item.iconName];
 
   const handleClick = () => {
     const href =
-    typeof item.links === "string"
-      ? item.links
-      : item.links.find(
-          (link) => link.requiredSubscription === currentUser?.userPlan
-        )?.href as string;
+      typeof item.links === "string"
+        ? item.links
+        : (item.links.find(
+            (link) => link.requiredSubscription === currentUser?.userPlan
+          )?.href as string);
 
     router.push(href);
     setShowMenu(false);
@@ -131,7 +134,7 @@ const Route = ({
 
           {showSubPages && (
             <SubPages
-              subPages={item.subPages}
+              subPages={item.subPages as any}
               showSubPages={showSubPages}
               setShowMenu={setShowMenu}
               currentUser={currentUser}
@@ -146,17 +149,23 @@ const Route = ({
 interface SubPagesProps {
   subPages: {
     title: string;
-    links: {
-      href: string;
-      requiredSubscription?: Plans;
-    }[] | string;
+    description: string;
+    links: Links[] | string;
+    icon: keyof typeof Icons;
+    featured?: boolean;
+    disabled?: boolean;
   }[];
   showSubPages: boolean;
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
   currentUser: any;
 }
 
-const SubPages = ({ subPages, showSubPages, setShowMenu }: SubPagesProps) => {
+const SubPages = ({
+  subPages,
+  showSubPages,
+  setShowMenu,
+  currentUser,
+}: SubPagesProps) => {
   const subPagesRef = React.useRef<HTMLDivElement | null>(null);
   const [contentHeight, setContentHeight] = React.useState(0);
   const router = useRouter();
@@ -167,13 +176,6 @@ const SubPages = ({ subPages, showSubPages, setShowMenu }: SubPagesProps) => {
     }
   }, [subPages]);
 
-  const href =
-  typeof subPages.links === "string"
-    ? subPages.links
-    : subPages.links.find(
-        (link) => link.requiredSubscription === currentUser?.userPlan
-      )?.href as string;
-
   return (
     <div
       id="subPages"
@@ -183,12 +185,13 @@ const SubPages = ({ subPages, showSubPages, setShowMenu }: SubPagesProps) => {
       }`}
       style={showSubPages ? { height: `${contentHeight}px` } : {}}
     >
-      {subPages.map((subPage, indx) => (
+      {subPages?.map((subPage: any, indx: number) => (
         <SubRoute
           key={indx}
           title={subPage.title}
-          href={href}
+          item={subPage}
           setShowMenu={setShowMenu}
+          currentUser={currentUser}
         />
       ))}
     </div>
@@ -197,21 +200,29 @@ const SubPages = ({ subPages, showSubPages, setShowMenu }: SubPagesProps) => {
 
 const SubRoute = ({
   title,
-  href,
+  item,
   setShowMenu,
+  currentUser,
 }: {
   title: string;
-  href: string;
+  item: any;
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUser: any;
 }) => {
   const pathname = usePathname();
   const router = useRouter();
+
+  const href =
+    typeof item.links === "string"
+      ? item.links
+      : (item.links.find(
+          (link: any) => link.requiredSubscription === currentUser?.userPlan
+        )?.href as string);
+
   const handleClick = () => {
     router.push(href);
     setShowMenu(false);
   };
-
-
 
   return (
     <Button
