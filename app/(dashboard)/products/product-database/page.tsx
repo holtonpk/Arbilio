@@ -16,7 +16,7 @@ async function getData() {
 
 export default async function ProductDatabase() {
   return (
-    <ProtectFeature planLevel="standard">
+    <ProtectFeature planLevel="standard" featureName="Product Database">
       <>
         <PageHeader
           heading="Product Database"

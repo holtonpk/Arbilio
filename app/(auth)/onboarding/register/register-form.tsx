@@ -32,11 +32,11 @@ const RegisterForm = () => {
     setIsLoading(true);
     const createAccountResult = await createAccount(
       data.email,
-      data.firstName,
+      { first: data.firstName, last: data.lastName },
       data.password
     );
     if (createAccountResult?.success) {
-      router.push("/onboarding/plan");
+      // router.push("/onboarding/plan");
     }
     if (createAccountResult?.error === "auth/email-already-in-use") {
       setError("email", {

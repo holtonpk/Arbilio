@@ -7,9 +7,18 @@ import PostView from "@/components/post-view";
 import Skeleton from "@/components/ui/skeleton";
 import Tooltip from "@/components/ui/tooltip";
 
-export const AccountCard = ({ item }: { item: AccountDataType }) => {
+export const AccountCard = ({
+  item,
+  locked,
+}: {
+  item: AccountDataType;
+  locked?: boolean;
+}) => {
   return (
     <div className="h-full relative group ">
+      {locked && (
+        <div className="absolute z-30 bg-background/60 backdrop-blur-sm w-full h-full rounded-md "></div>
+      )}
       <div className="w-full  bg-card rounded-md h-fit border  pt-4  shadow-lg  pb-2 p-2 relative flex flex-col">
         <Link
           href={`/accounts/account/${item.id}`}

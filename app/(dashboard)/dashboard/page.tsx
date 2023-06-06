@@ -25,12 +25,10 @@ const Dashboard = () => {
         <div className="flex items-center justify-between  mb-4 ">
           <div className="grid gap-1  container">
             <div className="flex items-center">
-              <span className="font-heading text-3xl md:text-4xl flex gap-2">
+              <span className="font-heading text-3xl md:text-4xl flex gap-2 ">
                 {`Good ${getTimeOfDay()},`}
-                <p className="bg-gradient-to-r whitespace-nowrap to-amber-400 via-orange-500  from-red-500 bg-clip-text text-transparent">
-                  {(currentUser?.displayName &&
-                    currentUser?.displayName.split(" ")[0]) ||
-                    ""}
+                <p className="bg-gradient-to-r whitespace-nowrap font-bold capitalize to-amber-400 via-orange-500  from-red-500 bg-clip-text text-transparent">
+                  {(currentUser?.firstName && currentUser?.firstName) || ""}
                 </p>
               </span>
             </div>

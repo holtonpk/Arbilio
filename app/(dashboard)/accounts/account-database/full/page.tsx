@@ -1,11 +1,10 @@
 import React from "react";
-import AccountDatabase from "./account-database";
+import AccountDatabase from "../account-database";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 
 async function getData() {
-  const url = `${siteConfig.url}/api/account-database-default`;
-  // const url = `${siteConfig.url}/api/accountDatabase`;
+  const url = `${siteConfig.url}/api/accountDatabase`;
   const response = await fetch(url, {
     cache: "no-cache",
   });
@@ -26,7 +25,7 @@ export default async function AccountDataBase() {
         tooltip="Browse our collection of over 500 active sellers and 1000+ accounts."
       />
       <div className="w-full border-t ">
-        <div className="w-full container   pt-4  flex flex-col min-h-screen items-center  ">
+        <div className="w-full container  pt-4  flex flex-col min-h-screen items-center  ">
           <AccountDatabase originalData={data} />
         </div>
       </div>

@@ -1,40 +1,58 @@
 import {
-  DashboardConfig,
+  DashboardNavigation,
   AccountDatabaseConfig,
   AccountCollectionConfig,
 } from "@/types";
 
-export const dashboardConfig: DashboardConfig = {
-  navigation: [
+export const dashboardNavigation: DashboardNavigation = {
+  routes: [
     {
       title: "Dashboard",
       iconName: "dashboard",
-      href: "/dashboard",
+      links: "/dashboard",
       disabled: false,
     },
     {
       title: "Accounts",
       iconName: "accounts",
-      href: "/accounts",
+      links: [
+        {
+          href: "/accounts",
+        },
+      ],
       subPages: [
         {
           title: "Account Database",
           description:
             "Browse our collection of over 500 active sellers and 1000+ accounts.",
-          href: "/accounts/account-database",
+          links: [
+            {
+              href: "/accounts/account-database-base/demo",
+              requiredSubscription: "base",
+            },
+            {
+              href: "/accounts/account-database",
+              requiredSubscription: "standard",
+            },
+            {
+              href: "/accounts/account-database",
+              requiredSubscription: "premium",
+            },
+          ],
           icon: "accounts",
           featured: true,
         },
+
         {
           title: "Top Accounts",
           description:
             "Discover the top sellers and analyze their performance over time.",
-          href: "/accounts/top-accounts",
+          links: "/accounts/top-accounts",
           icon: "rank",
         },
         {
           title: "Account Collections",
-          href: "/accounts/account-collections",
+          links: "/accounts/account-collections",
           description:
             "Leverage the power of collections to organize your accounts and products.",
           icon: "collection",
@@ -45,11 +63,15 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: "Products",
       iconName: "products",
-      href: "/products",
+      links: [
+        {
+          href: "/products",
+        },
+      ],
       subPages: [
         {
           title: "Product Database",
-          href: "/products/product-database",
+          links: "/products/product-database",
           description:
             "Browse our collection of over 200 high converting products.",
           icon: "products",
@@ -57,14 +79,14 @@ export const dashboardConfig: DashboardConfig = {
         },
         {
           title: "Product Tracker",
-          href: "/products/product-tracker",
+          links: "/products/product-tracker",
           description:
             "Track the performance of of products and discover new trends.",
           icon: "crosshair",
         },
         {
           title: "Video Creator",
-          href: "/#",
+          links: "/#",
           description:
             "Harness the power of AI to create high converting video ads.",
           icon: "posts",
@@ -76,7 +98,7 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: "Ai Store Builder",
       iconName: "store",
-      href: "/stores",
+      links: "/stores",
       disabled: true,
     },
     // {
@@ -129,11 +151,11 @@ export const accountDatabaseConfig: AccountDatabaseConfig = {
   sortOptions: {
     title: "Sort by",
     items: [
-      {
-        title: "Popularity",
-        value: "likeCount",
-        icon: "trendingUp",
-      },
+      // {
+      //   title: "Popularity",
+      //   value: "likeCount",
+      //   icon: "trendingUp",
+      // },
       {
         title: "Followers",
         value: "followerCount",
@@ -141,12 +163,12 @@ export const accountDatabaseConfig: AccountDatabaseConfig = {
       },
       {
         title: "Likes",
-        value: "heartCount",
+        value: "likeCount",
         icon: "likes",
       },
       {
         title: "Posts",
-        value: "videoCount",
+        value: "postCount",
         icon: "posts",
       },
     ],

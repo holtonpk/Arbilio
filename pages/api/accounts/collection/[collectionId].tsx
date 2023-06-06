@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { CollectionType } from "@/types";
 import { app } from "@/firebase";
 import { siteConfig } from "@/config/site";
-import { AccountCollectionData } from "@/types";
+import { AccountCollectionTable } from "@/types";
 import { db } from "@/context/Auth";
 import {
   doc,
@@ -18,7 +18,7 @@ import { storage } from "@/config/data-storage";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<AccountCollectionData>
+  res: NextApiResponse<AccountCollectionTable[]>
 ) {
   const collectionId = req.query.collectionId as string;
 
@@ -53,6 +53,7 @@ export default async function handler(
     }
 
     return {
+      collection: accountCollection,
       accountStats: record.accountStats,
       followerCount: record.accountStats[0]?.followerCount,
       likeCount: record.accountStats[0]?.heartCount,
@@ -70,9 +71,7 @@ export default async function handler(
     };
   });
 
-  const data = (await Promise.all(
-    formattedData
-  )) as AccountCollectionData["accounts"];
+  const data = (await Promise.all(formattedData)) as AccountCollectionTable[];
 
-  res.status(200).json({ collection: accountCollection, accounts: data });
+  res.status(200).json(data);
 }

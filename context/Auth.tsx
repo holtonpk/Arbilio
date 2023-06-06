@@ -25,15 +25,21 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 
-import { doc, setDoc, getFirestore, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getFirestore,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { Plans } from "@/config/plans";
 
 interface AuthContextType {
-  userPlan: "base" | "standard" | "premium" | undefined;
-  currentUser: FirebaseUser | undefined;
+  currentUser: UserData | undefined;
   signIn: (email: string, password: string) => Promise<any>;
   createAccount: (
     email: string,
-    name: string,
+    name: { first: string; last: string },
     password: string
   ) => Promise<any>;
   logInWithGoogle: () => Promise<any>;
@@ -56,16 +62,22 @@ export function useAuth() {
 
 export const db = getFirestore(app);
 
+interface UserData extends FirebaseUser {
+  firstName: string;
+  lastName: string;
+  photoURL: string;
+  userPlan: Plans | undefined;
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [currentUser, setCurrentUser] = useState<FirebaseUser | undefined>(
+  const [currentUser, setCurrentUser] = useState<UserData | undefined>(
     undefined
   );
+
   const [loading, setLoading] = useState(true);
   const [rerender, setRerender] = useState(true);
   const [userCollections, setUserCollections] = useState<CollectionType[]>([]);
-  const [userPlan, setUserPlan] = useState<
-    "base" | "standard" | "premium" | undefined
-  >(undefined);
+
   // const router = useRouter();
 
   const defaultProfilePictures: string[] = [
@@ -82,14 +94,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return defaultProfilePictures[randomIndex] as string;
   }
 
-  async function createAccount(email: string, name: string, password: string) {
+  async function createAccount(
+    email: string,
+    name: { first: string; last: string },
+    password: string
+  ) {
     const account = createUserWithEmailAndPassword(auth, email, password)
       .then((cred: any) => {
-        const profileUrl = getRandomImageUrl() as string;
-        updateProfile(cred.user, {
-          displayName: name,
-          photoURL: profileUrl,
-        });
+        createUserStorage(cred?.user.uid, name, email);
+
+        // updateProfile(cred.user, {
+        //   displayName: name,
+        //   photoURL: profileUrl,
+        // });
         // createUserStorage(cred?.user);
         return { success: cred };
       })
@@ -121,7 +138,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       if (result.user) {
-        createUserStorage(result.user);
+        createUserStorage(
+          result.user.uid,
+          {
+            first: result.user?.displayName?.split(" ")[0] || "",
+            last: result.user?.displayName?.split(" ")[1] || "",
+          },
+          result.user.email || ""
+        );
         return { success: result };
       } else {
         return { error: result };
@@ -131,13 +155,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const createUserStorage = async (user: any) => {
-    if (!user.photoURL) {
-      const profileUrl = getRandomImageUrl() as string;
-      updateProfile(user, {
-        photoURL: profileUrl,
+  const createUserStorage = async (
+    uid: string,
+    name: { first: string; last: string },
+    email: string
+  ) => {
+    console.log("createUserStorage", uid);
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+    console.log("userSnap", userSnap.exists);
+    if (!userSnap.exists()) {
+      console.log("creating...");
+      await setDoc(userRef, {
+        firstName: name.first,
+        lastName: name.last,
+        email: email,
+        photoURL: getRandomImageUrl() as string,
+        uid: uid,
       });
     }
+
+    // if (!user.photoURL) {
+    //   const profileUrl = getRandomImageUrl() as string;
+    //   updateProfile(user, {
+    //     photoURL: profileUrl,
+    //   });
+    // }
   };
 
   const uploadProfilePicture = async (file: any) => {
@@ -173,9 +216,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const changeProfilePicture = async (url: string) => {
     if (!currentUser) return;
-    updateProfile(currentUser, {
+    const userRef = doc(db, "users", currentUser.uid);
+    await updateDoc(userRef, {
       photoURL: url,
     });
+    // updateProfile(firebaseUser, {
+    //   photoURL: url,
+    // });
   };
 
   // import {
@@ -233,8 +280,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function changeUserDisplayName(newDisplayName: string) {
     if (!currentUser) return { error: "No user is signed in" };
     try {
-      await updateProfile(currentUser, {
-        displayName: newDisplayName,
+      // await updateProfile(firebaseUser, {
+      //   displayName: newDisplayName,
+      // });
+      const userRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userRef, {
+        firstName: newDisplayName.split(" ")[0],
+        lastName: newDisplayName.split(" ")[1],
       });
       return { success: "Display name updated successfully" };
     } catch (error) {
@@ -268,10 +320,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // nookies.set(undefined, "token", token, { path: "/" });
       }
       if (user) {
-        setCurrentUser(user);
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
         await auth.currentUser?.getIdToken(true);
         const decodedToken = await auth.currentUser?.getIdTokenResult();
-        setUserPlan(decodedToken?.claims?.stripeRole);
+        setCurrentUser({
+          ...user,
+          firstName: userData?.firstName,
+          lastName: userData?.lastName,
+          photoURL: userData?.photoURL,
+          userPlan: decodedToken?.claims?.stripeRole,
+        });
       }
       setLoading(false);
     });
@@ -280,7 +340,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [rerender]);
 
   const value = {
-    userPlan,
     currentUser,
     signIn,
     createAccount,

@@ -39,11 +39,11 @@ const ProductTrackDisplay = () => {
   const subscriptionCollectionLimit = 3;
 
   return (
-    <div className="grid border rounded-md relative ">
+    <div className="grid border rounded-md relative shadow-lg ">
       <div className="flex justify-between w-full">
         <div className=" p-4 rounded-md flex w-fit  h-fit items-center gap-4">
-          <span className=" aspect-square p-2 h-fit rounded-md bg-muted/40">
-            <Icons.products className="h-6 w-6 text-primary" />
+          <span className=" aspect-square p-2 h-fit rounded-md bg-theme-blue">
+            <Icons.products className="h-6 w-6 text-white" />
           </span>
           <div className="flex flex-col">
             <div className="flex items-center">
@@ -116,14 +116,16 @@ const AccountCollectionDisplay = () => {
   const { userCollections, loading } = useUserCollections();
   //   const userCollections = undefined;
 
+  console.log("userCollections", userCollections);
+
   const subscriptionCollectionLimit = 5;
 
   return (
-    <div className="flex flex-col border rounded-md relative ">
+    <div className="flex flex-col border rounded-md relative shadow-lg">
       <div className="flex  w-full h-fit ">
         <div className=" p-4 rounded-md flex w-fit  h-fit items-center gap-4">
-          <span className=" aspect-square p-2 h-fit rounded-md bg-muted/40">
-            <Icons.accounts className="h-6 w-6 text-primary" />
+          <span className=" aspect-square p-2 h-fit rounded-md bg-theme-blue">
+            <Icons.accounts className="h-6 w-6 text-white" />
           </span>
           <div className="flex flex-col">
             <div className="flex items-center">
@@ -162,7 +164,7 @@ const AccountCollectionDisplay = () => {
               Create account to collections to easily monitor account
               performance
             </EmptyPlaceholder.Description>
-            <CreateCollectionButton />
+            <CreateCollectionButton>+ New Collection</CreateCollectionButton>
           </EmptyPlaceholder>
         </div>
       )}

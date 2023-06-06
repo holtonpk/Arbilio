@@ -1,14 +1,15 @@
 "use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatNumber } from "@/lib/utils";
-import { AccountCollectionTable } from "@/types";
-import { DataTableColumnHeader } from "./table-column-header";
-import { DataTableRowActions } from "./table-row-actions";
+import { AccountDataType } from "@/types";
+import { DataTableColumnHeader } from "../table/data-table-column-header";
+import { DataTableRowActions } from "../table/data-table-row-actions";
 import { AccountDisplay, ProductDisplay } from "@/components/table-components";
 
-export const columns: ColumnDef<AccountCollectionTable>[] = [
+export const columns: ColumnDef<AccountDataType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -28,17 +29,14 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
       />
     ),
     enableSorting: false,
-    enableHiding: false,
   },
   {
-    accessorKey: "account",
+    accessorKey: "uniqueId",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Account" />
+      <DataTableColumnHeader column={column} title="uniqueId" />
     ),
     cell: ({ row }) => (
-      <div className="w-[150px]">
-        <AccountDisplay item={row.original} />
-      </div>
+      <div className="w-[150px]">{row.getValue("uniqueId")}</div>
     ),
     enableSorting: false,
     enableHiding: false,

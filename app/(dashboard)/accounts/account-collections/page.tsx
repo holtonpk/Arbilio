@@ -17,9 +17,14 @@ const AccountCollections = () => {
           "Leverage the power of collections to organize your accounts and products."
         }
       >
-        <CreateCollectionButton variant="default" className="whitespace-nowrap">
-          + New Collection
-        </CreateCollectionButton>
+        {userCollections && userCollections?.length > 0 && (
+          <CreateCollectionButton
+            variant="default"
+            className="whitespace-nowrap"
+          >
+            + New Collection
+          </CreateCollectionButton>
+        )}
       </PageHeader>
       <div className="w-full border-t ">
         <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
@@ -38,7 +43,7 @@ const AccountCollections = () => {
               <EmptyPlaceholder.Description>
                 You don&apos;t have any collections yet.
               </EmptyPlaceholder.Description>
-              <CreateCollectionButton variant="outline" />
+              <CreateCollectionButton>+ New Collection</CreateCollectionButton>
             </EmptyPlaceholder>
           )}
         </div>

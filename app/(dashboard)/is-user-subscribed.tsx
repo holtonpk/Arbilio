@@ -4,10 +4,10 @@ import { useAuth } from "@/context/Auth";
 import { useRouter } from "next/navigation";
 
 const UserSubscribed = ({ children }: { children: ReactElement }) => {
-  const { userPlan } = useAuth()!;
+  const { currentUser } = useAuth()!;
   const router = useRouter();
 
-  if (!userPlan) {
+  if (!currentUser?.userPlan) {
     router.push("/onboarding/plan");
   } else {
     return children;

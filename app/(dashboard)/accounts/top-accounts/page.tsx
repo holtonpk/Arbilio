@@ -1,7 +1,6 @@
 import AccountRank from "./account-rank";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
-import ProtectFeature from "@/components/protect-feature";
 import Loading from "./loading";
 async function getData() {
   const rankType = "followers";
@@ -20,23 +19,21 @@ async function getData() {
 export default async function TopAccounts() {
   const data = await getData();
   return (
-    <ProtectFeature planLevel="standard">
-      <>
-        <PageHeader
-          heading={"Top Accounts"}
-          text={
-            "Discover the top sellers and analyze their performance over time."
-          }
-        />
-        <div className="w-full border-t">
-          <div className="w-full container  md:pt-6  flex flex-col min-h-screen items-center  ">
-            <div className="flex flex-row  w-full  h-full  gap-8  rounded-md ">
-              <AccountRank data={data} />
-            </div>
+    <>
+      <PageHeader
+        heading={"Top Accounts"}
+        text={
+          "Discover the top sellers and analyze their performance over time."
+        }
+      />
+      <div className="w-full border-t">
+        <div className="w-full container  md:pt-6  flex flex-col min-h-screen items-center  ">
+          <div className="flex flex-row  w-full  h-full  gap-8  rounded-md ">
+            <AccountRank data={data} />
           </div>
         </div>
-      </>
-    </ProtectFeature>
+      </div>
+    </>
   );
 }
 

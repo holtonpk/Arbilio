@@ -140,6 +140,10 @@ export const UserCollectionProvider = ({
         db,
         `${storage.users}/${currentUser.uid}/${storage.userAccountCollections}`
       );
+      console.log(
+        "userCollectionsRef",
+        `${storage.users}/${currentUser.uid}/${storage.userAccountCollections}`
+      );
       const unsubscribeUserCollections = onSnapshot(
         userCollectionsRef,
         async (snapshot) => {

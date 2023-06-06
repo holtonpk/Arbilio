@@ -48,16 +48,19 @@ export const AccountInfo = () => {
             <Avatar>
               <AvatarImage
                 src={(currentUser && currentUser.photoURL) || ""}
-                alt={(currentUser && currentUser?.displayName) || ""}
+                alt={(currentUser && currentUser?.firstName) || ""}
               />
               <AvatarFallback>
-                {currentUser?.displayName &&
-                  getInitials(currentUser?.displayName)}
+                {currentUser?.firstName &&
+                  getInitials(
+                    currentUser?.firstName[0] + currentUser?.lastName[0]
+                  )}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start ml-2">
               <div className="text-sm capitalize font-bold">
-                {currentUser && currentUser.displayName}
+                {currentUser &&
+                  currentUser.firstName + " " + currentUser.lastName}
               </div>
               <div className="text-[12px] font-muted-foreground">
                 {currentUser && currentUser.email}

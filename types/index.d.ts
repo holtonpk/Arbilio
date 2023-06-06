@@ -33,11 +33,17 @@ export type MarketingConfig = {
 import Account from "@/app/(dashboard)/accounts/account/[id]/page";
 import ProductDataBase from "@/app/(dashboard)/products/product-database/product-database";
 import { Icons } from "@/components/icons";
+import { Plans } from "@/config/plans";
+
+type Links = {
+  href: string;
+  requiredSubscription?: Plans;
+};
 
 export interface SubRoute {
   title: string;
   description: string;
-  href: string;
+  links: Links[] | string;
   icon: keyof typeof Icons;
   featured?: boolean;
   disabled?: boolean;
@@ -46,13 +52,13 @@ export interface SubRoute {
 export interface SideNavRoute {
   title: string;
   iconName: keyof typeof Icons;
-  href: string;
+  links: Links[] | string;
   subPages?: SubRoute[];
   disabled: boolean;
 }
 
-export interface DashboardConfig {
-  navigation: SideNavRouteProps[];
+export interface DashboardNavigation {
+  routes: SideNavRoute[];
 }
 
 type TableHeader = {
@@ -70,7 +76,7 @@ export type ComboBoxType = {
   items: {
     title: string;
     icon?: keyof typeof Icons | string;
-    value: string | number;
+    value: string;
     disabled?: boolean;
   }[];
 };

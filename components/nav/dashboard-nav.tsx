@@ -1,16 +1,18 @@
 "use client";
 import Link from "next/link";
 import React, { useEffect, useState, useRef } from "react";
-import { dashboardConfig } from "@/config/dashboard";
+import { dashboardNavigation } from "@/config/dashboard";
 import { SideNavRoute, SubRoute as SubRouteType } from "@/types";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { Icons } from "@/components/icons";
 import { AccountInfo } from "@/components/account-preview";
+import { useAuth } from "@/context/Auth";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Feedback from "@/components/modals/feedback-modal";
 import { siteConfig } from "@/config/site";
+import { userTiers } from "@/config/plans";
 
 const DashboardNav = () => {
   const segment = useSelectedLayoutSegment();
@@ -95,7 +97,7 @@ const DashboardNav = () => {
             </Link>
           ) : null}
 
-          <NavigationMenuDemo />
+          <NavigationMenuBar />
         </div>
       </nav>
     </div>
@@ -114,7 +116,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-export function NavigationMenuDemo() {
+export function NavigationMenuBar() {
   const bgGradients = [
     // "from-blue-600 via-sky-500 to-cyan-400 ",
     "from-muted/20 to-muted",
@@ -123,10 +125,12 @@ export function NavigationMenuDemo() {
     // "to-amber-400 via-orange-500 from-red-500",
     // "from-purple-600 via-fuchsia-600 to-pink-600",
   ];
+  const { currentUser } = useAuth()!;
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        {dashboardConfig.navigation.map((route, indx) => (
+        {dashboardNavigation.routes.map((route, indx) => (
           <NavigationMenuItem
             key={indx}
             className={`${
@@ -145,27 +149,19 @@ export function NavigationMenuDemo() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px]  lg:w-[600px] lg:grid-cols-[.75fr_1fr]  ">
-                    {route.subPages.map((subPage: any) => (
+                    {route.subPages.map((subPage) => (
                       <SubRoute
                         key={subPage.title}
                         item={subPage}
                         bgGradient={bgGradients[indx]}
+                        currentUser={currentUser}
                       />
                     ))}
                   </ul>
                 </NavigationMenuContent>
               </>
             ) : (
-              <Link href={route.href} legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  {route.title}
-                  {route?.disabled && (
-                    <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
-                      Coming soon
-                    </div>
-                  )}
-                </NavigationMenuLink>
-              </Link>
+              <MainRoute route={route} currentUser={currentUser} />
             )}
           </NavigationMenuItem>
         ))}
@@ -174,18 +170,55 @@ export function NavigationMenuDemo() {
   );
 }
 
+const MainRoute = ({
+  route,
+  currentUser,
+}: {
+  route: SideNavRoute;
+  currentUser: any;
+}) => {
+  const href =
+    typeof route.links === "string"
+      ? route.links
+      : route.links.find(
+          (link) => link.requiredSubscription === currentUser?.userPlan
+        )?.href;
+
+  return (
+    <Link href={href || "/#"} legacyBehavior passHref>
+      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+        {route.title}
+        {route?.disabled && (
+          <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
+            Coming soon
+          </div>
+        )}
+      </NavigationMenuLink>
+    </Link>
+  );
+};
+
 const SubRoute = ({
   item,
   bgGradient,
+  currentUser,
 }: {
   item: SubRouteType;
   bgGradient: string;
+  currentUser: any;
 }) => {
   const Icon = Icons[item.icon];
 
   if (!Icon) {
     return null;
   }
+
+  const href =
+    typeof item.links === "string"
+      ? item.links
+      : item.links.find(
+          (link) => link.requiredSubscription === currentUser?.userPlan
+        )?.href;
 
   return (
     <>
@@ -194,7 +227,7 @@ const SubRoute = ({
           <NavigationMenuLink asChild>
             <a
               className={`flex h-full text-primary gap- w-full select-none flex-col justify-end rounded-md bg-gradient-to-b ${bgGradient} p-6 no-underline outline-none focus:shadow-md`}
-              href={item.href}
+              href={href}
             >
               <div className="p-2 rounded-md bg-theme-blue text-primary w-fit  flex justify-center items-center">
                 <Icon className="h-5 w-6 text-white" />
@@ -207,7 +240,7 @@ const SubRoute = ({
       ) : (
         <NavigationMenuLink asChild>
           <a
-            href={item.href}
+            href={href}
             className={`grid grid-cols-[20px_1fr] gap-6 items-start hover:bg-muted p-2 rounded-md relative
             ${item.disabled && "cursor-not-allowed  pointer-events-none"}
             `}

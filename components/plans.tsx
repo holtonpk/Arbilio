@@ -79,7 +79,7 @@ interface PlanCardProps {
 
 const PlanCard = ({ plan, popular, period }: PlanCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { currentUser, userPlan } = useAuth()!;
+  const { currentUser } = useAuth()!;
 
   const price = plan[period];
   console.log("plan ===>", plan);

@@ -41,10 +41,10 @@ export default async function CollectionPage({
 
           <h1 className="text-3xl h-fit  font-bold flex items-center text-primary  pb-0">
             {/* <Icons.collection className="h-8 w-8 mr-2" /> */}
-            {data.collection.name}
+            {data[0].collection.name}
           </h1>
         </div>
-        <CollectionOperations collection={data.collection} variant="outline">
+        <CollectionOperations collection={data[0].collection} variant="outline">
           <Icons.ellipsis className="h-5 w-5" />
         </CollectionOperations>
       </div>

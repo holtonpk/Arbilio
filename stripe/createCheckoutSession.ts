@@ -26,7 +26,6 @@ export async function createCheckoutSession(
   );
 
   const checkoutSessionDecRef = await addDoc(checkoutSessionRef, {
-    mode: "payment",
     price: priceCode,
     success_url: success_url,
     cancel_url: cancel_url,
@@ -34,7 +33,7 @@ export async function createCheckoutSession(
 
   onSnapshot(checkoutSessionDecRef, (doc) => {
     const { sessionId } = doc.data()!;
-    console.log("sessionId", sessionId, uid);
+    console.log("sessionId", sessionId);
     if (sessionId) {
       stripe?.redirectToCheckout({ sessionId });
     }

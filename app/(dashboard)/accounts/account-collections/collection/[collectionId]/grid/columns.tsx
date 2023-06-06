@@ -1,14 +1,13 @@
 "use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatNumber } from "@/lib/utils";
-import { AccountCollectionTable } from "@/types";
-import { DataTableColumnHeader } from "./table-column-header";
-import { DataTableRowActions } from "./table-row-actions";
+import { AccountDataType } from "@/types";
 import { AccountDisplay, ProductDisplay } from "@/components/table-components";
 
-export const columns: ColumnDef<AccountCollectionTable>[] = [
+export const columns: ColumnDef<AccountDataType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -28,17 +27,15 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
       />
     ),
     enableSorting: false,
-    enableHiding: false,
   },
   {
-    accessorKey: "account",
+    accessorKey: "uniqueId",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Account" />
+      // <DataTableColumnHeader column={column} title="uniqueId" />
+      <></>
     ),
     cell: ({ row }) => (
-      <div className="w-[150px]">
-        <AccountDisplay item={row.original} />
-      </div>
+      <div className="w-[150px]">{row.getValue("uniqueId")}</div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -46,7 +43,8 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
   {
     accessorKey: "product",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Product" />
+      // <DataTableColumnHeader column={column} title="Product" />
+      <></>
     ),
     cell: ({ row }) => {
       // const label = labels.find((label) => label.value === row.original.label);
@@ -63,7 +61,8 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
   {
     accessorKey: "followerCount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Followers" />
+      // <DataTableColumnHeader column={column} title="Followers" />
+      <></>
     ),
     cell: ({ row }) => {
       return (
@@ -77,7 +76,8 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
   {
     accessorKey: "likeCount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Likes" />
+      // <DataTableColumnHeader column={column} title="Likes" />
+      <></>
     ),
     cell: ({ row }) => {
       return (
@@ -90,7 +90,8 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
   {
     accessorKey: "postCount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Posts" />
+      // <DataTableColumnHeader column={column} title="Posts" />
+      <></>
     ),
     cell: ({ row }) => {
       return (
@@ -103,7 +104,8 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
   {
     accessorKey: "daysTracked",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Days Tracked" />
+      // <DataTableColumnHeader column={column} title="Days Tracked" />
+      <></>
     ),
     cell: ({ row }) => {
       return (
@@ -116,7 +118,8 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
   {
     accessorKey: "mostViews",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Most Views" />
+      // <DataTableColumnHeader column={column} title="Most Views" />
+      <></>
     ),
     cell: ({ row }) => {
       return (
@@ -125,9 +128,5 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
         </div>
       );
     },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];
