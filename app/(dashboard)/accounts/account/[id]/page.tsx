@@ -37,6 +37,6 @@ export async function generateStaticParams() {
   const data = await res.json();
 
   return data.map((item: AccountDataType) => ({
-    id: item.id,
+    item,
   }));
 }
