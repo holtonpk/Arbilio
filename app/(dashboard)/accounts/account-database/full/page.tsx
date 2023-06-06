@@ -5,9 +5,7 @@ import { siteConfig } from "@/config/site";
 
 async function getData() {
   const url = `${siteConfig.url}/api/accountDatabase`;
-  const response = await fetch(url, {
-    cache: "no-store",
-  });
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch data ${response.text}`);
