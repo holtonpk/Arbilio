@@ -15,9 +15,7 @@ import Loading from "./loading";
 
 const getData = async (id: string): Promise<AccountDataType> => {
   console.log("id====>", id);
-  const res = await fetch(`${siteConfig.url}/api/view-account/${id}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(`${siteConfig.url}/api/view-account/${id}`);
   const data = await res.json();
   return data;
 };
@@ -45,7 +43,7 @@ export async function generateStaticParams() {
     { id: "7208996266717987882" },
   ];
 
-  return data.map((item) => ({
-    item,
+  return data.map((item: any) => ({
+    id: item.item,
   }));
 }
