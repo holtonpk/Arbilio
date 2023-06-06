@@ -33,11 +33,11 @@ export default async function Account({
   return <ViewAccount data={data} />;
 }
 
-export async function generateStaticParams() {
-  const res = await fetch(`${siteConfig.url}/api/get-all-accounts`);
-  const data = await res.json();
+// export async function generateStaticParams() {
+//   const res = await fetch(`${siteConfig.url}/api/get-all-accounts`);
+//   const data = await res.json();
 
-  return data.map((item: AccountDataType) => ({
-    item,
-  }));
-}
+//   return data.map((item: AccountDataType) => ({
+//     item,
+//   }));
+// }
