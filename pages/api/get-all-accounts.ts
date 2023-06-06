@@ -30,12 +30,5 @@ export default async function handler(
   });
 
   const data = (await Promise.all(formattedData)) as any[];
-  // const data = [
-  //   { id: "7208887380605699077" },
-  //   { id: "7211952463829795882" },
-  //   { id: "7167278845606462465" },
-  //   { id: "7206197740939756590" },
-  // ];
-
   res.status(200).json(data);
 }

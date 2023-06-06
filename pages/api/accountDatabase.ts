@@ -16,16 +16,29 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AccountDataType[]>
 ) {
-  const q = query(
-    collection(db, storage.accounts),
-    where("userInfo", "!=", null),
-    limit(50)
-  );
+  const q = query(collection(db, storage.accounts));
+
   const docs = await getDocs(q);
+  const filteredDocs = docs.docs
+    .map((doc) => doc.data())
+    // Filter the documents on the client side
+    .filter(
+      (doc) =>
+        doc.userInfo != null &&
+        doc.userInfo !== null &&
+        doc.userInfo !== "" &&
+        doc.accountStats != null &&
+        doc.accountStats !== null &&
+        doc.accountStats !== "" &&
+        doc.product != null &&
+        doc.product !== null &&
+        doc.product !== "" &&
+        doc.topPosts != null &&
+        doc.topPosts !== null &&
+        doc.topPosts.length !== 0
+    );
 
-  const formattedData = docs.docs.map(async (_doc) => {
-    const record = _doc.data();
-
+  const formattedData = filteredDocs.map(async (record) => {
     let productData = null;
     let topPostsData = null;
 
@@ -35,12 +48,13 @@ export default async function handler(
       productData = productInfo.data();
     }
 
-    if (
-      record.topPosts &&
-      record.topPosts.length &&
-      !record.topPosts.includes(null)
-    ) {
-      const topPosts = record?.topPosts.map(async (post: any) => {
+    if (record.topPosts && record.topPosts.length) {
+      const filteredPost = record?.topPosts.filter(
+        (post: any) => post !== null
+      );
+
+      const topPosts = filteredPost.map(async (post: any) => {
+        if (!post) return;
         const postRef = doc(db, storage.posts, post);
         const postData = await getDoc(postRef);
         return {
@@ -66,7 +80,7 @@ export default async function handler(
       mostViews: (topPostsData && topPostsData[0].postData.playCount) || 0,
       avatar: record.avatar,
       id: record.id,
-      product: productData,
+      product: productData || record.product,
       secUid: record.secUid,
       storeUrl: record.storeUrl,
       topPosts: topPostsData,
