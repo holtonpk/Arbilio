@@ -18,7 +18,7 @@ export default async function handler(
 ) {
   const q = query(
     collection(db, storage.accounts),
-    where("product", "!=", null),
+    where("userInfo", "!=", null),
     limit(50)
   );
   const docs = await getDocs(q);
