@@ -44,6 +44,6 @@ export async function generateStaticParams() {
   ];
 
   return data.map((item: any) => ({
-    id: item.item,
+    id: item.id,
   }));
 }
