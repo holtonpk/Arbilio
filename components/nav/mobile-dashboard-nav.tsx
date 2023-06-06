@@ -7,10 +7,12 @@ import { useLockBody } from "@/lib/hooks/use-lock-body";
 import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { AccountInfoMobile } from "../account-preview-mobile";
-import { dashboardConfig } from "@/config/dashboard";
+import { dashboardNavigation } from "@/config/dashboard";
 import { SideNavRoute } from "@/types";
 import { Button } from "../ui/button";
 import { siteConfig } from "@/config/site";
+import {useAuth} from "@/context/Auth";
+import { Plans } from "@/config/plans";
 
 export function MobileDashboardNav() {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
@@ -40,13 +42,15 @@ export function MobileDashboardNav() {
 }
 
 const NavMenu = ({ setShowMobileMenu }: { setShowMobileMenu: any }) => {
+  const { currentUser } = useAuth()!;
+
   useLockBody();
   return (
     <div className="fixed inset-0  w-full top-16 z-50 h-[calc(100vh-4rem)]  auto-rows-max overflow-auto   shadow-md animate-in slide-in-from-bottom-80 ">
       <div className="relative z-20 h-full  flex  flex-col gap-4 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
         <nav className="grid grid-flow-row  auto-rows-max text-sm divide-y divide-border ">
-          {dashboardConfig.navigation.map((route, indx) => (
-            <Route key={indx} item={route} setShowMenu={setShowMobileMenu} />
+          {dashboardNavigation.routes.map((route, indx) => (
+            <Route key={indx} item={route} setShowMenu={setShowMobileMenu} currentUser={currentUser} />
           ))}
         </nav>
 
@@ -59,9 +63,11 @@ const NavMenu = ({ setShowMobileMenu }: { setShowMobileMenu: any }) => {
 const Route = ({
   item,
   setShowMenu,
+  currentUser
 }: {
   item: SideNavRoute;
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUser: any;
 }) => {
   const [showSubPages, setShowSubPages] = React.useState(false);
   const segment = useSelectedLayoutSegment();
@@ -71,18 +77,19 @@ const Route = ({
     setShowSubPages(!showSubPages);
   };
 
-  React.useEffect(() => {
-    if (item.subPages) {
-      if (item.href.startsWith(`/${segment}`)) {
-        setShowSubPages(true);
-      }
-    }
-  }, [item.href, item.subPages, segment]);
+
 
   const Icon = Icons[item.iconName];
 
   const handleClick = () => {
-    router.push(item.href);
+    const href =
+    typeof item.links === "string"
+      ? item.links
+      : item.links.find(
+          (link) => link.requiredSubscription === currentUser?.userPlan
+        )?.href as string;
+
+    router.push(href);
     setShowMenu(false);
   };
 
@@ -127,6 +134,7 @@ const Route = ({
               subPages={item.subPages}
               showSubPages={showSubPages}
               setShowMenu={setShowMenu}
+              currentUser={currentUser}
             />
           )}
         </>
@@ -138,10 +146,14 @@ const Route = ({
 interface SubPagesProps {
   subPages: {
     title: string;
-    href: string;
+    links: {
+      href: string;
+      requiredSubscription?: Plans;
+    }[] | string;
   }[];
   showSubPages: boolean;
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUser: any;
 }
 
 const SubPages = ({ subPages, showSubPages, setShowMenu }: SubPagesProps) => {
@@ -154,6 +166,13 @@ const SubPages = ({ subPages, showSubPages, setShowMenu }: SubPagesProps) => {
       setContentHeight(subPagesRef.current.scrollHeight);
     }
   }, [subPages]);
+
+  const href =
+  typeof subPages.links === "string"
+    ? subPages.links
+    : subPages.links.find(
+        (link) => link.requiredSubscription === currentUser?.userPlan
+      )?.href as string;
 
   return (
     <div
@@ -168,7 +187,7 @@ const SubPages = ({ subPages, showSubPages, setShowMenu }: SubPagesProps) => {
         <SubRoute
           key={indx}
           title={subPage.title}
-          href={subPage.href}
+          href={href}
           setShowMenu={setShowMenu}
         />
       ))}
@@ -191,6 +210,8 @@ const SubRoute = ({
     router.push(href);
     setShowMenu(false);
   };
+
+
 
   return (
     <Button
