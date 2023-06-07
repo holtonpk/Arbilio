@@ -109,7 +109,13 @@ const RecentPosts = ({ accounts }: RecentPostsProps) => {
       <div className="grid grid-flow-col gap-4 ">
         {accounts &&
           topPosts.slice(0, 5).map((item: any, i: number) => {
-            return <PostView key={i} video={item} />;
+            return (
+              <PostView
+                key={i}
+                postId={item.postId}
+                accountData={item.author}
+              />
+            );
           })}
       </div>
     </div>
