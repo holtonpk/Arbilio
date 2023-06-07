@@ -14,7 +14,8 @@ import Image from "next/image";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { Button } from "@/components/ui/button";
 import { formatDateShort } from "@/lib/utils";
-import { AccountDataType } from "@/types";
+import { AccountDataType, ProductType } from "@/types";
+import { siteConfig } from "@/config/site";
 import { Icons } from "@/components/icons";
 import PostView from "@/components/post-view";
 import { ProductOperations } from "@/components/buttons/product-operations";
@@ -246,6 +247,19 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
 
 const ProductDisplay = () => {
   const { data } = useContext(DataContext)!;
+
+  const [product, setProduct] = React.useState<ProductType>();
+
+  React.useEffect(() => {
+    const getProduct = async () => {
+      const product = await fetch(
+        `${siteConfig.url}/api/view-product/${data.product}`
+      ).then((res) => res.json());
+      setProduct(product);
+    };
+    getProduct();
+  }, [data]);
+
   return (
     <>
       {data.product ? (
@@ -260,30 +274,31 @@ const ProductDisplay = () => {
               </div>
             </Tooltip>
           </div>
+          {product && (
+            <div className="grid divide-y  divide-border rounded-md border p-3 ">
+              <div className="flex items-center justify-between">
+                <div className="grid grid-cols-[80px_1fr] gap-4 items-center">
+                  <div className="w-[80px] aspect-square bg-muted rounded-md relative overflow-hidden">
+                    <Image src={product.image} alt="" fill />
+                  </div>
 
-          <div className="grid divide-y  divide-border rounded-md border p-3 ">
-            <div className="flex items-center justify-between">
-              <div className="grid grid-cols-[80px_1fr] gap-4 items-center">
-                <div className="w-[80px] aspect-square bg-muted rounded-md relative overflow-hidden">
-                  <Image src={data.product.image} alt="" fill />
-                </div>
-
-                <div className="flex flex-col    ">
-                  <h1 className=" text-xl whitespace-nowrap">
-                    {data.product.title}
-                  </h1>
-                  {data.product.accounts?.length && (
-                    <h1 className=" text-md text-muted-foreground">
-                      Active Sellers: {data.product.accounts?.length}
+                  <div className="flex flex-col    ">
+                    <h1 className=" text-xl whitespace-nowrap">
+                      {product.title}
                     </h1>
-                  )}
+                    {product.accounts?.length && (
+                      <h1 className=" text-md text-muted-foreground">
+                        Active Sellers: {product.accounts?.length}
+                      </h1>
+                    )}
+                  </div>
                 </div>
+                <ProductOperations variant={"outline"} product={product}>
+                  <Icons.ellipsis className="h-4 w-4 text-muted-foreground" />
+                </ProductOperations>
               </div>
-              <ProductOperations variant={"outline"} product={data.product}>
-                <Icons.ellipsis className="h-4 w-4 text-muted-foreground" />
-              </ProductOperations>
             </div>
-          </div>
+          )}
         </div>
       ) : (
         <></>
@@ -437,7 +452,7 @@ const PostsDisplay = () => {
       <div className="grid grid-cols-5 gap-4 ">
         {data.topPosts &&
           data.topPosts.map((item: any, i) => (
-            <PostView key={i} video={item} />
+            <PostView key={i} postId={item} accountData={data} />
           ))}
       </div>
     </div>

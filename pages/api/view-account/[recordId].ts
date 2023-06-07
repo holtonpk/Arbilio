@@ -12,41 +12,41 @@ export default async function handler(
   const document = await getDoc(doc(db, storage.accounts, recordId));
   const record = document.data();
 
-  let productData = undefined;
-  let topPostsData = undefined;
+  // let productData = undefined;
+  // let topPostsData = undefined;
 
-  if (record?.product) {
-    const productRef = doc(db, storage.products, record?.product);
-    const productInfo = await getDoc(productRef);
-    if (productInfo.data()) productData = productInfo.data() as any;
-  }
+  // if (record?.product) {
+  //   const productRef = doc(db, storage.products, record?.product);
+  //   const productInfo = await getDoc(productRef);
+  //   if (productInfo.data()) productData = productInfo.data() as any;
+  // }
 
-  if (record?.topPosts) {
-    const topPosts = record?.topPosts.map(async (post: any) => {
-      if (!post) return;
-      const postRef = doc(db, storage.posts, post);
-      const postData = await getDoc(postRef);
-      return {
-        ...postData.data(),
-        author: {
-          avatar: record.avatar,
-          id: record.id,
-          secUid: record.secUid,
-          uniqueId: record.uniqueId,
-          nickname: record.userInfo?.user?.nickname,
-        },
-      };
-    });
-    topPostsData = await Promise.all(topPosts);
-  }
+  // if (record?.topPosts) {
+  //   const topPosts = record?.topPosts.map(async (post: any) => {
+  //     if (!post) return;
+  //     const postRef = doc(db, storage.posts, post);
+  //     const postData = await getDoc(postRef);
+  //     return {
+  //       ...postData.data(),
+  //       author: {
+  //         avatar: record.avatar,
+  //         id: record.id,
+  //         secUid: record.secUid,
+  //         uniqueId: record.uniqueId,
+  //         nickname: record.userInfo?.user?.nickname,
+  //       },
+  //     };
+  //   });
+  //   topPostsData = await Promise.all(topPosts);
+  // }
   const data = {
     accountStats: record?.accountStats,
     avatar: record?.avatar,
     id: record?.id,
-    product: productData,
+    product: record?.product,
     secUid: record?.secUid,
     storeUrl: record?.storeUrl,
-    topPosts: topPostsData,
+    topPosts: record?.topPosts,
     uniqueId: record?.uniqueId,
     userInfo: record?.userInfo,
   };
