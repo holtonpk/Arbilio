@@ -34,23 +34,23 @@ export default async function handler(
   const formattedData = accountsSnap.docs.map(async (_doc) => {
     const record = _doc.data();
 
-    let productData = null;
-    let topPostsData = null;
+    // let productData = null;
+    // let topPostsData = null;
 
-    if (record.product) {
-      const productRef = doc(db, storage.products, record.product);
-      const productInfo = await getDoc(productRef);
-      productData = productInfo.data();
-    }
+    // if (record.product) {
+    //   const productRef = doc(db, storage.products, record.product);
+    //   const productInfo = await getDoc(productRef);
+    //   productData = productInfo.data();
+    // }
 
-    if (record.topPosts && record.topPosts.length) {
-      const topPosts = record?.topPosts.map(async (post: any) => {
-        const postRef = doc(db, storage.posts, post);
-        const postData = await getDoc(postRef);
-        return postData.data();
-      });
-      topPostsData = await Promise.all(topPosts);
-    }
+    // if (record.topPosts && record.topPosts.length) {
+    //   const topPosts = record?.topPosts.map(async (post: any) => {
+    //     const postRef = doc(db, storage.posts, post);
+    //     const postData = await getDoc(postRef);
+    //     return postData.data();
+    //   });
+    //   topPostsData = await Promise.all(topPosts);
+    // }
 
     return {
       collection: accountCollection,
@@ -59,13 +59,13 @@ export default async function handler(
       likeCount: record.accountStats[0]?.heartCount,
       postCount: record.accountStats[0]?.videoCount,
       daysTracked: record.accountStats.length,
-      mostViews: (topPostsData && topPostsData[0].postData.playCount) || 0,
+      // mostViews: (topPostsData && topPostsData[0].postData.playCount) || 0,
       avatar: record.avatar,
       id: record.id,
-      product: productData,
+      product: record.product,
       secUid: record.secUid,
       storeUrl: record.storeUrl,
-      topPosts: topPostsData,
+      topPosts: record.topPosts,
       uniqueId: record.uniqueId,
       userInfo: record.userInfo,
     };
