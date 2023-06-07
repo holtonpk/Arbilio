@@ -183,7 +183,13 @@ const AccountInfo = ({ accounts }: AccountInfoProps) => {
         <div className="grid md:grid-cols-6 grid-cols-3 gap-4 w-full">
           {accounts &&
             topPosts.slice(0, 6).map((item: any, i: number) => {
-              return <PostView key={i} video={item} />;
+              return (
+                <PostView
+                  key={i}
+                  postId={item.postId}
+                  accountData={item.author}
+                />
+              );
             })}
         </div>
       </div>
