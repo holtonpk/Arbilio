@@ -1,21 +1,34 @@
 "use client";
-
+import React from "react";
 import Image from "next/image";
 import { formatNumber } from "@/lib/utils";
 import Link from "next/link";
 import { firebaseConfig } from "@/config/firebase";
-import { AccountDataType } from "@/types";
+import { AccountDataType, ProductType } from "@/types";
+import { siteConfig } from "@/config/site";
 
-export const ProductDisplay = ({ item }: { item: AccountDataType }) => {
+export const ProductDisplay = ({ productId }: { productId: string }) => {
+  const [product, setProduct] = React.useState<ProductType>();
+
+  React.useEffect(() => {
+    const getProduct = async () => {
+      const product = await fetch(
+        `${siteConfig.url}/api/view-product/${productId}`
+      ).then((res) => res.json());
+      setProduct(product);
+    };
+    getProduct();
+  }, [productId]);
+
   return (
     <div className="grid grid-cols-[40px_1fr] items-center gap-2 ">
-      {item?.product ? (
+      {product ? (
         <>
           <div className="h-10 w-10 aspect-square overflow-hidden rounded-md bg-muted flex justify-center items-center relative ">
-            <Image src={item.product?.image} alt="" fill />
+            <Image src={product?.image} alt="" fill />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-sm ">{item.product?.title}</h1>
+            <h1 className="text-sm ">{product?.title}</h1>
           </div>
         </>
       ) : (

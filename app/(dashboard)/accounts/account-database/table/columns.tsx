@@ -54,7 +54,9 @@ export const columns: ColumnDef<AccountDataType>[] = [
       return (
         <div className="flex space-x-2">
           {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-          <ProductDisplay item={row.original} />
+          {row.original.product && (
+            <ProductDisplay productId={row.original.product} />
+          )}
         </div>
       );
     },
@@ -114,19 +116,19 @@ export const columns: ColumnDef<AccountDataType>[] = [
       );
     },
   },
-  {
-    accessorKey: "mostViews",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Most Views" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex w-[100px] items-center">
-          {formatNumber(row.getValue("mostViews"))}
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "mostViews",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Most Views" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="flex w-[100px] items-center">
+  //         {formatNumber(row.getValue("mostViews"))}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => <DataTableRowActions row={row} />,
