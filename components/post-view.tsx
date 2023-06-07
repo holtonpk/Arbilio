@@ -23,7 +23,7 @@ const PostView = ({ postId, accountData }: PostViewProps) => {
       setVideo(data);
     };
     getVideo();
-  }, []);
+  }, [postId]);
 
   return (
     <div className="w-full aspect-[9/16] bg-primary border rounded-md relative overflow-hidden">

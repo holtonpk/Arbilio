@@ -148,7 +148,7 @@ const ProductDisplay = ({ productId }: { productId: string }) => {
       setProduct(product);
     };
     getProduct();
-  }, []);
+  }, [productId]);
 
   return (
     <>
