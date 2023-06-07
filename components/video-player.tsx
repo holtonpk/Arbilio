@@ -4,7 +4,7 @@ import { useLockBody } from "@/lib/hooks/use-lock-body";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { channel } from "diagnostics_channel";
-import { PostType } from "@/types";
+import { PostType, AccountDataType } from "@/types";
 import { LinkButton } from "@/components/ui/link";
 import Image from "next/image";
 import { stringify } from "querystring";
@@ -25,6 +25,7 @@ interface VideoPlayerProps {
     | undefined;
   children?: React.ReactNode;
   video: PostType;
+  accountData: AccountDataType;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -34,6 +35,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   className,
   variant,
   children,
+  accountData,
 }: VideoPlayerProps) => {
   return (
     <>
@@ -44,7 +46,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       >
         {children}
       </Button>
-      {showPlayer && <Player video={video} setShowPlayer={setShowPlayer} />}
+      {showPlayer && (
+        <Player
+          video={video}
+          accountData={accountData}
+          setShowPlayer={setShowPlayer}
+        />
+      )}
     </>
   );
 };
@@ -54,9 +62,10 @@ export default VideoPlayer;
 interface PlayerProps {
   video: PostType;
   setShowPlayer: React.Dispatch<React.SetStateAction<boolean>>;
+  accountData: AccountDataType;
 }
 
-const Player = ({ video, setShowPlayer }: PlayerProps) => {
+const Player = ({ video, setShowPlayer, accountData }: PlayerProps) => {
   useLockBody();
 
   return (
@@ -73,7 +82,7 @@ const Player = ({ video, setShowPlayer }: PlayerProps) => {
           X
         </Button>
         <Video video={video} />
-        <VideoInfo video={video} />
+        <VideoInfo video={video} accountData={accountData} />
       </div>
     </div>
   );
@@ -131,19 +140,25 @@ const Video = ({ video }: { video: PostType }) => {
   );
 };
 
-const VideoInfo = ({ video }: { video: PostType }) => {
+const VideoInfo = ({
+  video,
+  accountData,
+}: {
+  video: PostType;
+  accountData: AccountDataType;
+}) => {
   return (
     <>
       <div className="hidden md:flex bottom-0 px-1  sm:px-0 relative h-full aspect-[9/16] z-[55] sm:z-50 justify-center items-center pointer-events-none">
         <div className=" z-50 items-center rounded-t-md sm:rounded-md border bg-background flex flex-col gap-3 p-2 w-full opacity-100 sm:shadow-lg animate-in fade-in slide-in-from-bottom-10  sm:zoom-in-90 sm:slide-in-from-bottom-0  pointer-events-auto">
           <LinkButton
             variant={"outline"}
-            href={`accounts/account/${video.author.id}`}
+            href={`accounts/account/${accountData.id}`}
             className="grid sm:grid-cols-[40px_1fr] grid-cols-[32px_1fr] items-center gap-2 group h-fit w-full "
           >
             <div className="sm:h-10 sm:w-10 h-8 w-8  rounded-md bg-muted flex justify-center relative items-center overflow-hidden">
               <Image
-                src={video.author?.avatar}
+                src={accountData.avatar}
                 alt="Picture of the author"
                 fill
                 sizes="(max-width: 768px) 100vw,
@@ -152,12 +167,10 @@ const VideoInfo = ({ video }: { video: PostType }) => {
               />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-sm font-semibold ">
-                {video.author.nickname}
-              </h1>
+              <h1 className="text-sm font-semibold ">{accountData.nickname}</h1>
               <div className="flex items-center">
                 <h2 className="text-xs text-muted-foreground">
-                  {"@" + video.author?.uniqueId}
+                  {"@" + accountData.uniqueId}
                 </h2>
                 <p className="mx-1 ">-</p>
                 <h2 className="text-xs ">
@@ -224,7 +237,7 @@ const VideoInfo = ({ video }: { video: PostType }) => {
             target="_blank"
             variant={"outline"}
             size={"sm"}
-            href={`https://www.tiktok.com/@${video.author.uniqueId}/video/${video.postId}`}
+            href={`https://www.tiktok.com/@${accountData.uniqueId}/video/${video.postId}`}
             className="w-full hover:fill-background fill-primary"
           >
             <Icons.tiktok className="h-10 w-16" />

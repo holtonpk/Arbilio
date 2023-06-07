@@ -1,4 +1,5 @@
-import { AccountDataType } from "@/types";
+import React from "react";
+import { AccountDataType, ProductType } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { formatNumber } from "@/lib/utils";
@@ -6,6 +7,7 @@ import { Icons } from "@/components/icons";
 import PostView from "@/components/post-view";
 import Skeleton from "@/components/ui/skeleton";
 import Tooltip from "@/components/ui/tooltip";
+import { siteConfig } from "@/config/site";
 
 export const AccountCard = ({
   item,
@@ -87,30 +89,7 @@ export const AccountCard = ({
             </Tooltip>
           </div>
           {item.product ? (
-            <div className="grid grid-cols-[36px_1fr] relative gap-2 items-center rounded-md p-1 ">
-              <Link
-                href={`/products/product/${item.product?.id}`}
-                className="w-full h-full z-10 rounded-md absolute hover:bg-muted"
-              />
-              <div className="h-9 w-9 relative overflow-hidden rounded-md z-20 pointer-events-none">
-                <Image
-                  src={item?.product?.image || ""}
-                  alt="img"
-                  fill
-                  sizes="(max-width: 768px) 100vw,
-                      (max-width: 1200px) 50vw,
-                      33vw"
-                />
-              </div>
-              <div className="grid">
-                <p className="whitespace-nowrap overflow-hidden text-ellipsis relative z-20 pointer-events-none">
-                  {item.product?.title}
-                </p>
-                <p className="whitespace-nowrap text-muted-foreground text-[12px] overflow-hidden text-ellipsis relative z-20 pointer-events-none">
-                  {item.product?.supplierInfo?.supplierTitle}
-                </p>
-              </div>
-            </div>
+            <ProductDisplay productId={item.product} />
           ) : (
             <div className="p-1 w-full border bg-muted rounded-md">
               <div className="h-9 w-full"></div>
@@ -142,7 +121,11 @@ export const AccountCard = ({
                     className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden "
                   >
                     {item.topPosts && item.topPosts.length > i && (
-                      <PostView key={i} video={item.topPosts[i]} />
+                      <PostView
+                        key={i}
+                        postId={item.topPosts[i]}
+                        accountData={item}
+                      />
                     )}
                   </div>
                 );
@@ -151,6 +134,51 @@ export const AccountCard = ({
         </div>
       </div>
     </div>
+  );
+};
+
+const ProductDisplay = ({ productId }: { productId: string }) => {
+  const [product, setProduct] = React.useState<ProductType>();
+
+  React.useEffect(() => {
+    const getProduct = async () => {
+      const product = await fetch(
+        `${siteConfig.url}/api/view-product/${productId}`
+      ).then((res) => res.json());
+      setProduct(product);
+    };
+    getProduct();
+  }, []);
+
+  return (
+    <>
+      {product && (
+        <div className="grid grid-cols-[36px_1fr] relative gap-2 items-center rounded-md p-1 ">
+          <Link
+            href={`/products/product/${productId}`}
+            className="w-full h-full z-10 rounded-md absolute hover:bg-muted"
+          />
+          <div className="h-9 w-9 relative overflow-hidden rounded-md z-20 pointer-events-none">
+            <Image
+              src={product?.image || ""}
+              alt="img"
+              fill
+              sizes="(max-width: 768px) 100vw,
+            (max-width: 1200px) 50vw,
+            33vw"
+            />
+          </div>
+          <div className="grid">
+            <p className="whitespace-nowrap overflow-hidden text-ellipsis relative z-20 pointer-events-none">
+              {product?.title}
+            </p>
+            <p className="whitespace-nowrap text-muted-foreground text-[12px] overflow-hidden text-ellipsis relative z-20 pointer-events-none">
+              {product?.supplierInfo?.supplierTitle}
+            </p>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

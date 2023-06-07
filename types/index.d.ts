@@ -197,8 +197,10 @@ export interface AccountDataType {
   bio: string;
   bioLink: string;
   posts: any;
-  topPosts: PostType[] | undefined;
-  product: ProductType | undefined;
+  // topPosts: PostType[] | undefined;
+  topPosts: string[] | undefined;
+  product: string | undefined;
+  // product: ProductType | undefined;
 }
 
 interface Post {
