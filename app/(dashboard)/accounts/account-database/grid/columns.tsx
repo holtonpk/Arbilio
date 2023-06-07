@@ -41,23 +41,23 @@ export const columns: ColumnDef<AccountDataType>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: "product",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Product" />
-    ),
-    cell: ({ row }) => {
-      // const label = labels.find((label) => label.value === row.original.label);
-      return (
-        <div className="flex space-x-2">
-          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-          <ProductDisplay item={row.original} />
-        </div>
-      );
-    },
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   accessorKey: "product",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Product" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     // const label = labels.find((label) => label.value === row.original.label);
+  //     return (
+  //       <div className="flex space-x-2">
+  //         {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+  //         <ProductDisplay item={row.original} />
+  //       </div>
+  //     );
+  //   },
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "followerCount",
     header: ({ column }) => (
