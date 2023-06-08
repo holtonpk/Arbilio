@@ -74,72 +74,73 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
               <div className="w-full aspect-[9/16] sm:aspect-[39/64] " />
             </div>
 
-            <div className="z-[6]  sm:hidden top-0 absolute  gap-4 mx-auto  max-w-full w-fit h-full overflow-hidden items-center">
-              <div
-                className={`w-fit trendingPostTransition h-full flex transition-all group aspect-[39/64] xsm:aspect-[54/32]`}
-              >
-                <VideoDisplay
-                  post={posts[selectedPostIndex]}
-                  playNextVideo={playNextVideo}
-                  setIsHovered={setIsHovered}
-                  isHovered={isHovered}
-                />
-                <div className="hidden xsm:block  flex-grow">
-                  <VideoInfo
+            {window.innerWidth < 640 && (
+              <div className="z-[6]  sm:hidden top-0 absolute  gap-4 mx-auto  max-w-full w-fit h-full overflow-hidden items-center">
+                <div className="w-fit flex  h-full  transition-all group aspect-[39/64] xsm:aspect-[54/32] ">
+                  <VideoDisplay
                     post={posts[selectedPostIndex]}
+                    playNextVideo={playNextVideo}
                     setIsHovered={setIsHovered}
+                    isHovered={isHovered}
                   />
+                  <div className="hidden xsm:block  flex-grow">
+                    <VideoInfo
+                      post={posts[selectedPostIndex]}
+                      setIsHovered={setIsHovered}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div
-              className={`z-[6] hidden sm:flex top-0 absolute gap-16 sm:gap-4 mx-auto max-w-full w-fit h-full overflow-hidden items-center
+            )}
+            {window.innerWidth > 640 && (
+              <div
+                className={`z-[6]  sm:flex top-0 absolute gap-16 sm:gap-4 mx-auto max-w-full w-fit h-full overflow-hidden items-center
             ${
               selectedPostIndex >= posts.length - 2
                 ? "justify-end"
                 : "justify-start"
             }`}
-            >
-              {posts.map((post, index) => (
-                <div
-                  key={index}
-                  className={`w-fit  trendingPostTransition h-full flex transition-all group
+              >
+                {posts.map((post, index) => (
+                  <div
+                    key={index}
+                    className={`w-fit  trendingPostTransition h-full flex transition-all group
                       ${
                         selectedPostIndex === index
                           ? "aspect-[60/32]"
                           : "aspect-[60/32] sm:aspect-[39/64]"
                       }
                       `}
-                >
-                  {selectedPostIndex === index ? (
-                    <VideoDisplay
-                      post={post}
-                      playNextVideo={playNextVideo}
-                      setIsHovered={setIsHovered}
-                      isHovered={isHovered}
-                    />
-                  ) : (
-                    <div
-                      onClick={() => onClick(index)}
-                      className="shadow-lg h-full aspect-[9/16]  relative rounded-md overflow-hidden group"
-                    >
-                      <Image
-                        src={post.cover}
-                        alt="video cover"
-                        fill
-                        priority
-                        quality={50}
-                        sizes="500px"
-                        className="z-[4]"
+                  >
+                    {selectedPostIndex === index ? (
+                      <VideoDisplay
+                        post={post}
+                        playNextVideo={playNextVideo}
+                        setIsHovered={setIsHovered}
+                        isHovered={isHovered}
                       />
-                      <div className="group-hover:flex hidden absolute w-full h-full rounded-md bg-background/40 z-[6]  cursor-pointer" />
-                    </div>
-                  )}
-                  <VideoInfo post={post} setIsHovered={setIsHovered} />
-                </div>
-              ))}
-            </div>
+                    ) : (
+                      <div
+                        onClick={() => onClick(index)}
+                        className="shadow-lg h-full aspect-[9/16]  relative rounded-md overflow-hidden group"
+                      >
+                        <Image
+                          src={post.cover}
+                          alt="video cover"
+                          fill
+                          priority
+                          quality={50}
+                          sizes="500px"
+                          className="z-[4]"
+                        />
+                        <div className="group-hover:flex hidden absolute w-full h-full rounded-md bg-background/40 z-[6]  cursor-pointer" />
+                      </div>
+                    )}
+                    <VideoInfo post={post} setIsHovered={setIsHovered} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -158,7 +159,7 @@ const VideoDisplay = ({
   setIsHovered: React.Dispatch<React.SetStateAction<boolean>>;
   isHovered: boolean;
 }) => {
-  const [muteVideo, setMuteVideo] = React.useState<boolean>(true);
+  const [muteVideo, setMuteVideo] = React.useState<boolean>(false);
 
   return (
     <div
@@ -212,14 +213,14 @@ const VideoInfo = ({
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={
-        "scale-in-hor-left2 flex-grow pl-3 h-full relative rounded-r-md overflow-hidden transition-all duration-300 ease-in-out "
+        "scale-in-hor-left2 flex-grow pl-4 h-full relative rounded-r-md overflow-hidden transition-all duration-300 ease-in-out "
       }
     >
       <div className="absolute w-full flex flex-col ">
         <h1 className="text-[12px]  font-semibold leading-none tracking-tight ">
           Stats
         </h1>
-        <div className="w-[95%] border p-2 rounded-md mt-1  flex  justify-between ">
+        <div className="w-[92%] border p-2 rounded-md mt-1  flex  justify-between ">
           <StatDisplay
             title="Plays"
             icon={"posts"}
@@ -251,7 +252,7 @@ const VideoInfo = ({
         <h1 className="text-[12px]  font-semibold leading-none tracking-tight mt-2">
           Account
         </h1>
-        <div className="border mt-1  w-[95%] h-[20%] rounded-md  z-[6] grid grid-cols-[32px_1fr] md:grid-cols-[32px_1fr_50px] gap-2 p-1 lg:p-2 items-center">
+        <div className="border mt-1  w-[92%] h-[20%] rounded-md  z-[6] grid grid-cols-[32px_1fr] md:grid-cols-[32px_1fr_50px] gap-2 p-1 lg:p-2 items-center">
           <Link
             className="absolute w-full h-full z-[3]"
             href={`${siteConfig.url}/accounts/account/${post.author.id}`}
@@ -289,7 +290,7 @@ const VideoInfo = ({
             <h1 className=" text-[12px]  font-semibold leading-none tracking-tight mt-2 ">
               Product
             </h1>
-            <div className="border mt-1  w-[95%] h-[20%] rounded-md  z-[6] grid grid-cols-[32px_1fr] md:grid-cols-[32px_1fr_50px] gap-2 p-1 lg:p-2 items-center">
+            <div className="border mt-1  w-[92%] h-[20%] rounded-md  z-[6] grid grid-cols-[32px_1fr] md:grid-cols-[32px_1fr_50px] gap-2 p-1 lg:p-2 items-center">
               <Link
                 className="absolute w-full h-full z-[3]"
                 href={`${siteConfig.url}/products/product/${post.product.id}`}
