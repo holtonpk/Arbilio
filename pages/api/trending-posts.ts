@@ -22,16 +22,19 @@ export default async function handler(
 
   const q = query(
     collection(db, storage.accounts),
-    limit(20),
+    limit(16),
     where("topPosts", "!=", [])
   );
   const docData = await getDocs(q);
 
   const filteredData = docData.docs
     .map((doc) => doc.data())
-    .filter((doc) => doc.topPosts[0] !== null);
+    .filter(
+      (doc) =>
+        doc.topPosts[0] !== null && doc.product != null && doc.product !== null
+    );
 
-  const formattedData = filteredData.map(async (record) => {
+  const formattedData = filteredData.slice(7).map(async (record) => {
     const topPost = record.topPosts[0];
     const topPostRecord = await getDoc(doc(db, storage.posts, topPost));
     const topPostData = topPostRecord.data();
@@ -57,5 +60,5 @@ export default async function handler(
 
   const data = await Promise.all(formattedData);
 
-  res.status(200).json(data.slice(0, 10) as TrendingPostType[]);
+  res.status(200).json(data as TrendingPostType[]);
 }
