@@ -79,11 +79,19 @@ import {
   Folder,
   BarChart3Icon,
   LineChartIcon,
+  Volume,
+  VolumeX,
+  Flame,
+  ArrowRightFromLineIcon,
+  Info,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  info: Info,
+  arrowRightFromLine: ArrowRightFromLineIcon,
+  flame: Flame,
   barChart: BarChart3Icon,
   lineChart: LineChartIcon,
   music: Music,
@@ -114,6 +122,8 @@ export const Icons = {
   chevronUp: ChevronUp,
   chevronUpDown: ChevronsUpDown,
   lock: Lock,
+  volume: Volume,
+  volumeX: VolumeX,
   rotate: RotateCw,
   filter: ListFilter,
   collection: Group,

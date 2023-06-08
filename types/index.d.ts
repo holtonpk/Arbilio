@@ -164,6 +164,24 @@ interface Music {
   authorName: string;
 }
 
+export interface TrendingPostType {
+  cover: string;
+  video: string;
+  createTime: string;
+  desc: string;
+  postData: {
+    collectCount: number;
+    commentCount: number;
+    diggCount: number;
+    playCount: number;
+    shareCount: number;
+  };
+  postId: string;
+  author: Account;
+  music: Music;
+  product: ProductType;
+}
+
 export interface PostType {
   cover: string;
   video: string;
@@ -317,7 +335,7 @@ interface AccountDataType {
   userInfo: any;
 }
 
-interface Account {
+export interface Account {
   avatar: string;
   id: string;
   secUid: string;

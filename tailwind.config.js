@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        xsm: "475px",
+      },
       backgroundImage: (theme) => ({
         "border-gradient-to-r":
           "linear-gradient(to right, var(--tw-gradient-stops))",
