@@ -11,20 +11,10 @@ import { UpdateCollectionButton } from "@/components/buttons/update-collection-b
 import { array } from "zod";
 import { ProductOperations } from "@/components/buttons/product-operations";
 import Link from "next/link";
-export const TrendingPosts = () => {
-  const [posts, setPosts] = React.useState<TrendingPostType[]>();
+export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
   const [selectedPostIndex, setSelectedPostIndex] = React.useState<number>(0);
 
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    const getPosts = async () => {
-      const res = await fetch(`${siteConfig.url}/api/trending-posts`);
-      const data = await res.json();
-      setPosts(data.slice(0, 5));
-    };
-    getPosts();
-  }, []);
 
   const onClick = (index: number) => {
     setSelectedPostIndex(index);
@@ -113,6 +103,7 @@ export const TrendingPosts = () => {
             >
               {posts.map((post, index) => (
                 <div
+                  key={index}
                   className={`w-fit  trendingPostTransition h-full flex transition-all group
                       ${
                         selectedPostIndex === index

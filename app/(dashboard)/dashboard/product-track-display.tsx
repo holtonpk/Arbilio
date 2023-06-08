@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from "react";
 import { Icons } from "@/components/icons";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
