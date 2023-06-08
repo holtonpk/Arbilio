@@ -8,8 +8,6 @@ import {
   limit,
   getDoc,
   where,
-  orderBy,
-  startAfter,
 } from "firebase/firestore";
 import { AccountDataType } from "@/types";
 import { storage } from "@/config/data-storage";

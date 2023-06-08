@@ -22,7 +22,7 @@ export default async function handler(
 
   const q = query(
     collection(db, storage.accounts),
-    limit(16),
+    limit(10),
     where("topPosts", "!=", [])
   );
   const docData = await getDocs(q);
@@ -34,7 +34,7 @@ export default async function handler(
         doc.topPosts[0] !== null && doc.product != null && doc.product !== null
     );
 
-  const formattedData = filteredData.slice(7).map(async (record) => {
+  const formattedData = filteredData.slice(0, 5).map(async (record) => {
     const topPost = record.topPosts[0];
     const topPostRecord = await getDoc(doc(db, storage.posts, topPost));
     const topPostData = topPostRecord.data();

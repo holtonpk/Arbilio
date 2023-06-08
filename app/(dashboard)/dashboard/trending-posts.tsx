@@ -71,12 +71,12 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
             </Button>
             {/* place holder to container height based off ar */}
             <div className="grid xsm:grid-cols-3 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-7   sm:px-0  xsm:gap-0 sm:gap-4 w-full relative z-[4]">
-              <div className="w-full aspect-[9/16] sm:aspect-[19/32] " />
+              <div className="w-full aspect-[9/16] sm:aspect-[39/64] " />
             </div>
 
             <div className="z-[6]  sm:hidden top-0 absolute  gap-4 mx-auto  max-w-full w-fit h-full overflow-hidden items-center">
               <div
-                className={`w-fit trendingPostTransition h-full flex transition-all group aspect-[19/32] xsm:aspect-[54/32]`}
+                className={`w-fit trendingPostTransition h-full flex transition-all group aspect-[39/64] xsm:aspect-[54/32]`}
               >
                 <VideoDisplay
                   post={posts[selectedPostIndex]}
@@ -108,7 +108,7 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
                       ${
                         selectedPostIndex === index
                           ? "aspect-[60/32]"
-                          : "aspect-[60/32] sm:aspect-[19/32]"
+                          : "aspect-[60/32] sm:aspect-[39/64]"
                       }
                       `}
                 >

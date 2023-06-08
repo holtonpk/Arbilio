@@ -6,7 +6,9 @@ import { ProductTrackDisplay } from "@/app/(dashboard)/dashboard/product-track-d
 import { siteConfig } from "@/config/site";
 
 async function getData() {
-  const res = await fetch(`${siteConfig.url}/api/trending-posts`);
+  const res = await fetch(`${siteConfig.url}/api/trending-posts`, {
+    cache: "no-store",
+  });
   const data = await res.json();
   return data.slice(0, 5);
 }
