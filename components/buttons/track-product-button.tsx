@@ -19,7 +19,7 @@ import { set } from "date-fns";
 import { ProductType, ProductDataBaseType } from "@/types";
 import Image from "next/image";
 
-const TRACK_LIMIT = 2;
+const TRACK_LIMIT = 5;
 
 interface TrackProductButtonProps extends ButtonProps {
   product: ProductType | ProductDataBaseType;

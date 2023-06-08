@@ -13,6 +13,7 @@ import { ProductOperations } from "@/components/buttons/product-operations";
 import Link from "next/link";
 export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
   const [selectedPostIndex, setSelectedPostIndex] = React.useState<number>(0);
+  const [muteVideo, setMuteVideo] = React.useState<boolean>(false);
 
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
 
@@ -76,12 +77,14 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
 
             {window.innerWidth < 640 && (
               <div className="z-[6]  sm:hidden top-0 absolute  gap-4 mx-auto  max-w-full w-fit h-full overflow-hidden items-center">
-                <div className="w-fit flex  h-full  transition-all group aspect-[39/64] xsm:aspect-[54/32] ">
+                <div className="w-fit flex  h-full  transition-all  aspect-[39/64] xsm:aspect-[54/32] ">
                   <VideoDisplay
                     post={posts[selectedPostIndex]}
                     playNextVideo={playNextVideo}
                     setIsHovered={setIsHovered}
                     isHovered={isHovered}
+                    muteVideo={muteVideo}
+                    setMuteVideo={setMuteVideo}
                   />
                   <div className="hidden xsm:block  flex-grow">
                     <VideoInfo
@@ -104,7 +107,7 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
                 {posts.map((post, index) => (
                   <div
                     key={index}
-                    className={`w-fit  trendingPostTransition h-full flex transition-all group
+                    className={`w-fit  trendingPostTransition h-full flex transition-all
                       ${
                         selectedPostIndex === index
                           ? "aspect-[60/32]"
@@ -118,6 +121,8 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
                         playNextVideo={playNextVideo}
                         setIsHovered={setIsHovered}
                         isHovered={isHovered}
+                        muteVideo={muteVideo}
+                        setMuteVideo={setMuteVideo}
                       />
                     ) : (
                       <div
@@ -153,19 +158,23 @@ const VideoDisplay = ({
   playNextVideo,
   setIsHovered,
   isHovered,
+  muteVideo,
+  setMuteVideo,
 }: {
   post: TrendingPostType;
   playNextVideo: () => void;
   setIsHovered: React.Dispatch<React.SetStateAction<boolean>>;
   isHovered: boolean;
+  muteVideo: boolean;
+  setMuteVideo: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [muteVideo, setMuteVideo] = React.useState<boolean>(false);
-
   return (
     <div
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="shadow-lg aspect-[9/16] h-full relative rounded-md overflow-hidden transition-all duration-300 ease-in-out"
+      className={`"shadow-lg aspect-[9/16] h-full relative rounded-md overflow-hidden transition-all duration-300 ease-in-out
+      ${isHovered && "b-r"}
+      `}
     >
       <video
         className="rounded-md z-[4] absolute"
@@ -252,7 +261,7 @@ const VideoInfo = ({
         <h1 className="text-[12px]  font-semibold leading-none tracking-tight mt-2">
           Account
         </h1>
-        <div className="border mt-1  w-[92%] h-[20%] rounded-md  z-[6] grid grid-cols-[32px_1fr] md:grid-cols-[32px_1fr_50px] gap-2 p-1 lg:p-2 items-center">
+        <div className="border mt-1 group relative w-[92%] h-[20%] rounded-md  z-[6] grid grid-cols-[32px_1fr] md:grid-cols-[32px_1fr_50px] gap-2 p-1 lg:p-2 items-center">
           <Link
             className="absolute w-full h-full z-[3]"
             href={`${siteConfig.url}/accounts/account/${post.author.id}`}
@@ -268,7 +277,7 @@ const VideoInfo = ({
             />
           </div>
           <div className="flex flex-col overflow-hidden">
-            <div className="text-[12px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
+            <div className="text-[12px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis group-hover:underline">
               {post.author.nickname}
             </div>
             <div className="text-[8px] text-muted-foreground">
@@ -277,6 +286,7 @@ const VideoInfo = ({
           </div>
           <div className="w-full md:block hidden ">
             <UpdateCollectionButton
+              onMouseOver={() => setIsHovered(true)}
               account={post.author}
               variant="ghost"
               className="p-3 h-fit w-full relative z-[6]"
@@ -290,7 +300,7 @@ const VideoInfo = ({
             <h1 className=" text-[12px]  font-semibold leading-none tracking-tight mt-2 ">
               Product
             </h1>
-            <div className="border mt-1  w-[92%] h-[20%] rounded-md  z-[6] grid grid-cols-[32px_1fr] md:grid-cols-[32px_1fr_50px] gap-2 p-1 lg:p-2 items-center">
+            <div className="border mt-1 relative group  w-[92%] h-fit rounded-md  z-[6] grid grid-cols-[32px_1fr] md:grid-cols-[32px_1fr_50px] gap-2 p-1 lg:p-2 items-center">
               <Link
                 className="absolute w-full h-full z-[3]"
                 href={`${siteConfig.url}/products/product/${post.product.id}`}
@@ -305,12 +315,9 @@ const VideoInfo = ({
                 />
               </div>
               <div className="flex flex-col overflow-hidden">
-                <div className="text-[12px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
+                <div className="text-[12px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis group-hover:underline">
                   {post.product.title}
                 </div>
-                {/* <div className="text-[8px] text-muted-foreground">
-              @{post.author.uniqueId}
-            </div> */}
               </div>
               <div className="w-full md:block hidden ">
                 <ProductOperations

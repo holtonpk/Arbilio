@@ -18,8 +18,11 @@ import { CollectionType } from "@/types";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
-
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "../ui/checkbox";
 import { cn } from "@/lib/utils";
+import { CollectionOperations } from "./collection-operations";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface UpdateCollectionButtonProps extends ButtonProps {
   account: any;
@@ -31,37 +34,144 @@ export function UpdateCollectionButton({
   variant,
   ...props
 }: UpdateCollectionButtonProps) {
-  const [showCollectionUpdate, setShowCollectionUpdate] =
+  const [showModal, setShowModal] = React.useState<boolean>(false);
+
+  const { userCollections } = useUserCollections();
+
+  const [createNewCollection, setCreateNewCollection] =
     React.useState<boolean>(false);
 
   return (
     <>
       <button
-        onClick={() => setShowCollectionUpdate(true)}
+        onClick={() => setShowModal(true)}
         className={cn(buttonVariants({ variant }), className)}
         {...props}
       />
-      {showCollectionUpdate && (
-        <UpdateDialog
-          showCollectionUpdate={showCollectionUpdate}
-          setShowCollectionUpdate={setShowCollectionUpdate}
-          account={account}
-        />
+      {setShowModal && (
+        <>
+          {createNewCollection ? (
+            <NewCollections
+              setShowModal={setShowModal}
+              showModal={showModal}
+              account={account}
+              setCreateNewCollection={setCreateNewCollection}
+            />
+          ) : userCollections && userCollections.length > 0 ? (
+            <UpdateDialog
+              setShowModal={setShowModal}
+              showModal={showModal}
+              account={account}
+              setCreateNewCollection={setCreateNewCollection}
+            />
+          ) : (
+            <NewCollections
+              setShowModal={setShowModal}
+              showModal={showModal}
+              account={account}
+              setCreateNewCollection={setCreateNewCollection}
+            />
+          )}
+        </>
       )}
     </>
   );
 }
 
-interface UpdateDialogProps {
-  showCollectionUpdate: boolean;
-  setShowCollectionUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+const NewCollections = ({
+  account,
+  showModal,
+  setShowModal,
+  setCreateNewCollection,
+}: {
   account: any;
+  showModal: boolean;
+  setShowModal: (show: boolean) => void;
+  setCreateNewCollection: (show: boolean) => void;
+}) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const nameRef = React.useRef<HTMLInputElement>(null);
+
+  // const { createCollection } = useUserCollections();
+  const { createCollection, addIdToMultipleCollections } = useUserCollections();
+
+  async function handleCreateCollection() {
+    setIsLoading(true);
+    const newCollection = await createCollection(nameRef.current?.value!, []);
+    console.log("newCollection", newCollection);
+
+    if ("error" in newCollection) {
+      toast({
+        title: "Error creating collection",
+        description: "There was an error creating your collection.",
+        variant: "destructive",
+      });
+    } else if ("success" in newCollection) {
+      if (account) {
+        const res = await addIdToMultipleCollections(
+          [newCollection.docId],
+          account.id
+        );
+        if ("error" in res) {
+          toast({
+            title: "Error updating to collection",
+            description: "There was an error updating to your collection.",
+            variant: "destructive",
+          });
+        }
+      }
+      toast({
+        title: "Successfully created collection",
+        description: "This collection has been created.",
+        variant: "default",
+      });
+      setIsLoading(false);
+      setShowModal(false);
+      setCreateNewCollection(false);
+    }
+  }
+
+  return (
+    <Dialog open={showModal} onOpenChange={setShowModal}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create a new collection</DialogTitle>
+          <DialogDescription>
+            enter a name for your new collection
+          </DialogDescription>
+        </DialogHeader>
+        <Input ref={nameRef} placeholder="Collection Name" />
+
+        <DialogFooter>
+          <DialogClose onClick={() => setCreateNewCollection(false)}>
+            Cancel
+          </DialogClose>
+          <DialogAction onClick={handleCreateCollection} className="bg-primary">
+            {isLoading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Icons.add className="mr-2 h-4 w-4" />
+            )}
+            <span>Create </span>
+          </DialogAction>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+interface UpdateDialogProps {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  account: any;
+  setCreateNewCollection: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UpdateDialog = ({
-  showCollectionUpdate,
-  setShowCollectionUpdate,
+  showModal,
+  setShowModal,
   account,
+  setCreateNewCollection,
 }: UpdateDialogProps) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [currentCollections, setCurrentCollections] = React.useState<string[]>(
@@ -121,12 +231,12 @@ const UpdateDialog = ({
         description: "This post has been updated to your collection.",
         variant: "default",
       });
-      setShowCollectionUpdate(false);
+      setShowModal(false);
     }
   }
 
   return (
-    <Dialog open={showCollectionUpdate} onOpenChange={setShowCollectionUpdate}>
+    <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Select a Collection</DialogTitle>
@@ -134,20 +244,28 @@ const UpdateDialog = ({
             select a collection to add or deselect to remove
           </DialogDescription>
         </DialogHeader>
-        <div className="divide-y divide-border rounded-md border max-h-[200px] overflow-scroll">
-          {userCollections &&
-            userCollections.map((collection, i) => (
-              <CollectionDisplay
-                key={i}
-                selectedCollections={selectedCollections}
-                setSelectedCollections={setSelectedCollections}
-                collection={collection}
-              />
-            ))}
-        </div>
-
+        <ScrollArea className=" max-h-[250px] border rounded-md">
+          <div className="divide-y  divide-border   h-fit ">
+            {userCollections &&
+              userCollections.map((collection, i) => (
+                <CollectionDisplay
+                  key={i}
+                  selectedCollections={selectedCollections}
+                  setSelectedCollections={setSelectedCollections}
+                  collection={collection}
+                />
+              ))}
+          </div>
+        </ScrollArea>
         <DialogFooter>
           <DialogClose>Cancel</DialogClose>
+          <DialogAction
+            onClick={() => setCreateNewCollection(true)}
+            variant={"secondary"}
+          >
+            <Icons.add className="mr-2 h-4 w-4" />
+            <span>New collection </span>
+          </DialogAction>
           <DialogAction onClick={handleUpdateCollection} className="bg-primary">
             {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
@@ -196,21 +314,22 @@ const CollectionDisplay: React.FC<CollectionDisplayProps> = ({
   return (
     <div
       onClick={toggleSelected}
-      className="flex gap-4 items-center p-2 pr-10 cursor-pointer"
+      className="flex justify-between w-full  items-center p-2  cursor-pointer"
     >
-      <span className="aspect-square h-4 rounded-md flex items-center justify-center border">
-        {selected && (
-          <Icons.check className="h-5 w-5 text-primary" aria-hidden="true" />
-        )}
-      </span>
-      <div className="grid gap-1">
-        <h1 className="font-semibold">{collection.name}</h1>
-        <div>
-          <p className="text-sm text-muted-foreground">
-            {collection?.ids.length} accounts
-          </p>
+      <div className="flex gap-4 w-fit items-center">
+        <Checkbox checked={selected} />
+        <div className="grid gap-1">
+          <h1 className="font-semibold">{collection.name}</h1>
+          <div>
+            <p className="text-sm text-muted-foreground">
+              {collection?.ids.length} accounts
+            </p>
+          </div>
         </div>
       </div>
+      <CollectionOperations variant={"ghost"} collection={collection}>
+        <Icons.ellipsis className="h-5 w-5 text-muted-foreground" />
+      </CollectionOperations>
     </div>
   );
 };

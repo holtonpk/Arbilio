@@ -101,6 +101,7 @@ export function CollectionOperations({
         variant: "default",
       });
     }
+    setShowUpdateName(false);
   };
 
   return (
