@@ -82,23 +82,22 @@ const TableView = ({
 
   return (
     <>
-      <div className="flex md:flex-row flex-col gap-2 w-full ">
-        <form className=" bg-background rounded-md relative w-full h-fit ">
-          <Icons.search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
-          <Input
-            placeholder="Search an user name. ex: @username"
-            type="search"
-            className=" w-full sm:pr-12 pl-10  text-primary"
-            value={
-              (table.getColumn("uniqueId")?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn("uniqueId")?.setFilterValue(event.target.value)
-            }
-          />
-        </form>
-
-        <div className="flex  w-[100%] flex-col gap-2 items-center lg:flex-row ">
+      <div className="flex md:flex-row  flex-col gap-2 w-full">
+        <div className="flex gap-2 flex-grow">
+          <form className=" bg-background rounded-md relative w-full h-fit ">
+            <Icons.search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
+            <Input
+              placeholder="Search an user name. ex: @username"
+              type="search"
+              className=" w-full sm:pr-12 pl-10  text-primary"
+              value={
+                (table.getColumn("uniqueId")?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table.getColumn("uniqueId")?.setFilterValue(event.target.value)
+              }
+            />
+          </form>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="whitespace-nowrap">
@@ -126,15 +125,15 @@ const TableView = ({
               })}
             </DropdownMenuContent>
           </DropdownMenu>
+        </div>
+        <div className="flex    gap-2 items-center ">
           <DisplaySelector
             displayType={displayType}
             setDisplayType={setDisplayType}
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns
-              </Button>
+              <Button variant="outline">Columns</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {table

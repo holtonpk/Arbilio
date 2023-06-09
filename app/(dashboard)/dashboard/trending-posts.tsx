@@ -97,7 +97,7 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
             )}
             {window.innerWidth > 640 && (
               <div
-                className={`z-[6]  sm:flex top-0 absolute gap-16 sm:gap-4 mx-auto max-w-full w-fit h-full overflow-hidden items-center
+                className={`z-[6]    sm:flex top-0 absolute gap-16 sm:gap-4 mx-auto max-w-full w-fit h-full overflow-hidden items-center
             ${
               selectedPostIndex >= posts.length - 2
                 ? "justify-end"
@@ -172,9 +172,7 @@ const VideoDisplay = ({
     <div
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`"shadow-lg aspect-[9/16] h-full relative rounded-md overflow-hidden transition-all duration-300 ease-in-out
-      ${isHovered && "b-r"}
-      `}
+      className="shadow-lg aspect-[9/16] h-full relative rounded-md overflow-hidden transition-all duration-300 ease-in-out"
     >
       <video
         className="rounded-md z-[4] absolute"

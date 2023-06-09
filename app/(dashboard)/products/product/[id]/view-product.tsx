@@ -16,7 +16,7 @@ import TrackProductButton from "@/components/buttons/track-product-button";
 
 const ViewProduct = ({ item }: ViewProductProps) => {
   return (
-    <div className="grid md:grid-cols-[30%_1fr] gap-4 p-4 container">
+    <div className="grid md:grid-cols-[30%_1fr] gap-4  container">
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold capitalize md:block hidden ">
           {item.title}

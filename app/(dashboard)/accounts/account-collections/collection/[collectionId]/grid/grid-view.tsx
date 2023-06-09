@@ -73,48 +73,49 @@ const GridView = ({
   return (
     <>
       <div className="flex md:flex-row flex-col gap-2 w-full ">
-        <form className=" bg-background rounded-md relative w-full h-fit ">
-          <Icons.search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
-          <Input
-            placeholder="Search an user name. ex: @username"
-            type="search"
-            className=" w-full sm:pr-12 pl-10  text-primary"
-            value={
-              (table.getColumn("uniqueId")?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn("uniqueId")?.setFilterValue(event.target.value)
-            }
-          />
-        </form>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="whitespace-nowrap">
-              Sort by
-              <Icons.chevronDown className={`ml-8 h-6 w-6 transition-all`} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {sortOptions.items.map((column) => {
-              const Icon = Icons[column.icon as keyof typeof Icons];
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.title}
-                  className="capitalize"
-                  checked={((column) =>
-                    !!table.getColumn(column)?.getIsSorted())(column.value)}
-                  onCheckedChange={() =>
-                    table.getColumn(column.value)?.toggleSorting(true)
-                  }
-                >
-                  <Icon className="h-4 w-4 mr-2" />
-                  {column.title}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex gap-2 flex-grow">
+          <form className=" bg-background rounded-md relative w-full h-fit ">
+            <Icons.search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
+            <Input
+              placeholder="Search an user name. ex: @username"
+              type="search"
+              className=" w-full sm:pr-12 pl-10  text-primary"
+              value={
+                (table.getColumn("uniqueId")?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table.getColumn("uniqueId")?.setFilterValue(event.target.value)
+              }
+            />
+          </form>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="whitespace-nowrap">
+                Sort by
+                <Icons.chevronDown className={`ml-8 h-6 w-6 transition-all`} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {sortOptions.items.map((column) => {
+                const Icon = Icons[column.icon as keyof typeof Icons];
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.title}
+                    className="capitalize"
+                    checked={((column) =>
+                      !!table.getColumn(column)?.getIsSorted())(column.value)}
+                    onCheckedChange={() =>
+                      table.getColumn(column.value)?.toggleSorting(true)
+                    }
+                  >
+                    <Icon className="h-4 w-4 mr-2" />
+                    {column.title}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <DisplaySelector
           displayType={displayType}
           setDisplayType={setDisplayType}

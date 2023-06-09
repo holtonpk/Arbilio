@@ -3,6 +3,7 @@ import { siteConfig } from "@/config/site";
 import { ProductType } from "@/types";
 import ViewProduct from "./view-product";
 import { Query } from "firebase/firestore";
+import Loading from "./loading";
 
 const getData = async (id: string): Promise<ProductType> => {
   const res = await fetch(`${siteConfig.url}/api/view-product/${id}`, {

@@ -92,7 +92,7 @@ export const AccountCard = ({
             <ProductDisplay productId={item.product} />
           ) : (
             <div className="p-1 w-full border bg-muted rounded-md">
-              <div className="h-9 w-full"></div>
+              <div className="h-9 w-full" />
             </div>
           )}
         </div>
@@ -184,28 +184,27 @@ const ProductDisplay = ({ productId }: { productId: string }) => {
 
 export const AccountCardSkeleton = () => {
   return (
-    <div className="w-full rounded-md h-fit border  pt-4  pb-2 p-2 relative flex flex-col gap-2">
+    <div className="w-full rounded-md h-fit border   pt-4  pb-2 p-2 relative flex flex-col gap-2">
       <div className="grid grid-cols-[70px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-full pb-0 ">
         <Skeleton className="h-[70px] w-[70px]" />
-        <div className="flex flex-col max-w-full gap-1 overflow-hidden ">
-          <Skeleton className="h-[35px] w-[100%]" />
-          <Skeleton className="h-[25px] w-[100%]" />
+        <div className="flex flex-col max-w-full h-[90%] justify-between gap-1 overflow-hidden ">
+          <Skeleton className="h-[24px] w-[100%]" />
+          <Skeleton className="h-[12px] w-[100%]" />
+          <div className="w-full grid grid-cols-3 gap-3">
+            <Skeleton className="h-[16px] w-[100%]" />
+            <Skeleton className="h-[16px] w-[100%]" />
+            <Skeleton className="h-[16px] w-[100%]" />
+          </div>
         </div>
       </div>
-      <div className=" gap-3 grid grid-cols-3   w-full">
-        <Skeleton className="h-[50px] w-[100%]" />
-        <Skeleton className="h-[50px] w-[100%]" />
-        <Skeleton className="h-[50px] w-[100%]" />
-      </div>
-      <Skeleton className="h-[60px] w-[100%]" />
-      <div className="flex flex-col w-[100%] gap-2 ">
-        <Skeleton className="h-[20px] w-[100px]" />
+      <Skeleton className="h-[20px] w-[100px]" />
+      <Skeleton className="h-[36px] w-[100%]" />
 
-        <div className="grid grid-cols-3 gap-2 w-full ">
-          <Skeleton className="w-full aspect-[9/16]" />
-          <Skeleton className="w-full aspect-[9/16]" />
-          <Skeleton className="w-full aspect-[9/16]" />
-        </div>
+      <Skeleton className="h-[20px] w-[100px] my-2" />
+      <div className="grid grid-cols-3 gap-4 w-full ">
+        <Skeleton className="w-full aspect-[9/16]" />
+        <Skeleton className="w-full aspect-[9/16]" />
+        <Skeleton className="w-full aspect-[9/16]" />
       </div>
     </div>
   );

@@ -40,7 +40,6 @@ export default async function CollectionPage({
           </LinkButton>
 
           <h1 className="text-3xl h-fit  font-bold flex items-center text-primary  pb-0">
-            {/* <Icons.collection className="h-8 w-8 mr-2" /> */}
             {data[0].collection.name}
           </h1>
         </div>

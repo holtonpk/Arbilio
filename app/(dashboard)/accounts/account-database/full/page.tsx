@@ -3,7 +3,7 @@ import AccountDatabase from "../account-database";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 import { AccountDataType } from "@/types";
-
+import Loading from "./loading";
 async function getData() {
   const url = `${siteConfig.url}/api/accountDatabase`;
   const response = await fetch(url, {
