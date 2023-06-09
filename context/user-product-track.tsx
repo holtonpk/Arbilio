@@ -16,12 +16,15 @@ import { db } from "@/context/Auth";
 import { storage } from "@/config/data-storage";
 import { ProductType, AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
+import { set } from "date-fns";
 interface ProductTrackContextType {
-  trackedProducts: ProductType[];
-  trackedProductsIds: string[];
+  trackedProducts: ProductType[] | undefined;
+  trackedProductsIds: string[] | undefined;
   fetchTrackedProducts: () => Promise<{ success: string[] } | { error: any }>;
   trackProduct: (id: string) => Promise<{ success: any } | { error: any }>;
   unTrackProduct: (id: string) => Promise<{ success: any } | { error: any }>;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UserProductTrackContext = createContext<ProductTrackContextType | null>(
@@ -46,8 +49,9 @@ interface ProductTrackProps {
 export const UserProductTrackProvider = ({ children }: ProductTrackProps) => {
   const { currentUser } = useAuth()!;
 
-  const [trackedProductsIds, setTrackedProductsIds] = useState<string[]>([]);
-  const [trackedProducts, setTrackedProducts] = useState<ProductType[]>([]);
+  const [trackedProductsIds, setTrackedProductsIds] = useState<string[]>();
+  const [trackedProducts, setTrackedProducts] = useState<ProductType[]>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!currentUser) {
@@ -66,6 +70,8 @@ export const UserProductTrackProvider = ({ children }: ProductTrackProps) => {
   }, [currentUser]);
 
   useEffect(() => {
+    if (!trackedProductsIds) return;
+    setLoading(true);
     const fetchProductData = async () => {
       const q = query(
         collection(db, `${storage.products}`),
@@ -85,12 +91,16 @@ export const UserProductTrackProvider = ({ children }: ProductTrackProps) => {
       const productsData = (await Promise.all(products)) as ProductType[];
 
       setTrackedProducts(productsData);
+      setLoading(false);
     };
 
-    if (!trackedProductsIds.length) {
+    setLoading(true);
+    if (trackedProductsIds.length === 0) {
       setTrackedProducts([]);
+      setLoading(false);
       return;
     } else {
+      console.log("fetching", trackedProductsIds);
       fetchProductData();
     }
   }, [trackedProductsIds]);
@@ -153,6 +163,8 @@ export const UserProductTrackProvider = ({ children }: ProductTrackProps) => {
     fetchTrackedProducts,
     trackProduct,
     unTrackProduct,
+    loading,
+    setLoading,
   };
 
   return (

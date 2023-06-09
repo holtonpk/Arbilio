@@ -231,3 +231,56 @@ export function nFormatter(num?: number, digits?: number) {
     ? (num / item.value).toFixed(digits || 1).replace(rx, "$1") + item.symbol
     : "0";
 }
+
+type Stats = {
+  date: number;
+  data: number;
+  id: string;
+}[][];
+
+type Result = {
+  date: number;
+  data: number;
+}[];
+
+export function combinePostsByDay(countStats: Stats): Result {
+  // Flatten the array
+  const flattened = countStats.flat();
+
+  // Calculate the sums and counts
+  const sumsAndCounts = flattened.reduce(
+    (acc: Record<string, [number, Set<string>, number]>, stat) => {
+      // Create a new Date object from the timestamp and format it to 'YYYY-MM-DD'
+      const date = new Date(stat.date);
+      const dateString = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+      // If the date isn't a property on the accumulator, add it with an initial value of [0, new Set(), stat.date]
+      if (!acc[dateString]) {
+        acc[dateString] = [0, new Set(), stat.date];
+      }
+
+      // Check if we've already seen this id for this date
+      if (!acc[dateString][1].has(stat.id)) {
+        // If not, add the number of posts to the total for the date
+        acc[dateString][0] += stat.data;
+        // And add the id to the set of unique ids for the date
+        acc[dateString][1].add(stat.id);
+      }
+
+      return acc;
+    },
+    {}
+  );
+
+  // Convert the sums object to an array of objects
+  const result: Result = Object.entries(sumsAndCounts).map(
+    ([date, [totalPosts, ids, timestamp]]) => {
+      const averagePosts = totalPosts / ids.size;
+      return { date: timestamp, data: averagePosts };
+    }
+  );
+
+  return result;
+}

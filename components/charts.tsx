@@ -316,7 +316,7 @@ export function BarChart({
           display: false,
           dash: [2, 4],
         },
-        min: minVal != maxVal ? minVal : 0,
+        min: 0,
         max: maxVal,
         ticks: {
           // stepSize: 200,

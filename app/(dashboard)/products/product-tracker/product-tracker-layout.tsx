@@ -1,87 +1,73 @@
 "use client";
 import React from "react";
-import { BarChart } from "@/components/charts";
+import { BarChart, LineChart } from "@/components/charts";
+import { DateRangePicker } from "@/components/date-range-picker";
+import { DateRange } from "react-day-picker";
 import { Icons } from "@/components/icons";
 import { formatNumber } from "@/lib/utils";
-import { ProductType, AccountDataType } from "@/types";
+import { ProductType, AccountDataType, AccountStatsType } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { Button } from "@/components/ui/button";
 import { RemoveTrackProductButton } from "@/components/buttons/remove-track-product-button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { formatDateShort, combinePostsByDay } from "@/lib/utils";
+import { ProductImage } from "@/components/product-image";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ProductTrackerLayoutProps {
   data: ProductType[];
 }
 import PostView from "@/components/post-view";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Car } from "lucide-react";
 
 const ProductTrackerLayout = ({ data }: ProductTrackerLayoutProps) => {
   return (
-    <div className="container grid gap-4">
+    <div className="container grid gap-4 pb-4  relative ">
       {data.map((item, i) => (
-        <div key={i} className="p-8 border rounded-md grid gap-4 relative">
-          <RemoveTrackProductButton
-            id={item.id}
-            className="absolute top-4 right-4"
-            variant="destructive"
-          >
-            Stop Tracking
-          </RemoveTrackProductButton>
-          <div className="grid gap-4 grid-cols-2">
-            <div className="flex flex-col justify-between ">
-              <div className="grid grid-cols-[80px_1fr] gap-4">
-                <div className="h-20 w-20 rounded-md bg-muted relative overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt="product image"
-                    fill
-                    className="rounded-md"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <h1 className="text-2xl font-semibold">{item.title}</h1>
-                  <p className="text-muted-foreground">Tracking since 4/12</p>
-                </div>
+        <div
+          key={i}
+          className=" p-8 border rounded-md grid gap-8 grid-cols-[1fr_75%] shadow-lg max-w-[1334px]   relative"
+        >
+          <div className="flex flex-col justify-between px-8">
+            <div className="grid  gap-4">
+              <div className="flex flex-col gap-2">
+                <h1 className="text-lg font-semibold capitalize">
+                  {item.title}
+                </h1>
+                <RemoveTrackProductButton
+                  id={item.id}
+                  className=" text-destructive border-destructive hover:bg-destructive hover:text-white"
+                  variant="outline"
+                >
+                  Stop Tracking
+                </RemoveTrackProductButton>
               </div>
-              <StatDisplay accounts={item.accountsData} />
-            </div>
-            <div className="h-fit">
-              <div className="flex justify-between mb-4">
-                <div className="flex text-lg font-semibold leading-none tracking-tight gap-3 ">
-                  <h1>Views</h1>
-                  <p className="text-theme-blue">+12</p>
-                </div>
-                {/* <div className="flex w-fit items-center ml-auto">
-                Monthly
-                <Icons.chevronDown className="h-6 w-6 text-muted-foreground" />
-              </div> */}
-              </div>
-              <div className="relative w-full h-[170px]  rounded-md">
-                <BarChart
-                  data={[12, 19, 3, 5, 2, 3, 17]}
-                  labels={[
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                  ]}
-                  dataTitle="Posts"
-                />
-              </div>
+              <ProductImage images={item.supplierInfo.supplierImages} />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col">
-              <h1 className="text-lg font-semibold leading-none tracking-tight">
-                Sellers
-              </h1>
-
-              <Sellers accounts={item.accountsData} />
-            </div>
-            <RecentPosts accounts={item.accountsData} />
+          <div className="  relative">
+            <ProductTabs item={item} />
           </div>
         </div>
       ))}
@@ -90,6 +76,57 @@ const ProductTrackerLayout = ({ data }: ProductTrackerLayoutProps) => {
 };
 
 export default ProductTrackerLayout;
+
+const ProductTabs = ({ item }: { item: ProductType }) => {
+  return (
+    <Tabs defaultValue="stats" className="w-full  relative">
+      <TabsList className="grid w-full grid-cols-3">
+        <TabsTrigger value="stats">Stats</TabsTrigger>
+        <TabsTrigger value="posts">Recent Posts</TabsTrigger>
+        <TabsTrigger value="sellers">Sellers</TabsTrigger>
+      </TabsList>
+      <TabsContent value="stats">
+        <Card className="relative">
+          <CardHeader>
+            <CardTitle>Product Stats</CardTitle>
+            <CardDescription>
+              View the stats for this product based off the tracked accounts.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="h-[300px]">
+            <StatDisplay accounts={item.accountsData} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+      <TabsContent value="posts" className="w-full">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>Recent Posts</CardTitle>
+            <CardDescription>
+              View the most recent posts for this product.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="h-[300px] ">
+            <RecentPosts accounts={item.accountsData} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+      <TabsContent value="sellers">
+        <Card>
+          <CardHeader>
+            <CardTitle>Active Sellers</CardTitle>
+            <CardDescription>
+              A list of the sellers that have posted this product.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="h-[300px]">
+            <Sellers accounts={item.accountsData} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+    </Tabs>
+  );
+};
 
 interface RecentPostsProps {
   accounts: AccountDataType[];
@@ -102,23 +139,24 @@ const RecentPosts = ({ accounts }: RecentPostsProps) => {
   );
 
   return (
-    <div className="grid">
-      <h1 className="text-lg font-semibold leading-none tracking-tight">
-        New Posts
-      </h1>
-      <div className="grid grid-flow-col gap-4 ">
+    <ScrollArea className="h-full w-full relative ">
+      <ScrollBar orientation="horizontal" />
+      <div className="flex relative gap-4 h-[250px] ">
         {accounts &&
-          topPosts.slice(0, 5).map((item: any, i: number) => {
+          topPosts.slice(0, 7).map((item: any, i: number) => {
             return (
-              <PostView
-                key={i}
-                postId={item.postId}
-                accountData={item.author}
-              />
+              <div key={i} className="h-full aspect-[9/16] relative ">
+                <PostView
+                  key={i}
+                  postId={item.postId}
+                  accountData={item.author}
+                />
+              </div>
             );
           })}
       </div>
-    </div>
+    </ScrollArea>
+    // </>
   );
 };
 
@@ -129,8 +167,8 @@ const Sellers = ({ accounts }: RecentPostsProps) => {
   );
 
   return (
-    <div className="h-fit max-h-[200px] overflow-scroll border  rounded-md">
-      <div className="grid divide-y divide-border h-fit ">
+    <ScrollArea className="border rounded-md max-h-full ">
+      <div className="flex flex-col divide-y divide-border h-fit ">
         {sortedAccounts.map((account, i) => (
           <div
             key={i}
@@ -140,7 +178,7 @@ const Sellers = ({ accounts }: RecentPostsProps) => {
               href={`accounts/account/${account.id}`}
               className="w-[80%] grid grid-cols-[40px_1fr] items-center space-x-4"
             >
-              <div className="aspect-square w-10 h-10 bg-muted rounded-md relative overflow-hidden">
+              <div className="aspect-square w-10 h-10 bg-muted rounded-md relative overflow-hidden border">
                 <Image src={account.avatar} alt="product image" fill />
               </div>
               <div className="flex flex-col max-w-full overflow-hidden">
@@ -162,62 +200,87 @@ const Sellers = ({ accounts }: RecentPostsProps) => {
           </div>
         ))}
       </div>
-    </div>
+    </ScrollArea>
   );
 };
 
 const StatDisplay = ({ accounts }: RecentPostsProps) => {
-  const averageLikes = accounts.reduce((acc, account) => {
-    return acc + account.accountStats[0].heartCount;
-  }, 0);
-  const averageFollowers = accounts.reduce((acc, account) => {
-    return acc + account.accountStats[0].followerCount;
-  }, 0);
-  const averagePosts = accounts.reduce((acc, account) => {
-    return acc + account.accountStats[0].videoCount;
-  }, 0);
+  const [dataField, setDataField] = React.useState<string>("followerCount");
+  const [chartType, setChartType] = React.useState<"line" | "bar">("line");
+
+  const dataCountStats = accounts.map((account) => {
+    return account.accountStats.map((stat) => {
+      return {
+        date: stat.dataCollectionTime,
+        data: stat[dataField as keyof AccountStatsType],
+        id: account.id,
+      };
+    });
+  });
+
+  const combinedData = combinePostsByDay(dataCountStats).reverse();
+
+  const data = combinedData.map((item) => item.data);
+  const labels = combinedData.map((item) => formatDateShort(item.date));
 
   return (
-    <div className="flex  gap-3 w-full  h-fit items-center rounded-md mt-4 border  p-6">
-      <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-theme-blue aspect-square p-2 relative flex justify-center items-center">
-          <Icons.likes className="h-8 w-8 text-white" />
-        </div>
-        <div className="flex flex-col">
-          <h2 className="text-md text-muted-foreground whitespace-nowrap">
-            Average Likes
-          </h2>
-          <h3 className="text-xl md:text-2xl font-bold text-primary">
-            {formatNumber(averageLikes)}
-          </h3>
+    <>
+      <div className="absolute top-4 right-4 flex gap-4">
+        <Select
+          onValueChange={(value) => setDataField(value)}
+          defaultValue={dataField}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select a stat" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Stats</SelectLabel>
+              <SelectItem value="videoCount">Average Posts</SelectItem>
+              <SelectItem value="heartCount">Average Likes</SelectItem>
+              <SelectItem value="followerCount">Average Followers</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <div className="">
+          <Button
+            onClick={() => setChartType("bar")}
+            size="sm"
+            variant={chartType === "line" ? "ghost" : "outline"}
+            className={`${
+              chartType == "bar"
+                ? "border-border bg-background hover:bg-background hover:text-primary"
+                : "hover:bg-transparent hover:border-border"
+            }
+          `}
+          >
+            <Icons.barChart className="h-4 w-4" />
+          </Button>
+          <Button
+            onClick={() => setChartType("line")}
+            size="sm"
+            variant={chartType === "bar" ? "ghost" : "outline"}
+            className={`${
+              chartType == "line"
+                ? "border-border bg-background hover:bg-background hover:text-primary"
+                : "hover:bg-transparent hover:border-border"
+            }
+          `}
+          >
+            <Icons.lineChart className="h-4 w-4" />
+          </Button>
         </div>
       </div>
-      <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-theme-blue aspect-square p-2 relative flex justify-center items-center">
-          <Icons.followers className="h-8 w-8 text-white" />
-        </div>
-        <div className="flex flex-col">
-          <h2 className="text-md text-muted-foreground whitespace-nowrap">
-            Average Followers
-          </h2>
-          <h3 className="text-xl md:text-2xl font-bold  text-primary">
-            {formatNumber(averageFollowers)}
-          </h3>
-        </div>
+
+      <div className="relative w-full h-full   rounded-md">
+        <>
+          {chartType === "line" ? (
+            <LineChart data={data} labels={labels} dataTitle="Avg. Posts" />
+          ) : (
+            <BarChart data={data} labels={labels} dataTitle="Avg. Posts" />
+          )}
+        </>
       </div>
-      <div className="flex items-center gap-3 ">
-        <div className="rounded-md bg-theme-blue aspect-square p-2 relative flex justify-center items-center">
-          <Icons.posts className="h-8 w-8 text-white" />
-        </div>
-        <div className="flex flex-col">
-          <h2 className="text-md text-muted-foreground whitespace-nowrap">
-            Average Posts
-          </h2>
-          <h3 className="text-xl md:text-2xl font-bold  text-primary">
-            {formatNumber(averagePosts)}
-          </h3>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
