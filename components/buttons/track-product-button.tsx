@@ -18,6 +18,7 @@ import { useUserProductTrack } from "@/context/user-product-track";
 import { set } from "date-fns";
 import { ProductType, ProductDataBaseType } from "@/types";
 import Image from "next/image";
+import { tr } from "date-fns/locale";
 
 const TRACK_LIMIT = 5;
 
@@ -56,6 +57,7 @@ export const TrackProductButton = ({
   };
 
   const handleClick = async () => {
+    if (!trackedProductsIds) return;
     if (trackedProductsIds.includes(product.id)) {
       setShowManageModal(true);
     } else if (trackedProductsIds.length + 1 > TRACK_LIMIT) {
@@ -77,6 +79,7 @@ export const TrackProductButton = ({
   };
 
   useEffect(() => {
+    if (!trackedProductsIds) return;
     if (trackedProductsIds.length == 0) {
       setShowManageModal(false);
     }
@@ -88,16 +91,17 @@ export const TrackProductButton = ({
         onClick={handleClick}
         className={cn(
           buttonVariants({
-            variant: trackedProductsIds.includes(product.id)
-              ? (trackingVariant as typeof variant)
-              : variant,
+            variant:
+              trackedProductsIds && trackedProductsIds.includes(product.id)
+                ? (trackingVariant as typeof variant)
+                : variant,
           }),
           className
         )}
         {...props}
       >
         {children}
-        {trackedProductsIds.includes(product.id) ? (
+        {trackedProductsIds && trackedProductsIds.includes(product.id) ? (
           <>
             <Icons.check className="mr-2 h-4 w-4" />
             Tracking Product
@@ -126,13 +130,14 @@ export const TrackProductButton = ({
           </AlertDialogHeader>
 
           <div className="divide-y divide-border rounded-md border max-h-[200px] overflow-scroll">
-            {trackedProducts.map((product, i) => (
-              <ProductDisplay
-                key={i}
-                product={product}
-                handleClick={handleTrackProduct}
-              />
-            ))}
+            {trackedProducts &&
+              trackedProducts.map((product, i) => (
+                <ProductDisplay
+                  key={i}
+                  product={product}
+                  handleClick={handleTrackProduct}
+                />
+              ))}
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -154,9 +159,10 @@ export const TrackProductButton = ({
           </AlertDialogHeader>
 
           <div className="divide-y divide-border rounded-md border max-h-[200px] overflow-scroll">
-            {trackedProducts.map((product, i) => (
-              <ProductDisplay key={i} product={product} />
-            ))}
+            {trackedProducts &&
+              trackedProducts.map((product, i) => (
+                <ProductDisplay key={i} product={product} />
+              ))}
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
