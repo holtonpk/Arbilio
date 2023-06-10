@@ -11,7 +11,6 @@ export default function Loading() {
         <Skeleton className="h-[30px] w-[90%]" />
         <Skeleton className="h-[40px] w-full" />
         <Skeleton className="aspect-square w-full" />
-
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4  w-full  rounded-md ">
           <Skeleton className="aspect-square w-full" />
           <Skeleton className="aspect-square w-full" />

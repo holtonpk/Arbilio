@@ -24,6 +24,7 @@ const TRACK_LIMIT = 5;
 
 interface TrackProductButtonProps extends ButtonProps {
   product: ProductType | ProductDataBaseType;
+
   trackingVariant?:
     | "link"
     | "default"
@@ -42,6 +43,7 @@ export const TrackProductButton = ({
   variant,
   children,
   trackingVariant = "outline",
+
   ...props
 }: TrackProductButtonProps) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -57,6 +59,7 @@ export const TrackProductButton = ({
   };
 
   const handleClick = async () => {
+    console.log("trackedProductsIds", trackedProductsIds);
     if (!trackedProductsIds) return;
     if (trackedProductsIds.includes(product.id)) {
       setShowManageModal(true);

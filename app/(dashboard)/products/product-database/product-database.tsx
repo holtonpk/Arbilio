@@ -1,24 +1,12 @@
 "use client";
-import Image from "next/image";
-import React, { useEffect } from "react";
-import useData from "@/lib/hooks/use-product-data";
-import Table from "./product-database-table";
-import { ProductDataBaseType } from "@/types";
-import FilterBuilder from "@/components/filter-builder";
-import Sort from "@/components/sort-results";
-import DisplaySelector from "@/components/display-selector";
-import { DataSearch } from "@/components/data-search";
-import AppliedFilters from "@/components/applied-filters";
+import React from "react";
+import { ProductType } from "@/types";
 import { Icons } from "@/components/icons";
-import EmptySearch from "@/components/empty-search";
 import { Button } from "@/components/ui/button";
-import { productDatabaseConfig } from "@/config/dashboard";
 import { ProductDisplay } from "./product-database-cards";
-import { Input } from "@/components/ui/input";
 import Tooltip from "@/components/ui/tooltip";
 import { categories } from "@/config/categories";
 import { siteConfig } from "@/config/site";
-import { set } from "date-fns";
 import { toast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
@@ -27,9 +15,7 @@ const MAX_CATEGORY_SELECTION = 3;
 const AVAILABLE_SEARCH_CREDITS = 4;
 
 const ProductDataBase = () => {
-  const [data, setData] = React.useState<ProductDataBaseType[] | undefined>(
-    undefined
-  );
+  const [data, setData] = React.useState<ProductType[] | undefined>(undefined);
 
   const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
 
@@ -38,7 +24,7 @@ const ProductDataBase = () => {
   const SearchData = async () => {
     if (selectedItems.length > 0) {
       setIsLoading(true);
-      const queryData: ProductDataBaseType[] = [];
+      const queryData: ProductType[] = [];
 
       const getIds = selectedItems.map(async (categoryId) => {
         const res = await fetch(
@@ -47,7 +33,6 @@ const ProductDataBase = () => {
         const newData = await res.json();
         queryData.push(...(newData || []));
       });
-      console.log("nd", queryData);
       const d = await Promise.all(getIds);
       setData(queryData);
       setIsLoading(false);
@@ -69,9 +54,8 @@ const ProductDataBase = () => {
     <>
       <div className="w-full  p-4 container">
         {data ? (
-          <>
-            <div className="flex items-center md:flex-row flex-col  mb-4 gap-4">
-              <Button onClick={() => setData(undefined)}>New Search</Button>
+          <div className="container">
+            <div className="flex items-center md:flex-row flex-col w-fit  mb-4 gap-4 ml-auto">
               <div className="flex items-center">
                 <Tooltip content="Credits reset every 24 hours. Upgrade to premium for unlimited search credits">
                   <div className="flex h-4 w-8 justify-center">
@@ -80,13 +64,12 @@ const ProductDataBase = () => {
                 </Tooltip>
                 <p className="text-sm text-muted-foreground">{`Available Search credits: ${AVAILABLE_SEARCH_CREDITS}`}</p>
               </div>
+              <Button onClick={() => setData(undefined)}>New Search</Button>
             </div>
             {data.length > 0 ? (
               <div className="grid  gap-8 h-full w-full ">
                 {data.map((item: any, i: number) => (
-                  <>
-                    <ProductDisplay key={i} item={item} />
-                  </>
+                  <ProductDisplay key={i} item={item} />
                 ))}
               </div>
             ) : (
@@ -100,7 +83,7 @@ const ProductDataBase = () => {
                 </EmptyPlaceholder.Description>
               </EmptyPlaceholder>
             )}
-          </>
+          </div>
         ) : (
           <div className="container bg-background rounded-md  p-4  border-2 w-[80%] ">
             <div className="flex justify-between w-full h-fit ">

@@ -11,6 +11,7 @@ import Link from "next/link";
 import { UpdateCollectionButton } from "@/components/buttons/update-collection-button";
 import { Button } from "@/components/ui/button";
 import { RemoveTrackProductButton } from "@/components/buttons/remove-track-product-button";
+import { TrackProductButton } from "@/components/buttons/track-product-button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatDateShort, combinePostsByDay } from "@/lib/utils";
@@ -63,7 +64,18 @@ const ProductTrackerLayout = ({ data }: ProductTrackerLayoutProps) => {
                   Stop Tracking
                 </RemoveTrackProductButton>
               </div>
-              <ProductImage images={item.supplierInfo.supplierImages} />
+              {item.supplierInfo?.supplierImages ? (
+                <ProductImage images={item.supplierInfo.supplierImages} />
+              ) : (
+                <div className="aspect-square full relative rounded-md shadow bg-muted">
+                  <Image
+                    src={item.image}
+                    alt="product image"
+                    fill
+                    className="rounded-md"
+                  />
+                </div>
+              )}
             </div>
           </div>
           <div className="  relative">
@@ -77,7 +89,8 @@ const ProductTrackerLayout = ({ data }: ProductTrackerLayoutProps) => {
 
 export default ProductTrackerLayout;
 
-const ProductTabs = ({ item }: { item: ProductType }) => {
+export const ProductTabs = ({ item }: { item: ProductType }) => {
+  console.log("accountsData", item?.accountsData);
   return (
     <Tabs defaultValue="stats" className="w-full  relative">
       <TabsList className="grid w-full grid-cols-3">
@@ -132,7 +145,7 @@ interface RecentPostsProps {
   accounts: AccountDataType[];
 }
 
-const RecentPosts = ({ accounts }: RecentPostsProps) => {
+export const RecentPosts = ({ accounts }: RecentPostsProps) => {
   const topPosts = accounts.flatMap((account) => account.topPosts || []);
   topPosts.sort(
     (a: any, b: any) => b.postData.playCount - a.postData.playCount
@@ -160,7 +173,7 @@ const RecentPosts = ({ accounts }: RecentPostsProps) => {
   );
 };
 
-const Sellers = ({ accounts }: RecentPostsProps) => {
+export const Sellers = ({ accounts }: RecentPostsProps) => {
   const sortedAccounts = accounts.sort(
     (a: any, b: any) =>
       b.accountStats[0].followerCount - a.accountStats[0].followerCount
@@ -204,7 +217,7 @@ const Sellers = ({ accounts }: RecentPostsProps) => {
   );
 };
 
-const StatDisplay = ({ accounts }: RecentPostsProps) => {
+export const StatDisplay = ({ accounts }: RecentPostsProps) => {
   const [dataField, setDataField] = React.useState<string>("followerCount");
   const [chartType, setChartType] = React.useState<"line" | "bar">("line");
 

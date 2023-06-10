@@ -11,77 +11,44 @@ import { Icons } from "@/components/icons";
 import Tooltip from "@/components/ui/tooltip";
 import { ProductOperations } from "@/components/buttons/product-operations";
 import TrackProductButton from "@/components/buttons/track-product-button";
+import { ProductImage } from "@/components/product-image";
+import { ProductTabs } from "@/app/(dashboard)/products/product-tracker/product-tracker-layout";
 
 interface CardProps {
-  item: ProductDataBaseType;
+  item: ProductType;
 }
 
 export const ProductDisplay = ({ item }: CardProps) => {
+  console.log("item", item);
+  console.log(
+    "item.supplierInfo?.supplierImages",
+    item.supplierInfo?.supplierImages
+  );
+
   return (
-    <div className="h-full relative group w-full rounded-md border bg-background  ">
-      <div className="grid w-full gap-4 md:gap-0 p-4 md:p-0">
-        <div className="grid  grid-cols-[80px_1fr] border items-start gap-4 relative w-full h-fit hover:bg-muted/30 sm:gap-2  p-4    ">
-          <Link
-            href={`/products/product/${item.id}`}
-            className="w-full h-full absolute top-0 left-0 z-10"
-          />
-          <div className="h-20 w-20 relative overflow-hidden z-20 rounded-md border pointer-events-none">
-            <Image
-              src={item.image}
-              alt="Picture of the author"
-              fill
-              sizes="(max-width: 768px) 100vw,
-                    (max-width: 1200px) 50vw,
-                    33vw"
-            />
+    <div className=" p-8 border rounded-md grid gap-8 grid-cols-[1fr_75%] shadow-lg max-w-[1334px]   relative">
+      <div className="flex flex-col justify-between px-8">
+        <div className="grid  gap-4">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-lg font-semibold capitalize">{item.title}</h1>
+            <TrackProductButton product={item} className="full" />
           </div>
-
-          <div className="grid gap-0 relative z-20 pointer-events-none">
-            <h1 className="text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
-              {item.title}
-            </h1>
-            <h1 className="text-sm capitalize text-ellipsis  text-left w-fit text-primary">
-              {item?.supplierInfo?.supplierTitle}
-            </h1>
-          </div>
-        </div>
-        <TrackProductButton
-          product={item}
-          className="md:absolute md:top-4 md:right-4 z-20 w-full md:w-fit  "
-        />
-        {/* <ProductOperations
-            product={item}
-            variant="outline"
-            className="hidden md:block relative z-20"
-          >
-            <Icons.ellipsis className="h-5 w-5 fill-muted-foreground  " />
-          </ProductOperations> */}
-
-        {/* <AccountInfo accounts={item.accounts} /> */}
-        <div className="p-4">
-          <div className="flex items-center ">
-            <div className="rounded-md bg-theme-blue aspect-square p-2 w-fit relative flex justify-center items-center">
-              <Icons.likes className=" text-white" />
+          {item.supplierInfo?.supplierImages ? (
+            <ProductImage images={item.supplierInfo?.supplierImages} />
+          ) : (
+            <div className="aspect-square full relative rounded-md shadow bg-muted">
+              <Image
+                src={item.image}
+                alt="product image"
+                fill
+                className="rounded-md"
+              />
             </div>
-            <h1 className="ml-3 text-xl font-bold capitalize text-ellipsis  text-left w-fit text-primary">
-              Average likes
-            </h1>
-            <Tooltip content="Average likes received by the accounts promoting the product ">
-              <div className="flex h-4 w-8 justify-center">
-                <Icons.helpCircle className="h-4 w-4 text-gray-600" />
-              </div>
-            </Tooltip>
-          </div>
-          <div className="w-full h-[200px] relative mt-3">
-            <DataGraph accounts={item.accounts} field="heartCount" />
-          </div>
+          )}
         </div>
-        {/* <div className="w-full p-4 grid gap-3">
-          <LinkButton href={`/products/product/${item.id}`} className="w-full">
-            View Product
-          </LinkButton>
-         
-        </div> */}
+      </div>
+      <div className="  relative">
+        <ProductTabs item={item} />
       </div>
     </div>
   );

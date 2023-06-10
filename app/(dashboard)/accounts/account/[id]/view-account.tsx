@@ -145,8 +145,6 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
     orderedData.map((stat: any) => formatDateShort(stat.dataCollectionTime));
     const { to, from } = dateRange || {};
     if (to && from) {
-      console.log("to", to);
-      console.log("from", from);
       const filteredData = orderedData.filter((stat: any) => {
         return (
           stat.dataCollectionTime >= from.getTime() &&

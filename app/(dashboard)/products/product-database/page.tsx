@@ -4,16 +4,6 @@ import ProductDataBase from "./product-database";
 import { PageHeader } from "@/components/header";
 import ProtectFeature from "@/components/protect-feature";
 
-async function getData() {
-  const url = `${siteConfig.url}/api/product-database`;
-  const response = await fetch(url, {
-    cache: "no-cache",
-  });
-  console.log("res===>", response);
-  const data = await response.json();
-  return data;
-}
-
 export default async function ProductDatabase() {
   return (
     <ProtectFeature planLevel="standard" featureName="Product Database">

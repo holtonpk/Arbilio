@@ -119,9 +119,11 @@ import {
 export function NavigationMenuBar() {
   const bgGradients = [
     // "from-blue-600 via-sky-500 to-cyan-400 ",
-    "from-muted/20 to-muted",
-    "from-muted/20 to-muted",
-    "from-muted/20 to-muted",
+    "theme-blue",
+    "theme-blue",
+    "theme-blue",
+    // "from-muted/20 to-muted",
+    // "from-muted/20 to-muted",
     // "to-amber-400 via-orange-500 from-red-500",
     // "from-purple-600 via-fuchsia-600 to-pink-600",
   ];
@@ -226,14 +228,18 @@ const SubRoute = ({
         <li className="row-span-3">
           <NavigationMenuLink asChild>
             <a
-              className={`flex h-full text-primary gap- w-full select-none flex-col justify-end rounded-md bg-gradient-to-b ${bgGradient} p-6 no-underline outline-none focus:shadow-md`}
+              className={`flex h-full text-primary gap- w-full select-none flex-col justify-end rounded-md bg-muted/40 hover:bg-muted {bgGradient} p-6 no-underline outline-none focus:shadow-md`}
               href={href}
             >
               <div className="p-2 rounded-md bg-theme-blue text-primary w-fit  flex justify-center items-center">
                 <Icon className="h-5 w-6 text-white" />
               </div>
-              <div className=" text-lg font-medium ">{item.title}</div>
-              <p className="text-sm leading-tight ">{item.description}</p>
+              <div className=" text-lg font-medium text-primary ">
+                {item.title}
+              </div>
+              <p className="text-sm leading-tight  text-primary">
+                {item.description}
+              </p>
             </a>
           </NavigationMenuLink>
         </li>
