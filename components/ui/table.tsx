@@ -30,7 +30,7 @@ const TableBody = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
-    className={cn("[&_tr:last-child]:border-0", className)}
+    className={cn("[&_tr:last-child]:border-0 relative", className)}
     {...props}
   />
 ));
@@ -48,19 +48,24 @@ const TableFooter = React.forwardRef<
 ));
 TableFooter.displayName = "TableFooter";
 
-const TableRow = React.forwardRef<
-  HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(({ className, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(
-      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-      className
-    )}
-    {...props}
-  />
-));
+interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
+  locked?: boolean;
+}
+
+const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
+  ({ className, locked, ...props }, ref) => (
+    <tr
+      ref={ref}
+      className={cn(
+        locked && "bg-background/30 blur-sm pointer-events-none",
+        "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted relative ",
+        className
+      )}
+      {...props}
+    />
+  )
+);
+
 TableRow.displayName = "TableRow";
 
 const TableHead = React.forwardRef<

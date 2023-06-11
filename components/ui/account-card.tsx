@@ -18,10 +18,11 @@ export const AccountCard = ({
 }) => {
   return (
     <div className="h-full relative group ">
-      {locked && (
-        <div className="absolute z-30 bg-background/60 backdrop-blur-sm w-full h-full rounded-md "></div>
-      )}
-      <div className="w-full  bg-card rounded-md h-fit border  pt-4  shadow-lg  pb-2 p-2 relative flex flex-col">
+      <div
+        className={`w-full  bg-card rounded-md h-fit border  pt-4  shadow-lg  pb-2 p-2 relative flex flex-col
+      ${locked && "blur-sm pointer-events-none"}
+      `}
+      >
         <Link
           href={`/accounts/account/${item.id}`}
           className="grid grid-cols-[70px_1fr] items-center justify-start gap-[2px] sm:gap-2  w-full pb-0  rounded-md hover:opacity-70"
@@ -116,18 +117,15 @@ export const AccountCard = ({
               .fill(0)
               .map((_, i: number) => {
                 return (
-                  <div
-                    key={i}
-                    className=" w-full aspect-[9/16] bg-muted rounded-md relative overflow-hidden "
-                  >
-                    {item.topPosts && item.topPosts.length > i && (
+                  <>
+                    {item.topPosts && (
                       <PostView
                         key={i}
                         postId={item.topPosts[i]}
                         accountData={item}
                       />
                     )}
-                  </div>
+                  </>
                 );
               })}
           </div>
@@ -152,7 +150,7 @@ const ProductDisplay = ({ productId }: { productId: string }) => {
 
   return (
     <>
-      {product && (
+      {product ? (
         <div className="grid grid-cols-[36px_1fr] relative gap-2 items-center rounded-md p-1 ">
           <Link
             href={`/products/product/${productId}`}
@@ -177,6 +175,10 @@ const ProductDisplay = ({ productId }: { productId: string }) => {
             </p>
           </div>
         </div>
+      ) : (
+        <>
+          <Skeleton className="h-[40px] w-[100%]" />
+        </>
       )}
     </>
   );

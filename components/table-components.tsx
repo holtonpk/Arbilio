@@ -43,7 +43,6 @@ export const StatDisplay = ({ displayValue }: any) => {
 };
 
 export const AccountDisplay = ({ item }: { item: AccountDataType }) => {
-  console.log("ii", item);
   return (
     <Link
       href={`accounts/account/${item.id}`}

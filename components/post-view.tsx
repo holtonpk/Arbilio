@@ -5,6 +5,7 @@ import { formatNumber } from "@/lib/utils";
 import VideoPlayer from "./video-player";
 import { PostType, AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
+import Skeleton from "@/components/ui/skeleton";
 
 interface PostViewProps {
   // video: PostType;
@@ -26,9 +27,9 @@ const PostView = ({ postId, accountData }: PostViewProps) => {
   }, [postId]);
 
   return (
-    <div className="w-full aspect-[9/16] bg-primary border rounded-md relative overflow-hidden">
-      {video && (
-        <>
+    <>
+      {video ? (
+        <div className="w-full aspect-[9/16]  border rounded-md relative overflow-hidden">
           <Image
             src={video.cover}
             alt="video cover"
@@ -55,10 +56,11 @@ const PostView = ({ postId, accountData }: PostViewProps) => {
             <Icons.showPassword className="text-2xl h-2 w-2  md:h-4 md:w-4" />
             {formatNumber(video.postData?.playCount || 0)}
           </div>
-          <Icons.media className="text-primary h-8 w-8 md:h-8 md:w-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[3]" />
-        </>
+        </div>
+      ) : (
+        <Skeleton className="w-full aspect-[9/16]" />
       )}
-    </div>
+    </>
   );
 };
 

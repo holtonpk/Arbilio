@@ -1,5 +1,5 @@
 import React from "react";
-import AccountDatabase from "../account-database";
+import AccountDatabase from "./account-database";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 import { AccountDataType } from "@/types";

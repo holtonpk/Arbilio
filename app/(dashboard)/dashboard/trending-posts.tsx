@@ -14,11 +14,13 @@ import Link from "next/link";
 export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
   const [selectedPostIndex, setSelectedPostIndex] = React.useState<number>(0);
   const [muteVideo, setMuteVideo] = React.useState<boolean>(false);
+  const [pauseVideo, setPauseVideo] = React.useState<boolean>(false);
 
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
 
   const onClick = (index: number) => {
     setSelectedPostIndex(index);
+    setPauseVideo(false);
   };
 
   const playNextVideo = () => {
@@ -85,6 +87,8 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
                     isHovered={isHovered}
                     muteVideo={muteVideo}
                     setMuteVideo={setMuteVideo}
+                    pauseVideo={pauseVideo}
+                    setPauseVideo={setPauseVideo}
                   />
                   <div className="hidden xsm:block  flex-grow">
                     <VideoInfo
@@ -123,6 +127,8 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
                         isHovered={isHovered}
                         muteVideo={muteVideo}
                         setMuteVideo={setMuteVideo}
+                        pauseVideo={pauseVideo}
+                        setPauseVideo={setPauseVideo}
                       />
                     ) : (
                       <div
@@ -160,6 +166,8 @@ const VideoDisplay = ({
   isHovered,
   muteVideo,
   setMuteVideo,
+  pauseVideo,
+  setPauseVideo,
 }: {
   post: TrendingPostType;
   playNextVideo: () => void;
@@ -167,14 +175,40 @@ const VideoDisplay = ({
   isHovered: boolean;
   muteVideo: boolean;
   setMuteVideo: React.Dispatch<React.SetStateAction<boolean>>;
+  pauseVideo: boolean;
+  setPauseVideo: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (!pauseVideo) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setPauseVideo(!pauseVideo);
+    }
+  };
+
   return (
     <div
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="shadow-lg aspect-[9/16] h-full relative rounded-md overflow-hidden transition-all duration-300 ease-in-out"
     >
+      <div
+        onClick={togglePlay}
+        className={`h-full w-full absolute  flex items-center justify-center z-[5]
+        ${pauseVideo && "bg-"}
+        `}
+      >
+        {pauseVideo && (
+          <Icons.posts className="w-12 h-12 text-white fill-white opacity-80" />
+        )}
+      </div>
       <video
+        ref={videoRef}
         className="rounded-md z-[4] absolute"
         src={post.video}
         muted={muteVideo}
@@ -265,7 +299,7 @@ const VideoInfo = ({
             href={`${siteConfig.url}/accounts/account/${post.author.id}`}
           />
 
-          <div className="h-8 w-8 rounded-md overflow-hidden relative bg-muted">
+          <div className="h-8 w-8 rounded-md overflow-hidden relative bg-muted border">
             <Image
               src={post.author.avatar}
               alt="user avatar"
@@ -303,7 +337,7 @@ const VideoInfo = ({
                 className="absolute w-full h-full z-[3]"
                 href={`${siteConfig.url}/products/product/${post.product.id}`}
               />
-              <div className="h-8 w-8 rounded-md overflow-hidden relative bg-muted">
+              <div className="h-8 w-8 rounded-md overflow-hidden relative bg-muted border">
                 <Image
                   src={post.product.image}
                   alt="user avatar"

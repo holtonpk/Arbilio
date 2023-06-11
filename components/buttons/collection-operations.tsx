@@ -141,7 +141,7 @@ export function CollectionOperations({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-red-600 focus:ring-red-600"
+              className="bg-red-600 focus:ring-red-600 border-border"
             >
               {isDeleteLoading ? (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

@@ -70,7 +70,7 @@ export function RemoveTrackProductButton({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleRemove}
-              className="bg-red-600 focus:ring-red-600 border-none"
+              className="bg-red-600 focus:ring-red-600 border-border"
             >
               {isDeleteLoading ? (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

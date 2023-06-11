@@ -1,22 +1,14 @@
 "use client";
-import React, { useState } from "react";
-// import { DataTable } from "@/components/account-table";
-import FilterBuilder from "@/components/filter-builder";
-import Sort from "@/components/sort-results";
+import React from "react";
 import DisplaySelector from "@/components/display-selector";
-import { DataSearch } from "@/components/data-search";
-import AppliedFilters from "@/components/applied-filters";
 import { Icons } from "@/components/icons";
 import { accountDatabaseConfig } from "@/config/dashboard";
-import EmptySearch from "@/components/empty-search";
-import useData from "@/lib/hooks/use-account-data";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
-import { AccountCard } from "@/components/ui/account-card";
-import { DataTable } from "@/components/table/data-table";
+import { UpdateMultiCollectionButton } from "@/components/buttons/update-multi-collection-button";
+import { CreateCollectionButton } from "@/components/buttons/create-collection-button";
 import { columns } from "./columns";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
-
+import { LinkButton } from "@/components/ui/link";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -50,17 +42,18 @@ import { Input } from "@/components/ui/input";
 
 import { AccountDataType } from "@/types";
 
-import { AccountCardPagination } from "@/components/account-card-pagination";
 // Simulate a database read for tasks.
 
 const TableView = ({
   data,
   displayType,
   setDisplayType,
+  isDemo,
 }: {
   data: AccountDataType[];
   displayType: "grid" | "columns";
   setDisplayType: React.Dispatch<React.SetStateAction<"grid" | "columns">>;
+  isDemo?: boolean;
 }) => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -94,8 +87,45 @@ const TableView = ({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const selectedRows = table.getSelectedRowModel();
+
+  console.log("selectedRows", selectedRows);
+
   return (
     <>
+      {selectedRows.rows.length > 0 && (
+        <div className="fixed flex gap-8 items-center z-50 bottom-4  w-fit  scale-100  border bg-background p-4 opacity-100 shadow-lg animate-in fade-in-90 slide-in-from-bottom-10 sm:rounded-lg sm:zoom-in-90 sm:slide-in-from-bottom-0 md:w-fit">
+          <Button
+            onClick={() => table.toggleAllRowsSelected(!!false)}
+            variant={"destructive"}
+          >
+            X
+          </Button>
+
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row
+            {table.getFilteredSelectedRowModel().rows.length > 1
+              ? "s"
+              : ""}{" "}
+            selected.
+          </div>
+
+          <CreateCollectionButton
+            variant="outline"
+            accountArray={selectedRows.rows.map((row) => row.original.id)}
+          >
+            + New collection
+          </CreateCollectionButton>
+
+          <UpdateMultiCollectionButton
+            accountArray={selectedRows.rows.map((row) => row.original.id)}
+            setSelectedRows={() => table.toggleAllRowsSelected(!!false)}
+          >
+            Add to collection
+          </UpdateMultiCollectionButton>
+        </div>
+      )}
       <div className="flex md:flex-row flex-col gap-2 w-full ">
         <form className=" bg-background rounded-md relative w-full h-fit ">
           <Icons.search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
@@ -193,21 +223,70 @@ const TableView = ({
               </TableHeader>
               <TableBody>
                 {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
+                  <>
+                    {isDemo &&
+                    table.getState().pagination.pageIndex + 1 ==
+                      table.getPageCount() ? (
+                      <>
+                        {table
+                          .getRowModel()
+                          .rows.slice(0, table.getRowModel().rows.length - 4)
+                          .map((row) => (
+                            <TableRow
+                              key={row.id}
+                              data-state={row.getIsSelected() && "selected"}
+                            >
+                              {row.getVisibleCells().map((cell) => (
+                                <TableCell key={cell.id}>
+                                  {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext()
+                                  )}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          ))}
+                        {table
+                          .getRowModel()
+                          .rows.slice(
+                            table.getRowModel().rows.length - 4,
+                            table.getRowModel().rows.length
+                          )
+                          .map((row) => (
+                            <TableRow
+                              key={row.id}
+                              data-state={row.getIsSelected() && "selected"}
+                              locked={true}
+                            >
+                              {row.getVisibleCells().map((cell) => (
+                                <TableCell key={cell.id}>
+                                  {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext()
+                                  )}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          ))}
+                      </>
+                    ) : (
+                      table.getRowModel().rows.map((row) => (
+                        <TableRow
+                          key={row.id}
+                          data-state={row.getIsSelected() && "selected"}
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <TableCell key={cell.id}>
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))
+                    )}
+                  </>
                 ) : (
                   <TableRow>
                     <TableCell
@@ -218,6 +297,27 @@ const TableView = ({
                     </TableCell>
                   </TableRow>
                 )}
+                {isDemo &&
+                  table.getState().pagination.pageIndex + 1 ==
+                    table.getPageCount() && (
+                    <div className="absolute rounded-md border z-40 bottom-10 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:grid h-fit w-full max-w-lg scale-100  gap-4 bg-background p-6 opacity-100 shadow-lg   md:w-full">
+                      <div className="flex flex-col space-y-2 text-center sm:text-left items-center">
+                        <h1 className="text-lg font-semibold">
+                          Want access to over 1000+ accounts?
+                        </h1>
+                        <p className="text-sm text-muted-foreground">
+                          Upgrade to premium to access our full database of
+                          accounts.
+                        </p>
+                        <LinkButton
+                          href={"/settings/upgrade"}
+                          className="w-fit mt-4"
+                        >
+                          Upgrade
+                        </LinkButton>
+                      </div>
+                    </div>
+                  )}
               </TableBody>
             </Table>
           </div>
@@ -229,3 +329,7 @@ const TableView = ({
 };
 
 export default TableView;
+
+const DemoTable = ({ table }: { table: typeof Table }) => {
+  return <></>;
+};
