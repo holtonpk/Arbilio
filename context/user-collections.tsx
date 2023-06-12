@@ -89,7 +89,7 @@ export const UserCollectionProvider = ({
         const unsubscribe = onSnapshot(docRef, async (docSnapshot) => {
           if (docSnapshot.exists()) {
             const { ids } = docSnapshot.data();
-            let first3 = undefined;
+            let first3: any = undefined;
             if (ids.length > 0) {
               const q = query(
                 collection(db, storage.accounts),
