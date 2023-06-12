@@ -14,9 +14,9 @@ export default function Loading() {
         <div className="w-full md:container  pt-6  flex flex-col min-h-screen items-center  ">
           <div className="flex flex-col gap-4 w-full">
             <div className="lg:grid-cols-3 w-full gap-4 hidden lg:grid  ">
-              <Skeleton className="w-full h-[300px]" />
-              <Skeleton className="w-full h-[300px]" />
-              <Skeleton className="w-full h-[300px]" />
+              <Skeleton className="w-full h-[200px]" />
+              <Skeleton className="w-full h-[200px]" />
+              <Skeleton className="w-full h-[200px]" />
             </div>
             <div className="flex flex-row justify-between">
               <Skeleton className="h-[40px] w-1/2" />
