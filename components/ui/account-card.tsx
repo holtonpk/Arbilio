@@ -177,7 +177,9 @@ const ProductDisplay = ({ productId }: { productId: string }) => {
         </div>
       ) : (
         <>
-          <Skeleton className="h-[40px] w-[100%]" />
+          <div className="grid  relative  items-center rounded-md p-1 ">
+            <Skeleton className="h-[36px] w-[100%]" />
+          </div>
         </>
       )}
     </>
