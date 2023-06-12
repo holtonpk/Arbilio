@@ -38,7 +38,7 @@ export default async function handler(
     const topPost = record.topPosts[0];
     const topPostRecord = await getDoc(doc(db, storage.posts, topPost));
     const topPostData = topPostRecord.data();
-    let productData = null;
+    let productData: any = null;
     if (record.product) {
       const productRef = doc(db, storage.products, record.product);
       const productInfo = await getDoc(productRef);

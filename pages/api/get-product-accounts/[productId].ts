@@ -21,7 +21,7 @@ export default async function handler(
 
   const formattedData = docs.docs.map(async (_doc) => {
     const record = _doc.data();
-    let topPostsData = undefined;
+    let topPostsData: any = undefined;
 
     if (record?.topPosts) {
       const topPosts = record?.topPosts.map(async (post: any) => {

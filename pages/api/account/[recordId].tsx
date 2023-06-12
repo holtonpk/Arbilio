@@ -12,8 +12,8 @@ export default async function handler(
   const document = await getDoc(doc(db, storage.accounts, recordId));
   const record = document.data();
 
-  let productData = null;
-  let topPostsData = null;
+  let productData: any = null;
+  let topPostsData: any = null;
 
   if (record?.product) {
     const productRef = doc(db, storage.products, record?.product);
