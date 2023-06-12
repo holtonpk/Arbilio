@@ -37,7 +37,7 @@ const HeroText: React.FC = () => {
           <LinkButton
             size="lg"
             variant={"default"}
-            href="/#pricing"
+            href="/pricing"
             className="w-full md:w-fit whitespace-nowrap  shadow-lg"
           >
             View Pricing

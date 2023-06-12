@@ -11,6 +11,13 @@ import { MobileDashboardNav } from "@/components/nav/mobile-dashboard-nav";
 import { LinkButton } from "@/components/ui/link";
 import { UserProductTrackProvider } from "@/context/user-product-track";
 import { UpSaleBanner } from "@/components/upsale-banner";
+import { constructMetadata } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
+
+export const metadata = constructMetadata({
+  title: `Dashboard - ${siteConfig.name}`,
+});
+
 export default function Layout({ children }: { children: ReactElement }) {
   return (
     <AuthProvider>

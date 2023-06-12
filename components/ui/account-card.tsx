@@ -16,6 +16,19 @@ export const AccountCard = ({
   item: AccountDataType;
   locked?: boolean;
 }) => {
+  React.useEffect(() => {
+    const getVideo = async () => {
+      if (!item?.topPosts) return;
+
+      const topPostData = item?.topPosts.map(async (post) => {
+        const postId = post;
+        const res = await fetch(`${siteConfig.url}/api/post/${postId}`);
+        const data = await res.json();
+        return data;
+      });
+    };
+  }, [item]);
+
   return (
     <div className="h-full relative group ">
       <div

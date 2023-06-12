@@ -79,6 +79,8 @@ const GridView = ({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  // Fetch the data from the server
+
   return (
     <>
       <div className="flex md:flex-row flex-col gap-2 w-full ">

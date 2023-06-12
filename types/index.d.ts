@@ -9,12 +9,16 @@ export interface FilterList {
 
 export type SiteConfig = {
   name: string;
+  title: string;
   description: string;
   url: string;
-  ogImage: string;
+  logo: string;
   links: {
     twitter: string;
     github: string;
+  };
+  contact: {
+    email: string;
   };
 };
 

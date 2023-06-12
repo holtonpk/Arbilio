@@ -8,23 +8,26 @@ import { siteConfig } from "@/config/site";
 import Skeleton from "@/components/ui/skeleton";
 
 interface PostViewProps {
-  // video: PostType;
+  preFetchedVideo?: PostType;
   postId: string;
   accountData: AccountDataType;
 }
 
-const PostView = ({ postId, accountData }: PostViewProps) => {
+const PostView = ({ postId, accountData, preFetchedVideo }: PostViewProps) => {
   const [showPlayer, setShowPlayer] = React.useState(false);
-  const [video, setVideo] = React.useState<PostType>();
+  const [video, setVideo] = React.useState<PostType | undefined>(
+    preFetchedVideo
+  );
 
   React.useEffect(() => {
+    if (video) return;
     const getVideo = async () => {
       const res = await fetch(`${siteConfig.url}/api/post/${postId}`);
       const data = await res.json();
       setVideo(data);
     };
     getVideo();
-  }, [postId]);
+  }, [postId, video]);
 
   return (
     <>

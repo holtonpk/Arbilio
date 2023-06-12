@@ -1,4 +1,3 @@
-"use client";
 import HeroText from "@/app/(marketing)/hero-text";
 import HeroHeader from "@/app/(marketing)/hero-header";
 import Discover from "@/app/(marketing)//discover";
@@ -7,6 +6,10 @@ import Sell from "@/app/(marketing)/sell";
 import Testimonials from "@/app/(marketing)/testimonials";
 import Background from "@/components/background";
 import Pricing from "@/app/(marketing)/plans";
+import { constructMetadata } from "@/lib/utils";
+
+export const metadata = constructMetadata({});
+
 export default async function IndexPage() {
   return (
     <>

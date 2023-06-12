@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 import { FilterList } from "@/types";
+import { siteConfig } from "@/config/site";
 
 export function formatDate(timestamp: number): string {
   const date = new Date(timestamp);
@@ -340,3 +341,48 @@ export const formatDataAsPercentChange = (accountData: any) => {
     return formattedData;
   }, []);
 };
+
+export function absoluteUrl(path: string) {
+  return `${siteConfig.url}${path}`;
+}
+
+import { Metadata } from "next";
+
+export function constructMetadata({
+  title = siteConfig.title,
+  description = siteConfig.description,
+  image = siteConfig.logo,
+}: {
+  title?: string;
+  description?: string;
+  image?: string;
+}): Metadata {
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [
+        {
+          url: image,
+        },
+      ],
+    },
+    // twitter: {
+    //   card: "summary_large_image",
+    //   title,
+    //   description,
+    //   images: [image],
+    //   creator: "@dubdotsh",
+    // },
+    icons: {
+      icon: "image/favicon.ico",
+      shortcut: "image/favicon-16x16.png",
+      apple: "image/apple-touch-icon.png",
+    },
+
+    metadataBase: new URL("https://dub.sh"),
+    themeColor: "#FFF",
+  };
+}
