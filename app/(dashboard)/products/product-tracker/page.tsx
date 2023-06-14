@@ -11,12 +11,11 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder";
 import { LinkButton } from "@/components/ui/link";
 import Loading from "./loading";
 export default function ProductTracker() {
-  const { trackedProducts, loading, trackedProductsIds } = useUserData()!;
-  console.log("trackedProducts", trackedProducts, trackedProductsIds, loading);
-
+  const { trackedProducts, trackedProductsIds, trackedProductsLoading } =
+    useUserData()!;
   return (
     <>
-      {loading ? (
+      {trackedProductsLoading ? (
         <Loading />
       ) : (
         <>
