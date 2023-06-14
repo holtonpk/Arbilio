@@ -12,8 +12,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAuth } from "@/context/user-auth";
 
 export const ProductTrackDisplay = () => {
-  //   const { userCollections, loading } = useUserData();
-  const { trackedProducts, unTrackProduct } = useUserData()!;
+  const { trackedProducts } = useUserData()!;
   const { currentUser } = useAuth()!;
 
   const trackLimit = currentUser?.userPlan?.PRODUCT_TRACK_LIMIT;

@@ -12,7 +12,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAuth } from "@/context/user-auth";
 
 export const AccountCollectionDisplay = () => {
-  const { userCollections, loading } = useUserData();
+  const { userCollections } = useUserData();
 
   const { currentUser } = useAuth()!;
 
