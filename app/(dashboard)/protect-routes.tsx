@@ -1,6 +1,6 @@
 "use client";
 import React, { ReactElement } from "react";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { LinkButton } from "@/components/ui/link";
 
 const ProtectedRoutes = ({ children }: { children: ReactElement }) => {

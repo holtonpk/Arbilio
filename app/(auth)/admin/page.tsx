@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { db } from "@/context/Auth";
+import { db } from "@/context/user-auth";
 import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import AccountManage from "./account-manage";
 import DataScrape from "./data-scrape";

@@ -247,6 +247,7 @@ export interface Product {
   id: string;
   name: string;
   description: string;
+  icon: string;
   monthly_price: Price;
   annual_price: Price;
   features: feature[];

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useDropzone } from "react-dropzone";
 import { Icons } from "@/components/icons";
-import { db } from "@/context/Auth";
+import { db } from "@/context/user-auth";
 import { downloadImageAndUploadToFirebase } from "./data-scrape";
 import { storage } from "@/config/data-storage";
 import {

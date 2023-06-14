@@ -6,19 +6,24 @@ import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/header";
 import { siteConfig } from "@/config/site";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/user-auth";
+import { manageSubscription } from "@/stripe/createCheckoutSession";
+
 const SettingsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const stripe = require("stripe")(
-    "sk_test_51KsFpgEewcpAM4MfqUhXKeEnFfdHkN0Btxdxi4pLQzB45cOWyGtk1ujQsZWfT5RIOcijIZqyIrUpeVfJtGxHuMmz00rGEWP0qm"
-  );
+
+  const { currentUser } = useAuth()!;
+
   const ManageSub = async () => {
+    if (!currentUser) return;
     setIsLoading(true);
-    const session = await stripe.billingPortal.sessions.create({
-      customer: "cus_Ns5BZPlhGnvG7w",
-      return_url: `${siteConfig.url}/settings`,
-    });
-    router.push(session.url);
+    const manageLink = await manageSubscription(
+      currentUser.stripeId,
+      "settings"
+    );
+    router.push(manageLink);
+    setIsLoading(false);
   };
   return (
     <>

@@ -4,7 +4,7 @@ import DisplaySelector from "@/components/display-selector";
 import { Icons } from "@/components/icons";
 import { accountDatabaseConfig } from "@/config/dashboard";
 import { Button } from "@/components/ui/button";
-import { AccountCard } from "@/components/ui/account-card";
+import { AccountCard } from "@/components/account-card";
 import { columns } from "./columns";
 import { Input } from "@/components/ui/input";
 import {

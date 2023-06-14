@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { useAuth } from "@/context/Auth";
-import { db } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
+import { db } from "@/context/user-auth";
 import { collection, addDoc } from "firebase/firestore";
 import { toast } from "../ui/use-toast";
 

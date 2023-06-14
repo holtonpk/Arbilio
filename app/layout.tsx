@@ -3,7 +3,7 @@ import "@/styles/animations.css";
 import "@/styles/skeletonStyle.css";
 import "@/styles/mdx.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AuthProvider } from "@/context/Auth";
+import { AuthProvider } from "@/context/user-auth";
 import { siteConfig } from "@/config/site";
 import Head from "next/head";
 

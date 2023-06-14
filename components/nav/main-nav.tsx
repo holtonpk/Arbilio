@@ -7,6 +7,7 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "@/components/nav/mobile-main-nav";
 import { Icons } from "@/components/icons";
+import Image from "next/image";
 
 interface MainNavProps {
   items?: MainNavItem[];
@@ -20,11 +21,18 @@ export function MainNav({ items, children }: MainNavProps) {
   return (
     <div className="flex justify-between md:justify-start w-full items-center sticky  md:gap-10 ">
       <Link href="/" className=" items-center space-x-2 flex w-fit">
-        <span className="text-2xl p-2 text-primary font-bold inline-block ">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600">
+        <span className="text-2xl p-2 text-primary font-bold  flex items-center ">
+          <div className="h-8 w-8 relative">
+            <Image
+              src="/image/circleLogo.png"
+              alt="logo"
+              fill
+              objectFit="contain"
+            />
+          </div>
+          <span className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-[#F66896] to-[#7640DF]">
             {siteConfig.name}
           </span>
-          .io
         </span>
       </Link>
       {items?.length ? (

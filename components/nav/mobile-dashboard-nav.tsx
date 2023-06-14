@@ -11,7 +11,7 @@ import { dashboardNavigation } from "@/config/dashboard";
 import { SideNavRoute, Links } from "@/types";
 import { Button } from "../ui/button";
 import { siteConfig } from "@/config/site";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { Plans } from "@/config/plans";
 
 export function MobileDashboardNav() {

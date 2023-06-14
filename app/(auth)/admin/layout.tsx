@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/context/Auth";
+import { AuthProvider } from "@/context/user-auth";
 import UserAdmin from "./is-user-admin";
 interface AuthLayoutProps {
   children: React.ReactElement;

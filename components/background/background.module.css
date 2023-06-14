@@ -38,7 +38,6 @@
 
 .content {
   height: fit-content;
-  z-index: 3;
   width: 100%;
   max-width: 800px;
   background-image: radial-gradient(

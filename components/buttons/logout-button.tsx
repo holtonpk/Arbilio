@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { useRouter } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { VariantProps } from "class-variance-authority";

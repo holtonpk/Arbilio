@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useUserCollections } from "@/context/user-collections";
+import { useUserData } from "@/context/user-data";
 import {
   Dialog,
   DialogContent,
@@ -36,7 +36,7 @@ export function UpdateCollectionButton({
 }: UpdateCollectionButtonProps) {
   const [showModal, setShowModal] = React.useState<boolean>(false);
 
-  const { userCollections } = useUserCollections();
+  const { userCollections } = useUserData();
 
   const [createNewCollection, setCreateNewCollection] =
     React.useState<boolean>(false);
@@ -92,8 +92,8 @@ const NewCollections = ({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const nameRef = React.useRef<HTMLInputElement>(null);
 
-  // const { createCollection } = useUserCollections();
-  const { createCollection, addIdToMultipleCollections } = useUserCollections();
+  // const { createCollection } = useUserData();
+  const { createCollection, addIdToMultipleCollections } = useUserData();
 
   async function handleCreateCollection() {
     setIsLoading(true);
@@ -186,7 +186,7 @@ const UpdateDialog = ({
     addIdToMultipleCollections,
     findCollectionsContainingId,
     removeIdFromMultipleCollections,
-  } = useUserCollections();
+  } = useUserData();
 
   React.useEffect(() => {
     async function fetchActiveCollections() {

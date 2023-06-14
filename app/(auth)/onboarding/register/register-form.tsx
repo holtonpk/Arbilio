@@ -7,7 +7,7 @@ import { createUserSchema } from "@/lib/validations/auth";
 import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import * as z from "zod";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Icons } from "@/components/icons";
 import { useRouter } from "next/navigation";
@@ -36,7 +36,7 @@ const RegisterForm = () => {
       data.password
     );
     if (createAccountResult?.success) {
-      // router.push("/onboarding/plan");
+      router.push("/onboarding/plan");
     }
     if (createAccountResult?.error === "auth/email-already-in-use") {
       setError("email", {

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useUserCollections } from "@/context/user-collections";
+import { useUserData } from "@/context/user-data";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -77,9 +77,9 @@ const UpdateDialog = ({
     addIdToMultipleCollections,
     findCollectionsContainingId,
     removeIdFromMultipleCollections,
-  } = useUserCollections();
+  } = useUserData();
 
-  const { userCollections } = useUserCollections();
+  const { userCollections } = useUserData();
 
   async function handleUpdateCollection() {
     setIsLoading(true);

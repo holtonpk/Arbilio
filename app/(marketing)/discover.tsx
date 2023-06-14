@@ -15,14 +15,16 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { FeatureCard } from "./analyze";
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
+
 const Discover = () => {
   return (
     <section id="discover" className="flex flex-col items-center ">
       <HeroHeader
-        gradient="bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600"
-        lineColor=" from-fuchsia-600"
-        lineHeight="h-[100px]"
+        gradient="bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400"
+        lineColor=" from-sky-500 "
+        lineHeight="h-[300px]"
         number="1"
         title="Discover"
         subtitle="Explore 500+ active sellers"
@@ -38,10 +40,10 @@ const Discover = () => {
           <span className="h-4 w-4 border rounded-full border-accent" />
           <span className="w-[1px] h-[180px] bg-accent border-accent " />
         </div>
-        <div className=" lg:w-full w-[80%] mx-auto lg:mx-0 h-[500px] sm:h-[600px]   lg:h-[600px]  md:h-[600px] relative">
+        <div className=" lg:w-full w-[80%] mx-auto lg:mx-0 h-[500px] sm:h-[600px]   lg:h-[600px]  md:h-[600px] relative ">
           <div className="lg:w-[80%] w-[95%]  max-h-[400px] relative aspect-[1.2/1] md:aspect-[1.4/1] rounded  ">
             <div className="absolute w-full h-full blur-[20px] opacity-10 bg-primary"></div>
-            <div className="relative z-10 w-full h-full rounded-md overflow-hidden bg-background">
+            <div className="relative z-10 w-full h-full rounded-md overflow-hidden bg-primary/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur">
               <div className="top-0 h-10 border-b relative">
                 <div className="flex gap-2 w-fit top-0 left-0 p-3">
                   <span className="h-3 w-3 rounded-full bg-red-500"></span>
@@ -82,8 +84,8 @@ const Discover = () => {
 
           <div className="lg:w-[80%] w-[95%] z-20  relative h-fit    rounded   lg:translate-x-[20%] translate-x-[5%] sm:-translate-y-[40%]   -translate-y-[20%] bg-background  ">
             <div className="absolute w-full h-full blur-[20px] opacity-10 bg-primary" />
-            <div className="relative w-full h-full z-20 bg-background rounded-md overflow-hidden pb-4">
-              <div className="top-0 h-10 border-b relative">
+            <div className="relative w-full h-full z-20  rounded-md overflow-hidden  ">
+              <div className="top-0 h-10 border-b relative bg-background/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur">
                 <div className="flex gap-2 w-fit top-0 left-0 p-3">
                   <span className="h-3 w-3 rounded-full bg-red-500"></span>
                   <span className="h-3 w-3 rounded-full bg-yellow-400"></span>
@@ -97,12 +99,21 @@ const Discover = () => {
                   <Icons.rotate className="h-3 w-3  absolute right-2 top-1/2 -translate-y-1/2" />
                 </div>
               </div>
-              <div className="h-full w-full p-4 relative">
+              <div className="h-full w-full p-4 relative bg-background">
                 <div className="flex w-full gap-4">
-                  <span className="lg:h-20 lg:w-20 h-16 w-16 bg-muted rounded-md "></span>
-                  <div className="flex flex-col w-[60%] gap-4">
-                    <div className="w-1/2 h-6 rounded-md bg-muted"></div>
-                    <div className="w-10 h-6 rounded-md bg-muted"></div>
+                  <span className=" h-16 w-16 bg-muted rounded-md relative overflow-hidden border">
+                    <Image
+                      src="/image/account-avatar.webp"
+                      alt="img"
+                      fill
+                      objectFit="contain"
+                    />
+                  </span>
+                  <div className="flex flex-col ">
+                    <h1 className=" rounded-md text-lg ">Juice-O-Matic</h1>
+                    <h2 className=" rounded-md text-muted-foreground">
+                      @juice.o.matic
+                    </h2>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 mt-4 relative">

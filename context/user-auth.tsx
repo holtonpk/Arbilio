@@ -32,7 +32,7 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-import { Plans } from "@/config/plans";
+import { PlansType, Plans } from "@/config/plans";
 
 interface AuthContextType {
   currentUser: UserData | undefined;
@@ -62,11 +62,12 @@ export function useAuth() {
 
 export const db = getFirestore(app);
 
-interface UserData extends FirebaseUser {
+export interface UserData extends FirebaseUser {
   firstName: string;
   lastName: string;
   photoURL: string;
-  userPlan: Plans | undefined;
+  stripeId: string;
+  userPlan: PlansType | undefined;
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -325,12 +326,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const userData = userSnap.data();
         await auth.currentUser?.getIdToken(true);
         const decodedToken = await auth.currentUser?.getIdTokenResult();
+        console.log("decodedToken", decodedToken?.claims?.stripeRole);
+
         setCurrentUser({
           ...user,
           firstName: userData?.firstName,
           lastName: userData?.lastName,
           photoURL: userData?.photoURL,
-          userPlan: decodedToken?.claims?.stripeRole,
+          stripeId: userData?.stripeId,
+          // userPlan: Plans[1],
+          userPlan: Plans[decodedToken?.claims?.stripeRole],
         });
       }
       setLoading(false);

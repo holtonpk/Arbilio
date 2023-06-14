@@ -1,6 +1,6 @@
 "use client";
 import React, { ReactElement, ReactNode } from "react";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { useRouter } from "next/navigation";
 
 const UserSignedIn = ({ children }: { children: ReactElement }) => {

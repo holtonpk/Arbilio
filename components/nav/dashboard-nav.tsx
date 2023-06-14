@@ -6,14 +6,14 @@ import { SideNavRoute, SubRoute as SubRouteType } from "@/types";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { Icons } from "@/components/icons";
 import { AccountInfo } from "@/components/account-preview";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Feedback from "@/components/modals/feedback-modal";
 import { siteConfig } from "@/config/site";
-import { userTiers } from "@/config/plans";
 
+import Image from "next/image";
 const DashboardNav = () => {
   const segment = useSelectedLayoutSegment();
   const [collapseNav, setCollapseNav] = useState(false);
@@ -38,11 +38,18 @@ const DashboardNav = () => {
     <div className="md:block hidden">
       <div className="w-screen h-20  justify-between px-6 z-40 relative flex">
         <Link href="/" className=" items-center space-x-2 flex w-fit">
-          <span className="text-2xl p-2 text-primary font-bold inline-block ">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600">
+          <span className="text-2xl p-2 text-primary font-bold  flex items-center ">
+            <div className="h-8 w-8 relative">
+              <Image
+                src="/image/circleLogo.png"
+                alt="logo"
+                fill
+                objectFit="contain"
+              />
+            </div>
+            <span className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-[#F66896] to-[#7640DF]">
               {siteConfig.name}
             </span>
-            .io
           </span>
         </Link>
         <div className="w-fit flex gap-4 items-center relative">
@@ -72,7 +79,7 @@ const DashboardNav = () => {
       <span className={` h-12  w-screen ${collapseNav ? "block" : "hidden"}`} />
 
       <nav
-        className={` px-4  w-screen z-[35]  h-12 bg-background  pb-[6px]  left-0 
+        className={` px-4  w-screen z-[35]  h-12 bg-background  flex items-center  left-0 
       ${
         collapseNav
           ? "fixed top-0  z-[45] shadow-sm dark:border-b"
@@ -82,18 +89,15 @@ const DashboardNav = () => {
       >
         <div
           id="row"
-          className={` flex items-center gap-2 transition-all justify-end duration-[500ms] 
-          ${collapseNav ? "w-[675px]" : "w-[555px]"}
+          className={`h-fit  flex items-center  transition-all justify-end duration-[800ms] 
+          ${collapseNav ? "w-[590px]" : "w-[555px]"}
           `}
         >
           {collapseNav ? (
             <Link href="/" className=" items-center space-x-2 flex fade-in2">
-              <span className="text-lg p-2 text-primary font-bold inline-block ">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                  {siteConfig.name}
-                </span>
-                .io
-              </span>
+              <div className="h-8 w-8 relative">
+                <Image src="/image/circleLogo.png" alt="logo" fill />
+              </div>
             </Link>
           ) : null}
 
@@ -228,13 +232,13 @@ const SubRoute = ({
         <li className="row-span-3">
           <NavigationMenuLink asChild>
             <a
-              className={`flex h-full text-primary gap- w-full select-none flex-col justify-end rounded-md bg-muted/40 hover:bg-muted {bgGradient} p-6 no-underline outline-none focus:shadow-md`}
+              className={`flex h-full text-primary gap- w-full select-none flex-col justify-end rounded-md  hover:bg-muted {bgGradient} p-6 no-underline outline-none focus:shadow-md`}
               href={href}
             >
-              <div className="p-2 rounded-md bg-theme-blue text-primary w-fit  flex justify-center items-center">
-                <Icon className="h-5 w-6 text-white" />
+              <div className="p-2 rounded-md bg-muted border-accent text-muted-foreground w-fit  flex justify-center items-center">
+                <Icon className="h-5 w-6 text-theme-blue" />
               </div>
-              <div className=" text-lg font-medium text-primary ">
+              <div className=" text-lg font-medium text-theme-blue ">
                 {item.title}
               </div>
               <p className="text-sm leading-tight  text-primary">
@@ -247,7 +251,7 @@ const SubRoute = ({
         <NavigationMenuLink asChild>
           <a
             href={href}
-            className={`grid grid-cols-[20px_1fr] gap-6 items-start hover:bg-muted p-2 rounded-md relative
+            className={`grid  gap-6 items-start hover:bg-muted p-2 rounded-md relative
             ${item.disabled && "cursor-not-allowed  pointer-events-none"}
             `}
           >
@@ -256,11 +260,11 @@ const SubRoute = ({
                 Coming soon
               </div>
             )} */}
-            <div className="p-2 rounded-md bg-theme-blue text-primary w-fit text-white  flex justify-center items-center">
+            {/* <div className="p-2 rounded-md bg-muted border-accent  text-muted-foreground w-fit   flex justify-center items-center">
               <Icon className="h-5 w-5" />
-            </div>
+            </div> */}
             <div className="grid items-start text-left gap-1">
-              <div className="text-sm font-medium leading-none text-primary flex items-center gap-2 ">
+              <div className="text-sm font-medium text-theme-blue leading-none  flex items-center gap-2 ">
                 {item.title}
                 {item.disabled && (
                   <div className="border p-1 opacity-100 w-fit  rounded-md text-[8px] leading-[8px] text-theme-blue border-theme-blue">

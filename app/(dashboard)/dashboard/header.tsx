@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 
 export const Header = () => {
   function getTimeOfDay() {
@@ -21,13 +21,16 @@ export const Header = () => {
     <div className="flex items-center justify-between  mb-4 ">
       <div className="grid gap-1  container">
         <div className="flex items-center">
-          <span className="font-heading text-3xl md:text-4xl flex gap-2 ">
-            {`Good ${getTimeOfDay()},`}
-            <p className="bg-gradient-to-r whitespace-nowrap font-bold capitalize to-amber-400 via-orange-500  from-red-500 bg-clip-text text-transparent">
-              {(currentUser?.firstName && currentUser?.firstName) || ""}
-            </p>
+          <span className="font-heading text-3xl md:text-4xl flex gap-2 font-bold">
+            {/* {`Good ${getTimeOfDay()},`} */}
+            Dashboard
           </span>
         </div>
+        <p className="text-lg  flex ">
+          Welcome back,{" "}
+          {(currentUser?.firstName && currentUser?.firstName) || ""} this is
+          your dashboard.
+        </p>
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ import {
 
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
-import { useUserProductTrack } from "@/context/user-product-track";
+import { useUserData } from "@/context/user-data";
 
 interface RemoveTrackProductButtonProps extends ButtonProps {
   id: string;
@@ -33,7 +33,7 @@ export function RemoveTrackProductButton({
 }: RemoveTrackProductButtonProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
-  const { unTrackProduct } = useUserProductTrack();
+  const { unTrackProduct } = useUserData();
 
   const handleRemove = async () => {
     setIsDeleteLoading(true);

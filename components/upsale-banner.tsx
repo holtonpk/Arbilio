@@ -1,14 +1,15 @@
 "use client";
 import { ReactElement } from "react";
 import { LinkButton } from "@/components/ui/link";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { useLockBody } from "@/lib/hooks/use-lock-body";
-import { userTiers } from "@/config/plans";
 
 export const UpSaleBanner = () => {
   const { currentUser } = useAuth()!;
 
-  if (currentUser?.userPlan && userTiers[currentUser?.userPlan] <= 1) {
+  console.log("=============>", currentUser?.userPlan?.tier);
+
+  if (currentUser?.userPlan && currentUser?.userPlan?.tier < 2) {
     return (
       <div className="w-full h-fit hidden md:flex bg-gradient-to-r text-white from-indigo-500 via-purple-500 to-pink-500  items-center gap-3 justify-center p-1">
         Want access to more features? Upgrade to Pro

@@ -5,16 +5,20 @@ import { Icons } from "@/components/icons";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
 import Tooltip from "@/components/ui/tooltip";
 import { LinkButton } from "@/components/ui/link";
-import { useUserProductTrack } from "@/context/user-product-track";
+import { useUserData } from "@/context/user-data";
 import { RemoveTrackProductButton } from "@/components/buttons/remove-track-product-button";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAuth } from "@/context/user-auth";
 
 export const ProductTrackDisplay = () => {
-  //   const { userCollections, loading } = useUserCollections();
-  const { trackedProducts, unTrackProduct } = useUserProductTrack()!;
+  //   const { userCollections, loading } = useUserData();
+  const { trackedProducts, unTrackProduct } = useUserData()!;
+  const { currentUser } = useAuth()!;
 
-  const TRACK_LIMIT = 3;
+  const trackLimit = currentUser?.userPlan?.PRODUCT_TRACK_LIMIT;
+
+  // const TRACK_LIMIT = 3;
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -35,12 +39,16 @@ export const ProductTrackDisplay = () => {
                   </div>
                 </Tooltip>
               </div>
-              <div className="absolute top-3 right-3 text-xl font-bold text-primary flex items-center w-fit ">
-                {trackedProducts?.length || 0}
-                <h2 className="text-muted-foreground text-sm ">
-                  /{TRACK_LIMIT}
-                </h2>
-              </div>
+              {trackLimit &&
+                !trackLimit.unlimited &&
+                trackLimit.totalCredits > 0 && (
+                  <div className="absolute top-3 right-3 text-xl font-bold text-primary flex items-center w-fit ">
+                    {trackedProducts?.length || 0}
+                    <h2 className="text-muted-foreground text-sm ">
+                      /{trackLimit?.totalCredits}
+                    </h2>
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -94,8 +102,9 @@ export const ProductTrackDisplay = () => {
         )}
       </div>
       {trackedProducts &&
+        trackLimit &&
         trackedProducts?.length > 0 &&
-        trackedProducts?.length < TRACK_LIMIT && (
+        trackedProducts?.length < trackLimit.totalCredits && (
           <LinkButton
             variant="outline"
             href={"/products/product-database"}

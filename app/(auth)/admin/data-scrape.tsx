@@ -11,7 +11,7 @@ import { Transition, Listbox } from "@headlessui/react";
 import { timeSince, convertImageToFile } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { db } from "@/context/Auth";
+import { db } from "@/context/user-auth";
 import {
   getStorage,
   ref,

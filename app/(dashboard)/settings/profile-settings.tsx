@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { Icons } from "@/components/icons";
 import { toast } from "@/components/ui/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";

@@ -5,7 +5,7 @@ import { AccountCollectionDisplay } from "@/app/(dashboard)/dashboard/account-co
 import { ProductTrackDisplay } from "@/app/(dashboard)/dashboard/product-track-display";
 import { siteConfig } from "@/config/site";
 import Loading from "./loading";
-
+import { PageHeader } from "@/components/header";
 async function getData() {
   const res = await fetch(`${siteConfig.url}/api/trending-posts`, {
     cache: "no-store",
@@ -19,13 +19,21 @@ export default async function Dashboard() {
 
   return (
     <>
+      {/* <PageHeader
+        heading="Welcome Back, Patrick"
+        text={
+          "Track your products and get notified when ae new post or account is found"
+        }
+      /> */}
       <Header />
-      <div className="grid  gap-4 container max-w-screen overflow-hidden ">
-        <div className="flex flex-col gap-4 w-full overflow-hidden">
-          <TrendingPosts posts={data} />
-          <div className="grid md:grid-cols-2 gap-8 max-w-full mt-4 pb-10">
-            <AccountCollectionDisplay />
-            <ProductTrackDisplay />
+      <div className="w-full ">
+        <div className="grid  gap-4  container max-w-screen overflow-hidden ">
+          <div className="flex flex-col gap-4 w-full overflow-hidden">
+            <TrendingPosts posts={data} />
+            <div className="grid md:grid-cols-2 gap-8 max-w-full mt-4 pb-10">
+              <AccountCollectionDisplay />
+              <ProductTrackDisplay />
+            </div>
           </div>
         </div>
       </div>

@@ -1,32 +1,50 @@
 "use client";
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { CollectionType } from "@/types";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import {
-  onSnapshot,
-  DocumentReference,
-  limit,
-  where,
   collection,
   doc,
-  setDoc,
   getDoc,
-  addDoc,
   updateDoc,
-  deleteDoc,
-  query,
   getDocs,
+  onSnapshot,
+  query,
+  where,
+  Timestamp,
+  DocumentReference,
+  limit,
+  setDoc,
+  addDoc,
+  deleteDoc,
   arrayUnion,
   arrayRemove,
   QuerySnapshot,
   DocumentData,
 } from "firebase/firestore";
-import { db } from "@/context/Auth";
+import { db } from "@/context/user-auth";
 import { storage } from "@/config/data-storage";
+import { ProductType, AccountDataType } from "@/types";
+import { siteConfig } from "@/config/site";
+import { set } from "date-fns";
 
-interface CollectionContextType {
+type ProductDatabaseSearches = {
+  timestamps: Timestamp[];
+  total: number;
+};
+
+interface UserDataContextType {
+  trackedProducts: ProductType[] | undefined;
+  trackedProductsIds: string[] | undefined;
+  productDataBaseSearches: ProductDatabaseSearches | undefined;
+  addProductDatabaseSearch: () => Promise<any>;
+  fetchTrackedProducts: () => Promise<{ success: string[] } | { error: any }>;
+  trackProduct: (id: string) => Promise<{ success: any } | { error: any }>;
+  unTrackProduct: (id: string) => Promise<{ success: any } | { error: any }>;
+  trackedProductsLoading: boolean;
+  setTrackedProductsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   userCollections: CollectionType[] | undefined;
-  loading: boolean;
+  userCollectionsLoading: boolean;
   getAccountCollectionById: (id: string) => Promise<CollectionType | null>;
   createCollection: (
     collectionName: string,
@@ -57,29 +75,194 @@ interface CollectionContextType {
   ) => Promise<{ data: string[]; error: any | null }>;
 }
 
-const UserCollectionContext = createContext<CollectionContextType | null>(null);
-export const useUserCollections = () => {
-  const context = useContext(UserCollectionContext);
+const UserDataContext = createContext<UserDataContextType | null>(null);
+export const useUserData = () => {
+  const context = useContext(UserDataContext);
 
   if (!context) {
-    throw new Error(
-      "useUserCollections must be used within a collection Provider"
-    );
+    throw new Error("useUserData must be used within a collection Provider");
   }
 
   return context;
 };
 
-interface CollectionProviderProps {
-  children: React.ReactNode;
-}
-
-export const UserCollectionProvider = ({
+export const UserDataProvider = ({
   children,
-}: CollectionProviderProps) => {
+}: {
+  children: React.ReactNode;
+}) => {
   const { currentUser } = useAuth()!;
+
+  const [trackedProductsIds, setTrackedProductsIds] = useState<string[]>();
+  const [trackedProducts, setTrackedProducts] = useState<ProductType[]>();
+  const [productDataBaseSearches, setProductDataBaseSearches] =
+    useState<ProductDatabaseSearches>();
+  const [trackedProductsLoading, setTrackedProductsLoading] =
+    useState<boolean>(true);
+
   const [userCollections, setUserCollections] = useState<CollectionType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [userCollectionsLoading, setUserCollectionsLoading] =
+    useState<boolean>(true);
+
+  const PRODUCT_TRACK_CREDITS =
+    currentUser?.userPlan?.PRODUCT_TRACK_LIMIT.totalCredits || 0;
+
+  const COLLECTION_LIMIT_CREDITS =
+    currentUser?.userPlan?.COLLECTION_LIMIT.totalCredits || 0;
+
+  useEffect(() => {
+    if (!currentUser) {
+      setTrackedProductsIds([]);
+      return;
+    }
+    const userRef = doc(db, `${storage.users}/${currentUser.uid}`);
+    const unsubscribe = onSnapshot(userRef, (userSnapshot) => {
+      const userData = userSnapshot.data();
+      const trackedProducts = userData?.trackedProducts || [];
+      setTrackedProductsIds(trackedProducts);
+
+      const productDataBaseSearches = userData?.product_database_searches || [];
+
+      const searches = availableProductDatabaseSearch(
+        productDataBaseSearches.timestamps
+      );
+      console.log("searches", searches);
+      setProductDataBaseSearches(searches);
+    });
+
+    // Clean up the listener when unmounting
+    return () => unsubscribe();
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!trackedProductsIds) return;
+    setTrackedProductsLoading(true);
+    const fetchProductData = async () => {
+      const q = query(
+        collection(db, `${storage.products}`),
+        where("id", "in", trackedProductsIds)
+      );
+      const record = await getDocs(q);
+      const products = record.docs.map(async (doc) => {
+        const accountDataRes = await fetch(
+          `${siteConfig.url}/api/get-product-accounts/${doc.id}`
+        );
+        const accountData: AccountDataType[] = await accountDataRes.json();
+        return {
+          ...doc.data(),
+          accountsData: accountData,
+        };
+      });
+      const productsData = (await Promise.all(products)) as ProductType[];
+
+      setTrackedProducts(productsData);
+      setTrackedProductsLoading(false);
+    };
+
+    setTrackedProductsLoading(true);
+    if (trackedProductsIds.length === 0) {
+      setTrackedProducts([]);
+      setTrackedProductsLoading(false);
+      return;
+    } else {
+      console.log("fetching", trackedProductsIds);
+      fetchProductData();
+    }
+  }, [trackedProductsIds]);
+
+  const fetchTrackedProducts = async (): Promise<
+    { success: string[] } | { error: any }
+  > => {
+    if (!currentUser) return { error: "no user" };
+
+    const userRef = doc(db, `${storage.users}/${currentUser.uid}`);
+    const userSnapshot = await getDoc(userRef);
+    const userData = userSnapshot.data();
+    if (!userData) return { error: "no user data" };
+    const { trackedProducts } = userData;
+
+    return { success: trackedProducts || [] };
+  };
+
+  const unTrackProduct = async (
+    id: string
+  ): Promise<{ success: any } | { error: any }> => {
+    if (!currentUser) return { error: "no user" };
+    const userRef = doc(db, `${storage.users}/${currentUser.uid}`);
+    const userSnapshot = await getDoc(userRef);
+    const userData = userSnapshot.data();
+    if (!userData) return { error: "no user data" };
+    const { trackedProducts } = userData;
+    if (!trackedProducts) return { error: "no product track" };
+    const newProductTrack = trackedProducts.filter(
+      (productId: string) => productId !== id
+    );
+    await updateDoc(userRef, { trackedProducts: newProductTrack });
+    return { success: "updated" };
+  };
+
+  const trackProduct = async (
+    id: string
+  ): Promise<{ success: any } | { error: any }> => {
+    if (!currentUser) return { error: "no user" };
+
+    if (
+      trackedProductsIds &&
+      trackedProductsIds?.length + 1 > PRODUCT_TRACK_CREDITS
+    )
+      return { error: "no-credits" };
+
+    const userRef = doc(db, `${storage.users}/${currentUser.uid}`);
+    const userSnapshot = await getDoc(userRef);
+    const userData = userSnapshot.data();
+    if (!userData) return { error: "no user data" };
+    const { trackedProducts } = userData;
+    if (!trackedProducts) {
+      await updateDoc(userRef, { trackedProducts: [id] });
+      return { success: "updated" };
+    } else {
+      const newProductTrack = [...trackedProducts, id];
+      await updateDoc(userRef, { trackedProducts: newProductTrack });
+
+      return { success: "updated" };
+    }
+  };
+
+  const addProductDatabaseSearch = async (): Promise<any> => {
+    if (!currentUser) return { error: "no user" };
+    const userRef = doc(db, `${storage.users}/${currentUser.uid}`);
+    const timestampList = productDataBaseSearches?.timestamps || [];
+    await updateDoc(userRef, {
+      product_database_searches: {
+        timestamps: [...timestampList, new Date()],
+        total: productDataBaseSearches ? productDataBaseSearches.total + 1 : 1,
+      },
+    });
+  };
+
+  const availableProductDatabaseSearch = (
+    oldTimestamps: Timestamp[]
+  ): ProductDatabaseSearches => {
+    if (!oldTimestamps) return { timestamps: [], total: 0 };
+    // if the timestamps are more than 24 hours old, remove the timestamp from the list
+    console.log("oldTimestamps", oldTimestamps);
+    const timestamps = oldTimestamps.filter((timestamp: Timestamp) => {
+      const timestampDate = timestamp.toDate();
+      const now = new Date();
+      const diff = now.getTime() - timestampDate.getTime();
+      const hours = Math.floor(diff / (10 * 60 * 60));
+      console.log("hours", hours);
+      if (hours > 2400) return false;
+      return true;
+    });
+
+    return {
+      timestamps,
+      total: timestamps.length,
+    };
+  };
+
+  // Account Collections =========================================================
 
   useEffect(() => {
     const collectionUnsubscribes: (() => void)[] = [];
@@ -170,7 +353,7 @@ export const UserCollectionProvider = ({
             )
           );
 
-          setLoading(false);
+          setUserCollectionsLoading(false);
         }
       );
 
@@ -180,7 +363,7 @@ export const UserCollectionProvider = ({
       };
     } else {
       setUserCollections([]);
-      setLoading(false);
+      setUserCollectionsLoading(false);
     }
   }, [currentUser]);
 
@@ -205,6 +388,10 @@ export const UserCollectionProvider = ({
     data: any[]
   ): Promise<{ success: string; docId: string } | { error: any }> => {
     if (!currentUser) return { error: "no user" };
+
+    if (userCollections.length + 1 > COLLECTION_LIMIT_CREDITS)
+      return { error: "no-credits" };
+
     try {
       // Get a reference to the 'collections' collection
       const collectionsRef = collection(db, storage.accountCollections);
@@ -396,8 +583,17 @@ export const UserCollectionProvider = ({
   };
 
   const values = {
+    trackedProducts,
+    trackedProductsIds,
+    productDataBaseSearches,
+    addProductDatabaseSearch,
+    fetchTrackedProducts,
+    trackProduct,
+    unTrackProduct,
+    trackedProductsLoading,
+    setTrackedProductsLoading,
     userCollections,
-    loading,
+    userCollectionsLoading,
     getAccountCollectionById,
     createCollection,
     fetchCollections,
@@ -410,8 +606,8 @@ export const UserCollectionProvider = ({
   };
 
   return (
-    <UserCollectionContext.Provider value={values}>
+    <UserDataContext.Provider value={values}>
       {children}
-    </UserCollectionContext.Provider>
+    </UserDataContext.Provider>
   );
 };

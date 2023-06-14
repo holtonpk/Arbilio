@@ -43,7 +43,7 @@ export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
   // const [expanded, setExpanded] = React.useState<boolean>(false);
 
   return (
-    <div className="rounded-md  max-w-full">
+    <div className="rounded-md  max-w-full border p-4">
       <div className="flex items-center">
         <h1 className="font-bold capitalize text-lg text-primary whitespace-nowrap">
           Trending Posts
@@ -385,7 +385,7 @@ const StatDisplay = ({
         <Tooltip content={`${title} : ${stat.toLocaleString()}`}>
           <div className="flex  w-fit gap-1 items-center">
             <div className="flex items-center justify-center aspect-square w-fit ">
-              <Icon className="h-2 w-2 md:w-3 md:h-3  text-primary fill-primary" />
+              <Icon className="h-2 w-2 md:w-3 md:h-3  text-theme-blue" />
             </div>
             <h2 className="relative w-fit text-[10px] md:text-[12px]">
               {formatNumber(stat)}

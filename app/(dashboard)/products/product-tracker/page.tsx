@@ -6,13 +6,12 @@ import { AccountDataType } from "@/types";
 import { siteConfig } from "@/config/site";
 import { ProductType } from "@/types";
 import { Query } from "firebase/firestore";
-import { useUserProductTrack } from "@/context/user-product-track";
+import { useUserData } from "@/context/user-data";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
 import { LinkButton } from "@/components/ui/link";
 import Loading from "./loading";
 export default function ProductTracker() {
-  const { trackedProducts, loading, trackedProductsIds } =
-    useUserProductTrack()!;
+  const { trackedProducts, loading, trackedProductsIds } = useUserData()!;
   console.log("trackedProducts", trackedProducts, trackedProductsIds, loading);
 
   return (

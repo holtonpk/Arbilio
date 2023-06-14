@@ -50,6 +50,7 @@
     "eslint-config-next": "^13.4.5",
     "firebase": "^9.21.0",
     "firebase-admin": "^11.9.0",
+    "framer-motion": "^10.12.16",
     "fs": "^0.0.1-security",
     "lodash": "^4.17.21",
     "lucide-react": "^0.216.0",

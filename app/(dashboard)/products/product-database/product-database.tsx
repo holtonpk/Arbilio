@@ -3,6 +3,7 @@ import React from "react";
 import { ProductType } from "@/types";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link";
 import { ProductDisplay } from "./product-database-cards";
 import Tooltip from "@/components/ui/tooltip";
 import { categories } from "@/config/categories";
@@ -10,9 +11,21 @@ import { siteConfig } from "@/config/site";
 import { toast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EmptyPlaceholder } from "@/components/empty-placeholder";
+import { useAuth } from "@/context/user-auth";
+import { useUserData } from "@/context/user-data";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const MAX_CATEGORY_SELECTION = 3;
-const AVAILABLE_SEARCH_CREDITS = 4;
 
 const ProductDataBase = () => {
   const [data, setData] = React.useState<ProductType[] | undefined>(undefined);
@@ -21,11 +34,29 @@ const ProductDataBase = () => {
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
+  const [showLimitAlert, setShowLimitAlert] = React.useState<boolean>(false);
+
+  const { currentUser } = useAuth()!;
+
+  // const totalSearches = 4;
+
+  const { productDataBaseSearches, addProductDatabaseSearch } = useUserData()!;
+
+  const credits =
+    currentUser?.userPlan?.DAILY_PRODUCT_SEARCH_LIMIT.totalCredits || 0;
+
   const SearchData = async () => {
+    console.log("productDataBaseSearches", productDataBaseSearches);
+    if (
+      productDataBaseSearches &&
+      productDataBaseSearches.total + 1 > credits
+    ) {
+      setShowLimitAlert(true);
+      return;
+    }
     if (selectedItems.length > 0) {
       setIsLoading(true);
       const queryData: ProductType[] = [];
-
       const getIds = selectedItems.map(async (categoryId) => {
         const res = await fetch(
           `${siteConfig.url}/api/product-database-query/${categoryId}`
@@ -35,6 +66,7 @@ const ProductDataBase = () => {
       });
       const d = await Promise.all(getIds);
       setData(queryData);
+      await addProductDatabaseSearch();
       setIsLoading(false);
     } else {
       toast({
@@ -62,7 +94,10 @@ const ProductDataBase = () => {
                     <Icons.helpCircle className="h-4 w-4 text-gray-600" />
                   </div>
                 </Tooltip>
-                <p className="text-sm text-muted-foreground">{`Available Search credits: ${AVAILABLE_SEARCH_CREDITS}`}</p>
+                <p className="text-sm text-muted-foreground">{`Available Search credits: ${
+                  credits -
+                  (productDataBaseSearches ? productDataBaseSearches?.total : 0)
+                }`}</p>
               </div>
               <Button onClick={() => setData(undefined)}>New Search</Button>
             </div>
@@ -123,12 +158,36 @@ const ProductDataBase = () => {
                     <Icons.helpCircle className="h-4 w-4 text-gray-600" />
                   </div>
                 </Tooltip>
-                <p className="text-sm text-muted-foreground">{`Available Search credits: ${AVAILABLE_SEARCH_CREDITS}`}</p>
+                <p className="text-sm text-muted-foreground">{`Available Search credits: ${
+                  credits -
+                  (productDataBaseSearches ? productDataBaseSearches?.total : 0)
+                }`}</p>
               </div>
             </div>
           </div>
         )}
       </div>
+
+      <AlertDialog open={showLimitAlert} onOpenChange={setShowLimitAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Daily search limit reached</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your current plan only allows you {credits} database searches per
+              day. Upgrade to pro for unlimited searches.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              // onClick={handleDelete}
+              asChild
+            >
+              <LinkButton href="/settings/upgrade">Upgrade to pro</LinkButton>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import TikAPI from "tikapi";
-import { db } from "@/context/Auth";
+import { db } from "@/context/user-auth";
 import {
   getStorage,
   ref,

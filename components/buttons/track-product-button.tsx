@@ -14,13 +14,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useUserProductTrack } from "@/context/user-product-track";
+import { useUserData } from "@/context/user-data";
 import { set } from "date-fns";
 import { ProductType, ProductDataBaseType } from "@/types";
 import Image from "next/image";
 import { tr } from "date-fns/locale";
-
-const TRACK_LIMIT = 3;
+import { useAuth } from "@/context/user-auth";
 
 interface TrackProductButtonProps extends ButtonProps {
   product: ProductType | ProductDataBaseType;
@@ -51,19 +50,18 @@ export const TrackProductButton = ({
   const [showTrackingLimitDialog, setShowTrackingLimitDialog] =
     React.useState<boolean>(false);
 
-  const { trackProduct, trackedProducts, trackedProductsIds } =
-    useUserProductTrack()!;
+  const { trackProduct, trackedProducts, trackedProductsIds } = useUserData()!;
 
-  const handleAddToCollection = async () => {
-    await trackProduct(product.id);
-  };
+  const { currentUser } = useAuth()!;
+
+  const credits = currentUser?.userPlan?.PRODUCT_TRACK_LIMIT.totalCredits || 0;
 
   const handleClick = async () => {
     console.log("trackedProductsIds", trackedProductsIds);
     if (!trackedProductsIds) return;
     if (trackedProductsIds.includes(product.id)) {
       setShowManageModal(true);
-    } else if (trackedProductsIds.length + 1 > TRACK_LIMIT) {
+    } else if (trackedProductsIds.length + 1 > credits) {
       setShowTrackingLimitDialog(true);
     } else {
       handleTrackProduct();
@@ -72,13 +70,26 @@ export const TrackProductButton = ({
 
   const handleTrackProduct = async () => {
     setIsLoading(true);
-    await handleAddToCollection();
-    setShowTrackingLimitDialog(false);
-    setIsLoading(false);
-    toast({
-      title: "Product added to tracking list",
-      description: "You can now track this product in your dashboard.",
-    });
+    const trackedProduct = await trackProduct(product.id);
+    if ("error" in trackedProduct) {
+      if (trackedProduct.error === "no-credits") {
+        setShowTrackingLimitDialog(true);
+      } else {
+        toast({
+          title: "Error adding product to tracking list",
+          description:
+            "There was an error adding this product to your tracking list.",
+          variant: "destructive",
+        });
+      }
+    } else if ("success" in trackedProduct) {
+      setShowTrackingLimitDialog(false);
+      setIsLoading(false);
+      toast({
+        title: "Product added to tracking list",
+        description: "You can now track this product in your dashboard.",
+      });
+    }
   };
 
   useEffect(() => {
@@ -127,8 +138,8 @@ export const TrackProductButton = ({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogDescription className="text-destructive">
-              *You&apos;ve reached your tracking limit. Please remove a product
-              from your list or upgrade.
+              *You&apos;ve reached your tracking limit ({credits}). Please
+              remove a product from your list or upgrade to Pro for unlimited
             </AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -186,7 +197,7 @@ const ProductDisplay = ({
   handleClick?: () => void;
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const { unTrackProduct } = useUserProductTrack()!;
+  const { unTrackProduct } = useUserData()!;
 
   const handleRemoveProduct = async () => {
     setIsLoading(true);

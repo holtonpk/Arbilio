@@ -5,14 +5,15 @@ import Analyze from "@/app/(marketing)/analyze";
 import Sell from "@/app/(marketing)/sell";
 import Testimonials from "@/app/(marketing)/testimonials";
 import Background from "@/components/background";
-import Pricing from "@/app/(marketing)/plans";
+import Pricing from "@/components/plans";
+import FAQ from "@/app/(marketing)/pricing/faq";
 import { constructMetadata } from "@/lib/utils";
-
+import Features from "@/app/(marketing)/features";
 export const metadata = constructMetadata({});
 
 export default async function IndexPage() {
   return (
-    <>
+    <div className="pb-10">
       <div className="container">
         <section className="space-y-6 pb-8 pt-6 md:pb-12  ">
           <HeroText />
@@ -22,10 +23,23 @@ export default async function IndexPage() {
           explore the power of TikDop.io
         </p>
         <Discover />
+        <Features />
         <Analyze />
         <Sell />
-        <Pricing />
       </div>
-    </>
+      <div className=" text-center mx-auto w-full max-w-screen-xl px-2.5 md:px-20">
+        <div id="pricing" className="mx-auto mb-10 sm:max-w-lg">
+          <h2 className="font-display text-4xl font-extrabold text-primary sm:text-5xl">
+            Simple,{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              transparent
+            </span>{" "}
+            pricing.
+          </h2>
+        </div>
+      </div>
+      <Pricing />
+      <FAQ />
+    </div>
   );
 }

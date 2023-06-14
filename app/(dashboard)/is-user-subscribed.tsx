@@ -1,6 +1,6 @@
 "use client";
 import React, { ReactElement, ReactNode } from "react";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { useRouter } from "next/navigation";
 
 const UserSubscribed = ({ children }: { children: ReactElement }) => {
@@ -8,7 +8,8 @@ const UserSubscribed = ({ children }: { children: ReactElement }) => {
   const router = useRouter();
 
   if (!currentUser?.userPlan) {
-    router.push("/onboarding/plan");
+    console.log("no plan", currentUser);
+    // router.push("/onboarding/plan");
   } else {
     return children;
   }

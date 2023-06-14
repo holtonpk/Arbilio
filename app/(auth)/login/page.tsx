@@ -5,6 +5,13 @@ import LoginForm from "./login-form";
 import { Toaster } from "@/components/ui/toaster";
 import { Icons } from "@/components/icons";
 import { LinkButton } from "@/components/ui/link";
+import { siteConfig } from "@/config/site";
+import { constructMetadata } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = constructMetadata({
+  title: `Login - ${siteConfig.name}`,
+});
 
 const Login = () => {
   return (

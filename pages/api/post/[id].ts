@@ -10,7 +10,7 @@ import {
   orderBy,
   startAfter,
 } from "firebase/firestore";
-import { db } from "@/context/Auth";
+import { db } from "@/context/user-auth";
 import { storage } from "@/config/data-storage";
 
 import { PostType } from "@/types";

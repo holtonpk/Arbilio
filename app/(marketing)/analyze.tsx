@@ -8,8 +8,8 @@ const Analyze = () => {
   return (
     <section id="features" className="flex flex-col items-center">
       <HeroHeader
-        gradient="bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400"
-        lineColor="md:to-accent md:from-blue-600 from-sky-500 "
+        gradient="bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600"
+        lineColor="md:to-accent md:from-purple-600 from-fuchsia-600"
         lineHeight="h-[250px]"
         number="2"
         title="Analyze"

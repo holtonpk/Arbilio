@@ -84,11 +84,15 @@ import {
   Flame,
   ArrowRightFromLineIcon,
   Info,
+  Gem,
+  Zap,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  bolt: Zap,
+  gem: Gem,
   info: Info,
   arrowRightFromLine: ArrowRightFromLineIcon,
   flame: Flame,

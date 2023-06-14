@@ -1,6 +1,6 @@
 import Skeleton from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/header";
-import { AccountCardSkeleton } from "@/components/ui/account-card";
+import { AccountCardSkeleton } from "@/components/account-card";
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
   return (

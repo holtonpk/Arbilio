@@ -6,7 +6,7 @@ import ProtectFeature from "@/components/protect-feature";
 
 export default async function ProductDatabase() {
   return (
-    <ProtectFeature planLevel="standard" featureName="Product Database">
+    <ProtectFeature planLevel={1} featureName="Product Database">
       <>
         <PageHeader
           heading="Product Database"

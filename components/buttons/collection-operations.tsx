@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,7 +39,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 import { CollectionType } from "@/types";
-import { useUserCollections } from "@/context/user-collections";
+import { useUserData } from "@/context/user-data";
 
 interface collectionOperationsProps {
   collection: CollectionType;
@@ -57,8 +57,7 @@ export function CollectionOperations({
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
   const [isUpdateLoading, setIsUpdateLoading] = React.useState<boolean>(false);
   const nameRef = React.useRef<HTMLInputElement>(null);
-  const { deleteCollection, updateAccountCollectionName } =
-    useUserCollections();
+  const { deleteCollection, updateAccountCollectionName } = useUserData();
 
   const handleDelete = async () => {
     setIsDeleteLoading(true);

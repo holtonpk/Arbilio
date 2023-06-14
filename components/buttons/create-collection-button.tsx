@@ -9,13 +9,24 @@ import {
   DialogFooter,
   DialogAction,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { buttonVariants, ButtonProps } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
 import { Icons } from "../icons";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-
-import { useUserCollections } from "@/context/user-collections";
+import { useAuth } from "@/context/user-auth";
+import { useUserData } from "@/context/user-data";
 
 interface CreateCollectionButtonProps extends ButtonProps {
   accountArray?: string[];
@@ -32,8 +43,14 @@ export const CreateCollectionButton = ({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const nameRef = React.useRef<HTMLInputElement>(null);
 
-  // const { createCollection } = useUserCollections();
-  const { createCollection, addIdToMultipleCollections } = useUserCollections();
+  const [showLimitAlert, setShowLimitAlert] = React.useState<boolean>(false);
+
+  // const { createCollection } = useUserData();
+  const { createCollection, addIdToMultipleCollections, userCollections } =
+    useUserData();
+  const { currentUser } = useAuth()!;
+
+  const credits = currentUser?.userPlan?.COLLECTION_LIMIT.totalCredits || 0;
 
   async function handleCreateCollection() {
     setIsLoading(true);
@@ -41,11 +58,16 @@ export const CreateCollectionButton = ({
     console.log("newCollection", newCollection);
 
     if ("error" in newCollection) {
-      toast({
-        title: "Error creating collection",
-        description: "There was an error creating your collection.",
-        variant: "destructive",
-      });
+      if (newCollection.error === "no-credits") {
+        setShowCreateCollection(false);
+        setShowLimitAlert(true);
+      } else {
+        toast({
+          title: "Error creating collection",
+          description: "There was an error creating your collection.",
+          variant: "destructive",
+        });
+      }
     } else if ("success" in newCollection) {
       if (accountArray) {
         for (const accountId of accountArray) {
@@ -73,10 +95,19 @@ export const CreateCollectionButton = ({
     setShowCreateCollection(false);
   }
 
+  const handleClick = async () => {
+    console.log("userCollections", userCollections);
+    if (userCollections && userCollections.length + 1 > credits) {
+      setShowLimitAlert(true);
+    } else {
+      setShowCreateCollection(true);
+    }
+  };
+
   return (
     <>
       <button
-        onClick={() => setShowCreateCollection(true)}
+        onClick={handleClick}
         className={cn(buttonVariants({ variant }), className)}
         {...props}
       />
@@ -109,6 +140,27 @@ export const CreateCollectionButton = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={showLimitAlert} onOpenChange={setShowLimitAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Collection limit reached</AlertDialogTitle>
+            <AlertDialogDescription>
+              your current plan only allows you to create {credits} collections.
+              Upgrade to pro to create unlimited collections.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              // onClick={handleDelete}
+              asChild
+            >
+              <LinkButton href="/settings/upgrade">Upgrade to pro</LinkButton>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };

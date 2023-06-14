@@ -1,6 +1,12 @@
-import { AuthProvider } from "@/context/Auth";
+import { AuthProvider } from "@/context/user-auth";
 import { siteConfig } from "@/config/site";
 import UserSignedIn from "././user-signed-in";
+import { constructMetadata } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = constructMetadata({
+  title: `Register - ${siteConfig.name}`,
+});
 
 interface AuthLayoutProps {
   children: React.ReactElement;

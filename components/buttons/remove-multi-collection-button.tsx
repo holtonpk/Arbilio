@@ -18,7 +18,7 @@ import {
 
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
-import { useUserCollections } from "@/context/user-collections";
+import { useUserData } from "@/context/user-data";
 
 // interface collectionOperationsProps {
 //   collection: Pick<collection, "id" | "title">
@@ -42,7 +42,7 @@ export function RemoveMultiAccountCollectionButton({
 }: RemoveCollectionButtonProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
-  const { removeIdFromCollection } = useUserCollections();
+  const { removeIdFromCollection } = useUserData();
 
   const handleRemove = async () => {
     setIsDeleteLoading(true);

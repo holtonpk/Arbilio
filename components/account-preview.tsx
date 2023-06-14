@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { Icons } from "@/components/icons";
 import {
   DropdownMenu,

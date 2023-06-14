@@ -1,16 +1,16 @@
 "use client";
 import { ReactElement } from "react";
 import { LinkButton } from "@/components/ui/link";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { useLockBody } from "@/lib/hooks/use-lock-body";
+import { Plans } from "@/config/plans";
+// type UserStatus = "base" | "standard" | "premium";
 
-type UserStatus = "base" | "standard" | "premium";
-
-const userTiers = {
-  base: 0,
-  standard: 1,
-  premium: 2,
-};
+// const userTiers = {
+//   base: 0,
+//   standard: 1,
+//   premium: 2,
+// };
 
 const ProtectFeature = ({
   children,
@@ -18,15 +18,12 @@ const ProtectFeature = ({
   featureName,
 }: {
   children: ReactElement;
-  planLevel: UserStatus;
+  planLevel: keyof typeof Plans;
   featureName: string;
 }) => {
   const { currentUser } = useAuth()!;
 
-  if (
-    currentUser?.userPlan &&
-    userTiers[currentUser?.userPlan] >= userTiers[planLevel]
-  ) {
+  if (currentUser?.userPlan && currentUser?.userPlan.tier >= planLevel) {
     return children;
   } else {
     // useLockBody();

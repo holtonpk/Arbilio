@@ -3,7 +3,7 @@ import { CollectionType } from "@/types";
 import { app } from "@/firebase";
 import { siteConfig } from "@/config/site";
 import { AccountCollectionTable } from "@/types";
-import { db } from "@/context/Auth";
+import { db } from "@/context/user-auth";
 import {
   doc,
   collection,

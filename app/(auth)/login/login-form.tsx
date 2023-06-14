@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
-import { useAuth } from "@/context/Auth";
+import { useAuth } from "@/context/user-auth";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Icons } from "@/components/icons";
 import { useRouter } from "next/navigation";
