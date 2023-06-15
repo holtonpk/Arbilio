@@ -40,12 +40,7 @@ const DashboardNav = () => {
         <Link href="/" className=" items-center space-x-2 flex w-fit">
           <span className="text-2xl p-2 text-primary font-bold  flex items-center ">
             <div className="h-8 w-8 relative">
-              <Image
-                src="/image/circleLogo.png"
-                alt="logo"
-                fill
-                objectFit="contain"
-              />
+              <Image src="/image/circleLogo.png" alt="logo" fill />
             </div>
             <span className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-[#F66896] to-[#7640DF]">
               {siteConfig.name}
@@ -121,16 +116,6 @@ import {
 } from "@/components/ui/navigation-menu";
 
 export function NavigationMenuBar() {
-  const bgGradients = [
-    // "from-blue-600 via-sky-500 to-cyan-400 ",
-    "theme-blue",
-    "theme-blue",
-    "theme-blue",
-    // "from-muted/20 to-muted",
-    // "from-muted/20 to-muted",
-    // "to-amber-400 via-orange-500 from-red-500",
-    // "from-purple-600 via-fuchsia-600 to-pink-600",
-  ];
   const { currentUser } = useAuth()!;
 
   return (
@@ -159,7 +144,6 @@ export function NavigationMenuBar() {
                       <SubRoute
                         key={subPage.title}
                         item={subPage}
-                        bgGradient={bgGradients[indx]}
                         currentUser={currentUser}
                       />
                     ))}
@@ -206,11 +190,9 @@ const MainRoute = ({
 
 const SubRoute = ({
   item,
-  bgGradient,
   currentUser,
 }: {
   item: SubRouteType;
-  bgGradient: string;
   currentUser: any;
 }) => {
   const Icon = Icons[item.icon];
@@ -223,48 +205,41 @@ const SubRoute = ({
     typeof item.links === "string"
       ? item.links
       : item.links.find(
-          (link) => link.requiredSubscription === currentUser?.userPlan
+          (link) => link.requiredSubscription === currentUser?.userPlan.tier
         )?.href;
 
   return (
     <>
       {item?.featured ? (
-        <li className="row-span-3">
-          <NavigationMenuLink asChild>
-            <a
-              className={`flex h-full text-primary gap- w-full select-none flex-col justify-end rounded-md  hover:bg-muted {bgGradient} p-6 no-underline outline-none focus:shadow-md`}
-              href={href}
-            >
-              <div className="p-2 rounded-md bg-muted border-accent text-muted-foreground w-fit  flex justify-center items-center">
-                <Icon className="h-5 w-6 text-theme-blue" />
-              </div>
-              <div className=" text-lg font-medium text-theme-blue ">
-                {item.title}
-              </div>
-              <p className="text-sm leading-tight  text-primary">
-                {item.description}
-              </p>
-            </a>
-          </NavigationMenuLink>
-        </li>
+        <NavigationMenuLink asChild>
+          <a
+            href={href}
+            className={`row-span-3 bg-muted/20 flex h-full text-primary gap- w-full select-none flex-col justify-end rounded-md  hover:bg-muted {bgGradient} p-6 no-underline outline-none focus:shadow-md`}
+          >
+            <div className="bg-blue-500/30 bg-opacity-30 text-theme-blue aspect-square h-10 w-10 rounded-md flex items-center justify-center">
+              <Icon className="h-6 w-6 " />
+            </div>
+            <div className=" text-lg font-medium text-primary ">
+              {item.title}
+            </div>
+            <p className="text-sm leading-tight  text-primary">
+              {item.description}
+            </p>
+          </a>
+        </NavigationMenuLink>
       ) : (
         <NavigationMenuLink asChild>
           <a
             href={href}
-            className={`grid  gap-6 items-start hover:bg-muted p-2 rounded-md relative
+            className={`grid grid-cols-[40px_1fr]  gap-2  items-start hover:bg-muted p-2 rounded-md relative
             ${item.disabled && "cursor-not-allowed  pointer-events-none"}
             `}
           >
-            {/* {item.disabled && (
-              <div className="absolute top-1/2 left-1/2 whitespace-nowrap -translate-x-1/2 -translate-y-1/2 w-fit p-2 items-center border  justify-center flex bg-background/40 blurBack rounded-md text-theme-blue">
-                Coming soon
-              </div>
-            )} */}
-            {/* <div className="p-2 rounded-md bg-muted border-accent  text-muted-foreground w-fit   flex justify-center items-center">
-              <Icon className="h-5 w-5" />
-            </div> */}
+            <div className="bg-blue-500/30 bg-opacity-30 text-theme-blue aspect-square h-10 w-10 rounded-md flex items-center justify-center">
+              <Icon className="h-6 w-6 " />
+            </div>
             <div className="grid items-start text-left gap-1">
-              <div className="text-sm font-medium text-theme-blue leading-none  flex items-center gap-2 ">
+              <div className="text-sm font-medium text-primary leading-none  flex items-center gap-2 ">
                 {item.title}
                 {item.disabled && (
                   <div className="border p-1 opacity-100 w-fit  rounded-md text-[8px] leading-[8px] text-theme-blue border-theme-blue">

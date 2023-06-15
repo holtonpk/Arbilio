@@ -73,6 +73,7 @@ interface UserDataContextType {
   findCollectionsContainingId: (
     searchId: string
   ) => Promise<{ data: string[]; error: any | null }>;
+  completeWelcomeIntro: () => Promise<{ success: string } | { error: any }>;
 }
 
 const UserDataContext = createContext<UserDataContextType | null>(null);
@@ -582,6 +583,21 @@ export const UserDataProvider = ({
     }
   };
 
+  const completeWelcomeIntro = async (): Promise<
+    { success: string } | { error: any }
+  > => {
+    if (!currentUser) return { error: "no user" };
+    try {
+      const docRef = doc(db, `${storage.users}/${currentUser.uid}`);
+      await updateDoc(docRef, {
+        welcome_intro: true,
+      });
+      return { success: "success" };
+    } catch (error) {
+      return { error: error };
+    }
+  };
+
   const values = {
     trackedProducts,
     trackedProductsIds,
@@ -603,6 +619,7 @@ export const UserDataProvider = ({
     removeIdFromCollection,
     updateAccountCollectionName,
     findCollectionsContainingId,
+    completeWelcomeIntro,
   };
 
   return (

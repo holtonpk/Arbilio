@@ -13,7 +13,7 @@ import { ProductOperations } from "@/components/buttons/product-operations";
 import Link from "next/link";
 export const TrendingPosts = ({ posts }: { posts: TrendingPostType[] }) => {
   const [selectedPostIndex, setSelectedPostIndex] = React.useState<number>(0);
-  const [muteVideo, setMuteVideo] = React.useState<boolean>(false);
+  const [muteVideo, setMuteVideo] = React.useState<boolean>(true);
   const [pauseVideo, setPauseVideo] = React.useState<boolean>(false);
 
   const [isHovered, setIsHovered] = React.useState<boolean>(false);

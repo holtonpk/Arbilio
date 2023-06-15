@@ -15,6 +15,7 @@ import { useAuth } from "@/context/user-auth";
 import { db } from "@/context/user-auth";
 import { collection, addDoc } from "firebase/firestore";
 import { toast } from "../ui/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 
 const Feedback = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false);
@@ -55,12 +56,7 @@ const Feedback = () => {
               We&apos;d love to hear your thoughts on how we can improve.
             </DialogDescription>
           </DialogHeader>
-          <textarea
-            ref={inputRef}
-            className="w-full h-32 p-4 border rounded-md"
-            placeholder="Enter your feedback here..."
-          />
-
+          <Textarea placeholder="Enter your feedback here..." ref={inputRef} />
           <DialogFooter>
             <DialogClose>Cancel</DialogClose>
             <DialogAction onClick={submitFeedback} className="bg-primary">

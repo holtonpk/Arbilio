@@ -28,15 +28,15 @@ export const dashboardNavigation: DashboardNavigation = {
           links: [
             {
               href: "/accounts/account-database-base/demo",
-              requiredSubscription: "base",
+              requiredSubscription: 0,
             },
             {
               href: "/accounts/account-database/full",
-              requiredSubscription: "standard",
+              requiredSubscription: 1,
             },
             {
               href: "/accounts/account-database/full",
-              requiredSubscription: "premium",
+              requiredSubscription: 2,
             },
           ],
           icon: "accounts",

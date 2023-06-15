@@ -5,7 +5,7 @@ type HeroHeaderProps = {
   gradient: string;
   lineColor: string;
   lineHeight?: string;
-  number: string;
+  number?: string;
   title: string;
   subtitle: string;
   description: string;
@@ -30,11 +30,11 @@ const HeroHeader: React.FC<HeroHeaderProps> = ({
             lineHeight
           )}
         />
-        <div
+        {/* <div
           className={`p-2 h-10 w-10 text-xl flex justify-center items-center text-background rounded-full aspect-square ${gradient}`}
         >
           {number}
-        </div>
+        </div> */}
       </div>
       <h1
         className={`bg-clip-text md:max-w-[60%] text-transparent font-bold text-5xl ${gradient}`}

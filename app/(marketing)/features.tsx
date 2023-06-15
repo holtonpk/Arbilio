@@ -120,22 +120,21 @@ export default function Features() {
         <link key={key} rel="preload" as="video" href={demo} />
       ))}
       <div className="mx-auto w-full max-w-screen-xl px-2.5 md:px-20 pb-10 pt-24">
-        <div className="mx-auto max-w-md text-center sm:max-w-xl">
-          <h2 className="font-display text-4xl font-extrabold leading-tight text-black sm:text-5xl sm:leading-tight">
+        <div className="mx-auto text-center ">
+          <span className="flex gap-2 w-fit mx-auto font-display text-4xl font-extrabold leading-tight text-primary sm:text-5xl sm:leading-tight">
             Leverage the{" "}
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               power{" "}
-            </span>
-            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"></span>{" "}
-            of our tools
-          </h2>
+            </span>{" "}
+            of {siteConfig.name}
+          </span>
           <p className="mt-5 text-gray-600 sm:text-lg">
             Unleash the potential of {siteConfig.name} robust tools designed to
             empower your dropshipping business.
           </p>
         </div>
 
-        <div className="my-10 h-[840px] w-full overflow-hidden rounded-xl border border-gray-200 bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur lg:h-[630px]">
+        <div className="my-10 h-[840px] w-full overflow-hidden rounded-xl border border-border bg-background/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur lg:h-[630px]">
           <div className="grid grid-cols-1 gap-10 p-5 lg:grid-cols-3">
             <Accordion
               type="single"
@@ -149,14 +148,14 @@ export default function Features() {
                   <AccordionTrigger>
                     <div className="flex items-center space-x-3 p-3">
                       {/* {icon} */}
-                      <h3 className="text-base font-semibold text-gray-600">
+                      <h3 className="text-base font-semibold text-primary">
                         {title}
                       </h3>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="p-3">
-                      <p className="mb-4 text-sm text-gray-500">
+                      <p className="mb-4 text-sm text-muted-foreground">
                         {description}
                       </p>
                       {/* {key === "link" || key === "social" ? (

@@ -221,7 +221,7 @@ export interface AccountDataType {
   posts: any;
   // topPosts: PostType[] | undefined;
   topPosts: string[] | undefined;
-  product: string | undefined;
+  product: string | undefined | ProductType;
   // product: ProductType | undefined;
 }
 

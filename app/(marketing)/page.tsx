@@ -9,22 +9,27 @@ import Pricing from "@/components/plans";
 import FAQ from "@/app/(marketing)/pricing/faq";
 import { constructMetadata } from "@/lib/utils";
 import Features from "@/app/(marketing)/features";
+import Stats from "@/app/(marketing)/stats";
+import { siteConfig } from "@/config/site";
 export const metadata = constructMetadata({});
 
 export default async function IndexPage() {
   return (
     <div className="pb-10">
       <div className="container">
-        <section className="space-y-6 pb-8 pt-6 md:pb-12  ">
+        <section className="space-y-6 pb-8 pt-6 md:pb-12 container ">
           <HeroText />
         </section>
         {/* <Testimonials /> */}
-        <p className="text-muted-foreground text-md w-fit mx-auto uppercase font-bold mb-3">
-          explore the power of TikDop.io
-        </p>
-        <Discover />
+        {/* <p className="text-muted-foreground text-md w-fit mx-auto uppercase font-bold mb-3">
+          explore the power of {siteConfig.name}
+        </p> */}
+        {/* <Discover /> */}
+      </div>
+      <Analyze />
+      <Stats />
+      <div className="container">
         <Features />
-        <Analyze />
         <Sell />
       </div>
       <div className=" text-center mx-auto w-full max-w-screen-xl px-2.5 md:px-20">

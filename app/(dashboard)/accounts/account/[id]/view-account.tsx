@@ -128,7 +128,7 @@ interface DataGraphProps {
 
 const DataGraph = ({ field, title, icon }: DataGraphProps) => {
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
-  const [chartType, setChartType] = useState<"line" | "bar">("bar");
+  const [chartType, setChartType] = useState<"line" | "bar">("line");
 
   const { data } = useContext(DataContext)!;
   const orderedData = data.accountStats.sort((a: any, b: any) => {
@@ -246,17 +246,7 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
 const ProductDisplay = () => {
   const { data } = useContext(DataContext)!;
 
-  const [product, setProduct] = React.useState<ProductType>();
-
-  React.useEffect(() => {
-    const getProduct = async () => {
-      const product = await fetch(
-        `${siteConfig.url}/api/view-product/${data.product}`
-      ).then((res) => res.json());
-      setProduct(product);
-    };
-    getProduct();
-  }, [data]);
+  const product = data.product as ProductType;
 
   return (
     <>
@@ -272,31 +262,30 @@ const ProductDisplay = () => {
               </div>
             </Tooltip>
           </div>
-          {product && (
-            <div className="grid divide-y  divide-border rounded-md border p-3 ">
-              <div className="flex items-center justify-between">
-                <div className="grid grid-cols-[80px_1fr] gap-4 items-center">
-                  <div className="w-[80px] aspect-square bg-muted rounded-md relative overflow-hidden">
-                    <Image src={product.image} alt="" fill />
-                  </div>
 
-                  <div className="flex flex-col    ">
-                    <h1 className=" text-xl whitespace-nowrap">
-                      {product.title}
-                    </h1>
-                    {product.accounts?.length && (
-                      <h1 className=" text-md text-muted-foreground">
-                        Active Sellers: {product.accounts?.length}
-                      </h1>
-                    )}
-                  </div>
+          <div className="grid divide-y  divide-border rounded-md border p-3 ">
+            <div className="flex items-center justify-between">
+              <div className="grid grid-cols-[80px_1fr] gap-4 items-center">
+                <div className="w-[80px] aspect-square bg-muted rounded-md relative overflow-hidden">
+                  <Image src={product.image} alt="" fill />
                 </div>
-                <ProductOperations variant={"outline"} product={product}>
-                  <Icons.ellipsis className="h-4 w-4 text-muted-foreground" />
-                </ProductOperations>
+
+                <div className="flex flex-col    ">
+                  <h1 className=" text-xl whitespace-nowrap">
+                    {product.title}
+                  </h1>
+                  {product.accounts?.length && (
+                    <h1 className=" text-md text-muted-foreground">
+                      Active Sellers: {product.accounts?.length}
+                    </h1>
+                  )}
+                </div>
               </div>
+              <ProductOperations variant={"outline"} product={product}>
+                <Icons.ellipsis className="h-4 w-4 text-muted-foreground" />
+              </ProductOperations>
             </div>
-          )}
+          </div>
         </div>
       ) : (
         <></>
@@ -385,7 +374,7 @@ const StoreDisplay = () => {
                 <h1 className=" text-sm text-muted-foreground">
                   {"Products in the store (" + products.length + ")"}
                 </h1>
-                <ScrollArea className="h-[300px] border rounded-md">
+                <ScrollArea className="max-h-[300px] border rounded-md">
                   <div className="divide-y divide-border  grid h-fit  w-full ">
                     {products.map((product: any, i) => (
                       <>
@@ -450,7 +439,12 @@ const PostsDisplay = () => {
       <div className="grid grid-cols-5 gap-4 ">
         {data.topPosts &&
           data.topPosts.map((item: any, i) => (
-            <PostView key={i} postId={item} accountData={data} />
+            <PostView
+              key={i}
+              postId={item}
+              accountData={data}
+              preFetchedVideo={item}
+            />
           ))}
       </div>
     </div>

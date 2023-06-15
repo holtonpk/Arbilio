@@ -188,7 +188,7 @@ export const Sellers = ({ accounts }: RecentPostsProps) => {
             className="flex items-center justify-between p-2 cursor-pointer group hover:bg-muted"
           >
             <Link
-              href={`accounts/account/${account.id}`}
+              href={`/accounts/account/${account.id}`}
               className="w-[80%] grid grid-cols-[40px_1fr] items-center space-x-4"
             >
               <div className="aspect-square w-10 h-10 bg-muted rounded-md relative overflow-hidden border">

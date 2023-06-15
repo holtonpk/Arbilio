@@ -6,6 +6,8 @@ import { ProductTrackDisplay } from "@/app/(dashboard)/dashboard/product-track-d
 import { siteConfig } from "@/config/site";
 import Loading from "./loading";
 import { PageHeader } from "@/components/header";
+import Welcome from "@/app/(dashboard)/dashboard/welcome-card";
+
 async function getData() {
   const res = await fetch(`${siteConfig.url}/api/trending-posts`, {
     cache: "no-store",
@@ -25,6 +27,7 @@ export default async function Dashboard() {
           "Track your products and get notified when ae new post or account is found"
         }
       /> */}
+      <Welcome />
       <Header />
       <div className="w-full ">
         <div className="grid  gap-4  container max-w-screen overflow-hidden ">

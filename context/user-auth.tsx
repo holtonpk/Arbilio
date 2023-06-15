@@ -68,6 +68,7 @@ export interface UserData extends FirebaseUser {
   photoURL: string;
   stripeId: string;
   userPlan: PlansType | undefined;
+  welcome_intro: boolean;
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -173,6 +174,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: email,
         photoURL: getRandomImageUrl() as string,
         uid: uid,
+        welcome_intro: false,
       });
     }
 
@@ -336,6 +338,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           stripeId: userData?.stripeId,
           // userPlan: Plans[1],
           userPlan: Plans[decodedToken?.claims?.stripeRole],
+          welcome_intro: userData?.welcome_intro,
         });
       }
       setLoading(false);

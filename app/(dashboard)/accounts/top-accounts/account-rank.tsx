@@ -435,8 +435,8 @@ const StatDisplay = ({ data, icon, title }: StatDisplayProps) => {
       }
     >
       <div className="flex  items-center gap-2 h-fit  p-2 relative">
-        <div className="rounded-md bg-theme-blue aspect-square p-2 relative flex justify-center items-center text-white">
-          <Icon />
+        <div className="bg-blue-500/30 bg-opacity-30 text-theme-blue aspect-square h-10 w-10 rounded-md flex items-center justify-center">
+          <Icon className="h-6 w-6 " />
         </div>
         <div className="flex flex-col">
           <h1 className="text-base text-primary font-bold flex items-center gap-1">
