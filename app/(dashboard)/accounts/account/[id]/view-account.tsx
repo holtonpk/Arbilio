@@ -98,20 +98,23 @@ const AnalyticsDisplay = () => {
         <DataGraph
           field="followerCount"
           title="Followers"
-          icon={<Icons.followers className="h-8 w-8 text-white" />}
+          // icon={<Icons.followers className="h-8 w-8 text-them-blue" />}
+          icon="followers"
         />
 
         <DataGraph
           field="heartCount"
           title="Likes"
-          icon={<Icons.likes className="h-8 w-8 text-white" />}
+          // icon={<Icons.likes className="h-8 w-8 text-white" />}
+          icon="likes"
           width={250}
         />
 
         <DataGraph
           field="videoCount"
           title="Posts"
-          icon={<Icons.posts className="h-8 w-8 text-white" />}
+          // icon={<Icons.posts className="h-8 w-8 text-white" />}
+          icon="posts"
           width={250}
         />
       </div>
@@ -122,7 +125,7 @@ const AnalyticsDisplay = () => {
 interface DataGraphProps {
   field: "heartCount" | "followerCount" | "videoCount";
   title: string;
-  icon: any;
+  icon: keyof typeof Icons;
   width?: number;
 }
 
@@ -169,12 +172,14 @@ const DataGraph = ({ field, title, icon }: DataGraphProps) => {
     }
   }, [dateRange, field, orderedData]);
 
+  const Icon = Icons[icon];
+
   return (
     <div className="w-full h-fit border rounded-md p-4 relative">
       <div className="h-fit w-full flex">
         <div className="flex items-center gap-3">
-          <div className="rounded-md bg-theme-blue aspect-square p-2 relative flex justify-center items-center">
-            {icon}
+          <div className="bg-blue-500/30 bg-opacity-30 text-theme-blue aspect-square p-2 rounded-md flex items-center justify-center">
+            <Icon className="h-8 w-8 text-theme-blue" />
           </div>
           <div className="flex flex-col">
             <h2 className="text-md ">{title}</h2>
@@ -374,7 +379,7 @@ const StoreDisplay = () => {
                 <h1 className=" text-sm text-muted-foreground">
                   {"Products in the store (" + products.length + ")"}
                 </h1>
-                <ScrollArea className="max-h-[300px] border rounded-md">
+                <ScrollArea className="h-fit  border rounded-md mt-2 relative">
                   <div className="divide-y divide-border  grid h-fit  w-full ">
                     {products.map((product: any, i) => (
                       <>

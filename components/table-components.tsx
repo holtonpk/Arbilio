@@ -45,10 +45,10 @@ export const StatDisplay = ({ displayValue }: any) => {
 export const AccountDisplay = ({ item }: { item: AccountDataType }) => {
   return (
     <Link
-      href={`accounts/account/${item.id}`}
-      className="grid grid-cols-[40px_1fr] items-center gap-2 group "
+      href={`/accounts/account/${item.id}`}
+      className="grid grid-cols-[40px_1fr] items-center gap-2 hover:opacity-50 "
     >
-      <div className="h-10 w-10 group-hover:opacity-50 rounded-md bg-muted flex justify-center relative items-center overflow-hidden">
+      <div className="h-10 w-10  rounded-md bg-muted flex justify-center relative items-center overflow-hidden">
         <Image
           src={item?.avatar}
           alt="Picture of the author"
@@ -59,7 +59,7 @@ export const AccountDisplay = ({ item }: { item: AccountDataType }) => {
         />
       </div>
       <div className="flex flex-col">
-        <h1 className="text-sm font-semibold group-hover:text-muted-foreground">
+        <h1 className="text-sm font-semibold ">
           {item.userInfo?.user?.nickname}
         </h1>
         <h2 className="text-xs text-muted-foreground">
