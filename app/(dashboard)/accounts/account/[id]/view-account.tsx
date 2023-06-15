@@ -461,7 +461,7 @@ const PostsDisplay = () => {
 const ProfileDisplay = () => {
   const { data } = useContext(DataContext)!;
   return (
-    <div className="flex items-center flex-col md:grid md:grid-cols-[150px_1fr] gap-4  rounded-md w-fit relative b-b">
+    <div className="flex items-center flex-col md:grid md:grid-cols-[150px_1fr] gap-4  rounded-md w-fit relative">
       <div className="rounded-md bg-muted relative aspect-square border h-20 md:h-[150px]  overflow-hidden">
         <Image
           src={data?.avatar}
