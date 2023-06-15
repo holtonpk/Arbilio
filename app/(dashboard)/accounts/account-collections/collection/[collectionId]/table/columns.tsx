@@ -54,7 +54,7 @@ export const columns: ColumnDef<AccountCollectionTable>[] = [
         <div className="flex space-x-2">
           {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
           {row.original.product && (
-            <ProductDisplay productId={row.original.product} />
+            <ProductDisplay productId={row.original.product as string} />
           )}
         </div>
       );
