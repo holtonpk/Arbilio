@@ -15,6 +15,7 @@ import {
   EmailAuthProvider,
   updatePassword,
   sendPasswordResetEmail,
+  deleteUser,
 } from "firebase/auth";
 import { CollectionType } from "@/types";
 import {
@@ -31,8 +32,14 @@ import {
   getFirestore,
   getDoc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { PlansType, Plans } from "@/config/plans";
+
+interface DeleteAccountResponse {
+  success?: string;
+  error?: string;
+}
 
 interface AuthContextType {
   currentUser: UserData | undefined;
@@ -50,6 +57,7 @@ interface AuthContextType {
   resetPassword: () => any;
   uploadProfilePicture: (file: File) => any;
   changeProfilePicture: (url: string) => any;
+  DeleteAccount: () => Promise<DeleteAccountResponse>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -156,6 +164,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error };
     }
   }
+
+  const DeleteAccount = async (): Promise<DeleteAccountResponse> => {
+    const user = auth.currentUser;
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      try {
+        await deleteDoc(userRef);
+        await deleteUser(user);
+        return { success: "Account deleted successfully." };
+      } catch (error) {
+        return { success: "failed to delete account" };
+      }
+    } else {
+      return { success: "failed to delete account" };
+    }
+  };
 
   const createUserStorage = async (
     uid: string,
@@ -359,6 +383,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     resetPassword,
     uploadProfilePicture,
     changeProfilePicture,
+    DeleteAccount,
   };
 
   return (

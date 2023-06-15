@@ -28,12 +28,12 @@ const SettingsPage = () => {
   return (
     <>
       <PageHeader heading="Settings">
-        <Button onClick={ManageSub} className="whitespace-nowrap mr-10">
-          {isLoading ? (
-            <Icons.spinner className="mr-2 h-6 w-6 animate-spin" />
-          ) : (
-            <Icons.wallet className="mr-2 h-5 w-5" />
-          )}
+        <Button
+          variant={"outline"}
+          onClick={ManageSub}
+          className="whitespace-nowrap mr-10"
+        >
+          {isLoading && <Icons.spinner className="mr-2 h-6 w-6 animate-spin" />}
           Manage Subscription
         </Button>
       </PageHeader>

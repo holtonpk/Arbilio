@@ -57,7 +57,7 @@ export const AccountCollectionDisplay = () => {
         </div>
         {userCollections && userCollections?.length > 0 ? (
           <ScrollArea className="max-h-[200px] border rounded-b-md ">
-            <div className="divide-y divide-border grid b-b rounded-b-md  h-fit w-full bg-background">
+            <div className="divide-y divide-border grid rounded-b-md  h-fit w-full bg-background">
               {userCollections.map((collection: any, i: number) => (
                 <CollectionDisplay key={i} collection={collection} />
               ))}

@@ -7,6 +7,8 @@ import { Icons } from "@/components/icons";
 import { toast } from "@/components/ui/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
 import { siteConfig } from "@/config/site";
+import { useDeleteAccountModal } from "@/components/modals/delete-account-modal";
+
 import Image from "next/image";
 const Profile = () => {
   return (
@@ -15,6 +17,7 @@ const Profile = () => {
       <Name />
       <Email />
       <AccountSettings />
+      <DeleteAccount />
     </div>
   );
 };
@@ -287,6 +290,38 @@ const AccountSettings = () => {
           {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Save
         </Button>
+      </div>
+    </div>
+  );
+};
+
+const DeleteAccount = () => {
+  const { setShowDeleteAccountModal, DeleteAccountModal } =
+    useDeleteAccountModal();
+
+  return (
+    <div className="rounded-lg border border-destructive">
+      <DeleteAccountModal />
+      <div className="flex flex-col space-y-3 p-5 sm:p-10">
+        <label className="text-xl font-bold text-primary  ">
+          Delete Account
+        </label>
+        <p className="text-sm text-muted-foreground mb-3  ">
+          Permanently delete your {siteConfig.name} account and all of your
+          account data - please proceed with caution.
+        </p>
+      </div>
+
+      <div className="flex items-center justify-end p-3 sm:px-10  bg-muted/40 border-t">
+        <div className="w-32">
+          <Button
+            onClick={() => setShowDeleteAccountModal(true)}
+            variant="ghost"
+            className="w-fit whitespace-nowrap bg-red-500 focus:ring-red-600 text-background hover:bg-red-600 hover:text-background"
+          >
+            Delete account
+          </Button>
+        </div>
       </div>
     </div>
   );

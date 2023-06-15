@@ -81,7 +81,6 @@ const RegisterForm = () => {
     try {
       setIsGoogleLoading(true);
       const createAccountResult = await logInWithGoogle();
-
       if (createAccountResult.error) {
         handleLoginError(createAccountResult.error);
       }
@@ -89,6 +88,7 @@ const RegisterForm = () => {
       handleLoginError(error);
     } finally {
       setIsGoogleLoading(false);
+      router.push("/onboarding/plan");
     }
   }
 

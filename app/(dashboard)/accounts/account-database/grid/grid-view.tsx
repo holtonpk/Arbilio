@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import DisplaySelector from "@/components/display-selector";
 import { Icons } from "@/components/icons";
 import { accountDatabaseConfig } from "@/config/dashboard";
@@ -55,6 +55,7 @@ const GridView = ({
     pageIndex: 0,
     pageSize: 16,
   });
+
   const table = useReactTable({
     data,
     columns,
