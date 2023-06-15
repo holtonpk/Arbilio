@@ -103,7 +103,7 @@ export const AccountCard = ({
             </Tooltip>
           </div>
           {item.product ? (
-            <ProductDisplay productId={item.product} />
+            <ProductDisplay productId={item.product as string} />
           ) : (
             <div className="p-1 w-full border bg-muted rounded-md">
               <div className="h-9 w-full" />
