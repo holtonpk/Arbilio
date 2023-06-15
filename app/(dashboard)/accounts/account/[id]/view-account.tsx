@@ -47,6 +47,8 @@ interface ViewAccountProps {
 }
 
 const ViewAccount = ({ data }: ViewAccountProps) => {
+  console.log("data=====>", data);
+
   return (
     <div className="container">
       <div className="w-full rounded-md flex flex-col items-center  pt-0 relative ">
