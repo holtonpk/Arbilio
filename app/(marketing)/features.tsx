@@ -3,7 +3,7 @@
 import Link from "next/link";
 import HeroHeader from "@/app/(marketing)/hero-header";
 import { siteConfig } from "@/config/site";
-
+import { Icons } from "@/components/icons";
 import { useState } from "react";
 import {
   Accordion,
@@ -19,84 +19,50 @@ import { Link2 } from "lucide-react";
 
 const featureList = [
   {
-    key: "analytics",
-    title: "Analytics that matter",
-    // icon: <Chart className="h-5 w-5 text-gray-600" />,
+    key: "Account Database",
+    title: "Account Database",
     description:
-      "Dub provides powerful analytics for your links, including geolocation, device, browser, and referrer information.",
-    cta: (
-      <Link
-        href="/stats/github"
-        className="block max-w-fit rounded-full border border-black bg-black px-4 py-1.5 text-sm text-white transition-all hover:bg-white hover:text-black"
-      >
-        View demo
-      </Link>
-    ),
-    demo: "https://d2vwwcvoksz7ty.cloudfront.net/analytics.mp4",
+      "Leverage our comprehensive database featuring over 500 active sellers to perform detailed market analysis and glean valuable insights.",
+    icon: "accounts" as keyof typeof Icons,
+
+    demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Faccount-database_demo.mp4?alt=media&token=815d20ef-9625-4525-8371-4654e2cc5236",
     thumbnail: "/_static/features/analytics.png",
   },
   {
-    key: "domains",
-    title: "Use your own domain",
-    // icon: <Airplay className="h-5 w-5 text-gray-600" />,
+    key: "Top Account",
+    title: "Top Account",
     description:
-      "Dub offers free custom domains on all plans - start personalizing your links today.",
-    cta: (
-      <a
-        href="https://app.dub.sh"
-        target="_blank"
-        rel="noreferrer"
-        className="block max-w-fit rounded-full border border-black bg-black px-4 py-1.5 text-sm text-white transition-all hover:bg-white hover:text-black"
-      >
-        Create your project
-      </a>
-    ),
-    demo: "https://d2vwwcvoksz7ty.cloudfront.net/custom-domain.mp4",
+      "Effortlessly access a clear, daily ranking of top-performing accounts to stay updated with leading market players and their strategies.",
+    icon: "rank" as keyof typeof Icons,
+    demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Farbilio_demo_test.mp4?alt=media&token=11803ad1-a41b-44e2-ad86-7ce4a9f2bbbe",
+    thumbnail: "/_static/features/analytics.png",
   },
   {
-    key: "link",
-    title: "Powerful link builder",
-    // icon: <Link2 className="h-5 w-5 text-gray-600" />,
+    key: "Account Collections",
+    title: "Account Collections",
     description:
-      "Build your links with UTM parameters, password protection, expiration dates, iOS/Android targeting, etc.",
-    cta: "View demo", //custom cta
-    demo: "https://d2vwwcvoksz7ty.cloudfront.net/link.mp4",
+      "Utilize our Account Tracker to monitor account growth, analyze trend patterns, and make informed decisions based on this data.",
+    icon: "crosshair" as keyof typeof Icons,
+    demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Faccount-database_demo.mp4?alt=media&token=815d20ef-9625-4525-8371-4654e2cc5236",
+    thumbnail: "/_static/features/analytics.png",
   },
   {
-    key: "social",
-    title: "Custom social media cards",
-    // icon: <Photo className="h-5 w-5 text-gray-600" />,
+    key: "Product Database",
+    title: "Product Database",
     description:
-      "Overlay custom OG images on your links to make them stand out on social media.",
-    cta: "View demo", //custom cta
-    demo: "https://d2vwwcvoksz7ty.cloudfront.net/og.mp4",
+      "Harness our extensive Product Database to identify top-selling items and understand the dynamics behind their success.",
+    icon: "database" as keyof typeof Icons,
+    demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Faccount-database_demo.mp4?alt=media&token=815d20ef-9625-4525-8371-4654e2cc5236",
+    thumbnail: "/_static/features/analytics.png",
   },
   {
-    key: "qr",
-    title: "Free QR code generator",
-    // icon: <QR className="h-5 w-5 text-gray-600" />,
+    key: "Product Tracker",
+    title: "Product Tracker",
     description:
-      "QR codes and short links are like peas in a pod. That's why we've built a QR code generator right into Dub.",
-    cta: "View demo", //custom cta
-    demo: "https://d2vwwcvoksz7ty.cloudfront.net/qr.mp4",
-  },
-  {
-    key: "team",
-    title: "Collaborate with your team",
-    // icon: <Users className="h-5 w-5 text-gray-600" />,
-    description:
-      "With Dub, you can invite unlimited team members to collaborate on your project for free - no more sharing logins via Google groups.",
-    cta: (
-      <a
-        href="https://app.dub.sh"
-        target="_blank"
-        rel="noreferrer"
-        className="block max-w-fit rounded-full border border-black bg-black px-4 py-1.5 text-sm text-white transition-all hover:bg-white hover:text-black"
-      >
-        Invite your teammates
-      </a>
-    ),
-    demo: "https://d2vwwcvoksz7ty.cloudfront.net/team.mp4",
+      "Discover trending products, track their performance, and gain a competitive edge by understanding the factors contributing to their popularity.",
+    icon: "analytics" as keyof typeof Icons,
+    demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Faccount-database_demo.mp4?alt=media&token=815d20ef-9625-4525-8371-4654e2cc5236",
+    thumbnail: "/_static/features/analytics.png",
   },
 ];
 
@@ -134,7 +100,7 @@ export default function Features() {
           </p>
         </div>
 
-        <div className="my-10 h-[840px] w-full overflow-hidden rounded-xl border border-border bg-background/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur lg:h-[630px]">
+        <div className="my-10  w-full overflow-hidden rounded-xl border border-border bg-background/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur ">
           <div className="grid grid-cols-1 gap-10 p-5 lg:grid-cols-3">
             <Accordion
               type="single"
@@ -143,41 +109,13 @@ export default function Features() {
                 setActiveFeature(featureList.findIndex(({ key }) => key === e));
               }}
             >
-              {featureList.map(({ key, title, description, cta }) => (
-                <AccordionItem key={key} value={key}>
-                  <AccordionTrigger>
-                    <div className="flex items-center space-x-3 p-3">
-                      {/* {icon} */}
-                      <h3 className="text-base font-semibold text-primary">
-                        {title}
-                      </h3>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="p-3">
-                      <p className="mb-4 text-sm text-muted-foreground">
-                        {description}
-                      </p>
-                      {/* {key === "link" || key === "social" ? (
-                        <button
-                          onClick={() => setShowAddEditLinkModal(true)}
-                          className="block max-w-fit rounded-full border border-black bg-black px-4 py-1.5 text-sm text-white transition-all hover:bg-white hover:text-black"
-                        >
-                          View demo
-                        </button>
-                      ) : key === "qr" ? (
-                        <button
-                          onClick={() => setShowLinkQRModal(true)}
-                          className="block max-w-fit rounded-full border border-black bg-black px-4 py-1.5 text-sm text-white transition-all hover:bg-white hover:text-black"
-                        >
-                          View demo
-                        </button>
-                      ) : (
-                        cta
-                      )} */}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+              {featureList.map(({ key, title, description, icon }) => (
+                <Feature
+                  key={key}
+                  title={title}
+                  description={description}
+                  icon={icon}
+                />
               ))}
             </Accordion>
             <div className="lg:col-span-2">
@@ -201,7 +139,7 @@ export default function Features() {
                           stiffness: 300,
                           damping: 30,
                         }}
-                        className="relative min-h-[600px] w-full overflow-hidden whitespace-nowrap rounded-2xl bg-white shadow-2xl lg:mt-10 lg:w-[800px]"
+                        className="relative w-full h-[400px] overflow-hidden whitespace-nowrap rounded-2xl bg-background shadow-2xl lg:mt-10 lg:w-[800px]"
                       >
                         <video
                           autoPlay
@@ -226,3 +164,25 @@ export default function Features() {
     </div>
   );
 }
+
+const Feature = ({ title, description, icon }: any) => {
+  const Icon = Icons[icon];
+
+  return (
+    <AccordionItem value={title}>
+      <AccordionTrigger>
+        <div className="flex items-center space-x-3 p-3">
+          <Icon name={icon} className="w-5 h-5 text-muted-foreground" />
+          <h3 className="text-base font-semibold text-muted-foreground">
+            {title}
+          </h3>
+        </div>
+      </AccordionTrigger>
+      <AccordionContent>
+        <div className="p-3">
+          <p className="mb-4 text-sm text-muted-foreground">{description}</p>
+        </div>
+      </AccordionContent>
+    </AccordionItem>
+  );
+};

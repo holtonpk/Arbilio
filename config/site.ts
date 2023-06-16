@@ -12,6 +12,6 @@ export const siteConfig: SiteConfig = {
     github: "",
   },
   contact: {
-    email: "",
+    email: "support@arbilio.com",
   },
 };

@@ -46,7 +46,7 @@ export default async function handler(
     product: productData,
     secUid: record?.secUid,
     storeUrl: record?.storeUrl,
-    topPosts: topPostsData,
+    topPosts: topPostsData.filter((post: any) => post !== null),
     uniqueId: record?.uniqueId,
     userInfo: record?.userInfo,
   };
