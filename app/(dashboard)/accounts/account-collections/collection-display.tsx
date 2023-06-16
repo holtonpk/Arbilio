@@ -13,7 +13,7 @@ const CollectionDisplay = ({ collection }: CollectionDisplayProps) => {
   return (
     <div className="flex items-center justify-between p-4 relative overflow-hidden group">
       <Link
-        href={`accounts/account-collections/collection/${collection.id}`}
+        href={`/accounts/account-collections/collection/${collection.id}`}
         className="w-full h-full absolute  top-0 left-0 z-0 "
       />
       <div className="flex w-fit items-center gap-4 ">
