@@ -8,9 +8,9 @@ const Testimonials = () => {
         Proudly Supporting sellers on
       </p>
       <div className=" w-full max-w-[1100px] gap-8 mx-auto items-center relative mb-16 mt-4">
-        <div className="h-full w-[20%] bg-gradient-to-r from-background  absolute left-0 z-10"></div>
+        {/* <div className="h-full w-[20%] bg-gradient-to-r from-background  absolute left-0 z-10"></div> */}
         <Carousel svgs={svgs} />
-        <div className="h-full w-[20%] bg-gradient-to-l from-background  absolute right-0 top-0 z-10"></div>
+        {/* <div className="h-full w-[20%] bg-gradient-to-l from-background  absolute right-0 top-0 z-10"></div> */}
       </div>
     </section>
   );
