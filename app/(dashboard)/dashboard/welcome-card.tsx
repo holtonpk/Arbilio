@@ -15,8 +15,7 @@ const Welcome = () => {
   const { completeWelcomeIntro } = useUserData()!;
 
   const [showWelcomeCard, setShowWelcomeCard] = React.useState(
-    // !currentUser?.welcome_intro
-    true
+    !currentUser?.welcome_intro
   );
 
   if (!showWelcomeCard) return null;

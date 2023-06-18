@@ -7,6 +7,8 @@ import { MoreButton } from "./buttons/profile-actions";
 import LogoutButton from "@/components/buttons/logout-button";
 import { Button } from "@/components/ui/button";
 import useClickOutside from "@/lib/hooks/use-click-outside";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 export const AccountInfoMobile = () => {
   // const { data: session, status } = useSession();
 
@@ -29,7 +31,12 @@ export const AccountInfoMobile = () => {
       >
         <div className="flex flex-row gap-3 items-center">
           <div className="aspect-square p-1  rounded-full  bg-accent  flex justify-center items-center">
-            <Icons.profile className="h-6 w-6 text-primary   " />
+            <Avatar>
+              <AvatarImage
+                src={(currentUser && currentUser.photoURL) || ""}
+                alt={(currentUser && currentUser?.firstName) || ""}
+              />
+            </Avatar>
           </div>
           <div className="text-sm capitalize font-bold">
             {currentUser && currentUser.displayName}
@@ -39,7 +46,7 @@ export const AccountInfoMobile = () => {
       {showMenu && (
         <div
           ref={menuRef}
-          className="absolute bg-muted fade-in left-0 rounded-md border -top-3 -translate-y-full w-1/2 divide-y divide-border fade-in h-fit gap-1  p-2 flex flex-col"
+          className="absolute bg-muted fade-in left-0 rounded-md border -top-3 -translate-y-full w-full divide-y divide-border fade-in h-fit gap-1  p-2 flex flex-col"
         >
           <Link
             href={"/settings"}

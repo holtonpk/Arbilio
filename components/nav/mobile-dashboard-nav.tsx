@@ -103,12 +103,17 @@ const Route = ({
           onClick={handleClick}
           variant="link"
           className={`group flex items-center justify-start text-primary rounded-md px-3 py-2 text-xl font-medium hover:underline  disabled:no-underline ${
-            item?.disabled && "cursor-not-allowed opacity-80"
+            item?.disabled &&
+            "cursor-not-allowed opacity-80 pointer-events-none"
           }`}
         >
-          <Icon className="h-5 w-5 mr-2" />
+          {/* <Icon className="h-5 w-5 mr-2" /> */}
           <div className="text-xl ">{item.title}</div>
-          {item?.disabled && "Coming soon"}
+          {item?.disabled && (
+            <div className="border p-1 opacity-100  rounded-md ml-2 text-[8px] leading-[8px] text-theme-blue border-theme-blue">
+              Coming soon
+            </div>
+          )}
         </Button>
       ) : (
         <>
@@ -120,7 +125,7 @@ const Route = ({
             }`}
           >
             <div className="flex items-center gap-2">
-              <Icon className="h-5 w-5" />
+              {/* <Icon className="h-5 w-5" /> */}
               <div className="text-xl ">{item.title}</div>
             </div>
             {item?.subPages && (
@@ -224,15 +229,40 @@ const SubRoute = ({
     setShowMenu(false);
   };
 
+  const Icon = Icons[item.icon];
+
   return (
-    <Button
-      onClick={handleClick}
-      variant="link"
-      className={` ${
-        href == pathname ? "underline" : ""
-      } group flex items-center ml-4 whitespace-nowrap rounded-md px-3 py-2 text-[12px] font-medium hover:underline `}
+    // <Button
+    //   onClick={handleClick}
+    //   variant="link"
+    //   className={` ${
+    //     href == pathname ? "underline" : ""
+    //   } group flex items-center ml-4 whitespace-nowrap rounded-md px-3 py-2 text-[12px] font-medium hover:underline `}
+    // >
+    //   {title}
+    // </Button>
+    <a
+      href={href}
+      className={`grid grid-cols-[40px_1fr]  gap-2  items-start hover:bg-muted p-2 rounded-md relative
+    ${item.disabled && "cursor-not-allowed  pointer-events-none"}
+    `}
     >
-      {title}
-    </Button>
+      <div className="bg-blue-500/30 bg-opacity-30 text-theme-blue aspect-square h-10 w-10 rounded-md flex items-center justify-center">
+        <Icon className="h-6 w-6 " />
+      </div>
+      <div className="grid items-start text-left gap-1">
+        <div className="text-sm font-medium text-primary leading-none  flex items-center gap-2 ">
+          {item.title}
+          {item.disabled && (
+            <div className="border p-1 opacity-100 w-fit  rounded-md text-[8px] leading-[8px] text-theme-blue border-theme-blue">
+              Coming soon
+            </div>
+          )}
+        </div>
+        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+          {item.description}
+        </p>
+      </div>
+    </a>
   );
 };

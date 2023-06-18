@@ -1,7 +1,7 @@
 import { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
-  name: "Arbilo",
+  name: "Arbilio",
   title:
     "Arbilio - a platform built for optimizing product sourcing and analytics",
   description: "a platform built for optimizing product sourcing and analytics",

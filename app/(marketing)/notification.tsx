@@ -27,14 +27,14 @@ const Notification = () => {
         }}
         className="mt-3 flex flex-col gap-4 items-center"
       >
-        <div className="w-[70%] min-w-fit rounded-xl bg-primary/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur  p-3 relative flex justify-center items-center  ">
+        <div className="w-[70%] min-w-fit rounded-xl bg-primary/10 text-center shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur  p-3 relative flex justify-center items-center  ">
           Harness the power of {siteConfig.name} and watch your sales explode!
         </div>
         {prices.map((price, i) => (
           <NotificationCard
             key={i}
             price={price}
-            time={`${i == 0 ? "Just now" : i + 1 + "s  ago"}`}
+            time={`${i == 0 ? "now" : i + 1 + "s  ago"}`}
           />
         ))}
       </motion.ul>

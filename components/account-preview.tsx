@@ -51,22 +51,19 @@ export const AccountInfo = () => {
                 alt={(currentUser && currentUser?.firstName) || ""}
               />
               <AvatarFallback>
-                {/* {currentUser?.firstName &&
+                {currentUser?.firstName &&
                   getInitials(
                     currentUser?.firstName[0] + currentUser?.lastName[0]
-                  )} */}
-                Bill
+                  )}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start ml-2">
               <div className="text-sm capitalize font-bold">
-                {/* {currentUser &&
-                  currentUser.firstName + " " + currentUser.lastName} */}
-                Smith
+                {currentUser &&
+                  currentUser.firstName + " " + currentUser.lastName}
               </div>
               <div className="text-[12px] font-muted-foreground">
-                {/* {currentUser && currentUser.email} */}
-                BillSmith@gmail.com
+                {currentUser && currentUser.email}
               </div>
             </div>
           </Button>
