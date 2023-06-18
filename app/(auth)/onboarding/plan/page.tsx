@@ -13,15 +13,14 @@ export default async function Plan() {
         <Icons.logout className="mr-2 h-4 w-4" />
         Logout
       </LogoutButton>
-      <div className=" text-center mx-auto w-full max-w-screen-xl px-2.5 md:px-20">
-        <div id="pricing" className="mx-auto sm:max-w-lg">
-          <h2 className="font-display text-4xl font-extrabold text-primary sm:text-5xl">
-            Choose your plan
-            {/* <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-              transparent
-            </span>{" "} */}
-          </h2>
-        </div>
+      <div id="pricing" className="mx-auto mt-10 sm:max-w-lg">
+        <h2 className="font-display text-center text-2xl md:text-4xl font-extrabold text-primary sm:text-5xl">
+          Simple,{" "}
+          <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+            transparent
+          </span>{" "}
+          pricing.
+        </h2>
       </div>
       <PlanLayout />
       <Background />

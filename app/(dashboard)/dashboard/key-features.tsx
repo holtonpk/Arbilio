@@ -1,6 +1,7 @@
 import React from "react";
 import { Icons } from "@/components/icons";
 import Link from "next/link";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const features = [
   {
@@ -42,9 +43,8 @@ const features = [
 
 const KeyFeatures = () => {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-xl font-bold mb-2">Where to start?</h1>
-      <div className="grid grid-cols-3 gap-4 rounded-md">
+    <div className="flex flex-col flex-grow  pb-3 relative">
+      <div className="grid md:grid-cols-3 gap-4 rounded-md flex-grow overflow-scroll ">
         {features.map((feature, i) => (
           <FeatureCard key={i} {...feature} />
         ))}
@@ -69,13 +69,15 @@ const FeatureCard = ({
   return (
     <Link
       href={href}
-      className="flex flex-row gap-4 p-4 group hover:bg-muted w-fit rounded-md cursor-pointer border"
+      className="flex  flex-col md:flex-row md:gap-4 p-4 group hover:bg-muted w-full md:w-fit rounded-md cursor-pointer border"
     >
       <FeatureIcon icon={icon} />
 
       <div className="flex flex-col">
-        <h2>{name}</h2>
-        <p className="text-muted-foreground text-sm">{description}</p>
+        <h2 className="text-sm md:text-base ">{name}</h2>
+        <p className="text-muted-foreground text-[12px] md:text-sm">
+          {description}
+        </p>
       </div>
     </Link>
   );
@@ -84,8 +86,8 @@ const FeatureCard = ({
 const FeatureIcon = ({ icon }: { icon: keyof typeof Icons }) => {
   const Icon = Icons[icon];
   return (
-    <div className="bg-blue-500/30 bg-opacity-30 text-theme-blue aspect-square h-10 w-10 rounded-md flex items-center justify-center">
-      <Icon className="h-6 w-6 " />
+    <div className="bg-blue-500/30 bg-opacity-30 text-theme-blue aspect-square h-fit w-fit p-2 rounded-md flex items-center justify-center">
+      <Icon className="md:h-6 md:w-6 h-4 w-4 " />
     </div>
   );
 };

@@ -72,13 +72,13 @@ export default function Pricing({
   );
 
   const orderedPlans = plans.sort((a, b) => {
-    return a[period].unit_amount - b[period].unit_amount;
+    return a[period].unit_amount + b[period].unit_amount;
   });
 
   return (
     <div className=" text-center mx-auto w-full max-w-screen-xl px-2.5 md:px-20">
-      <div className="relative mx-auto mb-10 flex max-w-fit items-center space-x-2">
-        <p className="text-muted-foreground whitespace-nowrap">
+      <div className="relative mx-auto mb-10 flex max-w-fit items-center space-x-2 mt-8">
+        <p className="text-muted-foreground whitespace-nowrap text-sm md:text-base">
           Billed Monthly
         </p>
         <Confetti
@@ -92,10 +92,10 @@ export default function Pricing({
           thumbDimensions="h-5 w-5"
           thumbTranslate="translate-x-6"
         />
-        <p className="text-muted-foreground whitespace-nowrap">
+        <p className="text-muted-foreground whitespace-nowrap  text-sm md:text-base">
           Billed Annually
         </p>
-        <span className="absolute -right-6 -top-8 rounded-full bg-purple-200 px-3 py-1 text-[12px] hidden sm:block  text-purple-700 sm:-right-[9.5rem] sm:-top-2">
+        <span className="absolute -right-6 -top-8 rounded-full bg-purple-200 px-3 py-1 text-[12px]   text-purple-700 sm:-right-[9.5rem] sm:-top-2">
           🎁 2 months FREE
         </span>
       </div>
@@ -106,7 +106,7 @@ export default function Pricing({
             <PlanCard
               key={i}
               plan={plan}
-              popular={i == 1}
+              popular={i == 0}
               period={period}
               cancel_url={cancel_url}
               success_url={success_url}
@@ -180,18 +180,20 @@ const PlanCard = ({
 
       <div className="p-5 pb-2 text-left relative z-[3]">
         <div className="bg-background/30 blurBack p-2 rounded-md w-fit border-accent  border ">
-          <Icon className="w-6 h-6 text-primary" />
+          <Icon className="h-4 w-4 md:w-6 md:h-6 text-primary" />
         </div>
-        <h3 className="my-3 text-left font-display text-3xl font-bold ">
+        <h3 className="my-3 text-left font-display text-xl md:text-3xl font-bold ">
           {plan.name}
         </h3>
-        <p className="text-gray-500">{plan.description}</p>
-        <span className="my-5 font-display text-6xl leading-[.7] font-semibold flex items-end">
+        <p className="text-muted-foreground text-sm md:text-base">
+          {plan.description}
+        </p>
+        <span className="my-5 font-display text-4xl md:text-6xl leading-[.7] font-semibold flex items-end">
           $
           {period === "annual_price"
             ? plan.annual_price.unit_amount / 100 / 12
             : plan.monthly_price.unit_amount / 100}
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-[12px] md:text-sm">
             / {period === "annual_price" ? "month, billed annually" : "month"}
           </p>
         </span>
@@ -199,7 +201,7 @@ const PlanCard = ({
 
       <ul className="space-y-5 px-8  bg-muted/20 p-6  relative z-[3] border-y">
         {plan.features.map((feature, i) => (
-          <li key={i} className="flex space-x-5">
+          <li key={i} className="flex items-center space-x-5">
             <div className="flex-shrink-0">
               {feature.negative ? (
                 <Icons.xCircle className="h-6 w-6 text-muted-foreground" />
@@ -210,11 +212,11 @@ const PlanCard = ({
             {feature.footnote ? (
               <div className="flex items-center">
                 <p
-                  className={
+                  className={`${
                     feature.negative
                       ? "text-muted-foreground  opacity-50"
                       : "text-primary"
-                  }
+                  } text-[12px]  md:text-base`}
                 >
                   {feature.text}
                 </p>
@@ -226,11 +228,11 @@ const PlanCard = ({
               </div>
             ) : (
               <p
-                className={
+                className={`${
                   feature.negative
-                    ? "text-muted-foreground opacity-50"
+                    ? "text-muted-foreground  opacity-50"
                     : "text-primary"
-                }
+                } text-[12px]  md:text-base`}
               >
                 {feature.text}
               </p>
