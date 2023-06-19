@@ -45,6 +45,20 @@ const Page = () => {
           <p className="leading-7 [&:not(:first-child)]:mt-6">{section.body}</p>
         </>
       ))}
+
+      <h2 className="mt-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0">
+        Contact Us
+      </h2>
+      <p className="leading-7 [&:not(:first-child)]:mt-6">
+        If you have any questions about this Privacy Policy, please contact us
+        at{" "}
+        <a
+          href={`mailto:${siteConfig.contact.supportEmail}`}
+          className="hover:text-muted-foreground"
+        >
+          {siteConfig.contact.supportEmail}
+        </a>
+      </p>
     </article>
   );
 };

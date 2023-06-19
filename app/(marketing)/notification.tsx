@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
+import { Icons } from "@/components/icons";
 
 export const FRAMER_MOTION_LIST_ITEM_VARIANTS = {
   hidden: { scale: 0.8, opacity: 0 },
@@ -27,7 +28,7 @@ const Notification = () => {
         }}
         className="mt-3 flex flex-col gap-4 items-center"
       >
-        <div className="w-[70%] min-w-fit rounded-xl bg-primary/10 text-center shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur  p-3 relative flex justify-center items-center  ">
+        <div className="w-[70%] min-w-fit rounded-xl  text-center  font-bold  p-3 relative flex justify-center items-center  ">
           Harness the power of {siteConfig.name} and watch your sales explode!
         </div>
         {prices.map((price, i) => (

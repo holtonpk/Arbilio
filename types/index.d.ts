@@ -18,7 +18,7 @@ export type SiteConfig = {
     github: string;
   };
   contact: {
-    email: string;
+    supportEmail: string;
   };
 };
 

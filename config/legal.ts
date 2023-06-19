@@ -84,9 +84,5 @@ export const legal: Legal = {
       title: "Changes to This Privacy Policy",
       body: "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.",
     },
-    {
-      title: "Contact Us",
-      body: `If you have any questions about this Privacy Policy, please contact us at ${siteConfig.contact}.`,
-    },
   ],
 };

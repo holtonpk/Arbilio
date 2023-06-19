@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import "@/styles/animations.css";
 import "@/styles/skeletonStyle.css";
 import "@/styles/mdx.css";
+import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/context/user-auth";
 import { siteConfig } from "@/config/site";
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: IProps) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
