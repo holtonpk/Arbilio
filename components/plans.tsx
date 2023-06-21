@@ -19,13 +19,13 @@ import { el } from "date-fns/locale";
 
 const plans = [
   {
-    id: "prod_NsPgx3fbEtgp1i",
+    id: "prod_O7mMgmiT0fFlcC",
     name: "Pro",
     description:
       "Design for the high volume seller, looking to scale to the moon",
     icon: "gem",
-    monthly_price: { id: "price_1NIl64EewcpAM4MfSUnprGQO", unit_amount: 4900 },
-    annual_price: { id: "price_1NIl64EewcpAM4MfxPBaPW9h", unit_amount: 36000 },
+    monthly_price: { id: "price_1NLWnVEewcpAM4MfkryhNa63", unit_amount: 5900 },
+    annual_price: { id: "price_1NLWnVEewcpAM4Mfc99W6lns", unit_amount: 59000 },
     firebaseRole: "2",
     features: [
       { text: "Access to Top Accounts" },
@@ -37,12 +37,12 @@ const plans = [
     ],
   },
   {
-    id: "prod_NsPejSOm20kcO8",
+    id: "prod_O7mKmHjF7ieN0k",
     name: "Basic",
     description: "Perfect for a low level seller just getting started",
     icon: "bolt",
-    monthly_price: { id: "price_1NIl6AEewcpAM4MfCISbaK89", unit_amount: 2900 },
-    annual_price: { id: "price_1NIl6AEewcpAM4MfaZT4jJyB", unit_amount: 22800 },
+    monthly_price: { id: "price_1NLWlOEewcpAM4MfQnvrGA51", unit_amount: 2900 },
+    annual_price: { id: "price_1NLWlOEewcpAM4Mfk2S7oPFq", unit_amount: 29000 },
     firebaseRole: "1",
     features: [
       { text: "Access to Top Accounts" },
@@ -191,10 +191,13 @@ const PlanCard = ({
         <span className="my-5 font-display text-4xl md:text-6xl leading-[.7] font-semibold flex items-end">
           $
           {period === "annual_price"
-            ? plan.annual_price.unit_amount / 100 / 12
+            ? Math.round(plan.annual_price.unit_amount / 100 / 12)
             : plan.monthly_price.unit_amount / 100}
-          <p className="text-muted-foreground text-[12px] md:text-sm">
-            / {period === "annual_price" ? "month, billed annually" : "month"}
+          <p className="text-muted-foreground text-[12px] md:text-sm mb-2">
+            /{" "}
+            {period === "annual_price"
+              ? `$${plan.annual_price.unit_amount / 100} billed annually`
+              : "month"}
           </p>
         </span>
       </div>
@@ -263,16 +266,21 @@ const PlanCard = ({
             )}
             {currentUser.userPlan?.tier.toLocaleString() === plan.firebaseRole
               ? "Cancel Plan"
-              : "Select Plan"}
+              : " Try For Free"}
           </Button>
         ) : (
-          <LinkButton
-            href={"/onboarding/register"}
-            className="w-full"
-            variant={popular ? "default" : "secondary"}
-          >
-            Get Started
-          </LinkButton>
+          <>
+            <LinkButton
+              href={"/onboarding/register"}
+              className="w-full"
+              variant={popular ? "default" : "secondary"}
+            >
+              Try For Free
+            </LinkButton>
+            <p className="text-muted-foreground mt-2 text-sm">
+              7 Day Free Trial. Cancel Anytime
+            </p>
+          </>
         )}
       </div>
     </div>

@@ -8,8 +8,7 @@ const UserSubscribed = ({ children }: { children: ReactElement }) => {
   const router = useRouter();
 
   if (!currentUser?.userPlan) {
-    console.log("no plan", currentUser);
-    // router.push("/onboarding/plan");
+    router.push("/onboarding/plan");
   } else {
     return children;
   }

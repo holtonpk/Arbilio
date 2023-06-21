@@ -11,16 +11,16 @@ const HeroText: React.FC = () => {
   return (
     <div className=" flex  flex-col items-center gap-2 text-center ">
       <div className="mx-auto mb-10  px-2.5 text-center flex items-center flex-col max-w-md sm:px-0">
-        {/* <a
-          href="https://dub.sh/launch"
+        <a
+          href="/onboarding/register"
           target="_blank"
           rel="noreferrer"
           className="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-md border-theme-blue border px-7 py-2 transition-all "
         >
           <p className="text-[12px] font-semibold text-theme-blue">
-            7 day free trial
+            7 Day Free Trial. Cancel Anytime!
           </p>
-        </a> */}
+        </a>
 
         {/* <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.15] sm:text-6xl sm:leading-[1.15] whitespace-nowrap bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent ">
           Redefining Dropshipping 
@@ -50,15 +50,15 @@ const HeroText: React.FC = () => {
             href="/onboarding/register"
             className="w-full md:w-fit whitespace-nowrap  shadow-lg"
           >
-            Get Started
+            Start Free Trial
           </LinkButton>
           <LinkButton
-            href={"/onboarding/register"}
+            href={"/#features"}
             variant="outline"
             size={"lg"}
             className="bg-background  shadow-lg whitespace-nowrap  z-10 w-full  md:w-fit relative "
           >
-            Book a Demo
+            Learn more
           </LinkButton>
         </div>
       </div>

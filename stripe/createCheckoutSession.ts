@@ -19,6 +19,8 @@ export async function createCheckoutSession(
   const db = getFirestore(app);
   const stripe = await getStripe();
 
+  console.log(priceCode, "", uid);
+
   const checkoutSessionRef = collection(
     db,
     storage.users,

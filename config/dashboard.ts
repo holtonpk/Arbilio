@@ -27,7 +27,7 @@ export const dashboardNavigation: DashboardNavigation = {
             "Browse our collection of over 500 active sellers and 1000+ accounts.",
           links: [
             {
-              href: "/accounts/account-database-base/demo",
+              href: "/accounts/account-database/demo",
               requiredSubscription: 0,
             },
             {

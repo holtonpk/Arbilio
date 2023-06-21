@@ -21,26 +21,26 @@ export default function Layout({ children }: { children: ReactElement }) {
   return (
     <AuthProvider>
       <ProtectedRoutes>
-        {/* <UserSubscribed> */}
-        <UserDataProvider>
-          <>
-            <Toaster />
-            <header>
-              <DashboardNav />
-              <MobileDashboardNav />
-            </header>
-            <UpSaleBanner />
-            <div className="min-h-screen mt-20 md:mt-0  max-w-screen  overflow-hidden ">
-              <main className=" relative w-full pt-6   overflow-auto  min-h-[80vh] ">
-                {children}
-              </main>
-              <div className="col-start-1 col-end-3 ">
-                <SiteFooter />
+        <UserSubscribed>
+          <UserDataProvider>
+            <>
+              <Toaster />
+              <header>
+                <DashboardNav />
+                <MobileDashboardNav />
+              </header>
+              <UpSaleBanner />
+              <div className="min-h-screen mt-20 md:mt-0  max-w-screen  overflow-hidden ">
+                <main className=" relative w-full pt-6   overflow-auto  min-h-[80vh] ">
+                  {children}
+                </main>
+                <div className="col-start-1 col-end-3 ">
+                  <SiteFooter />
+                </div>
               </div>
-            </div>
-          </>
-        </UserDataProvider>
-        {/* </UserSubscribed> */}
+            </>
+          </UserDataProvider>
+        </UserSubscribed>
       </ProtectedRoutes>
     </AuthProvider>
   );

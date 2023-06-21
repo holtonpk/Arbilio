@@ -201,12 +201,16 @@ const SubRoute = ({
     return null;
   }
 
+  console.log("currentUser?.userPlan", currentUser);
+
   const href =
     typeof item.links === "string"
       ? item.links
       : item.links.find(
           (link) => link.requiredSubscription === currentUser?.userPlan.tier
         )?.href;
+
+  console.log("href", href, item.links);
 
   return (
     <>
