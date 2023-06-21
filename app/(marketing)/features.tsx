@@ -26,7 +26,7 @@ const featureList = [
     icon: "accounts" as keyof typeof Icons,
 
     demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Faccount-datbase-demo.mp4?alt=media&token=c511e3f3-8faa-4a30-9aec-fa7c85716b1a",
-    thumbnail: "/_static/features/analytics.png",
+    thumbnail: "/_static/features/AccountDatabase.png",
   },
   {
     key: "Top Account",
@@ -35,7 +35,7 @@ const featureList = [
       "Effortlessly access a clear, daily ranking of top-performing accounts to stay updated with leading market players and their strategies.",
     icon: "rank" as keyof typeof Icons,
     demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Ftop-accounts-demo.mp4?alt=media&token=fdbb4d64-c483-4a13-8741-4271c16ce986",
-    thumbnail: "/_static/features/analytics.png",
+    thumbnail: "/_static/features/TopAccounts.png",
   },
   {
     key: "Account Collections",
@@ -44,7 +44,7 @@ const featureList = [
       "Utilize our Account Tracker to monitor account growth, analyze trend patterns, and make informed decisions based on this data.",
     icon: "crosshair" as keyof typeof Icons,
     demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Faccount-collections-demo.mp4?alt=media&token=9eb039b1-3939-4dcf-990c-183999c2cc85",
-    thumbnail: "/_static/features/analytics.png",
+    thumbnail: "/_static/features/AccountCollections.png",
   },
   {
     key: "Product Database",
@@ -53,7 +53,7 @@ const featureList = [
       "Harness our extensive Product Database to identify top-selling items and understand the dynamics behind their success.",
     icon: "database" as keyof typeof Icons,
     demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Fproduct-databse-demomp4.mp4?alt=media&token=327ba09f-c401-47ca-942f-a58060b1f3fe",
-    thumbnail: "/_static/features/analytics.png",
+    thumbnail: "/_static/features/ProductDatabase.png",
   },
   {
     key: "Product Tracker",
@@ -62,7 +62,7 @@ const featureList = [
       "Discover trending products, track their performance, and gain a competitive edge by understanding the factors contributing to their popularity.",
     icon: "analytics" as keyof typeof Icons,
     demo: "https://firebasestorage.googleapis.com/v0/b/tikdrop-788d3.appspot.com/o/demo%2Fproduct-tracker-demomp4.mp4?alt=media&token=0b9780a6-470b-46d6-8f68-2bc65fd4447c",
-    thumbnail: "/_static/features/analytics.png",
+    thumbnail: "/_static/features/ProductTracker.png",
   },
 ];
 
@@ -142,7 +142,7 @@ export default function Features() {
                         className="relative w-full h-fit overflow-hidden whitespace-nowrap rounded-2xl bg-background shadow-2xl lg:mt-10 lg:w-[700px] "
                       >
                         <video
-                          // autoPlay
+                          autoPlay={window.innerWidth > 768}
                           muted
                           loop
                           width={700}
