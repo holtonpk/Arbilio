@@ -142,7 +142,7 @@ export default function Features() {
                         className="relative w-full h-fit overflow-hidden whitespace-nowrap rounded-2xl bg-background shadow-2xl lg:mt-10 lg:w-[700px] "
                       >
                         <video
-                          autoPlay={window.innerWidth > 768 || false}
+                          autoPlay={window ? window?.innerWidth > 768 : false}
                           muted
                           loop
                           width={700}
