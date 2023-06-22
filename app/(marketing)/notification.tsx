@@ -22,20 +22,15 @@ export const FRAMER_MOTION_SHRINK = {
 };
 
 const Notification = () => {
-  const prices: string[] = [
-    "32.54",
-    "152.92",
-    "29.95",
-    "12.72",
-    "42.14",
-    "92.31",
-    "41.23",
-  ];
-
   const [totalDisplayed, setTotalDisplayed] = React.useState(1);
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [bufferSize, setBufferSize] = React.useState(1);
+
+  const prices = React.useMemo(
+    () => ["32.54", "152.92", "29.95", "12.72", "42.14", "92.31", "41.23"],
+    []
+  );
 
   React.useEffect(() => {
     const update = () => {
@@ -51,7 +46,7 @@ const Notification = () => {
     update(); // Start the updates
 
     // No cleanup is necessary because each timeout cleans up after itself
-  }, []);
+  }, [prices.length]);
 
   const buffer = React.useMemo<string[]>(() => {
     const bufferStart: number =
@@ -63,7 +58,7 @@ const Notification = () => {
     }
 
     return buffer.reverse();
-  }, [currentIndex, bufferSize]);
+  }, [currentIndex, bufferSize, prices]);
 
   return (
     <div className="flex w-fit flex-col items-center  mx-auto ">
@@ -82,7 +77,7 @@ const Notification = () => {
         </motion.div>
 
         {buffer.slice(1, 4).map((price, i) => (
-          <div className=" z-[5] relative w-full ">
+          <div key={i} className=" z-[5] relative w-full ">
             <motion.div
               key={totalDisplayed + i}
               initial="hidden"
