@@ -4,7 +4,7 @@ import Link from "next/link";
 import HeroHeader from "@/app/(marketing)/hero-header";
 import { siteConfig } from "@/config/site";
 import { Icons } from "@/components/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -79,6 +79,12 @@ export default function Features() {
   //       url: "https://github.com/steven-tey/dub",
   //     },
   //   });
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div id="features">
       {featureList.map(({ key, demo }) => (
@@ -142,7 +148,7 @@ export default function Features() {
                         className="relative w-full h-fit overflow-hidden whitespace-nowrap rounded-2xl bg-background shadow-2xl lg:mt-10 lg:w-[700px] "
                       >
                         <video
-                          autoPlay={window ? window?.innerWidth > 768 : false}
+                          autoPlay={isClient && window.innerWidth > 768}
                           muted
                           loop
                           width={700}
