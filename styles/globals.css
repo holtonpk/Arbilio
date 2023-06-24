@@ -214,16 +214,16 @@
       hsla(256, 96%, 67%, 1) 0px,
       hsla(256, 96%, 67%, 0) 50%
     ),
-    radial-gradient(
+    /* radial-gradient(
       at 97% 96%,
       hsla(38, 60%, 74%, 1) 0px,
       hsla(38, 60%, 74%, 0) 50%
-    ),
-    radial-gradient(
-      at 33% 50%,
-      hsla(222, 67%, 73%, 1) 0px,
-      hsla(222, 67%, 73%, 0) 50%
-    ),
+    ), */
+      radial-gradient(
+        at 33% 50%,
+        hsla(222, 67%, 73%, 1) 0px,
+        hsla(222, 67%, 73%, 0) 50%
+      ),
     radial-gradient(
       at 79% 53%,
       hsla(343, 68%, 79%, 1) 0px,
