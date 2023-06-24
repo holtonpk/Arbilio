@@ -214,30 +214,31 @@
       hsla(256, 96%, 67%, 1) 0px,
       hsla(256, 96%, 67%, 0) 50%
     ),
-    /* radial-gradient(
+    radial-gradient(
       at 97% 96%,
       hsla(38, 60%, 74%, 1) 0px,
       hsla(38, 60%, 74%, 0) 50%
-    ), */
-      radial-gradient(
-        at 33% 50%,
-        hsla(222, 67%, 73%, 1) 0px,
-        hsla(222, 67%, 73%, 0) 50%
-      ),
+    ),
+    radial-gradient(
+      at 33% 50%,
+      hsla(222, 67%, 73%, 1) 0px,
+      hsla(222, 67%, 73%, 0) 50%
+    ),
     radial-gradient(
       at 79% 53%,
       hsla(343, 68%, 79%, 1) 0px,
       hsla(343, 68%, 79%, 0) 50%
     );
 
-  position: relative;
+  position: absolute;
   /* content: ""; */
-  width: 500px;
-  height: 700px;
+  width: 100%;
+  height: 100%;
   /* width: 100%; */
   /* height: 100%; */
-  filter: blur(100px);
-  /* -webkit-filter: saturate(150%) blur(100px); */
+  filter: saturate(150%) blur(100px);
+  -webkit-filter: saturate(150%) blur(100px);
   /* top: 80px; */
   opacity: 1;
+  border: 1px solid red;
 }
