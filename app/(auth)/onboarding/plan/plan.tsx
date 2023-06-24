@@ -10,8 +10,8 @@ const PlanLayout = () => {
 
   return (
     <>
-      <div className="z-10 flex items-center flex-col">
-        <div className="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-md border-theme-blue border px-7 py-2 transition-all ">
+      <div className="z-10 flex items-center flex-col ">
+        <div className="mb-6 md:mb-0 mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-md border-theme-blue border px-7 py-2 transition-all ">
           <p className="text-[12px] font-semibold text-theme-blue">
             7 Day Free Trial. Cancel Anytime!
           </p>

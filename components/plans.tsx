@@ -77,7 +77,7 @@ export default function Pricing({
 
   return (
     <div className=" text-center mx-auto w-full max-w-screen-xl px-2.5 md:px-20">
-      <div className="relative mx-auto mb-10 flex max-w-fit items-center space-x-2 mt-8">
+      <div className="relative mx-auto mb-6 md:mb-10 flex max-w-fit items-center space-x-2 mt-8">
         <p className="text-muted-foreground whitespace-nowrap text-sm md:text-base">
           Billed Monthly
         </p>
