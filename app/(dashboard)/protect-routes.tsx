@@ -5,11 +5,11 @@ import { LinkButton } from "@/components/ui/link";
 import { useRouter } from "next/navigation";
 const ProtectedRoutes = ({ children }: { children: ReactElement }) => {
   const { currentUser } = useAuth()!;
+  const router = useRouter();
 
   if (currentUser) {
     return children;
   } else {
-    const router = useRouter();
     router.push("/login");
   }
 
