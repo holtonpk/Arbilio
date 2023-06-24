@@ -21,13 +21,6 @@ const PlanLayout = () => {
           cancel_url="dashboard"
           success_url="dashboard"
         />
-        {/* <p className="mt-6 text-muted-foreground">
-        7 Day Free Trial. Cancel Anytime!
-      </p> */}
-        {/* <LinkButton href="/dashboard" variant="link" className="mx-auto mt-6">
-        Continue with limited free plan
-        <Icons.chevronRight className="ml-2 h-4 w-4" />
-      </LinkButton> */}
       </div>
     </>
   );

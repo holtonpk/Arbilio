@@ -9,13 +9,13 @@ type HeaderProps = {
 
 const HeroText: React.FC = () => {
   return (
-    <div className=" flex  flex-col items-center gap-2 text-center ">
+    <div className=" flex z-10 flex-col items-center gap-2 text-center ">
       <div className="mx-auto mb-10  px-2.5 text-center flex items-center flex-col max-w-md sm:px-0">
         <a
           href="/onboarding/register"
           target="_blank"
           rel="noreferrer"
-          className="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-md border-theme-blue border px-7 py-2 transition-all "
+          className="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-md border-theme-blue border px-7 py-2 transition-all z-10"
         >
           <p className="text-[12px] font-semibold text-theme-blue">
             7 Day Free Trial. Cancel Anytime!
