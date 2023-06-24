@@ -4,7 +4,7 @@ import { formatNumber } from "@/lib/utils";
 
 export default function Stats() {
   return (
-    <div className="border-y border mt-10 bg-background/10 py-8 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur">
+    <div className="border-y border-y-border mt-10 bg-background/10 py-8 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur">
       <div className="mx-auto w-full max-w-screen-xl px-2.5 md:px-20 grid gap-y-4  md:divide-x md:divide-border md:grid-cols-3 md:gap-y-0">
         {[
           { name: "Tracked Sellers", value: 5324 },

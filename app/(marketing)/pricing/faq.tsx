@@ -34,7 +34,7 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <div className="mt-20  pb-4 h-fit border-t border bg-background/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur">
+    <div className="mt-20  pb-4 h-fit border-y border-y-border bg-background/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur">
       <div className="my-20  text-center mx-auto w-full max-w-screen-xl px-2.5 md:px-20">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           <div className="p-3">
