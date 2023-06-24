@@ -17,7 +17,6 @@ const LogoutButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const handleLogout = () => {
       logOut();
-      router.push("/");
     };
 
     return (

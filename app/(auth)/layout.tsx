@@ -3,7 +3,7 @@ import { siteConfig } from "@/config/site";
 import UserSignedIn from "././user-signed-in";
 import { constructMetadata } from "@/lib/utils";
 import { Metadata } from "next";
-
+import Image from "next/image";
 export const metadata: Metadata = constructMetadata({
   title: `Register - ${siteConfig.name}`,
 });
@@ -20,11 +20,15 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       <>
         <Link
           href="/"
-          className=" items-center space-x-2 flex w-fit absolute top-4 left-4 "
+          className=" items-center space-x-2 flex w-fit absolute top-4 left-4"
         >
-          <span className="text-base p-2 text-primary font-bold inline-block ">
-            <span className=" text-primary">{siteConfig.name}</span>
-            .io
+          <span className="text-2xl p-2 text-primary font-bold  flex items-center ">
+            <div className="h-8 w-8 relative">
+              <Image src="/image/circleLogo.png" alt="logo" fill />
+            </div>
+            <span className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-[#F66896] to-[#7640DF]">
+              {siteConfig.name}
+            </span>
           </span>
         </Link>
 

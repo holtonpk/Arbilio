@@ -32,21 +32,36 @@ const Notification = () => {
     []
   );
 
+  // Initial 7 updates every 200ms
   React.useEffect(() => {
-    const update = () => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % prices.length);
-      setBufferSize((prevSize) => (prevSize < 4 ? prevSize + 1 : prevSize));
-      setTotalDisplayed((prevTotalDisplayed) => prevTotalDisplayed + 1);
+    if (totalDisplayed < 7) {
+      const timer = setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % prices.length);
+        setBufferSize((prevSize) => (prevSize < 4 ? prevSize + 1 : prevSize));
+        setTotalDisplayed((prevTotalDisplayed) => prevTotalDisplayed + 1);
+        setTotalDisplayed((prevCount) => prevCount + 1);
+      }, 400);
 
-      // Schedule the next update
-      const timeout = Math.random() * 3800 + 200; // Random interval between 200ms and 2s
-      setTimeout(update, timeout);
-    };
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [totalDisplayed, prices.length]);
 
-    update(); // Start the updates
+  // Subsequent updates every 2 seconds
+  React.useEffect(() => {
+    if (totalDisplayed >= 7) {
+      const timer = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % prices.length);
+        setBufferSize((prevSize) => (prevSize < 4 ? prevSize + 1 : prevSize));
+        setTotalDisplayed((prevTotalDisplayed) => prevTotalDisplayed + 1);
+      }, 2000);
 
-    // No cleanup is necessary because each timeout cleans up after itself
-  }, [prices.length]);
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, [totalDisplayed, prices.length]);
 
   const buffer = React.useMemo<string[]>(() => {
     const bufferStart: number =
@@ -63,7 +78,7 @@ const Notification = () => {
   return (
     <div className="flex w-fit flex-col items-center  mx-auto ">
       <div className="w-[70%] min-w-fit rounded-xl  text-center  font-bold  p-3 relative flex justify-center items-center  ">
-        Harness the power of {siteConfig.name} and watch your sales explode!
+        Watch your sales explode!
       </div>
 
       <div className="mt-3 gap-4 items-center  flex flex-col  h-[400px]  ">
@@ -92,7 +107,7 @@ const Notification = () => {
             </motion.div>
           </div>
         ))}
-        {totalDisplayed > 4 && (
+        {totalDisplayed > 5 && (
           <div className="flex flex-col items-center relative h-fit  w-full -translate-y-[100%] -top-4  ">
             <motion.div
               key={totalDisplayed}
@@ -105,10 +120,10 @@ const Notification = () => {
             </motion.div>
             <div className=" w-full h-[10px]  grid grid-rows-[10px_10px_10px] absolute items-center bottom-0 z-[3]">
               <div className="w-[98%]  h-[40px] rounded-b-xl mx-auto bg-gray-200 shadow-sm backdrop-blur relative z-[3] " />
-              {totalDisplayed > 5 && (
+              {totalDisplayed > 6 && (
                 <div className="w-[96%]  h-[40px] rounded-b-xl mx-auto bg-gray-200 shadow-sm backdrop-blur relative z-[2] " />
               )}
-              {totalDisplayed > 6 && (
+              {totalDisplayed > 7 && (
                 <div className="w-[94%]  h-[40px] rounded-b-xl mx-auto bg-gray-200 shadow-sm backdrop-blur relative z-[1] " />
               )}
             </div>
