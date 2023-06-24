@@ -75,7 +75,9 @@
   content: "";
   width: 100%;
   height: 100%;
-  filter: blur(100px) saturate(150%);
+
+  filter: saturate(150%) blur(100px);
+  -webkit-filter: saturate(150%) blur(100px);
   top: 80px;
   opacity: 0.15;
 }
