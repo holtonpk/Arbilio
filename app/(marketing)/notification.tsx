@@ -40,25 +40,10 @@ const Notification = () => {
         setBufferSize((prevSize) => (prevSize < 4 ? prevSize + 1 : prevSize));
         setTotalDisplayed((prevTotalDisplayed) => prevTotalDisplayed + 1);
         setTotalDisplayed((prevCount) => prevCount + 1);
-      }, 400);
+      }, 500);
 
       return () => {
         clearTimeout(timer);
-      };
-    }
-  }, [totalDisplayed, prices.length]);
-
-  // Subsequent updates every 2 seconds
-  React.useEffect(() => {
-    if (totalDisplayed >= 7) {
-      const timer = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % prices.length);
-        setBufferSize((prevSize) => (prevSize < 4 ? prevSize + 1 : prevSize));
-        setTotalDisplayed((prevTotalDisplayed) => prevTotalDisplayed + 1);
-      }, 2000);
-
-      return () => {
-        clearInterval(timer);
       };
     }
   }, [totalDisplayed, prices.length]);

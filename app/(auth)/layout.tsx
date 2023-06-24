@@ -22,8 +22,8 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           href="/"
           className=" items-center space-x-2 flex w-fit absolute top-4 left-4"
         >
-          <span className="text-2xl p-2 text-primary font-bold  flex items-center ">
-            <div className="h-8 w-8 relative">
+          <span className=" text-lg md:text-2xl p-2 text-primary font-bold  flex items-center ">
+            <div className="md:h-8 md:w-8 h-6 w-6 relative">
               <Image src="/image/circleLogo.png" alt="logo" fill />
             </div>
             <span className="ml-1 text-transparent bg-clip-text bg-gradient-to-r from-[#F66896] to-[#7640DF]">
