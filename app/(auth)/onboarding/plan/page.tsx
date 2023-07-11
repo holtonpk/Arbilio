@@ -11,7 +11,7 @@ export default async function Plan() {
     <div className="container flex flex-col items-center  gap-6 py-8 min-h-screen border border-background ">
       <LogoutButton
         variant="outline"
-        className="absolute top-4 right-4 md:block hidden"
+        className="absolute top-4 right-4 md:flex hidden"
       >
         <Icons.logout className="mr-2 h-4 w-4" />
         Logout

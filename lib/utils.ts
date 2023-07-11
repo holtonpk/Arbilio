@@ -351,7 +351,7 @@ import { Metadata } from "next";
 export function constructMetadata({
   title = siteConfig.title,
   description = siteConfig.description,
-  image = siteConfig.logo,
+  image = "image/favicon.ico",
 }: {
   title?: string;
   description?: string;
@@ -360,6 +360,7 @@ export function constructMetadata({
   return {
     title,
     description,
+
     openGraph: {
       title,
       description,
@@ -381,7 +382,6 @@ export function constructMetadata({
       shortcut: "image/favicon-16x16.png",
       apple: "image/apple-touch-icon.png",
     },
-
     metadataBase: new URL("https://dub.sh"),
     themeColor: "#FFF",
   };

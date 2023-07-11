@@ -4,9 +4,6 @@ import "@/styles/skeletonStyle.css";
 import "@/styles/mdx.css";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AuthProvider } from "@/context/user-auth";
-import { siteConfig } from "@/config/site";
-import Head from "next/head";
 
 interface IProps {
   children: React.ReactNode;
